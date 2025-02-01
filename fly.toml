@@ -1,4 +1,4 @@
-app = "budgeting-app-3c5c"
+app = "net-worth-tracker-3c5c"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = [ ]
