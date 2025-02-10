@@ -3,5 +3,9 @@ export interface TableHeadProps {
 }
 
 export const TableHead = ({ children }: TableHeadProps): JSX.Element => {
-  return <thead><tr>{children}</tr></thead>;
+  return (
+    <thead>
+      <tr>{children}</tr>
+    </thead>
+  );
 };

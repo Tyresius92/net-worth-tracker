@@ -19,8 +19,8 @@ import { refreshAccountBalances } from "./jobs/scheduleJobs";
  * Run daily jobs at 12 PM (noon)
  */
 schedule.scheduleJob("* * 12 * * *", () => {
-  console.log('refreshing account balances')
-  refreshAccountBalances()
+  console.log("refreshing account balances");
+  refreshAccountBalances();
 });
 
 export const streamTimeout = 5000;
@@ -33,17 +33,17 @@ export default function handleRequest(
 ) {
   return isbot(request.headers.get("user-agent"))
     ? handleBotRequest(
-      request,
-      responseStatusCode,
-      responseHeaders,
-      reactRouterContext,
-    )
+        request,
+        responseStatusCode,
+        responseHeaders,
+        reactRouterContext,
+      )
     : handleBrowserRequest(
-      request,
-      responseStatusCode,
-      responseHeaders,
-      reactRouterContext,
-    );
+        request,
+        responseStatusCode,
+        responseHeaders,
+        reactRouterContext,
+      );
 }
 
 function handleBotRequest(

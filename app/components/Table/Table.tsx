@@ -1,4 +1,3 @@
-
 import { TableBody } from "./Body";
 import { TableCell } from "./Cell";
 import { TableColumnHeader } from "./ColumnHeader";
@@ -15,9 +14,7 @@ export const Table = ({ children, caption }: TableProps): JSX.Element => {
   return (
     <div>
       <table>
-        <caption>
-          {caption}
-        </caption>
+        <caption>{caption}</caption>
         {children}
       </table>
     </div>
