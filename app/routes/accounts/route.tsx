@@ -41,8 +41,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       linkToken: response.data.link_token,
       accounts,
     };
-  } catch (e: unknown) {
-    console.log("asdf error", e);
+  } catch {
     return {
       linkToken: "",
       accounts: [],
@@ -103,7 +102,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       data: {
         accountId: acc.id,
         date: new Date(),
-        amount: accountDict?.balances.current ?? 0,
+        amount: (accountDict?.balances.current ?? 0) * 100,
       },
     });
   });
@@ -115,11 +114,6 @@ export default function LinkedAccountsIndex({
   loaderData,
 }: Route.ComponentProps) {
   const fetcher = useFetcher();
-
-  const foo = fetcher.data;
-  console.log("asdf foo", {
-    foo,
-  });
 
   const { open, ready } = usePlaidLink({
     token: loaderData.linkToken,

@@ -81,6 +81,7 @@ module.exports = {
           "error",
           {
             argsIgnorePattern: "^_",
+            varsIgnorePattern: "^_",
           },
         ],
         "import/order": [

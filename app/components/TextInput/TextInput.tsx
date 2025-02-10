@@ -46,7 +46,6 @@ const TextInputWithForwardedRef = React.forwardRef(
 );
 TextInputWithForwardedRef.displayName = "TextInputWithForwardedRef";
 
-
 export const TextInput = Object.assign(
   TextInputWithForwardedRef,
 

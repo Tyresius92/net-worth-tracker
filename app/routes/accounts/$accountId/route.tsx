@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs } from "react-router";
 
+import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 
@@ -41,7 +42,31 @@ export default function AccountDetailsRoute({
 }: Route.ComponentProps) {
   return (
     <div>
-      <pre>{JSON.stringify(loaderData, undefined, 2)}</pre>
+      <div
+        style={{
+          paddingBlock: 50,
+        }}
+      >
+        <h3>{loaderData.account?.nickName}</h3>
+      </div>
+      <div>
+        <Table caption="Account balances">
+          <Table.Head>
+            <Table.ColumnHeader>ID</Table.ColumnHeader>
+            <Table.ColumnHeader>Date</Table.ColumnHeader>
+            <Table.ColumnHeader>Amount</Table.ColumnHeader>
+          </Table.Head>
+          <Table.Body>
+            {loaderData.account?.balances.map((balance) => (
+              <Table.Row key={balance.id}>
+                <Table.Cell>{balance.id}</Table.Cell>
+                <Table.Cell>{balance.date.toISOString()}</Table.Cell>
+                <Table.Cell>{balance.amount}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
     </div>
   );
 }
