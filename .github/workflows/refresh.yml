@@ -1,0 +1,15 @@
+name: Refresh
+
+on:
+  schedule:
+    - cron: '55 0 * * *'
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2 
+    - name: Run Script
+      run: |
+        curl -X POST -H 'Content-Type: application/json' -d '{"refresh": "authorized"}' https://net-worth-tracker-3c5c.fly.dev/api/accounts/refresh
