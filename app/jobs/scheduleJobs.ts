@@ -10,39 +10,44 @@ export const refreshAccountBalances = async () => {
     },
   });
 
-  console.log(`asdf found ${plaidItems.length} Plaid Items`);
+  console.log(`${new Date().toISOString()}: found ${plaidItems.length} Plaid Items`);
 
   plaidItems.forEach(async (item) => {
-    console.log(`asdf refreshing Plaid Item ${item.id}`);
+    console.log(`${new Date().toISOString()}: refreshing Plaid Item ${item.id}`);
+    try {
+      const plaidAccounts = await plaidClient.accountsGet({
+        access_token: item.accessToken,
+      });
 
-    const plaidAccounts = await plaidClient.accountsGet({
-      access_token: item.accessToken,
-    });
+      const accountsFromResponse = plaidAccounts.data.accounts;
 
-    const accountsFromResponse = plaidAccounts.data.accounts;
+      await Promise.all(
+        item.accounts.map(async (dbAccount) => {
+          const accountDict = accountsFromResponse.find(
+            (responseAcc) =>
+              (responseAcc.persistent_account_id ?? responseAcc.account_id) ===
+              dbAccount.plaidAccountId,
+          );
 
-    await Promise.all(
-      item.accounts.map(async (dbAccount) => {
-        const accountDict = accountsFromResponse.find(
-          (responseAcc) =>
-            (responseAcc.persistent_account_id ?? responseAcc.account_id) ===
-            dbAccount.plaidAccountId,
-        );
+          const balance = await prisma.accountBalance.create({
+            data: {
+              accountId: dbAccount.id,
+              date: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+              amount: (accountDict?.balances.current ?? 0) * 100,
+            },
+          });
 
-        const balance = await prisma.accountBalance.create({
-          data: {
-            accountId: dbAccount.id,
-            date: new Date(),
-            amount: (accountDict?.balances.current ?? 0) * 100,
-          },
-        });
+          console.log(`${new Date().toISOString()}: newBalance for Plaid Item ${item.id}`);
 
-        console.log(`asdf newBalance for Plaid Item ${item.id}`);
+          return balance;
+        }),
+      );
+    } catch (e: unknown) {
+      console.log(
+        `${new Date().toISOString()}: something went wrong calling accountsGet for PlaidItem ${item.id}: ${e}`,
+      );
+    }
 
-        return balance;
-      }),
-    );
-
-    console.log(`asdf job complete`);
+    console.log(`${new Date().toISOString()}: job complete`);
   });
 };

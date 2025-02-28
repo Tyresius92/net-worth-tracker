@@ -39,14 +39,19 @@ export default function Index({ loaderData }: Route.ComponentProps) {
     <>
       <div>Hello world!</div>
       <pre>{JSON.stringify(user ?? {}, undefined, 2)}</pre>
-      {userAccounts ? (
-        <NetWorthChart
-          data={userAccounts[4].balances.map((balance) => ({
-            x: balance.createdAt,
-            y: balance.amount,
-          }))}
-        />
-      ) : null}
+      <div style={{
+        width: '50%'
+      }}>
+
+        {userAccounts?.length ? (
+          <NetWorthChart
+            data={userAccounts[0].balances.map((balance) => ({
+              x: balance.date,
+              y: balance.amount / 100,
+            }))}
+          />
+        ) : null}
+      </div>
     </>
   );
 }

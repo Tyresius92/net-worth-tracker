@@ -17,6 +17,7 @@ interface TextInputProps
 
   errorMessage?: string;
   hintText?: string;
+  step?: number;
 }
 
 const TextInputWithForwardedRef = React.forwardRef(

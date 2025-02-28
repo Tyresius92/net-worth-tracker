@@ -125,10 +125,15 @@ export default function LinkedAccountsIndex({
   return (
     <div>
       <h2>Linked Accounts</h2>
-      <div>
+      <div style={{
+        display: 'flex',
+        gap: 16,
+        alignItems: 'center'
+      }}>
         <button onClick={() => open()} disabled={!ready}>
           Link new account
         </button>
+        <Link to="new">Add a new manual account</Link>
       </div>
       <div>
         <ul>

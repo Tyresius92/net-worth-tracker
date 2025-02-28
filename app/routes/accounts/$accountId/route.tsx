@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "react-router";
+import { Link, LoaderFunctionArgs } from "react-router";
 
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
@@ -40,6 +40,12 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export default function AccountDetailsRoute({
   loaderData,
 }: Route.ComponentProps) {
+  const numberFormatter = Intl.NumberFormat("en-US", {
+    style: 'currency',
+    currency: 'USD'
+  })
+  const format = (cents: number) => numberFormatter.format(cents / 100)
+
   return (
     <div>
       <div
@@ -48,6 +54,11 @@ export default function AccountDetailsRoute({
         }}
       >
         <h3>{loaderData.account?.nickName}</h3>
+      </div>
+      <div style={{
+        paddingBlockEnd: 50,
+      }}>
+        <Link to="balances/new">Add a manual balance</Link>
       </div>
       <div>
         <Table caption="Account balances">
@@ -61,7 +72,7 @@ export default function AccountDetailsRoute({
               <Table.Row key={balance.id}>
                 <Table.Cell>{balance.id}</Table.Cell>
                 <Table.Cell>{balance.date.toISOString()}</Table.Cell>
-                <Table.Cell>{balance.amount}</Table.Cell>
+                <Table.Cell>{format(balance.amount)}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
