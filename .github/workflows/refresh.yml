@@ -2,7 +2,10 @@ name: Refresh
 
 on:
   schedule:
-    - cron: '8 6 * * *'
+    # don't really care when it runs, just want it to run once a day
+    # running it at the top of the hour is more likely to get dropped
+    # or delayed due to high load, so arbitrarily run it at 11:37 AM UTC
+    - cron: '37 11 * * *'
 
 jobs:
   run-script:
