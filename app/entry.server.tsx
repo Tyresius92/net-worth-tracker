@@ -12,7 +12,6 @@ import { renderToPipeableStream } from "react-dom/server";
 import { ServerRouter } from "react-router";
 import type { EntryContext } from "react-router";
 
-
 export const streamTimeout = 5000;
 
 export default function handleRequest(
@@ -23,17 +22,17 @@ export default function handleRequest(
 ) {
   return isbot(request.headers.get("user-agent"))
     ? handleBotRequest(
-      request,
-      responseStatusCode,
-      responseHeaders,
-      reactRouterContext,
-    )
+        request,
+        responseStatusCode,
+        responseHeaders,
+        reactRouterContext,
+      )
     : handleBrowserRequest(
-      request,
-      responseStatusCode,
-      responseHeaders,
-      reactRouterContext,
-    );
+        request,
+        responseStatusCode,
+        responseHeaders,
+        reactRouterContext,
+      );
 }
 
 function handleBotRequest(

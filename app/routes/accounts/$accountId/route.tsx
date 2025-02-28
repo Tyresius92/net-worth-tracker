@@ -41,10 +41,10 @@ export default function AccountDetailsRoute({
   loaderData,
 }: Route.ComponentProps) {
   const numberFormatter = Intl.NumberFormat("en-US", {
-    style: 'currency',
-    currency: 'USD'
-  })
-  const format = (cents: number) => numberFormatter.format(cents / 100)
+    style: "currency",
+    currency: "USD",
+  });
+  const format = (cents: number) => numberFormatter.format(cents / 100);
 
   return (
     <div>
@@ -55,9 +55,11 @@ export default function AccountDetailsRoute({
       >
         <h3>{loaderData.account?.nickName}</h3>
       </div>
-      <div style={{
-        paddingBlockEnd: 50,
-      }}>
+      <div
+        style={{
+          paddingBlockEnd: 50,
+        }}
+      >
         <Link to="balances/new">Add a manual balance</Link>
       </div>
       <div>
