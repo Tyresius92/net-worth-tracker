@@ -2,7 +2,7 @@ name: Refresh
 
 on:
   schedule:
-    - cron: '55 0 * * *'
+    - cron: '59 0 * * *'
 
 jobs:
   run-script:
