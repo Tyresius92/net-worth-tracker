@@ -33,11 +33,17 @@ export const refreshAccountBalances = async () => {
               dbAccount.plaidAccountId,
           );
 
+          const currentBalance = accountDict?.balances.current ?? 0;
+          const accountType = accountDict?.type ?? "depository";
+          const normalizedBalance = ["credit", "loan"].includes(accountType)
+            ? currentBalance * -1
+            : currentBalance;
+
           const balance = await prisma.accountBalance.create({
             data: {
               accountId: dbAccount.id,
               snapshotDatetime: new Date(new Date().setUTCHours(0, 0, 0, 0)),
-              amount: (accountDict?.balances.current ?? 0) * 100,
+              amount: normalizedBalance,
             },
           });
 

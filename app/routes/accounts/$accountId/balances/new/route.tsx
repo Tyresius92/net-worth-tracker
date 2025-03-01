@@ -64,13 +64,11 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 
   const balanceNum = parseFloat(balance);
 
-  const balanceCents = Math.floor(balanceNum * 100);
-
   await prisma.accountBalance.create({
     data: {
       accountId,
       snapshotDatetime: new Date(new Date(date).setUTCHours(0, 0, 0, 0)),
-      amount: balanceCents,
+      amount: balanceNum,
     },
   });
 

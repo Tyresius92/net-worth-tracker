@@ -59,7 +59,10 @@ export const NetWorthChart = ({ accounts }: NetWorthChartProps) => {
 
         if (index === 0 && nextModel) {
           const currentDate = earliestDate;
-          const daysBetween = dateDiffInDays(new Date(currentDate!), new Date(nextModel.date));
+          const daysBetween = dateDiffInDays(
+            new Date(currentDate!),
+            new Date(nextModel.date),
+          );
 
           const fillerDates = Array.from(
             { length: daysBetween - 1 },
@@ -81,7 +84,10 @@ export const NetWorthChart = ({ accounts }: NetWorthChartProps) => {
           currentModel.date < latestDate!
         ) {
           const currentDate = currentModel.date;
-          const daysBetween = dateDiffInDays(new Date(currentDate), new Date(latestDate!));
+          const daysBetween = dateDiffInDays(
+            new Date(currentDate),
+            new Date(latestDate!),
+          );
 
           const fillerDates = Array.from(
             { length: daysBetween - 1 },
@@ -100,7 +106,10 @@ export const NetWorthChart = ({ accounts }: NetWorthChartProps) => {
 
         if (index !== 0 && nextModel) {
           const currentDate = currentModel.date;
-          const daysBetween = dateDiffInDays(new Date(currentDate), new Date(nextModel.date));
+          const daysBetween = dateDiffInDays(
+            new Date(currentDate),
+            new Date(nextModel.date),
+          );
 
           const fillerDates = Array.from(
             { length: daysBetween - 1 },
@@ -143,7 +152,7 @@ export const NetWorthChart = ({ accounts }: NetWorthChartProps) => {
 
     return Object.entries(map).map(([dateStr, bal]) => ({
       x: dateStr,
-      y: bal / 100,
+      y: bal,
     }));
   }, [data]);
 
@@ -176,7 +185,7 @@ export const NetWorthChart = ({ accounts }: NetWorthChartProps) => {
                   key={account.id}
                   data={account.balances.map((bal) => ({
                     x: bal.date,
-                    y: bal.amount / 100,
+                    y: bal.amount,
                   }))}
                 />
               );

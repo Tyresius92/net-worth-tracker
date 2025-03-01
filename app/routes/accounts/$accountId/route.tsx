@@ -44,7 +44,6 @@ export default function AccountDetailsRoute({
     style: "currency",
     currency: "USD",
   });
-  const format = (cents: number) => numberFormatter.format(cents / 100);
 
   return (
     <div>
@@ -74,7 +73,9 @@ export default function AccountDetailsRoute({
               <Table.Row key={balance.id}>
                 <Table.Cell>{balance.id}</Table.Cell>
                 <Table.Cell>{balance.date}</Table.Cell>
-                <Table.Cell>{format(balance.amount)}</Table.Cell>
+                <Table.Cell>
+                  {numberFormatter.format(balance.amount)}
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

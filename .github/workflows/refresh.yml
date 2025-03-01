@@ -4,8 +4,8 @@ on:
   schedule:
     # don't really care when it runs, just want it to run once a day
     # running it at the top of the hour is more likely to get dropped
-    # or delayed due to high load, so arbitrarily run it at 11:37 AM UTC
-    - cron: "37 11 * * *"
+    # or delayed due to high load, so run it at an arbitrary time
+    - cron: "0 16 * * *"
 
 jobs:
   run-script:
@@ -13,6 +13,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run Script
+      - name: Run Script for Prod
         run: |
           curl -X POST -H 'Content-Type: application/json' -d '{"refresh": "authorized"}' https://net-worth-tracker-3c5c.fly.dev/api/accounts/refresh
+      - name: Run Script for Staging
+        run: |
+          curl -X POST -H 'Content-Type: application/json' -d '{"refresh": "authorized"}' https://net-worth-tracker-3c5c-staging.fly.dev/accounts/refresh
