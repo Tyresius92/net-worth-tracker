@@ -78,6 +78,12 @@ model AccountBalance {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  /*
+   Generally speaking, this is write-only.
+   
+   For most use cases, you will instead want to use `accountBalance.date`,
+   which is created when we instantiate the `PrismaClient` in `~/db.server.ts`
+   */
   snapshotDatetime DateTime
 
   amount Int

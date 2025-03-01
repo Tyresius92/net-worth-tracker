@@ -45,7 +45,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
       <pre>{JSON.stringify(user ?? {}, undefined, 2)}</pre>
       <div
         style={{
-          maxWidth: 1000
+          maxWidth: 1000,
         }}
       >
         {userAccounts?.length ? (

@@ -98,11 +98,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         acc.plaidAccountId,
     );
 
+    const currentBalance = accountDict?.balances.current ?? 0;
+    const accountType = accountDict?.type ?? "depository";
+    const normalizedBalance = ["credit", "loan"].includes(accountType)
+      ? currentBalance * -1
+      : currentBalance;
+
     await prisma.accountBalance.create({
       data: {
         accountId: acc.id,
         snapshotDatetime: new Date(),
-        amount: (accountDict?.balances.current ?? 0) * 100,
+        amount: normalizedBalance,
       },
     });
   });
