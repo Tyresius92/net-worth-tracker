@@ -5,7 +5,7 @@ on:
     # don't really care when it runs, just want it to run once a day
     # running it at the top of the hour is more likely to get dropped
     # or delayed due to high load, so run it at an arbitrary time
-    - cron: "47 15 * * *"
+    - cron: "0 16 * * *"
 
 jobs:
   run-script:
