@@ -14,7 +14,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   if (user) {
     const userAccounts = await prisma.account.findMany({
       include: {
-        balances: true,
+        balances: {
+          orderBy: {
+            snapshotDatetime: "asc",
+          },
+        },
       },
       where: {
         userId: user.id,
@@ -41,16 +45,11 @@ export default function Index({ loaderData }: Route.ComponentProps) {
       <pre>{JSON.stringify(user ?? {}, undefined, 2)}</pre>
       <div
         style={{
-          width: "50%",
+          maxWidth: 1000
         }}
       >
         {userAccounts?.length ? (
-          <NetWorthChart
-            data={userAccounts[0].balances.map((balance) => ({
-              x: balance.date,
-              y: balance.amount / 100,
-            }))}
-          />
+          <NetWorthChart accounts={userAccounts} />
         ) : null}
       </div>
     </>

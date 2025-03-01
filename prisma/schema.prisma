@@ -78,7 +78,7 @@ model AccountBalance {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  date DateTime
+  snapshotDatetime DateTime
 
   amount Int
 

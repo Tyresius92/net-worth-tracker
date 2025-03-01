@@ -69,7 +69,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   await prisma.accountBalance.create({
     data: {
       accountId,
-      date: new Date(new Date(date).setUTCHours(0, 0, 0, 0)),
+      snapshotDatetime: new Date(new Date(date).setUTCHours(0, 0, 0, 0)),
       amount: balanceCents,
     },
   });

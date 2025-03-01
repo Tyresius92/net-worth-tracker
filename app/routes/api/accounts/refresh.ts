@@ -6,5 +6,5 @@ export const action: ActionFunction = async () => {
   console.log(`${new Date().toISOString()}: refreshing account balances`);
   await refreshAccountBalances();
 
-  return data({ok: true})
+  return data({ ok: true });
 };

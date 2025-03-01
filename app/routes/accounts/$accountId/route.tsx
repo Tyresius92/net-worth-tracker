@@ -73,7 +73,7 @@ export default function AccountDetailsRoute({
             {loaderData.account?.balances.map((balance) => (
               <Table.Row key={balance.id}>
                 <Table.Cell>{balance.id}</Table.Cell>
-                <Table.Cell>{balance.date.toISOString()}</Table.Cell>
+                <Table.Cell>{balance.date}</Table.Cell>
                 <Table.Cell>{format(balance.amount)}</Table.Cell>
               </Table.Row>
             ))}

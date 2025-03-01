@@ -12,6 +12,17 @@ const prisma = singleton(
           accessToken: true,
         },
       },
+    }).$extends({
+      result: {
+        accountBalance: {
+          date: {
+            needs: { snapshotDatetime: true },
+            compute(balance) {
+              return balance.snapshotDatetime.toISOString().slice(0, 10)
+            },
+          }
+        }
+      }
     }),
 );
 prisma.$connect();

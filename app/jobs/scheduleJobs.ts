@@ -36,7 +36,7 @@ export const refreshAccountBalances = async () => {
           const balance = await prisma.accountBalance.create({
             data: {
               accountId: dbAccount.id,
-              date: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+              snapshotDatetime: new Date(new Date().setUTCHours(0, 0, 0, 0)),
               amount: (accountDict?.balances.current ?? 0) * 100,
             },
           });

@@ -101,7 +101,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     await prisma.accountBalance.create({
       data: {
         accountId: acc.id,
-        date: new Date(),
+        snapshotDatetime: new Date(),
         amount: (accountDict?.balances.current ?? 0) * 100,
       },
     });
