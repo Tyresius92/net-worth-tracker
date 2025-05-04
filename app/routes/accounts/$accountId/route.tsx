@@ -12,7 +12,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     throw new Response("Account ID not in URL", { status: 404 });
   }
 
-
   return { userId };
 };
 

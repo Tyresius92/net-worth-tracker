@@ -1,7 +1,4 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 
 import { requireUser, requireUserId } from "~/session.server";
 
@@ -11,9 +8,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
 
   return {
-    userId
+    userId,
   };
-
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -23,11 +19,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   return {
     user,
-  }
+  };
 };
 
 export default function LinkedAccountsIndex(_props: Route.ComponentProps) {
-
   return (
     <div>
       <h2>Linked Accounts</h2>

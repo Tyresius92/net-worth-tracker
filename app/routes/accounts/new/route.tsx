@@ -1,8 +1,4 @@
-import {
-  ActionFunctionArgs,
-  Form,
-  LoaderFunctionArgs,
-} from "react-router";
+import { ActionFunctionArgs, Form, LoaderFunctionArgs } from "react-router";
 
 import { TextInput } from "~/components/TextInput/TextInput";
 import { requireUserId } from "~/session.server";
@@ -38,7 +34,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       },
     };
   }
-
 
   return { userId };
 };
