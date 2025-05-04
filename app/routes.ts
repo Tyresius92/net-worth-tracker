@@ -18,10 +18,6 @@ export default [
     route("new", "./routes/accounts/new/route.tsx"),
     route(":accountId", "./routes/accounts/$accountId/layout.tsx", [
       index("./routes/accounts/$accountId/route.tsx"),
-      route(
-        "balances/new",
-        "./routes/accounts/$accountId/balances/new/route.tsx",
-      ),
     ]),
   ]),
 

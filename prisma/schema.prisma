@@ -16,8 +16,6 @@ model User {
 
   password   Password?
   notes      Note[]
-  plaidItems PlaidItem[]
-  account    Account[]
 }
 
 model Password {
@@ -37,57 +35,4 @@ model Note {
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
-}
-
-model PlaidItem {
-  id String @id @default(cuid())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  accessToken String
-  plaidItemId String
-
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId   String
-  accounts Account[]
-}
-
-model Account {
-  id String @id @default(cuid())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  officialName String
-  nickName     String
-
-  plaidAccountId String?
-  item           PlaidItem? @relation(fields: [itemId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  itemId         String?
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
-
-  balances AccountBalance[]
-}
-
-model AccountBalance {
-  id String @id @default(cuid())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  /*
-   Generally speaking, this is write-only.
-   
-   For most use cases, you will instead want to use `accountBalance.date`,
-   which is created when we instantiate the `PrismaClient` in `~/db.server.ts`
-   */
-  snapshotDatetime DateTime
-
-  amount Int
-
-  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  accountId String
 }

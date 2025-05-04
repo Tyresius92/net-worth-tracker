@@ -2,11 +2,9 @@ import {
   ActionFunctionArgs,
   Form,
   LoaderFunctionArgs,
-  redirect,
 } from "react-router";
 
 import { TextInput } from "~/components/TextInput/TextInput";
-import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 
 import type { Route } from "./+types/route";
@@ -41,18 +39,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     };
   }
 
-  const newAccount = await prisma.account.create({
-    data: {
-      userId,
-      officialName,
-      nickName,
-    },
-  });
 
-  return redirect(`/accounts/${newAccount.id}`);
+  return { userId };
 };
 
-export default function NewAccountForm({ actionData }: Route.ComponentProps) {
+export default function NewAccountForm(_props: Route.ComponentProps) {
   return (
     <div>
       <Form method="post">
@@ -61,13 +52,13 @@ export default function NewAccountForm({ actionData }: Route.ComponentProps) {
           hintText="The canonical name for an account. Cannot be changed later"
           type="text"
           name="officialName"
-          errorMessage={actionData?.errors.officialName}
+          errorMessage={undefined}
         />
         <TextInput
           label="Account Nickname"
           type="text"
           name="nickName"
-          errorMessage={actionData?.errors.nickName}
+          errorMessage={undefined}
         />
         <button type="submit">Submit</button>
       </Form>
