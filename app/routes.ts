@@ -22,6 +22,7 @@ export default [
   ]),
 
   route("api/accounts/refresh", "./routes/api/accounts/refresh.ts"),
+  route("api/subscription/stripe", "./routes/api/subscription/stripe.ts"),
 
   route("react_devtools_backend_compact.js.map", "./routes/dummy/devtools.tsx"),
   route("installHook.js.map", "./routes/dummy/hook.tsx"),

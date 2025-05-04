@@ -17,7 +17,12 @@ import styles from "./root.css?url";
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  return { user: await getUser(request) };
+  return {
+    user: await getUser(request),
+    ENV: {
+      STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
+    },
+  };
 };
 
 export default function App({ loaderData }: Route.ComponentProps) {
@@ -67,6 +72,11 @@ export default function App({ loaderData }: Route.ComponentProps) {
           <Outlet />
         </main>
         <ScrollRestoration />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(loaderData.ENV)}`,
+          }}
+        />
         <Scripts />
       </body>
     </html>

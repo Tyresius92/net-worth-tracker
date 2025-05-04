@@ -46,6 +46,7 @@ module.exports = {
         ],
       },
       rules: {
+        "no-console": "error",
         "react/jsx-no-leaked-render": [
           "warn",
           { validStrategies: ["ternary"] },
@@ -82,6 +83,12 @@ module.exports = {
           {
             argsIgnorePattern: "^_",
             varsIgnorePattern: "^_",
+          },
+        ],
+        "@typescript-eslint/consistent-type-assertions": [
+          "error",
+          {
+            assertionStyle: "never",
           },
         ],
         "import/order": [
@@ -137,6 +144,12 @@ module.exports = {
       files: [".eslintrc.js", "mocks/**/*.js"],
       env: {
         node: true,
+      },
+    },
+    {
+      files: ["*.server.ts"],
+      rules: {
+        "no-console": "off",
       },
     },
   ],
