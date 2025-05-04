@@ -17,10 +17,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function Index({ loaderData }: Route.ComponentProps) {
   const { user } = loaderData;
 
+  if (user) {
+    return (
+      <div>
+        Hello, {user.email}
+      </div>
+    )
+  }
+
   return (
     <>
-      <div>Hello world!</div>
-      <pre>{JSON.stringify(user ?? {}, undefined, 2)}</pre>
+      <div></div>
     </>
   );
 }

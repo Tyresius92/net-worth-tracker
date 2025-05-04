@@ -61,7 +61,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
                     <Link to="/join">Join</Link>
                   </li>
                   <li>
-                    <Link to="/Login">Login</Link>
+                    <Link to="/login">Login</Link>
                   </li>
                 </>
               )}
