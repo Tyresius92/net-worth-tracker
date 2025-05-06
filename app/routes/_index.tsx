@@ -17,17 +17,51 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function Index({ loaderData }: Route.ComponentProps) {
   const { user } = loaderData;
 
-  if (user) {
-    return (
-      <div>
-        Hello, {user.email}
-      </div>
-    )
-  }
-
   return (
-    <>
-      <div></div>
-    </>
+    <div>
+      <div
+        style={{
+          backgroundColor: "blue",
+        }}
+      >
+        <h1
+          style={{
+            color: "orange",
+          }}
+        >
+          Money Chomp
+        </h1>
+        <h2 style={{ color: "white" }}>Take a bite out of your finances.</h2>
+      </div>
+      <div>
+        {user ? (
+          <div>
+            <h3>Hello, {user.firstName}!</h3>
+          </div>
+        ) : (
+          <div>
+            <h2>Pricing</h2>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr'
+            }}>
+              <div>
+                <h3>Free Plan</h3>
+                <p>$0/month. Free forever.</p>
+                <p>Enter account information manually</p>
+              </div>
+              <div>
+                <h3>Premium</h3>
+                <p>$25/month</p>
+                <p>
+                  Integrates with Stripe to pull your account balances on a weekly
+                  basis.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
