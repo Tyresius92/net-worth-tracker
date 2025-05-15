@@ -65,6 +65,7 @@ function cleanupUser({ email }: { email?: string } = {}) {
     deleteUserByEmail(email);
   } else {
     cy.get("@user").then((user) => {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const email = (user as { email?: string }).email;
       if (email) {
         deleteUserByEmail(email);

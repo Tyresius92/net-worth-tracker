@@ -1,6 +1,9 @@
-import { LoaderFunctionArgs } from "react-router";
+import { Link, LoaderFunctionArgs, redirect } from "react-router";
 
+import { Table } from "~/components/Table/Table";
+import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
+import { formatCurrency } from "~/utils/currencyUtils";
 
 import type { Route } from "./+types/route";
 
@@ -12,7 +15,23 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     throw new Response("Account ID not in URL", { status: 404 });
   }
 
-  return { userId };
+  const balanceSnapshots = await prisma.balanceSnapshot.findMany({
+    where: {
+      accountId,
+      account: {
+        userId,
+      },
+    },
+    orderBy: {
+      dateTime: "asc",
+    },
+  });
+
+  if (!balanceSnapshots) {
+    return redirect("./..");
+  }
+
+  return { userId, balanceSnapshots };
 };
 
 export default function AccountDetailsRoute({
@@ -20,12 +39,28 @@ export default function AccountDetailsRoute({
 }: Route.ComponentProps) {
   return (
     <div>
-      <div
-        style={{
-          paddingBlock: 50,
-        }}
-      >
-        <h3>User ID: {loaderData.userId}</h3>
+      <div>
+        <Link to="balances/new">New Balance</Link>
+        <Table caption="Balances">
+          <Table.Head>
+            <Table.ColumnHeader>ID</Table.ColumnHeader>
+            <Table.ColumnHeader>Date</Table.ColumnHeader>
+            <Table.ColumnHeader>Amount</Table.ColumnHeader>
+            <Table.ColumnHeader>Amount Raw</Table.ColumnHeader>
+          </Table.Head>
+          <Table.Body>
+            {loaderData.balanceSnapshots.map((snapshot) => (
+              <Table.Row key={snapshot.id}>
+                <Table.Cell>
+                  <Link to={`balances/${snapshot.id}`}>{snapshot.id}</Link>
+                </Table.Cell>
+                <Table.Cell>{snapshot.date}</Table.Cell>
+                <Table.Cell>{formatCurrency(snapshot.amount)}</Table.Cell>
+                <Table.Cell>{snapshot.amount}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
       </div>
     </div>
   );

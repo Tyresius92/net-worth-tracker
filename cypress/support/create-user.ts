@@ -17,7 +17,12 @@ async function createAndLogin(email: string) {
     throw new Error("All test emails must end in @example.com");
   }
 
-  const user = await createUser(email, "myreallystrongpassword");
+  const user = await createUser({
+    email,
+    password: "myreallystrongpassword",
+    firstName: "Bob",
+    lastName: "Loblaw",
+  });
 
   const response = await createUserSession({
     request: new Request("test://test"),
@@ -33,6 +38,7 @@ async function createAndLogin(email: string) {
   const parsedCookie = parse(cookieValue);
   // we log it like this so our cypress command can parse it out and set it as
   // the cookie value.
+  // eslint-disable-next-line no-console
   console.log(
     `
 <cookie>

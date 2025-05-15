@@ -8,14 +8,18 @@ generator client {
 }
 
 model User {
-  id    String @id @default(cuid())
+  id String @id @default(cuid())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  email String @unique
+  email     String @unique
   firstName String
-  lastName String
+  lastName  String
+
+  role UserRole @default(customer)
+
+  subscription SubscriptionType @default(free)
 
   password       Password?
   notes          Note[]
@@ -28,6 +32,16 @@ model Password {
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique
+}
+
+enum UserRole {
+  customer
+  admin
+}
+
+enum SubscriptionType {
+  free
+  paid
 }
 
 model Note {
@@ -48,10 +62,11 @@ model Account {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  officialName String
+  nickName String
+
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
-
-
 
   balanceSnapshots BalanceSnapshot[]
 }
@@ -67,7 +82,7 @@ model BalanceSnapshot {
 
   amount Int
 
-  date DateTime
+  dateTime DateTime
 }
 
 model StripeCustomer {

@@ -41,6 +41,7 @@ export function useMatchesData(
     () => matchingRoutes.find((route) => route.id === id),
     [matchingRoutes, id],
   );
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return route?.data as Record<string, unknown>;
 }
 

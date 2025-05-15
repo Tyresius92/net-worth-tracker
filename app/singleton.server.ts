@@ -6,8 +6,10 @@ export const singleton = <Value>(
   name: string,
   valueFactory: () => Value,
 ): Value => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const g = global as unknown as { __singletons: Record<string, unknown> };
   g.__singletons ??= {};
   g.__singletons[name] ??= valueFactory();
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return g.__singletons[name] as Value;
 };

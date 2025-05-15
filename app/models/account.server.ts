@@ -14,3 +14,14 @@ export const getAccountsForUserId = (userId: User["id"]) => {
     },
   });
 };
+
+export async function getAllAccountsAndBalances(userId: User["id"]) {
+  return prisma.account.findMany({
+    where: { userId },
+    include: {
+      balanceSnapshots: {
+        orderBy: { dateTime: "asc" },
+      },
+    },
+  });
+}

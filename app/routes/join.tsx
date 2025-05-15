@@ -26,26 +26,52 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const email = formData.get("email");
+  const firstName = formData.get("firstName");
+  const lastName = formData.get("lastName");
   const password = formData.get("password");
   const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
 
+  const baseErrors: Record<
+    "email" | "password" | "firstName" | "lastName",
+    string | null
+  > = {
+    email: null,
+    password: null,
+    firstName: null,
+    lastName: null,
+  };
+
   if (!validateEmail(email)) {
     return data(
-      { errors: { email: "Email is invalid", password: null } },
+      { errors: { ...baseErrors, email: "Email is invalid" } },
+      { status: 400 },
+    );
+  }
+
+  if (typeof firstName !== "string" || !firstName) {
+    return data(
+      { errors: { ...baseErrors, firstName: "First name is required" } },
+      { status: 400 },
+    );
+  }
+
+  if (typeof lastName !== "string" || !lastName) {
+    return data(
+      { errors: { ...baseErrors, lastName: "Last name is required" } },
       { status: 400 },
     );
   }
 
   if (typeof password !== "string" || password.length === 0) {
     return data(
-      { errors: { email: null, password: "Password is required" } },
+      { errors: { ...baseErrors, password: "Password is required" } },
       { status: 400 },
     );
   }
 
   if (password.length < 8) {
     return data(
-      { errors: { email: null, password: "Password is too short" } },
+      { errors: { ...baseErrors, password: "Password is too short" } },
       { status: 400 },
     );
   }
@@ -55,15 +81,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return data(
       {
         errors: {
+          ...baseErrors,
           email: "A user already exists with this email",
-          password: null,
         },
       },
       { status: 400 },
     );
   }
 
-  const user = await createUser(email, password);
+  const user = await createUser({ email, password, firstName, lastName });
 
   return createUserSession({
     redirectTo,
@@ -144,6 +170,62 @@ export default function Join() {
               {actionData?.errors?.password ? (
                 <div className="pt-1 text-red-700" id="password-error">
                   {actionData.errors.password}
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="firstName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              First name
+            </label>
+            <div className="mt-1">
+              <input
+                ref={emailRef}
+                id="firstName"
+                required
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                name="firstName"
+                type="text"
+                autoComplete="given-name"
+                aria-invalid={actionData?.errors?.firstName ? true : undefined}
+                aria-describedby="firstname-error"
+                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+              />
+              {actionData?.errors?.firstName ? (
+                <div className="pt-1 text-red-700" id="firstname-error">
+                  {actionData.errors.firstName}
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="lastName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Last name
+            </label>
+            <div className="mt-1">
+              <input
+                ref={emailRef}
+                id="lastName"
+                required
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                name="lastName"
+                type="text"
+                autoComplete="family-name"
+                aria-invalid={actionData?.errors?.lastName ? true : undefined}
+                aria-describedby="lastname-error"
+                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+              />
+              {actionData?.errors?.lastName ? (
+                <div className="pt-1 text-red-700" id="lastname-error">
+                  {actionData.errors.lastName}
                 </div>
               ) : null}
             </div>

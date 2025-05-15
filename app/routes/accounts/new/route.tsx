@@ -1,6 +1,12 @@
-import { ActionFunctionArgs, Form, LoaderFunctionArgs } from "react-router";
+import {
+  ActionFunctionArgs,
+  Form,
+  LoaderFunctionArgs,
+  redirect,
+} from "react-router";
 
 import { TextInput } from "~/components/TextInput/TextInput";
+import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 
 import type { Route } from "./+types/route";
@@ -35,7 +41,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     };
   }
 
-  return { userId };
+  const account = await prisma.account.create({
+    data: {
+      userId,
+      officialName,
+      nickName,
+    },
+  });
+
+  return redirect(`./../${account.id}`);
 };
 
 export default function NewAccountForm(_props: Route.ComponentProps) {

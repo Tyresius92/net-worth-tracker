@@ -10,6 +10,7 @@ interface TextInputProps
     | "pattern"
     | "defaultValue"
     | "disabled"
+    | "step"
   > {
   label: string;
   name: string;

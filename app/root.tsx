@@ -43,6 +43,11 @@ export default function App({ loaderData }: Route.ComponentProps) {
             <ul className="nav-links">
               {loaderData.user ? (
                 <>
+                  {loaderData.user.role === "admin" ? (
+                    <li>
+                      <Link to="/users">Users</Link>
+                    </li>
+                  ) : null}
                   <li>
                     <Link to="/notes">Notes</Link>
                   </li>
@@ -50,7 +55,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
                     <Link to="/accounts">Accounts</Link>
                   </li>
                   <li>
-                    <Form>
+                    <Form method="post" action="logout">
                       <button type="submit">Log Out</button>
                     </Form>
                   </li>

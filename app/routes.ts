@@ -7,6 +7,10 @@ export default [
   route("login", "./routes/login.tsx"),
   route("logout", "./routes/logout.tsx"),
 
+  route("users", "./routes/users/layout.tsx", [
+    index("./routes/users/route.tsx"),
+  ]),
+
   route("notes", "./routes/notes/layout.tsx", [
     index("./routes/notes/route.tsx"),
     route("new", "./routes/notes/new.tsx"),
@@ -18,6 +22,17 @@ export default [
     route("new", "./routes/accounts/new/route.tsx"),
     route(":accountId", "./routes/accounts/$accountId/layout.tsx", [
       index("./routes/accounts/$accountId/route.tsx"),
+      route("balances", "./routes/accounts/$accountId/balances/layout.tsx", [
+        route("new", "./routes/accounts/$accountId/balances/new/route.tsx"),
+        route(
+          ":balanceId",
+          "./routes/accounts/$accountId/balances/$balanceId/route.tsx",
+        ),
+        route(
+          ":balanceId/edit",
+          "./routes/accounts/$accountId/balances/$balanceId/edit/route.tsx",
+        ),
+      ]),
     ]),
   ]),
 

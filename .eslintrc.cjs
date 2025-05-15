@@ -147,7 +147,7 @@ module.exports = {
       },
     },
     {
-      files: ["*.server.ts"],
+      files: ["*.server.tsx", "*.server.tsx", "app/routes/api/**/*.ts"],
       rules: {
         "no-console": "off",
       },
