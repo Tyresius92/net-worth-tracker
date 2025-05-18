@@ -111,5 +111,7 @@ export function getNormalizedUserNetWorth(
 
   return {
     currentNetWorth: netWorth[netWorth.length - 1].amount,
-    netWorth, accounts: accountBalances };
+    netWorth,
+    accounts: accountBalances,
+  };
 }
