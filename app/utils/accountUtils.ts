@@ -31,6 +31,7 @@ export interface GetNormalizedNetWorthInputAccount {
 type DateString = string;
 
 export interface NormalizedNetWorth {
+  currentNetWorth: number;
   netWorth: { date: DateString; amount: number }[];
   accounts: {
     accountId: string;
@@ -48,7 +49,7 @@ export function getNormalizedUserNetWorth(
     .sort((a, b) => (a.dateTime < b.dateTime ? -1 : 1));
 
   if (allSnapshots.length === 0) {
-    return { netWorth: [], accounts: [] };
+    return { currentNetWorth: 0, netWorth: [], accounts: [] };
   }
 
   // Get the month range from first snapshot to now
@@ -108,5 +109,7 @@ export function getNormalizedUserNetWorth(
     },
   );
 
-  return { netWorth, accounts: accountBalances };
+  return {
+    currentNetWorth: netWorth[netWorth.length - 1].amount,
+    netWorth, accounts: accountBalances };
 }

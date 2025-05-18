@@ -25,6 +25,7 @@ describe("getNormalizedUserNetWorth", () => {
 
   it("returns an empty object for an empty array", () => {
     expect(getNormalizedUserNetWorth([])).toEqual({
+      currentNetWorth: 0,
       netWorth: [],
       accounts: [],
     });
@@ -39,6 +40,7 @@ describe("getNormalizedUserNetWorth", () => {
         },
       ]),
     ).toEqual({
+      currentNetWorth: 0,
       netWorth: [],
       accounts: [],
     });
@@ -48,6 +50,7 @@ describe("getNormalizedUserNetWorth", () => {
     expect(
       getNormalizedUserNetWorth([mockGetNormalizedNetWorthInputAccount()]),
     ).toEqual({
+      currentNetWorth: 10000,
       netWorth: [{ date: "2025-05-31", amount: 10000 }],
       accounts: [
         {
@@ -75,6 +78,7 @@ describe("getNormalizedUserNetWorth", () => {
         }),
       ]),
     ).toEqual({
+      currentNetWorth: 10000,
       netWorth: [{ date: "2025-05-31", amount: 10000 }],
       accounts: [
         {
@@ -110,6 +114,7 @@ describe("getNormalizedUserNetWorth", () => {
         }),
       ]),
     ).toEqual({
+      currentNetWorth: 10000,
       netWorth: [
         { date: "2025-04-30", amount: 40000 },
         { date: "2025-05-31", amount: 10000 },
@@ -168,6 +173,7 @@ describe("getNormalizedUserNetWorth", () => {
         }),
       ]),
     ).toEqual({
+      currentNetWorth: 44567,
       netWorth: [
         { date: "2025-03-31", amount: 12345 },
         { date: "2025-04-30", amount: 63456 },
@@ -240,6 +246,7 @@ describe("getNormalizedUserNetWorth", () => {
         }),
       ]),
     ).toEqual({
+      currentNetWorth: 44567,
       netWorth: [
         { date: "2025-02-28", amount: 75000 },
         { date: "2025-03-31", amount: 2000 },
@@ -286,6 +293,7 @@ describe("getNormalizedUserNetWorth", () => {
         }),
       ]),
     ).toEqual({
+      currentNetWorth: 10000,
       netWorth: [
         { date: "2025-03-31", amount: 20000 },
         { date: "2025-04-30", amount: 20000 },
