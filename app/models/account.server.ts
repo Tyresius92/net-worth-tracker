@@ -21,6 +21,7 @@ export async function getAllAccountsAndBalances(userId: User["id"]) {
     include: {
       balanceSnapshots: {
         orderBy: { dateTime: "asc" },
+        take: 100000,
       },
     },
   });

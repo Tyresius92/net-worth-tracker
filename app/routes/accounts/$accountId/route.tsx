@@ -40,7 +40,17 @@ export default function AccountDetailsRoute({
   return (
     <div>
       <div>
-        <Link to="balances/new">New Balance</Link>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+            marginBlockEnd: 16,
+          }}
+        >
+          <Link to="balances/new">New Balance</Link>
+          <Link to="balances/import">Import balances via CSV</Link>
+        </div>
         <Table caption="Balances">
           <Table.Head>
             <Table.ColumnHeader>ID</Table.ColumnHeader>

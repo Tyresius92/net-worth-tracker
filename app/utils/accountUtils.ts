@@ -41,9 +41,11 @@ export interface NormalizedNetWorth {
 export function getNormalizedUserNetWorth(
   accounts: GetNormalizedNetWorthInputAccount[],
 ): NormalizedNetWorth {
-  const allSnapshots = accounts.flatMap((account) =>
-    account.balanceSnapshots.map((s) => ({ ...s, accountId: account.id })),
-  );
+  const allSnapshots = accounts
+    .flatMap((account) =>
+      account.balanceSnapshots.map((s) => ({ ...s, accountId: account.id })),
+    )
+    .sort((a, b) => (a.dateTime < b.dateTime ? -1 : 1));
 
   if (allSnapshots.length === 0) {
     return { netWorth: [], accounts: [] };

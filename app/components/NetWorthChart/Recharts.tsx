@@ -4,8 +4,9 @@ import {
   Line,
   XAxis,
   YAxis,
-  Bar,
-  // Tooltip
+  // Bar,
+  ReferenceLine,
+  Tooltip,
 } from "recharts";
 
 import { NormalizedNetWorth } from "~/utils/accountUtils";
@@ -15,10 +16,14 @@ export interface NetWorthChartProps {
   data: NormalizedNetWorth;
 }
 
+// const colors = [
+//   'green', 'lightblue', 'hotpink', 'purple', 'red', 'orange'
+// ]
+
 export const NetWorthChart = (props: NetWorthChartProps) => {
   const id = useId();
 
-  const accountIds = props.data.accounts.map((acc) => acc.accountId);
+  // const accountIds = props.data.accounts.map((acc) => acc.accountId);
   const normalizedData = useMemo(() => {
     const result = [];
 
@@ -50,17 +55,18 @@ export const NetWorthChart = (props: NetWorthChartProps) => {
         />
         <YAxis
           tickFormatter={(val) =>
-            `${formatCurrency(val * 100 / 1000, { includeCents: false })}K`
+            `${formatCurrency((val * 100) / 1000, { includeCents: false })}K`
           }
         />
-        {/* <Tooltip /> */}
+        <Tooltip />
         {/* <Legend /> */}
         {/* <CartesianGrid stroke="#f5f5f5" /> */}
         {/* <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" /> */}
-        {accountIds.map((id) => (
-          <Bar key={id} stackId="a" dataKey={id} barSize={20} fill="#413ea0" />
-        ))}
-        <Line type="monotone" dataKey="netWorth" stroke="#ff7300" />
+        <ReferenceLine y={0} stroke="#000" />
+        {/* {accountIds.map((id, index) => (
+          <Bar key={id} stackId="a" dataKey={id} barSize={20} fill={colors[index % colors.length]} />
+        ))} */}
+        <Line type="monotone" dataKey="netWorth" stroke="green" />
       </ComposedChart>
     </div>
   );

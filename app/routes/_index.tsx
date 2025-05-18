@@ -1,6 +1,5 @@
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 
-// import { NetWorthChart } from "~/components/NetWorthChart/NetWorthChart";
 import { NetWorthChart } from "~/components/NetWorthChart/Recharts";
 import { getAllAccountsAndBalances } from "~/models/account.server";
 import { getUser } from "~/session.server";
@@ -50,12 +49,10 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         {user ? (
           <div>
             <h3>Hello, {user.firstName}!</h3>
-            {/* <Suspense>
-              <div style={{ maxWidth: '75%' }}>
-                <NetWorthChart data={summary} />
-              </div>
-            </Suspense> */}
             <NetWorthChart data={summary} />
+            <div>
+              <pre>{JSON.stringify(summary, undefined, 2)}</pre>
+            </div>
           </div>
         ) : (
           <div>

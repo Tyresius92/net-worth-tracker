@@ -72,11 +72,13 @@ export default function BalanceDetailRoute({
       <div>
         <h5>Actions</h5>
         <Link to="edit">Edit</Link>
-        <Form method="post">
-          <button type="submit" name="intent" value="delete">
-            Delete
-          </button>
-        </Form>
+        <div style={{ paddingTop: 20 }}>
+          <Form method="post">
+            <button type="submit" name="intent" value="delete">
+              Delete
+            </button>
+          </Form>
+        </div>
       </div>
     </div>
   );

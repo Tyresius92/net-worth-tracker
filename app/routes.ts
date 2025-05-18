@@ -25,6 +25,10 @@ export default [
       route("balances", "./routes/accounts/$accountId/balances/layout.tsx", [
         route("new", "./routes/accounts/$accountId/balances/new/route.tsx"),
         route(
+          "import",
+          "./routes/accounts/$accountId/balances/import/route.tsx",
+        ),
+        route(
           ":balanceId",
           "./routes/accounts/$accountId/balances/$balanceId/route.tsx",
         ),
