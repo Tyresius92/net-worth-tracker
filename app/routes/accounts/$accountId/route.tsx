@@ -1,5 +1,7 @@
-import { Link, LoaderFunctionArgs, redirect } from "react-router";
+import { LoaderFunctionArgs, redirect } from "react-router";
 
+import { Box } from "~/components/Box/Box";
+import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
@@ -38,8 +40,8 @@ export default function AccountDetailsRoute({
   loaderData,
 }: Route.ComponentProps) {
   return (
-    <div>
-      <div>
+    <Box>
+      <Box>
         <div
           style={{
             display: "flex",
@@ -71,7 +73,7 @@ export default function AccountDetailsRoute({
             ))}
           </Table.Body>
         </Table>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

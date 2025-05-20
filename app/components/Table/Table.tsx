@@ -1,3 +1,5 @@
+import { Box } from "../Box/Box";
+
 import { TableBody } from "./Body";
 import { TableCell } from "./Cell";
 import { TableColumnHeader } from "./ColumnHeader";
@@ -12,12 +14,12 @@ export interface TableProps {
 
 export const Table = ({ children, caption }: TableProps): JSX.Element => {
   return (
-    <div>
+    <Box>
       <table>
         <caption>{caption}</caption>
         {children}
       </table>
-    </div>
+    </Box>
   );
 };
 

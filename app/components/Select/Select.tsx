@@ -1,5 +1,7 @@
 import { useId } from "react";
 
+import { Box } from "../Box/Box";
+
 export interface SelectProps {
   name: string;
   label: string;
@@ -15,7 +17,7 @@ export const Select = ({ label, options, errorMessage }: SelectProps) => {
   const errorId = useId();
 
   return (
-    <div>
+    <Box>
       <label htmlFor={inputId}>{label}</label>
 
       <select
@@ -31,7 +33,7 @@ export const Select = ({ label, options, errorMessage }: SelectProps) => {
           </option>
         ))}
       </select>
-      {errorMessage ? <div id={errorId}>{errorMessage}</div> : null}
-    </div>
+      {errorMessage ? <Box id={errorId}>{errorMessage}</Box> : null}
+    </Box>
   );
 };

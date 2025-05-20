@@ -10,7 +10,7 @@ export const TableCell = ({ children }: TableCellProps): JSX.Element => {
         paddingInline: 8,
         borderWidth: 1,
         borderStyle: "solid",
-        borderColor: "black",
+        borderColor: "var(--color-slate-8)",
       }}
     >
       {children}

@@ -45,4 +45,5 @@ export default [
 
   route("react_devtools_backend_compact.js.map", "./routes/dummy/devtools.tsx"),
   route("installHook.js.map", "./routes/dummy/hook.tsx"),
+  route("passkeys.js.map", "./routes/dummy/passkeys.tsx"),
 ] satisfies RouteConfig;

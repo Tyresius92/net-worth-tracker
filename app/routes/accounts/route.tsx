@@ -1,5 +1,7 @@
-import { Link, LoaderFunctionArgs } from "react-router";
+import { LoaderFunctionArgs } from "react-router";
 
+import { Box } from "~/components/Box/Box";
+import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { getAccountsForUserId } from "~/models/account.server";
 import { requireUser } from "~/session.server";
@@ -21,12 +23,12 @@ export default function LinkedAccountsIndex({
   loaderData,
 }: Route.ComponentProps) {
   return (
-    <div>
+    <Box>
       <h2>{loaderData.user.firstName}&apos;s Linked Accounts</h2>
-      <div>
+      <Box>
         <Link to="new">Create Account</Link>
-      </div>
-      <div>
+      </Box>
+      <Box>
         <Table caption="Accounts">
           <Table.Head>
             <Table.ColumnHeader>ID</Table.ColumnHeader>
@@ -43,7 +45,7 @@ export default function LinkedAccountsIndex({
             ))}
           </Table.Body>
         </Table>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

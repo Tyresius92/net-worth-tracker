@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs, redirect } from "react-router";
 
+import { Box } from "~/components/Box/Box";
 import { Table } from "~/components/Table/Table";
 import { getUsers } from "~/models/user.server";
 import { requireUser } from "~/session.server";
@@ -23,7 +24,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Layout({ loaderData }: Route.ComponentProps) {
   return (
-    <div>
+    <Box>
       <Table caption="Users">
         <Table.Head>
           <Table.ColumnHeader>ID</Table.ColumnHeader>
@@ -48,6 +49,6 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
           ))}
         </Table.Body>
       </Table>
-    </div>
+    </Box>
   );
 }

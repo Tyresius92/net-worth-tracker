@@ -1,5 +1,7 @@
 import React, { useId } from "react";
 
+import { Box } from "../Box/Box";
+
 interface TextInputProps
   extends Pick<
     React.InputHTMLAttributes<HTMLInputElement>,
@@ -31,7 +33,7 @@ const TextInputWithForwardedRef = React.forwardRef(
     const hintId = useId();
 
     return (
-      <div>
+      <Box>
         <label htmlFor={inputId}>{label}</label>
         <input
           id={inputId}
@@ -40,9 +42,9 @@ const TextInputWithForwardedRef = React.forwardRef(
           aria-invalid={errorMessage ? true : undefined}
           {...rest}
         />
-        {hintText ? <div id={hintId}>{hintText}</div> : null}
-        {errorMessage ? <div id={errorId}>{errorMessage}</div> : null}
-      </div>
+        {hintText ? <Box id={hintId}>{hintText}</Box> : null}
+        {errorMessage ? <Box id={errorId}>{errorMessage}</Box> : null}
+      </Box>
     );
   },
 );

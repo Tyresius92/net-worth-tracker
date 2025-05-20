@@ -1,11 +1,12 @@
 import {
   ActionFunctionArgs,
   Form,
-  Link,
   LoaderFunctionArgs,
   redirect,
 } from "react-router";
 
+import { Box } from "~/components/Box/Box";
+import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 import { formatCurrency } from "~/utils/currencyUtils";
@@ -66,20 +67,20 @@ export default function BalanceDetailRoute({
   loaderData,
 }: Route.ComponentProps) {
   return (
-    <div>
+    <Box>
       <h4>Balance Snapshot from {loaderData.balance.date}</h4>
       <p>Amount: {formatCurrency(loaderData.balance.amount)}</p>
-      <div>
+      <Box>
         <h5>Actions</h5>
         <Link to="edit">Edit</Link>
-        <div style={{ paddingTop: 20 }}>
+        <Box pt={20}>
           <Form method="post">
             <button type="submit" name="intent" value="delete">
               Delete
             </button>
           </Form>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }

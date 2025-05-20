@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs, Outlet, redirect } from "react-router";
 
+import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 
@@ -32,18 +33,18 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
 export default function AccountIdLayout({ loaderData }: Route.ComponentProps) {
   return (
-    <div>
-      <div style={{ marginBlock: 50 }}>
+    <Box>
+      <Box my={48}>
         <h3>User ID: {loaderData.userId}</h3>
-      </div>
-      <div style={{ marginBlock: 50 }}>
+      </Box>
+      <Box my={48}>
         <h2>Account ID: {loaderData.account.id}</h2>
         <p>Official Name: {loaderData.account.officialName}</p>
         <p>Nickname: {loaderData.account.nickName}</p>
-      </div>
-      <div>
+      </Box>
+      <Box>
         <Outlet />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

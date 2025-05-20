@@ -7,6 +7,7 @@ import {
   useRouteError,
 } from "react-router";
 import invariant from "tiny-invariant";
+import { Box } from "~/components/Box/Box";
 
 import { deleteNote, getNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
@@ -35,19 +36,14 @@ export default function NoteDetailsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div>
-      <h3 className="text-2xl font-bold">{data.note.title}</h3>
-      <p className="py-6">{data.note.body}</p>
-      <hr className="my-4" />
+    <Box>
+      <h3>{data.note.title}</h3>
+      <p>{data.note.body}</p>
+      <hr />
       <Form method="post">
-        <button
-          type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
-        >
-          Delete
-        </button>
+        <button type="submit">Delete</button>
       </Form>
-    </div>
+    </Box>
   );
 }
 
@@ -55,7 +51,7 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   if (error instanceof Error) {
-    return <div>An unexpected error occurred: {error.message}</div>;
+    return <Box>An unexpected error occurred: {error.message}</Box>;
   }
 
   if (!isRouteErrorResponse(error)) {
@@ -63,8 +59,8 @@ export function ErrorBoundary() {
   }
 
   if (error.status === 404) {
-    return <div>Note not found</div>;
+    return <Box>Note not found</Box>;
   }
 
-  return <div>An unexpected error occurred: {error.statusText}</div>;
+  return <Box>An unexpected error occurred: {error.statusText}</Box>;
 }

@@ -5,6 +5,7 @@ import {
   redirect,
 } from "react-router";
 
+import { Box } from "~/components/Box/Box";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
@@ -106,7 +107,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
 export default function BalanceEditRoute({ loaderData }: Route.ComponentProps) {
   return (
-    <div>
+    <Box>
       <Form method="post">
         <TextInput
           label="Snapshot Amount"
@@ -125,6 +126,6 @@ export default function BalanceEditRoute({ loaderData }: Route.ComponentProps) {
         />
         <button type="submit">Submit</button>
       </Form>
-    </div>
+    </Box>
   );
 }

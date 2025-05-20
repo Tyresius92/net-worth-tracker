@@ -14,7 +14,7 @@ export const TableColumnHeader = ({
         fontWeight: "bold",
         borderWidth: 1,
         borderStyle: "solid",
-        borderColor: "black",
+        borderColor: "var(--color-slate-8)",
         textAlign: "start",
         minWidth: "fit-content",
       }}

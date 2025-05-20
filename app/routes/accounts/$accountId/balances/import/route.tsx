@@ -1,5 +1,6 @@
 import { ActionFunctionArgs, Form, redirect } from "react-router";
 
+import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
 
@@ -39,13 +40,17 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
 export default function ImportRoute() {
   return (
-    <div>
-      <div>
+    <Box>
+      <Box>
         <p>Please upload a .csv file with the following structure.</p>
         <p>Dates do NOT need to be sorted, or sequential</p>
         <p>Be sure that your balances do not contain commas!</p>
         <div
-          style={{ backgroundColor: "lightgray", padding: 20, marginBlock: 20 }}
+          style={{
+            backgroundColor: "var(--color-slate-3)",
+            padding: 20,
+            marginBlock: 20,
+          }}
         >
           <pre>
             Date,Balance
@@ -58,11 +63,11 @@ export default function ImportRoute() {
             <br />
           </pre>
         </div>
-      </div>
+      </Box>
       <Form method="post" encType="multipart/form-data">
         <input type="file" accept=".csv" name="import_file" />
         <button type="submit">Submit that bad boy</button>
       </Form>
-    </div>
+    </Box>
   );
 }

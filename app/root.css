@@ -189,7 +189,7 @@ h6 {
 
 .nav {
   align-items: center;
-  background-color: lightgray;
+  background-color: var(--color-blue-9);
   display: flex;
   justify-content: space-between;
   padding: 32px;
@@ -199,9 +199,4 @@ h6 {
   align-items: center;
   display: flex;
   gap: 16px;
-}
-
-.main {
-  padding-block-start: 48px;
-  padding-inline: 96px;
 }

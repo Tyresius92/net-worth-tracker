@@ -47,7 +47,7 @@ export const NetWorthChart = (props: NetWorthChartProps) => {
   }, [props.data]);
 
   return (
-    <div>
+    <div style={{ width: 730, height: 250 }}>
       <ComposedChart id={id} width={730} height={250} data={normalizedData}>
         <XAxis
           dataKey="date"
@@ -58,7 +58,7 @@ export const NetWorthChart = (props: NetWorthChartProps) => {
             `${formatCurrency((val * 100) / 1000, { includeCents: false })}K`
           }
         />
-        <Tooltip />
+        <Tooltip isAnimationActive={false} />
         {/* <Legend /> */}
         {/* <CartesianGrid stroke="#f5f5f5" /> */}
         {/* <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" /> */}
@@ -66,7 +66,12 @@ export const NetWorthChart = (props: NetWorthChartProps) => {
         {/* {accountIds.map((id, index) => (
           <Bar key={id} stackId="a" dataKey={id} barSize={20} fill={colors[index % colors.length]} />
         ))} */}
-        <Line type="monotone" dataKey="netWorth" stroke="green" />
+        <Line
+          isAnimationActive={false}
+          type="monotone"
+          dataKey="netWorth"
+          stroke="green"
+        />
       </ComposedChart>
     </div>
   );

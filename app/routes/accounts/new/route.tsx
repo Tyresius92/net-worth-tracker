@@ -5,6 +5,7 @@ import {
   redirect,
 } from "react-router";
 
+import { Box } from "~/components/Box/Box";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
@@ -54,7 +55,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function NewAccountForm(_props: Route.ComponentProps) {
   return (
-    <div>
+    <Box>
       <Form method="post">
         <TextInput
           label="Official Account Name"
@@ -71,6 +72,6 @@ export default function NewAccountForm(_props: Route.ComponentProps) {
         />
         <button type="submit">Submit</button>
       </Form>
-    </div>
+    </Box>
   );
 }

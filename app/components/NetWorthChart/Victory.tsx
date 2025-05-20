@@ -33,7 +33,6 @@ export const NetWorthChart = (props: NetWorthChartProps) => {
                 y: balance.amount / 100,
                 fill: balance.amount < 0 ? "red" : "green",
               }))}
-              style={{}}
               labels={({ datum }) => `${formatCurrency(datum.y * 100)}`}
             />
           ))}

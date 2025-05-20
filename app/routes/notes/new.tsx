@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import type { ActionFunctionArgs } from "react-router";
 import { data, redirect, Form, useActionData } from "react-router";
 
+import { Box } from "~/components/Box/Box";
 import { createNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
 
@@ -54,13 +55,12 @@ export default function NewNotePage() {
         width: "100%",
       }}
     >
-      <div>
-        <label className="flex w-full flex-col gap-1">
+      <Box>
+        <label>
           <span>Title: </span>
           <input
             ref={titleRef}
             name="title"
-            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
             aria-invalid={actionData?.errors?.title ? true : undefined}
             aria-errormessage={
               actionData?.errors?.title ? "title-error" : undefined
@@ -68,20 +68,17 @@ export default function NewNotePage() {
           />
         </label>
         {actionData?.errors?.title ? (
-          <div className="pt-1 text-red-700" id="title-error">
-            {actionData.errors.title}
-          </div>
+          <Box id="title-error">{actionData.errors.title}</Box>
         ) : null}
-      </div>
+      </Box>
 
-      <div>
-        <label className="flex w-full flex-col gap-1">
+      <Box>
+        <label>
           <span>Body: </span>
           <textarea
             ref={bodyRef}
             name="body"
             rows={8}
-            className="w-full flex-1 rounded-md border-2 border-blue-500 px-3 py-2 text-lg leading-6"
             aria-invalid={actionData?.errors?.body ? true : undefined}
             aria-errormessage={
               actionData?.errors?.body ? "body-error" : undefined
@@ -89,20 +86,13 @@ export default function NewNotePage() {
           />
         </label>
         {actionData?.errors?.body ? (
-          <div className="pt-1 text-red-700" id="body-error">
-            {actionData.errors.body}
-          </div>
+          <Box id="body-error">{actionData.errors.body}</Box>
         ) : null}
-      </div>
+      </Box>
 
-      <div className="text-right">
-        <button
-          type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
-        >
-          Save
-        </button>
-      </div>
+      <Box>
+        <button type="submit">Save</button>
+      </Box>
     </Form>
   );
 }
