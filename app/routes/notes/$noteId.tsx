@@ -7,8 +7,8 @@ import {
   useRouteError,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { Box } from "~/components/Box/Box";
 
+import { Box } from "~/components/Box/Box";
 import { deleteNote, getNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
 
