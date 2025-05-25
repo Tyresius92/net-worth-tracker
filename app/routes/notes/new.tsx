@@ -3,6 +3,7 @@ import type { ActionFunctionArgs } from "react-router";
 import { data, redirect, Form, useActionData } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Flex } from "~/components/Flex/Flex";
 import { createNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
 
@@ -46,53 +47,47 @@ export default function NewNotePage() {
   }, [actionData]);
 
   return (
-    <Form
-      method="post"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-        width: "100%",
-      }}
-    >
-      <Box>
-        <label>
-          <span>Title: </span>
-          <input
-            ref={titleRef}
-            name="title"
-            aria-invalid={actionData?.errors?.title ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.title ? "title-error" : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.title ? (
-          <Box id="title-error">{actionData.errors.title}</Box>
-        ) : null}
-      </Box>
+    <Form method="post">
+      <Flex flexDirection="column" gap={8}>
+        <Box>
+          <label>
+            <span>Title: </span>
+            <input
+              ref={titleRef}
+              name="title"
+              aria-invalid={actionData?.errors?.title ? true : undefined}
+              aria-errormessage={
+                actionData?.errors?.title ? "title-error" : undefined
+              }
+            />
+          </label>
+          {actionData?.errors?.title ? (
+            <Box id="title-error">{actionData.errors.title}</Box>
+          ) : null}
+        </Box>
 
-      <Box>
-        <label>
-          <span>Body: </span>
-          <textarea
-            ref={bodyRef}
-            name="body"
-            rows={8}
-            aria-invalid={actionData?.errors?.body ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.body ? "body-error" : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.body ? (
-          <Box id="body-error">{actionData.errors.body}</Box>
-        ) : null}
-      </Box>
+        <Box>
+          <label>
+            <span>Body: </span>
+            <textarea
+              ref={bodyRef}
+              name="body"
+              rows={8}
+              aria-invalid={actionData?.errors?.body ? true : undefined}
+              aria-errormessage={
+                actionData?.errors?.body ? "body-error" : undefined
+              }
+            />
+          </label>
+          {actionData?.errors?.body ? (
+            <Box id="body-error">{actionData.errors.body}</Box>
+          ) : null}
+        </Box>
 
-      <Box>
-        <button type="submit">Save</button>
-      </Box>
+        <Box>
+          <button type="submit">Save</button>
+        </Box>
+      </Flex>
     </Form>
   );
 }

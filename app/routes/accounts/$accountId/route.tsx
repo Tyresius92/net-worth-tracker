@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
@@ -42,17 +43,10 @@ export default function AccountDetailsRoute({
   return (
     <Box>
       <Box>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 8,
-            marginBlockEnd: 16,
-          }}
-        >
+        <Flex flexDirection="column" gap={8} mb={16}>
           <Link to="balances/new">New Balance</Link>
           <Link to="balances/import">Import balances via CSV</Link>
-        </div>
+        </Flex>
         <Table caption="Balances">
           <Table.Head>
             <Table.ColumnHeader>ID</Table.ColumnHeader>
