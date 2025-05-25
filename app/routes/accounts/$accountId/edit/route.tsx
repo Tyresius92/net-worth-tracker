@@ -4,6 +4,7 @@ import {
   Form,
   LoaderFunctionArgs,
   redirect,
+  useLoaderData,
 } from "react-router";
 
 import { Box } from "~/components/Box/Box";
@@ -11,8 +12,6 @@ import { Select } from "~/components/Select/Select";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
-
-import type { Route } from "./+types/route";
 
 // Define valid account types based on the schema
 const ACCOUNT_TYPES = [
@@ -33,28 +32,40 @@ function isAccountType(value: string): value is AccountType {
   return ACCOUNT_TYPES.includes(value);
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await requireUserId(request);
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+  const userId = await requireUserId(request);
 
-  return {};
+  const accountId = params.accountId;
+  if (!accountId) {
+    throw new Response("Account ID not in URL", { status: 404 });
+  }
+
+  const account = await prisma.account.findFirst({
+    where: {
+      id: accountId,
+      userId,
+    },
+  });
+
+  if (!account) {
+    return redirect("./../../..");
+  }
+
+  return { account };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ params, request }: ActionFunctionArgs) => {
   const userId = await requireUserId(request);
+
+  const accountId = params.accountId;
+  if (!accountId) {
+    throw new Response("Account ID not in URL", { status: 404 });
+  }
 
   const formData = await request.formData();
 
-  const officialName = formData.get("officialName");
   const nickName = formData.get("nickName");
   const type = formData.get("type");
-
-  if (typeof officialName !== "string" || officialName === "") {
-    return {
-      errors: {
-        officialName: "This field is required",
-      },
-    };
-  }
 
   if (typeof nickName !== "string" || nickName === "") {
     return {
@@ -81,19 +92,35 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     };
   }
 
-  const account = await prisma.account.create({
-    data: {
+  // Verify the account exists and belongs to the user
+  const existingAccount = await prisma.account.findFirst({
+    where: {
+      id: accountId,
       userId,
-      officialName,
-      nickName,
-      type, // type is now validated as AccountType
     },
   });
 
-  return redirect(`./../${account.id}`);
+  if (!existingAccount) {
+    return redirect("./../../..");
+  }
+
+  // Update the account
+  await prisma.account.update({
+    where: {
+      id: accountId,
+    },
+    data: {
+      nickName,
+      type,
+    },
+  });
+
+  return redirect("./..");
 };
 
-export default function NewAccountForm(_props: Route.ComponentProps) {
+export default function EditAccountForm() {
+  const { account } = useLoaderData<typeof loader>();
+
   // Create options for the account type select
   const accountTypeOptions = ACCOUNT_TYPES.map((type) => ({
     value: type,
@@ -102,18 +129,22 @@ export default function NewAccountForm(_props: Route.ComponentProps) {
 
   return (
     <Box>
+      <h2>Edit Account</h2>
       <Form method="post">
         <TextInput
           label="Official Account Name"
-          hintText="The canonical name for an account. Cannot be changed later"
           type="text"
           name="officialName"
+          defaultValue={account.officialName}
+          disabled={true}
+          hintText="The official name cannot be changed"
           errorMessage={undefined}
         />
         <TextInput
           label="Account Nickname"
           type="text"
           name="nickName"
+          defaultValue={account.nickName}
           errorMessage={undefined}
         />
         <Box my={16}>
@@ -121,10 +152,11 @@ export default function NewAccountForm(_props: Route.ComponentProps) {
             label="Account Type"
             name="type"
             options={accountTypeOptions}
+            defaultValue={account.type}
             errorMessage={undefined}
           />
         </Box>
-        <button type="submit">Submit</button>
+        <button type="submit">Save Changes</button>
       </Form>
     </Box>
   );

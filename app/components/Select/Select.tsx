@@ -9,10 +9,11 @@ export interface SelectProps {
     value: string;
     label: string;
   }[];
+  defaultValue?: string;
   errorMessage?: string;
 }
 
-export const Select = ({ label, options, errorMessage }: SelectProps) => {
+export const Select = ({ label, name, options, defaultValue, errorMessage }: SelectProps) => {
   const inputId = useId();
   const errorId = useId();
 
@@ -21,8 +22,9 @@ export const Select = ({ label, options, errorMessage }: SelectProps) => {
       <label htmlFor={inputId}>{label}</label>
 
       <select
-        name="pets"
+        name={name}
         id={inputId}
+        defaultValue={defaultValue}
         aria-describedby={errorId}
         aria-invalid={errorMessage ? true : undefined}
       >

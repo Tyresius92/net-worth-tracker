@@ -64,11 +64,23 @@ model Account {
 
   officialName String
   nickName String
+  type AccountType @default(other)
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
   balanceSnapshots BalanceSnapshot[]
+}
+
+enum AccountType {
+  checking
+  credit_card
+  investment
+  line_of_credit
+  mortgage
+  other
+  property
+  savings
 }
 
 model BalanceSnapshot {

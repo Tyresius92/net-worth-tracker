@@ -44,6 +44,7 @@ export default function AccountDetailsRoute({
     <Box>
       <Box>
         <Flex flexDirection="column" gap={8} mb={16}>
+          <Link to="edit">Edit Account</Link>
           <Link to="balances/new">New Balance</Link>
           <Link to="balances/import">Import balances via CSV</Link>
         </Flex>

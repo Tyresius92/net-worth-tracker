@@ -41,6 +41,7 @@ export default function AccountIdLayout({ loaderData }: Route.ComponentProps) {
         <h2>Account ID: {loaderData.account.id}</h2>
         <p>Official Name: {loaderData.account.officialName}</p>
         <p>Nickname: {loaderData.account.nickName}</p>
+        <p>Type: {loaderData.account.type.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</p>
       </Box>
       <Box>
         <Outlet />
