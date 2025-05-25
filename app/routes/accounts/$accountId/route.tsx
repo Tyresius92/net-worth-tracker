@@ -25,7 +25,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       },
     },
     orderBy: {
-      dateTime: "asc",
+      dateTime: "desc",
     },
   });
 

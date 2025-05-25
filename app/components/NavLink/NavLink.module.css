@@ -1,7 +1,15 @@
 .link {
   color: var(--color-slate-12);
+  display: inline-block;
 
   &:visited {
     color: var(--color-slate-12);
+  }
+
+  &[class*="active"] {
+    color: var(--color-orange-9);
+    font-weight: bold;
+    background-color: var(--color-slate-1);
+    padding: var(--space-4);
   }
 }

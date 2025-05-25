@@ -34,7 +34,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export default function AccountIdLayout({ loaderData }: Route.ComponentProps) {
   return (
     <Box>
-      <Box my={48}>
+      <Box mb={48}>
         <h3>User ID: {loaderData.userId}</h3>
       </Box>
       <Box my={48}>
