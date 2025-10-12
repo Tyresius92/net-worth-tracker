@@ -6,6 +6,8 @@ export default [
   route("join", "./routes/join.tsx"),
   route("login", "./routes/login.tsx"),
   route("logout", "./routes/logout.tsx"),
+  route("pricing", "./routes/pricing.tsx"),
+  route("profile", "./routes/profile/route.tsx"),
 
   route("users", "./routes/users/layout.tsx", [
     index("./routes/users/route.tsx"),
@@ -22,6 +24,7 @@ export default [
     route("new", "./routes/accounts/new/route.tsx"),
     route(":accountId", "./routes/accounts/$accountId/layout.tsx", [
       index("./routes/accounts/$accountId/route.tsx"),
+      route("edit", "./routes/accounts/$accountId/edit/route.tsx"),
       route("balances", "./routes/accounts/$accountId/balances/layout.tsx", [
         route("new", "./routes/accounts/$accountId/balances/new/route.tsx"),
         route(
@@ -41,7 +44,6 @@ export default [
   ]),
 
   route("api/accounts/refresh", "./routes/api/accounts/refresh.ts"),
-  route("api/subscription/stripe", "./routes/api/subscription/stripe.ts"),
 
   route("react_devtools_backend_compact.js.map", "./routes/dummy/devtools.tsx"),
   route("installHook.js.map", "./routes/dummy/hook.tsx"),

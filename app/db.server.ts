@@ -14,17 +14,20 @@ const prisma = singleton("prisma", () =>
           },
         },
       },
-      balanceSnapshot: {
-        date: {
-          needs: { dateTime: true },
-          compute(balanceSnapshot) {
-            return balanceSnapshot.dateTime.toISOString().split("T")[0];
-          },
+    },
+  }),
+).$extends({
+  result: {
+    balanceSnapshot: {
+      date: {
+        needs: { dateTime: true },
+        compute(balanceSnapshot) {
+          return balanceSnapshot.dateTime.toISOString().split("T")[0];
         },
       },
     },
-  }),
-);
+  }
+});
 prisma.$connect();
 
 export { prisma };

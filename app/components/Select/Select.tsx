@@ -1,6 +1,7 @@
 import { useId } from "react";
 
 import { Box } from "../Box/Box";
+import { Flex } from "../Flex/Flex";
 
 export interface SelectProps {
   name: string;
@@ -13,12 +14,18 @@ export interface SelectProps {
   errorMessage?: string;
 }
 
-export const Select = ({ label, name, options, defaultValue, errorMessage }: SelectProps) => {
+export const Select = ({
+  label,
+  name,
+  options,
+  defaultValue,
+  errorMessage,
+}: SelectProps) => {
   const inputId = useId();
   const errorId = useId();
 
   return (
-    <Box>
+    <Flex flexDirection="column" gap={4} mb={20}>
       <label htmlFor={inputId}>{label}</label>
 
       <select
@@ -36,6 +43,6 @@ export const Select = ({ label, name, options, defaultValue, errorMessage }: Sel
         ))}
       </select>
       {errorMessage ? <Box id={errorId}>{errorMessage}</Box> : null}
-    </Box>
+    </Flex>
   );
 };

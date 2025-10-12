@@ -34,14 +34,16 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export default function AccountIdLayout({ loaderData }: Route.ComponentProps) {
   return (
     <Box>
-      <Box mb={48}>
-        <h3>User ID: {loaderData.userId}</h3>
-      </Box>
-      <Box my={48}>
+      <Box mb={32}>
         <h2>Account ID: {loaderData.account.id}</h2>
         <p>Official Name: {loaderData.account.officialName}</p>
         <p>Nickname: {loaderData.account.nickName}</p>
-        <p>Type: {loaderData.account.type.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</p>
+        <p>
+          Type:{" "}
+          {loaderData.account.type
+            .replace("_", " ")
+            .replace(/\b\w/g, (c) => c.toUpperCase())}
+        </p>
       </Box>
       <Box>
         <Outlet />

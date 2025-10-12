@@ -1,36 +1,22 @@
-import type { Account } from "@prisma/client";
 import {
   ActionFunctionArgs,
   Form,
   LoaderFunctionArgs,
   redirect,
-  useLoaderData,
 } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Select } from "~/components/Select/Select";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
+import {
+  accountTypesList,
+  isAccountType,
+  toPrettyAccountType,
+} from "~/models/accountType.server";
 import { requireUserId } from "~/session.server";
 
-// Define valid account types based on the schema
-const ACCOUNT_TYPES = [
-  "checking",
-  "credit_card",
-  "investment",
-  "line_of_credit",
-  "mortgage",
-  "other",
-  "property",
-  "savings",
-];
-
-type AccountType = Account["type"];
-
-// Type predicate function to validate AccountType
-function isAccountType(value: string): value is AccountType {
-  return ACCOUNT_TYPES.includes(value);
-}
+import type { Route } from "./+types/route";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
@@ -51,7 +37,12 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     return redirect("./../../..");
   }
 
-  return { account };
+  const accountTypeOptions = accountTypesList.map((type) => ({
+    value: type,
+    label: toPrettyAccountType(type),
+  }));
+
+  return { account, accountTypeOptions };
 };
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
@@ -118,15 +109,10 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   return redirect("./..");
 };
 
-export default function EditAccountForm() {
-  const { account } = useLoaderData<typeof loader>();
-
-  // Create options for the account type select
-  const accountTypeOptions = ACCOUNT_TYPES.map((type) => ({
-    value: type,
-    label: type.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
-  }));
-
+export default function EditAccountForm({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
   return (
     <Box>
       <h2>Edit Account</h2>
@@ -135,25 +121,24 @@ export default function EditAccountForm() {
           label="Official Account Name"
           type="text"
           name="officialName"
-          defaultValue={account.officialName}
+          defaultValue={loaderData.account.officialName}
           disabled={true}
           hintText="The official name cannot be changed"
-          errorMessage={undefined}
         />
         <TextInput
           label="Account Nickname"
           type="text"
           name="nickName"
-          defaultValue={account.nickName}
-          errorMessage={undefined}
+          defaultValue={loaderData.account.nickName}
+          errorMessage={actionData?.errors.nickName}
         />
         <Box my={16}>
           <Select
             label="Account Type"
             name="type"
-            options={accountTypeOptions}
-            defaultValue={account.type}
-            errorMessage={undefined}
+            options={loaderData.accountTypeOptions}
+            defaultValue={loaderData.account.type}
+            errorMessage={actionData?.errors.type}
           />
         </Box>
         <button type="submit">Save Changes</button>

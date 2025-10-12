@@ -1,6 +1,6 @@
 import React from "react";
 
-import { SpaceOption } from "../_GlobalStyles/types";
+import { ColorOption, SpaceOption } from "../_GlobalStyles/types";
 
 export interface BoxProps
   extends Pick<React.HTMLAttributes<HTMLDivElement>, "id" | "children"> {
@@ -19,6 +19,9 @@ export interface BoxProps
   mr?: SpaceOption;
   mt?: SpaceOption;
   mb?: SpaceOption;
+
+  bg?: ColorOption;
+  color?: ColorOption;
 }
 
 export const Box = ({
@@ -38,6 +41,9 @@ export const Box = ({
   mr = mx,
   mt = my,
   mb = my,
+
+  bg,
+  color,
 }: BoxProps) => {
   return (
     <div
@@ -51,6 +57,9 @@ export const Box = ({
         ...(mr && { marginInlineEnd: `var(--space-${mr})` }),
         ...(mt && { marginBlockStart: `var(--space-${mt})` }),
         ...(mb && { marginBlockEnd: `var(--space-${mb})` }),
+
+        ...(bg && { backgroundColor: `var(--color-${bg})` }),
+        ...(mb && { color: `var(--color-${color})` }),
       }}
     >
       {children}

@@ -1,4 +1,3 @@
-import type { Account } from "@prisma/client";
 import {
   ActionFunctionArgs,
   Form,
@@ -10,33 +9,26 @@ import { Box } from "~/components/Box/Box";
 import { Select } from "~/components/Select/Select";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
+import {
+  toPrettyAccountType,
+  accountTypesList,
+  isAccountType,
+} from "~/models/accountType.server";
 import { requireUserId } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
-// Define valid account types based on the schema
-const ACCOUNT_TYPES = [
-  "checking",
-  "credit_card",
-  "investment",
-  "line_of_credit",
-  "mortgage",
-  "other",
-  "property",
-  "savings",
-];
-
-type AccountType = Account["type"];
-
-// Type predicate function to validate AccountType
-function isAccountType(value: string): value is AccountType {
-  return ACCOUNT_TYPES.includes(value);
-}
-
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await requireUserId(request);
 
-  return {};
+  const accountTypeOptions = accountTypesList.map((type) => ({
+    value: type,
+    label: toPrettyAccountType(type),
+  }));
+
+  return {
+    accountTypeOptions,
+  };
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -93,13 +85,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return redirect(`./../${account.id}`);
 };
 
-export default function NewAccountForm(_props: Route.ComponentProps) {
-  // Create options for the account type select
-  const accountTypeOptions = ACCOUNT_TYPES.map((type) => ({
-    value: type,
-    label: type.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
-  }));
-
+export default function NewAccountForm({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
   return (
     <Box>
       <Form method="post">
@@ -108,20 +97,20 @@ export default function NewAccountForm(_props: Route.ComponentProps) {
           hintText="The canonical name for an account. Cannot be changed later"
           type="text"
           name="officialName"
-          errorMessage={undefined}
+          errorMessage={actionData?.errors.officialName}
         />
         <TextInput
           label="Account Nickname"
           type="text"
           name="nickName"
-          errorMessage={undefined}
+          errorMessage={actionData?.errors.nickName}
         />
         <Box my={16}>
           <Select
             label="Account Type"
             name="type"
-            options={accountTypeOptions}
-            errorMessage={undefined}
+            options={loaderData.accountTypeOptions}
+            errorMessage={actionData?.errors.type}
           />
         </Box>
         <button type="submit">Submit</button>

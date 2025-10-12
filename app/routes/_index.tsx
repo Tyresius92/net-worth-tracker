@@ -54,31 +54,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             <h3>Hello, {user.firstName}!</h3>
             <h4>Your net worth is {formatCurrency(summary.currentNetWorth)}</h4>
           </Box>
-        ) : (
-          <Box>
-            <h2>Pricing</h2>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-              }}
-            >
-              <Box>
-                <h3>Free Plan</h3>
-                <p>$0/month. Free forever.</p>
-                <p>Enter account information manually</p>
-              </Box>
-              <Box>
-                <h3>Premium</h3>
-                <p>$25/month</p>
-                <p>
-                  Integrates with Stripe to pull your account balances on a
-                  weekly basis.
-                </p>
-              </Box>
-            </div>
-          </Box>
-        )}
+        ) : null}
       </Box>
     </div>
   );

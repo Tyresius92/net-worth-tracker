@@ -32,7 +32,6 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
           <Table.ColumnHeader>Last Name</Table.ColumnHeader>
           <Table.ColumnHeader>Full Name</Table.ColumnHeader>
           <Table.ColumnHeader>Email</Table.ColumnHeader>
-          <Table.ColumnHeader>Subscription</Table.ColumnHeader>
           <Table.ColumnHeader>Role</Table.ColumnHeader>
         </Table.Head>
         <Table.Body>
@@ -43,7 +42,6 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
               <Table.Cell>{user.lastName}</Table.Cell>
               <Table.Cell>{user.fullName}</Table.Cell>
               <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.subscription}</Table.Cell>
               <Table.Cell>{user.role}</Table.Cell>
             </Table.Row>
           ))}

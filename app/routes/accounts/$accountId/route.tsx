@@ -43,10 +43,16 @@ export default function AccountDetailsRoute({
   return (
     <Box>
       <Box>
-        <Flex flexDirection="column" gap={8} mb={16}>
-          <Link to="edit">Edit Account</Link>
-          <Link to="balances/new">New Balance</Link>
-          <Link to="balances/import">Import balances via CSV</Link>
+        <Flex flexDirection="row" gap={8} mb={16}>
+          <Box>
+            <Link to="edit">Edit Account</Link>
+          </Box>
+          <Box>
+            <Link to="balances/new">New Balance</Link>
+          </Box>
+          <Box>
+            <Link to="balances/import">Import balances via CSV</Link>
+          </Box>
         </Flex>
         <Table caption="Balances">
           <Table.Head>
@@ -59,7 +65,9 @@ export default function AccountDetailsRoute({
             {loaderData.balanceSnapshots.map((snapshot) => (
               <Table.Row key={snapshot.id}>
                 <Table.Cell>
-                  <Link to={`balances/${snapshot.id}`}>{snapshot.id}</Link>
+                  <Link to={`balances/${snapshot.id}`}>
+                    {snapshot.id.slice(15)}
+                  </Link>
                 </Table.Cell>
                 <Table.Cell>{snapshot.date}</Table.Cell>
                 <Table.Cell>{formatCurrency(snapshot.amount)}</Table.Cell>

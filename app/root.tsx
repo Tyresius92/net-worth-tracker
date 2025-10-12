@@ -102,7 +102,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
                     </li>
                   ) : null}
                   <li>
-                    <NavLink to="/notes">Notes</NavLink>
+                    <NavLink to="/profile">My Profile</NavLink>
                   </li>
                   <li>
                     <NavLink to="/accounts">Accounts</NavLink>

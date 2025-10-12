@@ -1,6 +1,8 @@
 import React, { useId } from "react";
 
-import { Box } from "../Box/Box";
+import { Flex } from "../Flex/Flex";
+
+import styles from "./TextInput.module.css";
 
 interface TextInputProps
   extends Pick<
@@ -33,7 +35,7 @@ const TextInputWithForwardedRef = React.forwardRef(
     const hintId = useId();
 
     return (
-      <Box>
+      <Flex flexDirection="column" gap={4} mb={20}>
         <label htmlFor={inputId}>{label}</label>
         <input
           id={inputId}
@@ -42,9 +44,13 @@ const TextInputWithForwardedRef = React.forwardRef(
           aria-invalid={errorMessage ? true : undefined}
           {...rest}
         />
-        {hintText ? <Box id={hintId}>{hintText}</Box> : null}
-        {errorMessage ? <Box id={errorId}>{errorMessage}</Box> : null}
-      </Box>
+        {hintText ? <div id={hintId}>&#9432; {hintText}</div> : null}
+        {errorMessage ? (
+          <div id={errorId} className={styles.error_message}>
+            &#9888; {errorMessage}
+          </div>
+        ) : null}
+      </Flex>
     );
   },
 );

@@ -1,15 +1,16 @@
 .link {
   color: var(--color-slate-12);
-  display: inline-block;
+  display: block;
+  padding: var(--space-12);
+  text-decoration: none;
 
   &:visited {
     color: var(--color-slate-12);
   }
 
   &[class*="active"] {
-    color: var(--color-orange-9);
+    border-radius: 12px;
+    color: var(--color-red-9);
     font-weight: bold;
-    background-color: var(--color-slate-1);
-    padding: var(--space-4);
   }
 }

@@ -1,51 +1,20 @@
 import { LoaderFunctionArgs } from "react-router";
 
 import { Box } from "~/components/Box/Box";
-import { Link } from "~/components/Link/Link";
-import { Table } from "~/components/Table/Table";
-import { getAccountsForUserId } from "~/models/account.server";
 import { requireUser } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUser(request);
+  await requireUser(request);
 
-  const accounts = await getAccountsForUserId(user.id);
-
-  return {
-    user,
-    accounts,
-  };
+  return {};
 };
 
-export default function LinkedAccountsIndex({
-  loaderData,
-}: Route.ComponentProps) {
+export default function LinkedAccountsIndex(_props: Route.ComponentProps) {
   return (
     <Box>
-      <h2>{loaderData.user.firstName}&apos;s Linked Accounts</h2>
-      <Box>
-        <Link to="new">Create Account</Link>
-      </Box>
-      <Box>
-        <Table caption="Accounts">
-          <Table.Head>
-            <Table.ColumnHeader>ID</Table.ColumnHeader>
-            <Table.ColumnHeader>NickName</Table.ColumnHeader>
-          </Table.Head>
-          <Table.Body>
-            {loaderData.accounts.map((account) => (
-              <Table.Row key={account.id}>
-                <Table.Cell>
-                  <Link to={account.id}>{account.id}</Link>
-                </Table.Cell>
-                <Table.Cell>{account.nickName}</Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
-      </Box>
+      <p>Choose an account from the nav at left to see account details.</p>
     </Box>
   );
 }
