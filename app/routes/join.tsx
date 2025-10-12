@@ -13,6 +13,7 @@ import {
 } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { createUser, getUserByEmail } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
@@ -201,7 +202,7 @@ export default function Join() {
           </Box>
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button type="submit">Create Account</button>
+          <Button type="submit">Create Account</Button>
           <Box>
             <Box>
               Already have an account?{" "}

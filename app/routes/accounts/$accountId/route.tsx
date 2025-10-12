@@ -1,6 +1,12 @@
-import { LoaderFunctionArgs, redirect } from "react-router";
+import {
+  ActionFunctionArgs,
+  Form,
+  LoaderFunctionArgs,
+  redirect,
+} from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
@@ -37,6 +43,32 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return { userId, balanceSnapshots };
 };
 
+export const action = async ({ params, request }: ActionFunctionArgs) => {
+  const userId = await requireUserId(request);
+
+  const accountId = params.accountId;
+  if (!accountId) {
+    throw new Response("Account ID not in URL", { status: 404 });
+  }
+
+  const formData = await request.formData();
+
+  const intent = formData.get("intent");
+  if (intent === "close_account") {
+    await prisma.account.update({
+      where: {
+        id: accountId,
+        userId: userId,
+      },
+      data: {
+        closedAt: new Date(),
+      },
+    });
+  }
+
+  return {};
+};
+
 export default function AccountDetailsRoute({
   loaderData,
 }: Route.ComponentProps) {
@@ -52,6 +84,13 @@ export default function AccountDetailsRoute({
           </Box>
           <Box>
             <Link to="balances/import">Import balances via CSV</Link>
+          </Box>
+          <Box>
+            <Form method="post">
+              <Button name="intent" value="close_account" type="submit">
+                Mark account as closed
+              </Button>
+            </Form>
           </Box>
         </Flex>
         <Table caption="Balances">

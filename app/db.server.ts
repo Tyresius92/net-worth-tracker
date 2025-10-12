@@ -26,7 +26,7 @@ const prisma = singleton("prisma", () =>
         },
       },
     },
-  }
+  },
 });
 prisma.$connect();
 

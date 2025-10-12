@@ -9,6 +9,7 @@ import {
 import invariant from "tiny-invariant";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { deleteNote, getNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
 
@@ -41,7 +42,7 @@ export default function NoteDetailsPage() {
       <p>{data.note.body}</p>
       <hr />
       <Form method="post">
-        <button type="submit">Delete</button>
+        <Button type="submit">Delete</Button>
       </Form>
     </Box>
   );

@@ -6,6 +6,7 @@ import {
 } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
@@ -112,7 +113,7 @@ export default function NewBalanceRoute(_routeProps: Route.ComponentProps) {
           name="dateTime"
           errorMessage={undefined}
         />
-        <button type="submit">Submit</button>
+        <Button type="submit">Submit</Button>
       </Form>
     </Box>
   );

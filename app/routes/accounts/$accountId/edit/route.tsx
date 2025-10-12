@@ -6,6 +6,7 @@ import {
 } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { Select } from "~/components/Select/Select";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
@@ -141,7 +142,7 @@ export default function EditAccountForm({
             errorMessage={actionData?.errors.type}
           />
         </Box>
-        <button type="submit">Save Changes</button>
+        <Button type="submit">Save Changes</Button>
       </Form>
     </Box>
   );

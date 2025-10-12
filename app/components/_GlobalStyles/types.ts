@@ -431,4 +431,4 @@ export type ColorOption =
   | "white-a9"
   | "white-a10"
   | "white-a11"
-  | "white-a11"
+  | "white-a11";

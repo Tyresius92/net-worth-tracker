@@ -13,6 +13,7 @@ import {
 } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { verifyLogin } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
@@ -130,7 +131,7 @@ export default function LoginPage() {
           </Box>
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button type="submit">Log in</button>
+          <Button type="submit">Log in</Button>
           <Box>
             <Box>
               <input id="remember" name="remember" type="checkbox" />

@@ -6,6 +6,7 @@ import {
 } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { Select } from "~/components/Select/Select";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
@@ -113,7 +114,7 @@ export default function NewAccountForm({
             errorMessage={actionData?.errors.type}
           />
         </Box>
-        <button type="submit">Submit</button>
+        <Button type="submit">Submit</Button>
       </Form>
     </Box>
   );

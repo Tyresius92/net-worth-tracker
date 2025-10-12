@@ -21,6 +21,7 @@ import type { Route } from "./+types/root";
 import lightColors from "./components/_GlobalStyles/colors.css?url";
 import spaceStyles from "./components/_GlobalStyles/space.css?url";
 import { Box } from "./components/Box/Box";
+import { Button } from "./components/Button/Button";
 import { NavLink } from "./components/NavLink/NavLink";
 import styles from "./root.css?url";
 
@@ -109,7 +110,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
                   </li>
                   <li>
                     <Form method="post" action="logout">
-                      <button type="submit">Log Out</button>
+                      <Button type="submit">Log Out</Button>
                     </Form>
                   </li>
                 </>
@@ -125,12 +126,12 @@ export default function App({ loaderData }: Route.ComponentProps) {
               )}
               <li>
                 <fetcher.Form method="post">
-                  <button
+                  <Button
                     name="colorMode"
                     value={colorMode === "dark" ? "light" : "dark"}
                   >
                     {colorMode === "dark" ? "Light Mode" : "Dark Mode"}
-                  </button>
+                  </Button>
                 </fetcher.Form>
               </li>
             </ul>

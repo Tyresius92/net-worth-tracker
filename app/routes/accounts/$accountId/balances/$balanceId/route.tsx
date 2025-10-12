@@ -6,6 +6,7 @@ import {
 } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
@@ -75,9 +76,9 @@ export default function BalanceDetailRoute({
         <Link to="edit">Edit</Link>
         <Box pt={20}>
           <Form method="post">
-            <button type="submit" name="intent" value="delete">
+            <Button type="submit" name="intent" value="delete">
               Delete
-            </button>
+            </Button>
           </Form>
         </Box>
       </Box>

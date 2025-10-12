@@ -31,15 +31,15 @@ const accountTypes: AccountType[] = [
 ] as const;
 
 const prettyAccountTypes: Record<AccountType, string> = {
-  checking: 'Checking',
-  savings: 'Savings',
+  checking: "Checking",
+  savings: "Savings",
   other: "Other",
   credit_card: "Credit Card",
   investment: "Investment",
   line_of_credit: "Line of Credit",
   mortgage: "Mortgage",
-  property: "Property"
-} as const
+  property: "Property",
+} as const;
 
 export default function LinkedAccountsLayout({
   loaderData,

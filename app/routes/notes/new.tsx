@@ -3,6 +3,7 @@ import type { ActionFunctionArgs } from "react-router";
 import { data, redirect, Form, useActionData } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { Flex } from "~/components/Flex/Flex";
 import { createNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
@@ -85,7 +86,7 @@ export default function NewNotePage() {
         </Box>
 
         <Box>
-          <button type="submit">Save</button>
+          <Button type="submit">Save</Button>
         </Box>
       </Flex>
     </Form>

@@ -1,6 +1,7 @@
 import { ActionFunctionArgs, Form, redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
 
@@ -66,7 +67,7 @@ export default function ImportRoute() {
       </Box>
       <Form method="post" encType="multipart/form-data">
         <input type="file" accept=".csv" name="import_file" />
-        <button type="submit">Submit that bad boy</button>
+        <Button type="submit">Submit that bad boy</Button>
       </Form>
     </Box>
   );
