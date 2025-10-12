@@ -6,7 +6,6 @@ export default [
   route("join", "./routes/join.tsx"),
   route("login", "./routes/login.tsx"),
   route("logout", "./routes/logout.tsx"),
-  route("pricing", "./routes/pricing.tsx"),
   route("profile", "./routes/profile/route.tsx"),
 
   route("users", "./routes/users/layout.tsx", [

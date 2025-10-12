@@ -19,10 +19,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   };
 };
 
-const capitalizeFirstLetter = (val: string) => {
-  return val.charAt(0).toUpperCase() + val.slice(1);
-};
-
 const accountTypes: AccountType[] = [
   "checking",
   "savings",
@@ -33,6 +29,17 @@ const accountTypes: AccountType[] = [
   "mortgage",
   "other",
 ] as const;
+
+const prettyAccountTypes: Record<AccountType, string> = {
+  checking: 'Checking',
+  savings: 'Savings',
+  other: "Other",
+  credit_card: "Credit Card",
+  investment: "Investment",
+  line_of_credit: "Line of Credit",
+  mortgage: "Mortgage",
+  property: "Property"
+} as const
 
 export default function LinkedAccountsLayout({
   loaderData,
@@ -45,7 +52,7 @@ export default function LinkedAccountsLayout({
         </Box>
         {accountTypes.map((type) => (
           <Box key={type}>
-            <h3>{capitalizeFirstLetter(type.replaceAll("_", " "))}</h3>
+            <h3>{prettyAccountTypes[type]}</h3>
             <ul>
               {loaderData.accounts
                 .filter((acc) => acc.type === type)

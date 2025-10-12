@@ -21,9 +21,7 @@ model User {
 
   password       Password?
   notes          Note[]
-  stripeCustomer StripeCustomer?
   accounts       Account[]
-  subscriptions  Subscription[]
 }
 
 model Password {
@@ -55,6 +53,8 @@ model Account {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  closedAt DateTime?
 
   officialName String
   nickName     String
@@ -89,35 +89,4 @@ model BalanceSnapshot {
   amount Int
 
   dateTime DateTime
-}
-
-model StripeCustomer {
-  id String @id @default(cuid())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  customerId String
-
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
-
-model Subscription {
-  id String @id @default(cuid())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  subscriptionId String
-
-  status SubscriptionStatus
-}
-
-enum SubscriptionStatus {
-  active
-  ended
 }
