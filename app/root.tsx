@@ -144,9 +144,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
             color: "var(--color-slate-12)",
           }}
         >
-          <Box p={64}>
-            <Outlet />
-          </Box>
+          <Outlet />
         </main>
         <ScrollRestoration />
         <script

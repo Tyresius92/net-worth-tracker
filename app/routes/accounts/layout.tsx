@@ -47,23 +47,25 @@ export default function LinkedAccountsLayout({
   return (
     <Flex gap={32}>
       <nav>
-        <Box mb={32}>
-          <Link to="new">Create Account</Link>
-        </Box>
-        {accountTypes.map((type) => (
-          <Box key={type}>
-            <h3>{prettyAccountTypes[type]}</h3>
-            <ul>
-              {loaderData.accounts
-                .filter((acc) => acc.type === type)
-                .map((account) => (
-                  <li key={account.id}>
-                    <Link to={account.id}>{account.nickName}</Link>
-                  </li>
-                ))}
-            </ul>
+        <Box bg="slate-4" p={32}>
+          <Box mb={32}>
+            <Link to="new">Create Account</Link>
           </Box>
-        ))}
+          {accountTypes.map((type) => (
+            <Box key={type}>
+              <h3>{prettyAccountTypes[type]}</h3>
+              <ul>
+                {loaderData.accounts
+                  .filter((acc) => acc.type === type)
+                  .map((account) => (
+                    <li key={account.id}>
+                      <Link to={account.id}>{account.nickName}</Link>
+                    </li>
+                  ))}
+              </ul>
+            </Box>
+          ))}
+        </Box>
       </nav>
       <Box>
         <Outlet />

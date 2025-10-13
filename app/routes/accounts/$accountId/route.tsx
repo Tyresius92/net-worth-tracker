@@ -55,15 +55,24 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 
   const intent = formData.get("intent");
   if (intent === "close_account") {
+    const now = new Date()
     await prisma.account.update({
       where: {
         id: accountId,
         userId: userId,
       },
       data: {
-        closedAt: new Date(),
+        closedAt: now,
       },
     });
+
+    await prisma.balanceSnapshot.create({
+      data: {
+        accountId,
+        amount: 0,
+        dateTime: now
+      }
+    })
   }
 
   return {};
