@@ -1,5 +1,8 @@
 import { AccountType } from "@prisma/client";
-import { LoaderFunctionArgs, Outlet } from "react-router";
+import {
+  LoaderFunctionArgs,
+  Outlet,
+} from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Flex } from "~/components/Flex/Flex";
@@ -48,9 +51,10 @@ export default function LinkedAccountsLayout({
     <Flex gap={32}>
       <nav>
         <Box bg="slate-4" p={32}>
-          <Box mb={32}>
+          <Flex mb={32} flexDirection="column" gap={16}>
             <Link to="new">Create Account</Link>
-          </Box>
+            <Link to="new/plaid">Create Account using Plaid</Link>
+          </Flex>
           {accountTypes.map((type) => (
             <Box key={type}>
               <h3>{prettyAccountTypes[type]}</h3>
@@ -67,7 +71,7 @@ export default function LinkedAccountsLayout({
           ))}
         </Box>
       </nav>
-      <Box>
+      <Box py={32}>
         <Outlet />
       </Box>
     </Flex>

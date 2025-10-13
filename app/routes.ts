@@ -21,6 +21,7 @@ export default [
   route("accounts", "./routes/accounts/layout.tsx", [
     index("./routes/accounts/route.tsx"),
     route("new", "./routes/accounts/new/route.tsx"),
+    route("new/plaid", "./routes/accounts/new/plaid/route.tsx"),
     route(":accountId", "./routes/accounts/$accountId/layout.tsx", [
       index("./routes/accounts/$accountId/route.tsx"),
       route("edit", "./routes/accounts/$accountId/edit/route.tsx"),
