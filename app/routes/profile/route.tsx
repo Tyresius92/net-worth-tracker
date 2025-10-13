@@ -17,18 +17,18 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     include: {
       accounts: {
         where: {
-          closedAt: null
+          closedAt: null,
         },
         include: {
           balanceSnapshots: {
             take: 1,
             orderBy: {
-              dateTime: 'desc'
-            }
-          }
-        }
-      }
-    }
+              dateTime: "desc",
+            },
+          },
+        },
+      },
+    },
   });
 
   return {
@@ -38,14 +38,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function ProfilePage({ loaderData }: Route.ComponentProps) {
   const netWorth = loaderData.user.accounts.reduce((accumulator, account) => {
-    const snap = account.balanceSnapshots[0]
+    const snap = account.balanceSnapshots[0];
 
     if (!snap) {
-      return accumulator
+      return accumulator;
     }
 
-    return accumulator + snap.amount
-  }, 0)
+    return accumulator + snap.amount;
+  }, 0);
 
   return (
     <Box>

@@ -55,7 +55,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 
   const intent = formData.get("intent");
   if (intent === "close_account") {
-    const now = new Date()
+    const now = new Date();
     await prisma.account.update({
       where: {
         id: accountId,
@@ -70,9 +70,9 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       data: {
         accountId,
         amount: 0,
-        dateTime: now
-      }
-    })
+        dateTime: now,
+      },
+    });
   }
 
   return {};
