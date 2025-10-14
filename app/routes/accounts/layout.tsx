@@ -5,6 +5,7 @@ import { Box } from "~/components/Box/Box";
 import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
+import { toPrettyAccountType } from "~/models/accountType.server";
 import { requireUserId } from "~/session.server";
 
 import type { Route } from "./+types/layout";
@@ -46,20 +47,6 @@ const accountTypes: AccountType[] = [
   "other",
 ] as const;
 
-const prettyAccountTypes: Record<AccountType, string> = {
-  checking: "Checking",
-  savings: "Savings",
-  other: "Other",
-  credit_card: "Credit Card",
-  mortgage: "Mortgage",
-  property: "Property",
-  loan: "Loan",
-  money_market: "Money Market",
-  retirement_401k: "401k",
-  roth_ira: "Roth IRA",
-  traditional_ira: "Traditional IRA",
-} as const;
-
 export default function LinkedAccountsLayout({
   loaderData,
 }: Route.ComponentProps) {
@@ -73,7 +60,7 @@ export default function LinkedAccountsLayout({
           </Flex>
           {accountTypes.map((type) => (
             <Box key={type}>
-              <h3>{prettyAccountTypes[type]}</h3>
+              <h3>{toPrettyAccountType(type)}</h3>
               <ul>
                 {loaderData.accounts
                   .filter((acc) => acc.type === type)

@@ -3,34 +3,47 @@ import { AccountType } from "@prisma/client";
 export const accountTypesList: AccountType[] = [
   "checking",
   "credit_card",
-  "investment",
-  "line_of_credit",
+  "loan",
+  "money_market",
   "mortgage",
-  "other",
   "property",
+  "retirement_401k",
+  "roth_ira",
   "savings",
+  "traditional_ira",
+  "other",
 ];
 
 export const isAccountType = (value: string): value is AccountType => {
   return [
     "checking",
     "credit_card",
-    "investment",
-    "line_of_credit",
+    "loan",
+    "money_market",
     "mortgage",
-    "other",
     "property",
+    "retirement_401k",
+    "roth_ira",
     "savings",
+    "traditional_ira",
+    "other",
   ].includes(value);
 };
 
-export const toPrettyAccountType = (type: AccountType): string => {
-  if (type === "line_of_credit") {
-    return "Line of Credit";
-  }
-  if (type === "credit_card") {
-    return "Credit Card";
-  }
+const prettyAccountTypes: Record<AccountType, string> = {
+  checking: "Checking",
+  savings: "Savings",
+  other: "Other",
+  credit_card: "Credit Card",
+  mortgage: "Mortgage",
+  property: "Property",
+  loan: "Loan",
+  money_market: "Money Market",
+  retirement_401k: "401k",
+  roth_ira: "Roth IRA",
+  traditional_ira: "Traditional IRA",
+} as const;
 
-  return type.charAt(0).toUpperCase() + type.slice(1);
+export const toPrettyAccountType = (type: AccountType): string => {
+  return prettyAccountTypes[type];
 };

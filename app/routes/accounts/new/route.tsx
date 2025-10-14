@@ -37,22 +37,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const formData = await request.formData();
 
-  const officialName = formData.get("officialName");
-  const nickName = formData.get("nickName");
+  const customName = formData.get("customName");
   const type = formData.get("type");
 
-  if (typeof officialName !== "string" || officialName === "") {
+  if (typeof customName !== "string" || customName === "") {
     return {
       errors: {
-        officialName: "This field is required",
-      },
-    };
-  }
-
-  if (typeof nickName !== "string" || nickName === "") {
-    return {
-      errors: {
-        nickName: "This field is required",
+        customName: "This field is required",
       },
     };
   }
@@ -77,8 +68,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const account = await prisma.account.create({
     data: {
       userId,
-      officialName,
-      nickName,
+      customName,
       type, // type is now validated as AccountType
     },
   });
@@ -94,17 +84,10 @@ export default function NewAccountForm({
     <Box>
       <Form method="post">
         <TextInput
-          label="Official Account Name"
-          hintText="The canonical name for an account. Cannot be changed later"
+          label="Account Custom Name"
           type="text"
-          name="officialName"
-          errorMessage={actionData?.errors.officialName}
-        />
-        <TextInput
-          label="Account Nickname"
-          type="text"
-          name="nickName"
-          errorMessage={actionData?.errors.nickName}
+          name="customName"
+          errorMessage={actionData?.errors.customName}
         />
         <Box my={16}>
           <Select

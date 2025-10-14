@@ -56,13 +56,13 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 
   const formData = await request.formData();
 
-  const nickName = formData.get("nickName");
+  const customName = formData.get("customName");
   const type = formData.get("type");
 
-  if (typeof nickName !== "string" || nickName === "") {
+  if (typeof customName !== "string" || customName === "") {
     return {
       errors: {
-        nickName: "This field is required",
+        customName: "This field is required",
       },
     };
   }
@@ -102,7 +102,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       id: accountId,
     },
     data: {
-      nickName,
+      customName,
       type,
     },
   });
@@ -119,19 +119,11 @@ export default function EditAccountForm({
       <h2>Edit Account</h2>
       <Form method="post">
         <TextInput
-          label="Official Account Name"
+          label="Account Custom Name"
           type="text"
-          name="officialName"
-          defaultValue={loaderData.account.officialName}
-          disabled={true}
-          hintText="The official name cannot be changed"
-        />
-        <TextInput
-          label="Account Nickname"
-          type="text"
-          name="nickName"
-          defaultValue={loaderData.account.nickName}
-          errorMessage={actionData?.errors.nickName}
+          name="customName"
+          defaultValue={loaderData.account.customName ?? undefined}
+          errorMessage={actionData?.errors.customName}
         />
         <Box my={16}>
           <Select

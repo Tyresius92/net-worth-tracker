@@ -39,8 +39,7 @@ export default function AccountIdLayout({ loaderData }: Route.ComponentProps) {
           {loaderData.account.closedAt ? "CLOSED: " : ""}Account ID:{" "}
           {loaderData.account.id}
         </h2>
-        <p>Official Name: {loaderData.account.officialName}</p>
-        <p>Nickname: {loaderData.account.nickName}</p>
+        <p>Official Name: {loaderData.account.customName}</p>
         <p>
           Type:{" "}
           {loaderData.account.type

@@ -9,8 +9,8 @@ export const refreshAccountBalances = async () => {
       plaidAccounts: true,
     },
     where: {
-      status: 'healthy'
-    }
+      status: "healthy",
+    },
   });
 
   console.log(
