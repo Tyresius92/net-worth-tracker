@@ -1,13 +1,10 @@
 import { AccountType } from "@prisma/client";
-import {
-  LoaderFunctionArgs,
-  Outlet,
-} from "react-router";
+import { LoaderFunctionArgs, Outlet } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
-import { getAccountsForUserId } from "~/models/account.server";
+import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 
 import type { Route } from "./+types/layout";
@@ -15,21 +12,37 @@ import type { Route } from "./+types/layout";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
 
-  const accounts = await getAccountsForUserId(userId);
+  const accounts = await prisma.account.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      balanceSnapshots: true,
+      plaidAccount: true,
+    },
+  });
 
   return {
-    accounts: accounts.sort((a, b) => a.nickName.localeCompare(b.nickName)),
+    accounts: accounts.sort((a, b) => {
+      const aName = a.customName ?? a.plaidAccount?.name ?? "[Unnamed Account]";
+      const bName = b.customName ?? b.plaidAccount?.name ?? "[Unnamed Account]";
+
+      return aName.localeCompare(bName);
+    }),
   };
 };
 
 const accountTypes: AccountType[] = [
   "checking",
   "savings",
+  "money_market",
   "property",
-  "investment",
+  "retirement_401k",
+  "traditional_ira",
+  "roth_ira",
   "credit_card",
-  "line_of_credit",
   "mortgage",
+  "loan",
   "other",
 ] as const;
 
@@ -38,10 +51,13 @@ const prettyAccountTypes: Record<AccountType, string> = {
   savings: "Savings",
   other: "Other",
   credit_card: "Credit Card",
-  investment: "Investment",
-  line_of_credit: "Line of Credit",
   mortgage: "Mortgage",
   property: "Property",
+  loan: "Loan",
+  money_market: "Money Market",
+  retirement_401k: "401k",
+  roth_ira: "Roth IRA",
+  traditional_ira: "Traditional IRA",
 } as const;
 
 export default function LinkedAccountsLayout({
@@ -63,7 +79,11 @@ export default function LinkedAccountsLayout({
                   .filter((acc) => acc.type === type)
                   .map((account) => (
                     <li key={account.id}>
-                      <Link to={account.id}>{account.nickName}</Link>
+                      <Link to={account.id}>
+                        {account.customName ??
+                          account.plaidAccount?.name ??
+                          "[Unnamed Account]"}
+                      </Link>
                     </li>
                   ))}
               </ul>

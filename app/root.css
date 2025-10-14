@@ -13,6 +13,10 @@ body {
   & li {
     list-style-type: none;
   }
+
+  & h1 a {
+    padding: 0;
+  }
 }
 
 .nav-links {

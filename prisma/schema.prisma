@@ -57,14 +57,14 @@ model Account {
 
   closedAt DateTime?
 
-  name String?
+  customName String?
   type AccountType @default(other)
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
   balanceSnapshots BalanceSnapshot[]
-  PlaidAccount     PlaidAccount[]
+  plaidAccount     PlaidAccount?
 }
 
 enum AccountType {
@@ -104,13 +104,20 @@ model PlaidItem {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
+  status PlaidItemHealthStatus
+
   plaidItemId String
   accessToken String
 
   institutionId   String
   institutionName String
 
-  PlaidAccount PlaidAccount[]
+  plaidAccounts PlaidAccount[]
+}
+
+enum PlaidItemHealthStatus {
+  healthy
+  unhealthy
 }
 
 model PlaidAccount {
@@ -123,5 +130,13 @@ model PlaidAccount {
   plaidItemId String
 
   account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  accountId String
+  accountId String  @unique
+
+  plaidAccountId String
+  officialName   String
+  name           String
+  mask           String
+
+  type    String
+  subtype String?
 }

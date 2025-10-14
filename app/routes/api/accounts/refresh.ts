@@ -1,9 +1,10 @@
 import { ActionFunction } from "react-router";
 
+import { refreshAccountBalances } from "~/jobs/refreshAccountBalances.server";
+
 export const action: ActionFunction = async () => {
-  console.log(
-    `${new Date().toISOString()}: no longer refreshing account balances`,
-  );
+  console.log(`${new Date().toISOString()}: refreshing account balances`);
+  await refreshAccountBalances();
 
   return Response.json({ ok: true });
 };

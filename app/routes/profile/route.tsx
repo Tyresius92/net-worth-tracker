@@ -48,7 +48,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
   }, 0);
 
   return (
-    <Box>
+    <Box px={32}>
       <h1>{loaderData.user.fullName}&apos;s Profile</h1>
       <p>Your Net Worth: {formatCurrency(netWorth)}</p>
     </Box>

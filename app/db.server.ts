@@ -13,11 +13,11 @@ const prisma = singleton("prisma", () =>
   })
     .$extends({
       result: {
-        user: {
-          fullName: {
-            needs: { firstName: true, lastName: true },
-            compute(user) {
-              return `${user.firstName} ${user.lastName}`;
+        balanceSnapshot: {
+          date: {
+            needs: { dateTime: true },
+            compute(balanceSnapshot) {
+              return balanceSnapshot.dateTime.toISOString().split("T")[0];
             },
           },
         },
@@ -25,11 +25,11 @@ const prisma = singleton("prisma", () =>
     })
     .$extends({
       result: {
-        balanceSnapshot: {
-          date: {
-            needs: { dateTime: true },
-            compute(balanceSnapshot) {
-              return balanceSnapshot.dateTime.toISOString().split("T")[0];
+        user: {
+          fullName: {
+            needs: { firstName: true, lastName: true },
+            compute(user) {
+              return `${user.firstName} ${user.lastName}`;
             },
           },
         },
