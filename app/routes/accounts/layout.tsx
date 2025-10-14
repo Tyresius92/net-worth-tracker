@@ -5,8 +5,8 @@ import { Box } from "~/components/Box/Box";
 import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
-import { toPrettyAccountType } from "~/models/accountType.server";
 import { requireUserId } from "~/session.server";
+import { toPrettyAccountType } from "~/utils/accountUtils";
 
 import type { Route } from "./+types/layout";
 

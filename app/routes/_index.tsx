@@ -1,9 +1,8 @@
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 
 import { Box } from "~/components/Box/Box";
-import { getAllAccountsAndBalances } from "~/models/account.server";
+import { prisma } from "~/db.server";
 import { getUser } from "~/session.server";
-import { getNormalizedUserNetWorth } from "~/utils/accountUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 
 import type { Route } from "./+types/_index";
@@ -14,21 +13,47 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await getUser(request);
 
   if (!user) {
-    return { user, summary: null };
+    return { user, netWorth: null };
   }
 
-  const data = await getAllAccountsAndBalances(user.id);
+  const userData = await prisma.user.findFirstOrThrow({
+    where: {
+      id: user.id,
+    },
+    include: {
+      accounts: {
+        where: {
+          closedAt: null,
+        },
+        include: {
+          balanceSnapshots: {
+            take: 1,
+            orderBy: {
+              dateTime: "desc",
+            },
+          },
+        },
+      },
+    },
+  });
 
-  const summary = getNormalizedUserNetWorth(data);
 
   return {
     user,
-    summary,
+    netWorth: userData.accounts.reduce((accumulator, account) => {
+      const snap = account.balanceSnapshots[0];
+
+      if (!snap) {
+        return accumulator;
+      }
+
+      return accumulator + snap.amount;
+    }, 0)
   };
 };
 
 export default function Index({ loaderData }: Route.ComponentProps) {
-  const { user, summary } = loaderData;
+  const { user, netWorth } = loaderData;
 
   return (
     <div
@@ -52,7 +77,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         {user ? (
           <Box>
             <h3>Hello, {user.firstName}!</h3>
-            <h4>Your net worth is {formatCurrency(summary.currentNetWorth)}</h4>
+            <h4>Your net worth is {formatCurrency(netWorth)}</h4>
           </Box>
         ) : null}
       </Box>

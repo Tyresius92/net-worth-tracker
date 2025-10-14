@@ -10,12 +10,12 @@ import { Button } from "~/components/Button/Button";
 import { Select } from "~/components/Select/Select";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
+import { requireUserId } from "~/session.server";
 import {
   accountTypesList,
   isAccountType,
   toPrettyAccountType,
-} from "~/models/accountType.server";
-import { requireUserId } from "~/session.server";
+} from "~/utils/accountUtils";
 
 import type { Route } from "./+types/route";
 
