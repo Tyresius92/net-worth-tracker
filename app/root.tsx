@@ -109,6 +109,9 @@ export default function App({ loaderData }: Route.ComponentProps) {
                     <NavLink to="/accounts">Accounts</NavLink>
                   </li>
                   <li>
+                    <NavLink to="/plaid_items">Plaid Items</NavLink>
+                  </li>
+                  <li>
                     <Form method="post" action="logout">
                       <Button type="submit">Log Out</Button>
                     </Form>
