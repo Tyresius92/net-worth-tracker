@@ -90,7 +90,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         <nav className="nav">
           <Box>
             <h1>
-              <NavLink to="/">Money Chomp</NavLink>
+              <NavLink to="/">Net Worth Tracker</NavLink>
             </h1>
           </Box>
           <Box>
