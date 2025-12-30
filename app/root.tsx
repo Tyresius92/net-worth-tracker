@@ -90,7 +90,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         <nav className="nav">
           <Box>
             <h1>
-              <NavLink to="/">Net Worth Tracker</NavLink>
+              <NavLink to="/">NetWorth Tracker</NavLink>
             </h1>
           </Box>
           <Box>
