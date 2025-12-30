@@ -37,7 +37,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     },
   });
 
-
   return {
     user,
     netWorth: userData.accounts.reduce((accumulator, account) => {
@@ -48,7 +47,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       }
 
       return accumulator + snap.amount;
-    }, 0)
+    }, 0),
   };
 };
 

@@ -1,4 +1,3 @@
-import {} from "@prisma/client";
 import { CountryCode, Products } from "plaid";
 import { useEffect } from "react";
 import { usePlaidLink } from "react-plaid-link";

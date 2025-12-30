@@ -46,8 +46,8 @@ export default [
   route("plaid_items", "./routes/plaid_items/layout.tsx", [
     index("./routes/plaid_items/route.tsx"),
     route(":itemId", "./routes/plaid_items/$itemId/layout.tsx", [
-      index("./routes/plaid_items/$itemId/route.tsx")
-    ])
+      index("./routes/plaid_items/$itemId/route.tsx"),
+    ]),
   ]),
 
   route("api/accounts/refresh", "./routes/api/accounts/refresh.ts"),

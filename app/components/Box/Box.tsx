@@ -59,7 +59,7 @@ export const Box = ({
         ...(mb && { marginBlockEnd: `var(--space-${mb})` }),
 
         ...(bg && { backgroundColor: `var(--color-${bg})` }),
-        ...(mb && { color: `var(--color-${color})` }),
+        ...(color && { color: `var(--color-${color})` }),
       }}
     >
       {children}

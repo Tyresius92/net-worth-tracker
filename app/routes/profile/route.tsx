@@ -41,13 +41,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       }
 
       return accumulator + snap.amount;
-    }, 0)
+    }, 0),
   };
 };
 
 export default function ProfilePage({ loaderData }: Route.ComponentProps) {
-
-
   return (
     <Box px={32}>
       <h1>{loaderData.user.fullName}&apos;s Profile</h1>

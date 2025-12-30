@@ -1,4 +1,4 @@
-import { BalanceSnapshot , AccountType } from "@prisma/client";
+import { BalanceSnapshot, AccountType } from "@prisma/client";
 
 import { Account } from "~/models/account.server";
 
@@ -115,7 +115,6 @@ export function getNormalizedUserNetWorth(
     accounts: accountBalances,
   };
 }
-
 
 export const accountTypesList: AccountType[] = [
   "checking",
