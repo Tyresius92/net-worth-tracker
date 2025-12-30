@@ -5,7 +5,7 @@ import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 
-import { Route } from "./+types/route";
+import type { Route } from "./+types/route";
 
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
