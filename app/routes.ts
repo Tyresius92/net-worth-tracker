@@ -47,6 +47,7 @@ export default [
     index("./routes/plaid_items/route.tsx"),
     route(":itemId", "./routes/plaid_items/$itemId/layout.tsx", [
       index("./routes/plaid_items/$itemId/route.tsx"),
+      route("update", "./routes/plaid_items/$itemId/update/route.tsx"),
     ]),
   ]),
 
