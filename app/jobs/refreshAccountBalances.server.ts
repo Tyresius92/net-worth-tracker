@@ -6,7 +6,17 @@ export const refreshAccountBalances = async () => {
     select: {
       id: true,
       accessToken: true,
-      plaidAccounts: true,
+      plaidAccounts: {
+        select: {
+          id: true,
+          plaidAccountId: true,
+          account: {
+            select: {
+              id: true
+            }
+          }
+        }
+      },
     },
     where: {
       status: "healthy",
@@ -44,7 +54,7 @@ export const refreshAccountBalances = async () => {
 
           const balance = await prisma.balanceSnapshot.create({
             data: {
-              accountId: dbAccount.id,
+              accountId: dbAccount.account.id,
               dateTime: new Date(new Date().setUTCHours(0, 0, 0, 0)),
               amount: normalizedBalance,
             },
