@@ -6,5 +6,8 @@
 # Learn more: https://community.fly.io/t/sqlite-not-getting-setup-properly/4386
 
 set -ex
+echo "Printing plaid env"
+echo $PLAID_ENV
+echo "Should have printed sandbox"
 npx prisma@6.3.0 migrate deploy
 npm run start
