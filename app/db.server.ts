@@ -12,7 +12,9 @@ const prisma = singleton("prisma", () =>
       },
     },
   })
-    .$extends(fieldEncryptionExtension())
+    .$extends(fieldEncryptionExtension({
+      encryptionKey: process.env.PRISMA_FIELD_ENCRYPTION_KEY
+    }))
     .$extends({
       name: "ComputeBalanceSnapshotDateExtension",
       result: {
