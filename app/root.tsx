@@ -2,6 +2,7 @@ import type {
   ActionFunctionArgs,
   LinksFunction,
   LoaderFunctionArgs,
+  MetaFunction,
 } from "react-router";
 import {
   createCookie,
@@ -26,6 +27,8 @@ import { NavLink } from "./components/NavLink/NavLink";
 import styles from "./root.css?url";
 
 export const prefs = createCookie("user-prefs");
+
+export const meta: MetaFunction = () => [{ title: "Net Worth Tracker" }];
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },

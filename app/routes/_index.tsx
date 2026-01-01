@@ -7,7 +7,7 @@ import { formatCurrency } from "~/utils/currencyUtils";
 
 import type { Route } from "./+types/_index";
 
-export const meta: MetaFunction = () => [{ title: "Remix Notes" }];
+export const meta: MetaFunction = () => [{ title: "Net Worth Tracker" }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await getUser(request);
