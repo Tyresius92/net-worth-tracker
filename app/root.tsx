@@ -122,9 +122,9 @@ export default function App({ loaderData }: Route.ComponentProps) {
                 </>
               ) : (
                 <>
-                  <li>
+                  {/* <li>
                     <NavLink to="/join">Join</NavLink>
-                  </li>
+                  </li> */}
                   <li>
                     <NavLink to="/login">Login</NavLink>
                   </li>
