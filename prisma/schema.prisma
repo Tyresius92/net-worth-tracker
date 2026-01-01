@@ -17,6 +17,9 @@ model User {
   firstName String
   lastName  String
 
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret String? /// @encrypted
+
   role UserRole @default(customer)
 
   password   Password?
