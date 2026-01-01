@@ -5,17 +5,17 @@ import { Box } from "~/components/Box/Box";
 import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
-import { requireUserId } from "~/session.server";
+import { requireUser } from "~/session.server";
 import { toPrettyAccountType } from "~/utils/accountUtils";
 
 import type { Route } from "./+types/layout";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request);
+  const user = await requireUser(request);
 
   const accounts = await prisma.account.findMany({
     where: {
-      userId,
+      userId: user.id,
     },
     include: {
       balanceSnapshots: true,
@@ -24,6 +24,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
 
   return {
+    user,
     accounts: accounts.sort((a, b) => {
       const aName = a.customName ?? a.plaidAccount?.name ?? "[Unnamed Account]";
       const bName = b.customName ?? b.plaidAccount?.name ?? "[Unnamed Account]";
@@ -56,7 +57,9 @@ export default function LinkedAccountsLayout({
         <Box bg="slate-4" p={32}>
           <Flex mb={32} flexDirection="column" gap={16}>
             <Link to="new">Create Account</Link>
-            <Link to="new/plaid">Create Account using Plaid</Link>
+            {loaderData.user.twoFactorEnabled ? (
+              <Link to="new/plaid">Create Account using Plaid</Link>
+            ) : null}
           </Flex>
           {accountTypes.map((type) => (
             <Box key={type}>

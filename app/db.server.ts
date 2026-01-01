@@ -3,18 +3,25 @@ import { fieldEncryptionExtension } from "prisma-field-encryption";
 
 import { singleton } from "./singleton.server";
 
+const omitConfig = {
+  plaidItem: {
+    accessToken: true,
+  },
+  user: {
+    twoFactorSecret: true,
+  },
+} as const;
+
 // Hard-code a unique key, so we can look up the client when this module gets re-imported
 const prisma = singleton("prisma", () =>
   new PrismaClient({
-    omit: {
-      plaidItem: {
-        accessToken: true,
-      },
-    },
+    omit: omitConfig,
   })
-    .$extends(fieldEncryptionExtension({
-      encryptionKey: process.env.PRISMA_FIELD_ENCRYPTION_KEY
-    }))
+    .$extends(
+      fieldEncryptionExtension({
+        encryptionKey: process.env.PRISMA_FIELD_ENCRYPTION_KEY,
+      }),
+    )
     .$extends({
       name: "ComputeBalanceSnapshotDateExtension",
       result: {
