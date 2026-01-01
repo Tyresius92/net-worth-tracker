@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { fieldEncryptionExtension } from "prisma-field-encryption";
 
 import { singleton } from "./singleton.server";
 
@@ -11,7 +12,9 @@ const prisma = singleton("prisma", () =>
       },
     },
   })
+    .$extends(fieldEncryptionExtension())
     .$extends({
+      name: "ComputeBalanceSnapshotDateExtension",
       result: {
         balanceSnapshot: {
           date: {
@@ -24,6 +27,7 @@ const prisma = singleton("prisma", () =>
       },
     })
     .$extends({
+      name: "ComputeFullNameExtension",
       result: {
         user: {
           fullName: {

@@ -12,10 +12,10 @@ export const refreshAccountBalances = async () => {
           plaidAccountId: true,
           account: {
             select: {
-              id: true
-            }
-          }
-        }
+              id: true,
+            },
+          },
+        },
       },
     },
     where: {

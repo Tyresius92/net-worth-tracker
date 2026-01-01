@@ -38,10 +38,13 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 };
 
 export const action = async () => {
-  return redirect('..')
-}
+  return redirect("..");
+};
 
-export default function PlaidItemRepairRoute({ loaderData, actionData }: Route.ComponentProps) {
+export default function PlaidItemRepairRoute({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
   const fetcher = useFetcher();
 
   const { ready, open } = usePlaidLink({
@@ -67,5 +70,5 @@ export default function PlaidItemRepairRoute({ loaderData, actionData }: Route.C
     }
   }, [ready, open, actionData]);
 
-  return <Box></Box>
+  return <Box></Box>;
 }

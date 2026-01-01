@@ -58,7 +58,7 @@ model Account {
   closedAt DateTime?
 
   customName String?
-  type AccountType @default(other)
+  type       AccountType @default(other)
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
@@ -106,11 +106,11 @@ model PlaidItem {
 
   status PlaidItemHealthStatus
 
-  plaidItemId String
-  accessToken String
+  plaidItemId String /// @encrypted
+  accessToken String /// @encrypted
 
-  institutionId   String
-  institutionName String
+  institutionId   String /// @encrypted
+  institutionName String /// @encrypted
 
   plaidAccounts PlaidAccount[]
 }
@@ -132,11 +132,11 @@ model PlaidAccount {
   account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   accountId String  @unique
 
-  plaidAccountId String
-  officialName   String
-  name           String
-  mask           String
+  plaidAccountId String /// @encrypted
+  officialName   String /// @encrypted
+  name           String /// @encrypted
+  mask           String /// @encrypted
 
-  type    String
-  subtype String?
+  type    String /// @encrypted
+  subtype String? /// @encrypted
 }

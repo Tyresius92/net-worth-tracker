@@ -7,36 +7,37 @@ import { requireUserId } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
-
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
 
   const plaidItems = await prisma.plaidItem.findMany({
     where: {
-      userId
+      userId,
     },
     select: {
       id: true,
       institutionName: true,
-    }
-  })
+    },
+  });
 
   return {
-    plaidItems
-  }
-}
+    plaidItems,
+  };
+};
 
-export default function PlaidItemIndexRoute({ loaderData }: Route.ComponentProps) {
-  return <Box>
-    <Box>Plaid Items</Box>
+export default function PlaidItemIndexRoute({
+  loaderData,
+}: Route.ComponentProps) {
+  return (
     <Box>
-      {loaderData.plaidItems.map(item => (
-        <Box key={item.id}>
-          <Link to={`./${item.id}`}>
-            {item.institutionName}
-          </Link>
-        </Box>
-      ))}
+      <Box>Plaid Items</Box>
+      <Box>
+        {loaderData.plaidItems.map((item) => (
+          <Box key={item.id}>
+            <Link to={`./${item.id}`}>{item.institutionName}</Link>
+          </Box>
+        ))}
+      </Box>
     </Box>
-  </Box>;
+  );
 }
