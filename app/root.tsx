@@ -23,6 +23,8 @@ import lightColors from "./components/_GlobalStyles/colors.css?url";
 import spaceStyles from "./components/_GlobalStyles/space.css?url";
 import { Box } from "./components/Box/Box";
 import { Button } from "./components/Button/Button";
+import { Flex } from "./components/Flex/Flex";
+import { Link } from "./components/Link/Link";
 import { NavLink } from "./components/NavLink/NavLink";
 import styles from "./root.css?url";
 
@@ -148,10 +150,22 @@ export default function App({ loaderData }: Route.ComponentProps) {
             flexGrow: 1,
             backgroundColor: "var(--color-indigo-2)",
             color: "var(--color-slate-12)",
+            padding: "var(--space-32)",
           }}
         >
           <Outlet />
         </main>
+        <footer
+          style={{
+            backgroundColor: "var(--color-indigo-4)",
+            padding: "var(--space-32)",
+          }}
+        >
+          <Flex flexDirection="column" gap={16}>
+            <Link to="privacy">Privacy policy</Link>
+            <Link to="contact">Contact</Link>
+          </Flex>
+        </footer>
         <ScrollRestoration />
         <script
           dangerouslySetInnerHTML={{

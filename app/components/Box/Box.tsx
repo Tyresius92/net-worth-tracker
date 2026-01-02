@@ -2,6 +2,8 @@ import React from "react";
 
 import { ColorOption, SpaceOption } from "../_GlobalStyles/types";
 
+type BoxMarginOption = SpaceOption | "auto";
+
 export interface BoxProps
   extends Pick<React.HTMLAttributes<HTMLDivElement>, "id" | "children"> {
   p?: SpaceOption;
@@ -12,16 +14,18 @@ export interface BoxProps
   pt?: SpaceOption;
   pb?: SpaceOption;
 
-  m?: SpaceOption;
-  mx?: SpaceOption;
-  my?: SpaceOption;
-  ml?: SpaceOption;
-  mr?: SpaceOption;
-  mt?: SpaceOption;
-  mb?: SpaceOption;
+  m?: BoxMarginOption;
+  mx?: BoxMarginOption;
+  my?: BoxMarginOption;
+  ml?: BoxMarginOption;
+  mr?: BoxMarginOption;
+  mt?: BoxMarginOption;
+  mb?: BoxMarginOption;
 
   bg?: ColorOption;
   color?: ColorOption;
+
+  maxWidth?: number;
 }
 
 export const Box = ({
@@ -44,6 +48,8 @@ export const Box = ({
 
   bg,
   color,
+
+  maxWidth,
 }: BoxProps) => {
   return (
     <div
@@ -53,13 +59,22 @@ export const Box = ({
         ...(pt && { paddingBlockStart: `var(--space-${pt})` }),
         ...(pb && { paddingBlockEnd: `var(--space-${pb})` }),
 
-        ...(ml && { marginInlineStart: `var(--space-${ml})` }),
-        ...(mr && { marginInlineEnd: `var(--space-${mr})` }),
-        ...(mt && { marginBlockStart: `var(--space-${mt})` }),
-        ...(mb && { marginBlockEnd: `var(--space-${mb})` }),
+        ...(ml && {
+          marginInlineStart: ml === "auto" ? "auto" : `var(--space-${ml})`,
+        }),
+        ...(mr && {
+          marginInlineEnd: mr === "auto" ? "auto" : `var(--space-${mr})`,
+        }),
+        ...(mt && {
+          marginBlockStart: mt === "auto" ? "auto" : `var(--space-${mt})`,
+        }),
+        ...(mb && {
+          marginBlockEnd: mb === "auto" ? "auto" : `var(--space-${mb})`,
+        }),
 
         ...(bg && { backgroundColor: `var(--color-${bg})` }),
         ...(color && { color: `var(--color-${color})` }),
+        ...(maxWidth && { maxWidth: `${maxWidth}px` }),
       }}
     >
       {children}

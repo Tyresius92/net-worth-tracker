@@ -10,6 +10,10 @@ export default [
   ]),
   route("logout", "./routes/logout.tsx"),
 
+  route("contact", "./routes/contact/route.tsx"),
+
+  route("privacy", "./routes/privacy/route.tsx"),
+
   route("profile", "./routes/profile/layout.tsx", [
     index("./routes/profile/route.tsx"),
     route("enable_mfa", "./routes/profile/enable_mfa/route.tsx"),

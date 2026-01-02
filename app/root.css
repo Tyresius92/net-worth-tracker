@@ -4,7 +4,7 @@ body {
 
 .nav {
   align-items: center;
-  background-color: var(--color-blue-4);
+  background-color: var(--color-indigo-4);
   display: flex;
   justify-content: space-between;
   padding-block: var(--space-16);

@@ -143,3 +143,13 @@ model PlaidAccount {
   type    String /// @encrypted
   subtype String? /// @encrypted
 }
+
+model ContactFormSubmission {
+  id String @id @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  emailAddress String
+  message String
+}
