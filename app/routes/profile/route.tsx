@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 import { formatCurrency } from "~/utils/currencyUtils";
@@ -47,9 +48,22 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function ProfilePage({ loaderData }: Route.ComponentProps) {
   return (
-    <Box px={32}>
+    <Box>
       <h1>{loaderData.user.fullName}&apos;s Profile</h1>
       <p>Your Net Worth: {formatCurrency(loaderData.netWorth)}</p>
+
+      {loaderData.user.twoFactorEnabled ? (
+        <Box>
+          <h2>2FA is enabled</h2>
+        </Box>
+      ) : (
+        <Box>
+          <h2>2FA not enabled</h2>
+          <p>You do not have two factor authentication enabled.</p>
+          <p>2FA is required to pull account information in with Plaid.</p>
+          <Link to="./enable_mfa">Set up 2FA</Link>
+        </Box>
+      )}
     </Box>
   );
 }

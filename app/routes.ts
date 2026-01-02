@@ -4,9 +4,16 @@ export default [
   index("./routes/_index.tsx"),
   route("healthcheck", "./routes/healthcheck.tsx"),
   // route("join", "./routes/join.tsx"),
-  route("login", "./routes/login.tsx"),
+  route("login", "./routes/login/layout.tsx", [
+    index("./routes/login/route.tsx"),
+    route("2fa", "./routes/login/2fa/route.tsx"),
+  ]),
   route("logout", "./routes/logout.tsx"),
-  route("profile", "./routes/profile/route.tsx"),
+
+  route("profile", "./routes/profile/layout.tsx", [
+    index("./routes/profile/route.tsx"),
+    route("enable_mfa", "./routes/profile/enable_mfa/route.tsx"),
+  ]),
 
   route("users", "./routes/users/layout.tsx", [
     index("./routes/users/route.tsx"),

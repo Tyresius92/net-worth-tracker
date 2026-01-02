@@ -16,7 +16,12 @@ import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { verifyLogin } from "~/models/user.server";
-import { createUserSession, getUserId } from "~/session.server";
+import {
+  createUserSession,
+  getSession,
+  getUserId,
+  sessionStorage,
+} from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -26,6 +31,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
+  const session = await getSession(request);
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
@@ -60,6 +66,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       { errors: { email: "Invalid email or password", password: null } },
       { status: 400 },
     );
+  }
+
+  if (user.twoFactorEnabled) {
+    session.set("2fa:user-id", user.id);
+    return redirect("./2fa", {
+      headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
+    });
   }
 
   return createUserSession({
