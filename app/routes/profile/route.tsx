@@ -105,7 +105,9 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
                     account.plaidAccount?.officialName ??
                     "[Unnamed Account]"}
                 </Table.Cell>
-                <Table.Cell>{account.balanceSnapshots[0]?.amount}</Table.Cell>
+                <Table.Cell>
+                  {formatCurrency(account.balanceSnapshots[0]?.amount ?? 0)}
+                </Table.Cell>
                 <Table.Cell>{account.balanceSnapshots[0]?.date}</Table.Cell>
               </Table.Row>
             ))}
