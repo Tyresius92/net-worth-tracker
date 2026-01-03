@@ -79,21 +79,36 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
           <Table.ColumnHeader>Latest Balance Date</Table.ColumnHeader>
         </Table.Head>
         <Table.Body>
-          {loaderData.user.accounts.map((account) => (
-            <Table.Row key={account.id}>
-              <Table.Cell>
-                <Link to={`/accounts/${account.id}`}>{account.id}</Link>
-              </Table.Cell>
-              <Table.Cell>
-                {account.customName ??
-                  account.plaidAccount?.name ??
-                  account.plaidAccount?.officialName ??
-                  "[Unnamed Account]"}
-              </Table.Cell>
-              <Table.Cell>{account.balanceSnapshots[0]?.amount}</Table.Cell>
-              <Table.Cell>{account.balanceSnapshots[0]?.date}</Table.Cell>
-            </Table.Row>
-          ))}
+          {[...loaderData.user.accounts]
+            .sort((a, b) => {
+              const aName =
+                a.customName ??
+                a.plaidAccount?.name ??
+                a.plaidAccount?.officialName ??
+                "[Unnamed Account]";
+              const bName =
+                b.customName ??
+                b.plaidAccount?.name ??
+                b.plaidAccount?.officialName ??
+                "[Unnamed Account]";
+
+              return aName.localeCompare(bName);
+            })
+            .map((account) => (
+              <Table.Row key={account.id}>
+                <Table.Cell>
+                  <Link to={`/accounts/${account.id}`}>{account.id}</Link>
+                </Table.Cell>
+                <Table.Cell>
+                  {account.customName ??
+                    account.plaidAccount?.name ??
+                    account.plaidAccount?.officialName ??
+                    "[Unnamed Account]"}
+                </Table.Cell>
+                <Table.Cell>{account.balanceSnapshots[0]?.amount}</Table.Cell>
+                <Table.Cell>{account.balanceSnapshots[0]?.date}</Table.Cell>
+              </Table.Row>
+            ))}
         </Table.Body>
       </Table>
     </Box>
