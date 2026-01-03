@@ -2,6 +2,7 @@ import { LoaderFunctionArgs } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Link } from "~/components/Link/Link";
+import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 import { formatCurrency } from "~/utils/currencyUtils";
@@ -21,6 +22,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
           closedAt: null,
         },
         include: {
+          plaidAccount: {
+            select: {
+              name: true,
+              officialName: true,
+            },
+          },
           balanceSnapshots: {
             take: 1,
             orderBy: {
@@ -50,7 +57,6 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
   return (
     <Box>
       <h1>{loaderData.user.fullName}&apos;s Profile</h1>
-      <p>Your Net Worth: {formatCurrency(loaderData.netWorth)}</p>
 
       {loaderData.user.twoFactorEnabled ? (
         <Box>
@@ -64,6 +70,32 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
           <Link to="./enable_mfa">Set up 2FA</Link>
         </Box>
       )}
+      <h2>Your Net Worth: {formatCurrency(loaderData.netWorth)}</h2>
+      <Table caption="Net worth breakdown">
+        <Table.Head>
+          <Table.ColumnHeader>Account ID</Table.ColumnHeader>
+          <Table.ColumnHeader>Account Name</Table.ColumnHeader>
+          <Table.ColumnHeader>Latest Balance</Table.ColumnHeader>
+          <Table.ColumnHeader>Latest Balance Date</Table.ColumnHeader>
+        </Table.Head>
+        <Table.Body>
+          {loaderData.user.accounts.map((account) => (
+            <Table.Row key={account.id}>
+              <Table.Cell>
+                <Link to={`/accounts/${account.id}`}>{account.id}</Link>
+              </Table.Cell>
+              <Table.Cell>
+                {account.customName ??
+                  account.plaidAccount?.name ??
+                  account.plaidAccount?.officialName ??
+                  "[Unnamed Account]"}
+              </Table.Cell>
+              <Table.Cell>{account.balanceSnapshots[0]?.amount}</Table.Cell>
+              <Table.Cell>{account.balanceSnapshots[0]?.date}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
     </Box>
   );
 }
