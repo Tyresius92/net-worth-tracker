@@ -56,7 +56,7 @@ export const refreshAccountBalances = async () => {
             data: {
               accountId: dbAccount.account.id,
               dateTime: new Date(new Date().setUTCHours(0, 0, 0, 0)),
-              amount: normalizedBalance,
+              amount: normalizedBalance * 100,
             },
           });
 
