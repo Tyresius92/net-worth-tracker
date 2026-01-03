@@ -6,6 +6,8 @@ export default function PrivacyPolicy() {
     <Box p={32} maxWidth={800} mx="auto">
       <h1>Privacy Policy</h1>
 
+      <p>Last edited: Jan 2, 2026</p>
+
       <Box>
         <h2>About This Policy</h2>
         <p>
