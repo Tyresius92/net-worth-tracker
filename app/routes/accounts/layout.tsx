@@ -105,18 +105,20 @@ export default function LinkedAccountsLayout({
               );
             })}
           </Box>
-          <Box>
-            <h2>Closed Accounts</h2>
-            {accountTypes.map((type) => {
-              return (
-                <AccountList
-                  key={type}
-                  accountType={type}
-                  accounts={closedAccounts.filter((acc) => acc.type === type)}
-                />
-              );
-            })}
-          </Box>
+          {closedAccounts.length ? (
+            <Box>
+              <h2>Closed Accounts</h2>
+              {accountTypes.map((type) => {
+                return (
+                  <AccountList
+                    key={type}
+                    accountType={type}
+                    accounts={closedAccounts.filter((acc) => acc.type === type)}
+                  />
+                );
+              })}
+            </Box>
+          ) : null}
         </Box>
       </nav>
       <Box py={32}>
