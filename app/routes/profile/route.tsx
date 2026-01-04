@@ -1,10 +1,19 @@
 import { LoaderFunctionArgs } from "react-router";
+import {
+  ComposedChart,
+  Line,
+  ReferenceLine,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import { Box } from "~/components/Box/Box";
 import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
+import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 
 import type { Route } from "./+types/route";
@@ -39,6 +48,37 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     },
   });
 
+  const snapshots = await prisma.balanceSnapshot.findMany({
+    where: {
+      account: {
+        userId,
+      },
+    },
+    select: {
+      id: true,
+      amount: true,
+      date: true,
+      accountId: true,
+    },
+  });
+
+  const dailyAmounts = snapshots.reduce<Record<string, number>>((acc, curr) => {
+    if (typeof acc[curr.date] !== "number") {
+      acc[curr.date] = 0;
+    }
+
+    acc[curr.date] += curr.amount;
+
+    return acc;
+  }, {});
+
+  const balanceDays = Object.entries(dailyAmounts)
+    .map(([date, amount]) => ({
+      date,
+      amount,
+    }))
+    .sort((a, b) => (a.date < b.date ? -1 : 1));
+
   return {
     user,
     netWorth: user.accounts.reduce((accumulator, account) => {
@@ -50,6 +90,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
       return accumulator + snap.amount;
     }, 0),
+    balances: fillDailyBalanceDayData(balanceDays),
   };
 };
 
@@ -71,6 +112,58 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
         </Box>
       )}
       <h2>Your Net Worth: {formatCurrency(loaderData.netWorth)}</h2>
+
+      <h2>Net worth history</h2>
+      <div style={{ width: 730, height: 350 }}>
+        <ComposedChart
+          id="asdf"
+          width={730}
+          height={450}
+          margin={{
+            right: 20,
+            left: 20,
+            // top: 20, bottom: 20
+          }}
+          data={loaderData.balances.map((snap) => ({
+            date: snap.date,
+            amount: snap.amount / 100,
+          }))}
+        >
+          <XAxis
+            dataKey="date"
+            // tickMargin={40}
+            height={200}
+            minTickGap={20}
+            angle={-60}
+            textAnchor="end"
+          />
+          <YAxis
+            tickFormatter={(val) =>
+              formatCurrency(val * 100, { includeCents: false })
+            }
+          />
+          <Tooltip
+            formatter={(val) => {
+              if (typeof val !== "number") {
+                return `Invalid type: ${typeof val}`;
+              }
+
+              return formatCurrency(val * 100);
+            }}
+          />
+          <ReferenceLine y={0} stroke="#000" />
+          <Line
+            isAnimationActive={false}
+            type="monotone"
+            dataKey="amount"
+            stroke="green"
+            dot={false}
+            activeDot={true}
+          />
+        </ComposedChart>
+      </div>
+
+      <h2>Net worth breakdown</h2>
       <Table caption="Net worth breakdown">
         <Table.Head>
           <Table.ColumnHeader>Account ID</Table.ColumnHeader>
