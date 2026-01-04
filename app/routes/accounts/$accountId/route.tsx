@@ -4,6 +4,14 @@ import {
   LoaderFunctionArgs,
   redirect,
 } from "react-router";
+import {
+  ComposedChart,
+  Line,
+  ReferenceLine,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
@@ -12,6 +20,7 @@ import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
+import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 
 import type { Route } from "./+types/route";
@@ -24,23 +33,29 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     throw new Response("Account ID not in URL", { status: 404 });
   }
 
-  const balanceSnapshots = await prisma.balanceSnapshot.findMany({
+  const account = await prisma.account.findFirst({
     where: {
-      accountId,
-      account: {
-        userId,
-      },
+      id: accountId,
+      userId,
     },
-    orderBy: {
-      dateTime: "desc",
+    include: {
+      balanceSnapshots: {
+        orderBy: {
+          dateTime: "desc",
+        },
+      },
     },
   });
 
-  if (!balanceSnapshots) {
+  if (!account) {
     return redirect("./..");
   }
 
-  return { userId, balanceSnapshots };
+  return {
+    userId,
+    account,
+    balances: fillDailyBalanceDayData([...account.balanceSnapshots].reverse()),
+  };
 };
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
@@ -102,6 +117,56 @@ export default function AccountDetailsRoute({
             </Form>
           </Box>
         </Flex>
+
+        <div style={{ width: 730, height: 350 }}>
+          <ComposedChart
+            id="asdf"
+            width={730}
+            height={450}
+            margin={{
+              right: 20,
+              left: 20,
+              // top: 20, bottom: 20
+            }}
+            data={loaderData.balances.map((snap) => ({
+              date: snap.date,
+              amount: snap.amount / 100,
+            }))}
+          >
+            <XAxis
+              dataKey="date"
+              // tickMargin={40}
+              height={200}
+              minTickGap={20}
+              angle={-60}
+              textAnchor="end"
+            />
+            <YAxis
+              tickFormatter={(val) =>
+                formatCurrency(val * 100, { includeCents: false })
+              }
+            />
+            <Tooltip
+              formatter={(val) => {
+                if (typeof val !== "number") {
+                  return `Invalid type: ${typeof val}`;
+                }
+
+                return formatCurrency(val * 100);
+              }}
+            />
+            <ReferenceLine y={0} stroke="#000" />
+            <Line
+              isAnimationActive={false}
+              type="monotone"
+              dataKey="amount"
+              stroke="green"
+              dot={false}
+              activeDot={true}
+            />
+          </ComposedChart>
+        </div>
+
         <Table caption="Balances">
           <Table.Head>
             <Table.ColumnHeader>ID</Table.ColumnHeader>
@@ -110,7 +175,7 @@ export default function AccountDetailsRoute({
             <Table.ColumnHeader>Amount Raw</Table.ColumnHeader>
           </Table.Head>
           <Table.Body>
-            {loaderData.balanceSnapshots.map((snapshot) => (
+            {loaderData.account.balanceSnapshots.map((snapshot) => (
               <Table.Row key={snapshot.id}>
                 <Table.Cell>
                   <Link to={`balances/${snapshot.id}`}>
