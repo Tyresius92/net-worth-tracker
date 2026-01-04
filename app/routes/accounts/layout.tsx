@@ -48,9 +48,41 @@ const accountTypes: AccountType[] = [
   "other",
 ] as const;
 
+const AccountList = ({
+  accounts,
+  accountType,
+}: {
+  accounts: Route.ComponentProps["loaderData"]["accounts"];
+  accountType: AccountType;
+}) => {
+  if (accounts.length === 0) {
+    return <></>;
+  }
+
+  return (
+    <Box pl={12}>
+      <h3>{toPrettyAccountType(accountType)}</h3>
+      <ul>
+        {accounts.map((account) => (
+          <li key={account.id}>
+            <Link to={account.id}>
+              {account.customName ??
+                account.plaidAccount?.name ??
+                "[Unnamed Account]"}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </Box>
+  );
+};
+
 export default function LinkedAccountsLayout({
   loaderData,
 }: Route.ComponentProps) {
+  const openAccounts = loaderData.accounts.filter((acc) => !acc.closedAt);
+  const closedAccounts = loaderData.accounts.filter((acc) => acc.closedAt);
+
   return (
     <Flex gap={32}>
       <nav>
@@ -61,24 +93,30 @@ export default function LinkedAccountsLayout({
               <Link to="new/plaid">Create Account using Plaid</Link>
             ) : null}
           </Flex>
-          {accountTypes.map((type) => (
-            <Box key={type}>
-              <h3>{toPrettyAccountType(type)}</h3>
-              <ul>
-                {loaderData.accounts
-                  .filter((acc) => acc.type === type)
-                  .map((account) => (
-                    <li key={account.id}>
-                      <Link to={account.id}>
-                        {account.customName ??
-                          account.plaidAccount?.name ??
-                          "[Unnamed Account]"}
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </Box>
-          ))}
+          <Box>
+            <h2>Open Accounts</h2>
+            {accountTypes.map((type) => {
+              return (
+                <AccountList
+                  key={type}
+                  accountType={type}
+                  accounts={openAccounts.filter((acc) => acc.type === type)}
+                />
+              );
+            })}
+          </Box>
+          <Box>
+            <h2>Closed Accounts</h2>
+            {accountTypes.map((type) => {
+              return (
+                <AccountList
+                  key={type}
+                  accountType={type}
+                  accounts={closedAccounts.filter((acc) => acc.type === type)}
+                />
+              );
+            })}
+          </Box>
         </Box>
       </nav>
       <Box py={32}>
