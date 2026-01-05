@@ -4,14 +4,6 @@ import {
   LoaderFunctionArgs,
   redirect,
 } from "react-router";
-import {
-  ComposedChart,
-  Line,
-  ReferenceLine,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
@@ -24,6 +16,7 @@ import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 
 import type { Route } from "./+types/route";
+import { AccountChart } from "./chart";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
@@ -118,54 +111,7 @@ export default function AccountDetailsRoute({
           </Box>
         </Flex>
 
-        <div style={{ width: 730, height: 350 }}>
-          <ComposedChart
-            id="asdf"
-            width={730}
-            height={450}
-            margin={{
-              right: 20,
-              left: 20,
-              // top: 20, bottom: 20
-            }}
-            data={loaderData.balances.map((snap) => ({
-              date: snap.date,
-              amount: snap.amount / 100,
-            }))}
-          >
-            <XAxis
-              dataKey="date"
-              // tickMargin={40}
-              height={200}
-              minTickGap={20}
-              angle={-60}
-              textAnchor="end"
-            />
-            <YAxis
-              tickFormatter={(val) =>
-                formatCurrency(val * 100, { includeCents: false })
-              }
-            />
-            <Tooltip
-              formatter={(val) => {
-                if (typeof val !== "number") {
-                  return `Invalid type: ${typeof val}`;
-                }
-
-                return formatCurrency(val * 100);
-              }}
-            />
-            <ReferenceLine y={0} stroke="#000" />
-            <Line
-              isAnimationActive={false}
-              type="monotone"
-              dataKey="amount"
-              stroke="green"
-              dot={false}
-              activeDot={true}
-            />
-          </ComposedChart>
-        </div>
+        <AccountChart balances={loaderData.balances} />
 
         <Table caption="Balances">
           <Table.Head>

@@ -68,7 +68,8 @@ const AccountList = ({
             <Link to={account.id}>
               {account.customName ??
                 account.plaidAccount?.name ??
-                "[Unnamed Account]"}
+                "[Unnamed Account]"}{" "}
+              {account.plaidAccount ? "(Plaid)" : "(Manual)"}
             </Link>
           </li>
         ))}
