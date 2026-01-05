@@ -48,19 +48,27 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     },
   });
 
-  const snapshots = await prisma.balanceSnapshot.findMany({
+  const accounts = await prisma.account.findMany({
     where: {
-      account: {
-        userId,
+      userId,
+    },
+    include: {
+      balanceSnapshots: {
+        select: {
+          id: true,
+          amount: true,
+          date: true,
+        },
+        orderBy: {
+          dateTime: "asc",
+        },
       },
     },
-    select: {
-      id: true,
-      amount: true,
-      date: true,
-      accountId: true,
-    },
   });
+
+  const snapshots = accounts.flatMap((account) =>
+    fillDailyBalanceDayData(account.balanceSnapshots),
+  );
 
   const dailyAmounts = snapshots.reduce<Record<string, number>>((acc, curr) => {
     if (typeof acc[curr.date] !== "number") {
@@ -90,7 +98,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
       return accumulator + snap.amount;
     }, 0),
-    balances: fillDailyBalanceDayData(balanceDays),
+    balances: balanceDays,
   };
 };
 
