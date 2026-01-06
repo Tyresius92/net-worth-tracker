@@ -10,14 +10,14 @@ import {
 
 import { formatCurrency } from "~/utils/currencyUtils";
 
-export interface ProfileChartProps {
+export interface BalanceChartProps {
   balances: {
     date: string;
     amount: number;
   }[];
 }
 
-export const ProfileChart = ({ balances }: ProfileChartProps) => {
+export const BalanceChart = ({ balances }: BalanceChartProps) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -46,6 +46,7 @@ export const ProfileChart = ({ balances }: ProfileChartProps) => {
       >
         <XAxis
           dataKey="date"
+          // tickMargin={40}
           height={200}
           minTickGap={20}
           angle={-60}

@@ -5,6 +5,7 @@ import {
   redirect,
 } from "react-router";
 
+import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Flex } from "~/components/Flex/Flex";
@@ -16,7 +17,6 @@ import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 
 import type { Route } from "./+types/route";
-import { AccountChart } from "./chart";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
@@ -111,7 +111,7 @@ export default function AccountDetailsRoute({
           </Box>
         </Flex>
 
-        <AccountChart balances={loaderData.balances} />
+        <BalanceChart balances={loaderData.balances} />
 
         <Table caption="Balances">
           <Table.Head>

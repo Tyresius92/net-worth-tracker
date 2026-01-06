@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs } from "react-router";
 
+import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";
 import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
@@ -9,7 +10,6 @@ import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 
 import type { Route } from "./+types/route";
-import { ProfileChart } from "./chart";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
@@ -115,7 +115,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
       <h2>Your Net Worth: {formatCurrency(loaderData.netWorth)}</h2>
 
       <h2>Net worth history</h2>
-      <ProfileChart balances={loaderData.balances} />
+      <BalanceChart balances={loaderData.balances} />
 
       <h2>Net worth breakdown</h2>
       <Table caption="Net worth breakdown">
