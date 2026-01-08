@@ -6,6 +6,7 @@ import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
+import { getAccountDisplayName } from "~/utils/accountUtils";
 import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 import { getUserNetWorth } from "~/utils/netWorthUtils.server";
@@ -121,16 +122,8 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
         <Table.Body>
           {[...loaderData.user.accounts]
             .sort((a, b) => {
-              const aName =
-                a.customName ??
-                a.plaidAccount?.name ??
-                a.plaidAccount?.officialName ??
-                "[Unnamed Account]";
-              const bName =
-                b.customName ??
-                b.plaidAccount?.name ??
-                b.plaidAccount?.officialName ??
-                "[Unnamed Account]";
+              const aName = getAccountDisplayName(a);
+              const bName = getAccountDisplayName(b);
 
               return aName.localeCompare(bName);
             })
@@ -139,12 +132,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
                 <Table.Cell>
                   <Link to={`/accounts/${account.id}`}>{account.id}</Link>
                 </Table.Cell>
-                <Table.Cell>
-                  {account.customName ??
-                    account.plaidAccount?.name ??
-                    account.plaidAccount?.officialName ??
-                    "[Unnamed Account]"}
-                </Table.Cell>
+                <Table.Cell>{getAccountDisplayName(account)}</Table.Cell>
                 <Table.Cell>
                   {formatCurrency(account.balanceSnapshots[0]?.amount ?? 0)}
                 </Table.Cell>

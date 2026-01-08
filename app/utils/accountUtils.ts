@@ -1,6 +1,9 @@
-import { BalanceSnapshot, AccountType } from "@prisma/client";
-
-import { Account } from "~/models/account.server";
+import {
+  BalanceSnapshot,
+  AccountType,
+  PlaidAccount,
+  Account,
+} from "@prisma/client";
 
 function formatMonth(date: Date): string {
   return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}-${String(
@@ -162,4 +165,19 @@ const prettyAccountTypes: Record<AccountType, string> = {
 
 export const toPrettyAccountType = (type: AccountType): string => {
   return prettyAccountTypes[type];
+};
+
+export interface AccountDisplayNameInput {
+  id: Account["id"];
+  customName: Account["customName"];
+  plaidAccount: Pick<PlaidAccount, "officialName" | "name"> | null;
+}
+
+export const getAccountDisplayName = (account: AccountDisplayNameInput) => {
+  return (
+    account.customName ??
+    account.plaidAccount?.name ??
+    account.plaidAccount?.officialName ??
+    "[Unnamed Account]"
+  );
 };

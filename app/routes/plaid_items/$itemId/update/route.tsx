@@ -16,6 +16,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const plaidItem = await prisma.plaidItem.findFirstOrThrow({
     where: {
       id: params.itemId,
+      userId,
     },
     select: {
       accessToken: true,

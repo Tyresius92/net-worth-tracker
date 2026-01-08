@@ -6,7 +6,10 @@ import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
-import { toPrettyAccountType } from "~/utils/accountUtils";
+import {
+  toPrettyAccountType,
+  getAccountDisplayName,
+} from "~/utils/accountUtils";
 
 import type { Route } from "./+types/layout";
 
@@ -18,16 +21,21 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       userId: user.id,
     },
     include: {
-      balanceSnapshots: true,
-      plaidAccount: true,
+      plaidAccount: {
+        select: {
+          id: true,
+          name: true,
+          officialName: true,
+        },
+      },
     },
   });
 
   return {
     user,
     accounts: accounts.sort((a, b) => {
-      const aName = a.customName ?? a.plaidAccount?.name ?? "[Unnamed Account]";
-      const bName = b.customName ?? b.plaidAccount?.name ?? "[Unnamed Account]";
+      const aName = getAccountDisplayName(a);
+      const bName = getAccountDisplayName(b);
 
       return aName.localeCompare(bName);
     }),
@@ -66,9 +74,7 @@ const AccountList = ({
         {accounts.map((account) => (
           <li key={account.id}>
             <Link to={account.id}>
-              {account.customName ??
-                account.plaidAccount?.name ??
-                "[Unnamed Account]"}{" "}
+              {getAccountDisplayName(account)}{" "}
               {account.plaidAccount ? "(Plaid)" : "(Manual)"}
             </Link>
           </li>
