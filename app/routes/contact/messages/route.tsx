@@ -4,9 +4,8 @@ import { Box } from "~/components/Box/Box";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
-import { formatDate } from "~/utils/balanceUtils";
 
-import { Route } from "./+types/route";
+import type { Route } from "./+types/route";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
