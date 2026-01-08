@@ -103,9 +103,16 @@ export default function App({ loaderData }: Route.ComponentProps) {
               {loaderData.user ? (
                 <>
                   {loaderData.user.role === "admin" ? (
-                    <li>
-                      <NavLink to="/users">Users</NavLink>
-                    </li>
+                    <>
+                      <li>
+                        <NavLink to="/users">Users</NavLink>
+                      </li>
+                      <li>
+                        <NavLink to="/contact/messages">
+                          Contact Form Submissions
+                        </NavLink>
+                      </li>
+                    </>
                   ) : null}
                   <li>
                     <NavLink to="/profile">My Profile</NavLink>

@@ -11,6 +11,7 @@ export default [
   route("logout", "./routes/logout.tsx"),
 
   route("contact", "./routes/contact/route.tsx"),
+  route("contact/messages", "./routes/contact/messages/route.tsx"),
 
   route("privacy", "./routes/privacy/route.tsx"),
 
