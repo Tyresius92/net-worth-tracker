@@ -2,7 +2,7 @@ import { LoaderFunctionArgs, redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Table } from "~/components/Table/Table";
-import { getUsers } from "~/models/user.server";
+import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
 
 import type { Route } from "./+types/route";
@@ -14,10 +14,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     return redirect("/", { status: 403 });
   }
 
-  const users = await getUsers();
+  const users = await prisma.user.findMany();
 
   return {
-    user,
     users,
   };
 };

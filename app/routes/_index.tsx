@@ -4,6 +4,7 @@ import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
 import { getUser } from "~/session.server";
 import { formatCurrency } from "~/utils/currencyUtils";
+import { getUserNetWorth } from "~/utils/netWorthUtils.server";
 
 import type { Route } from "./+types/_index";
 
@@ -39,15 +40,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   return {
     user,
-    netWorth: userData.accounts.reduce((accumulator, account) => {
-      const snap = account.balanceSnapshots[0];
-
-      if (!snap) {
-        return accumulator;
-      }
-
-      return accumulator + snap.amount;
-    }, 0),
+    netWorth: getUserNetWorth(userData.accounts),
   };
 };
 

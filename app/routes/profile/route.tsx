@@ -8,6 +8,7 @@ import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
+import { getUserNetWorth } from "~/utils/netWorthUtils.server";
 
 import type { Route } from "./+types/route";
 
@@ -82,15 +83,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   return {
     user,
-    netWorth: user.accounts.reduce((accumulator, account) => {
-      const snap = account.balanceSnapshots[0];
-
-      if (!snap) {
-        return accumulator;
-      }
-
-      return accumulator + snap.amount;
-    }, 0),
+    netWorth: getUserNetWorth(user.accounts),
     balances: balanceDays,
   };
 };
