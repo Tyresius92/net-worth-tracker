@@ -5,3 +5,9 @@ export const formatDate = (date: Date) => {
 
   return foo.format(date);
 };
+
+export const getDateNDaysAgo = (daysAgo: number) => {
+  const today = new Date();
+
+  return new Date(new Date().setDate(today.getDate() - daysAgo));
+};

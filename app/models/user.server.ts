@@ -72,3 +72,32 @@ export async function verifyLogin(
 
   return userWithoutPassword;
 }
+
+export const getLatestBalancesAsOfDate = (userId: User["id"], date: Date) => {
+  return prisma.user.findFirstOrThrow({
+    where: {
+      id: userId,
+    },
+    include: {
+      accounts: {
+        where: {
+          closedAt: null,
+        },
+        include: {
+          balanceSnapshots: {
+            take: 1,
+            orderBy: {
+              dateTime: "desc",
+            },
+            where: {
+              dateTime: {
+                // 30 days ago
+                lte: date,
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+};

@@ -3,9 +3,11 @@ import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
+import { getLatestBalancesAsOfDate } from "~/models/user.server";
 import { getUser } from "~/session.server";
 import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
+import { getDateNDaysAgo } from "~/utils/dateUtils";
 import { getUserNetWorth } from "~/utils/netWorthUtils.server";
 
 import type { Route } from "./+types/_index";
@@ -16,7 +18,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await getUser(request);
 
   if (!user) {
-    return { user, netWorth: 0, netWorthFromThirtyDaysAgo: 0 };
+    return {
+      user,
+      netWorth: 0,
+      netWorthFromThirtyDaysAgo: 0,
+      netWorthFromStartOfYear: 0,
+      netWorthFromOneYearAgo: 0,
+    };
   }
 
   const userData = await prisma.user.findFirstOrThrow({
@@ -39,33 +47,20 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       },
     },
   });
-  const today = new Date();
-  const dataFromThirtyDaysAgo = await prisma.user.findFirstOrThrow({
-    where: {
-      id: user.id,
-    },
-    include: {
-      accounts: {
-        where: {
-          closedAt: null,
-        },
-        include: {
-          balanceSnapshots: {
-            take: 1,
-            orderBy: {
-              dateTime: "desc",
-            },
-            where: {
-              dateTime: {
-                // 30 days ago
-                lte: new Date(new Date().setDate(today.getDate() - 30)),
-              },
-            },
-          },
-        },
-      },
-    },
-  });
+  const dataFromThirtyDaysAgo = await getLatestBalancesAsOfDate(
+    user.id,
+    getDateNDaysAgo(30),
+  );
+
+  const dataFromFirstDayOfTheYear = await getLatestBalancesAsOfDate(
+    user.id,
+    new Date(new Date().getFullYear(), 0, 1),
+  );
+
+  const dataFromOneYearAgo = await getLatestBalancesAsOfDate(
+    user.id,
+    getDateNDaysAgo(365),
+  );
 
   const accounts = await prisma.account.findMany({
     where: {
@@ -110,14 +105,26 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     user,
     netWorth: getUserNetWorth(userData.accounts),
     netWorthFromThirtyDaysAgo: getUserNetWorth(dataFromThirtyDaysAgo.accounts),
+    netWorthFromStartOfYear: getUserNetWorth(
+      dataFromFirstDayOfTheYear.accounts,
+    ),
+    netWorthFromOneYearAgo: getUserNetWorth(dataFromOneYearAgo.accounts),
     balances: balanceDays,
   };
 };
 
 export default function Index({ loaderData }: Route.ComponentProps) {
-  const { user, netWorth, netWorthFromThirtyDaysAgo } = loaderData;
+  const {
+    user,
+    netWorth,
+    netWorthFromThirtyDaysAgo,
+    netWorthFromOneYearAgo,
+    netWorthFromStartOfYear,
+  } = loaderData;
 
-  const change = netWorth - netWorthFromThirtyDaysAgo;
+  const thirtyDayChange = netWorth - netWorthFromThirtyDaysAgo;
+  const thisYearChange = netWorth - netWorthFromStartOfYear;
+  const oneYearChange = netWorth - netWorthFromOneYearAgo;
 
   return (
     <div
@@ -132,11 +139,27 @@ export default function Index({ loaderData }: Route.ComponentProps) {
               Your net worth is {formatCurrency(netWorth)}
             </h1>
 
-            {change !== 0 ? (
+            {thirtyDayChange !== 0 ? (
               <h2>
-                {change > 0 ? "Up" : "Down"}{" "}
-                {formatCurrency(change, { includeCents: false })} over the last
-                30 days
+                {thirtyDayChange > 0 ? "Up" : "Down"}{" "}
+                {formatCurrency(thirtyDayChange, { includeCents: false })} over
+                the last 30 days
+              </h2>
+            ) : null}
+
+            {thisYearChange !== 0 ? (
+              <h2>
+                {thisYearChange > 0 ? "Up" : "Down"}{" "}
+                {formatCurrency(thisYearChange, { includeCents: false })} since
+                the beginning of this year
+              </h2>
+            ) : null}
+
+            {oneYearChange !== 0 ? (
+              <h2>
+                {oneYearChange > 0 ? "Up" : "Down"}{" "}
+                {formatCurrency(oneYearChange, { includeCents: false })} over
+                the last year
               </h2>
             ) : null}
 
