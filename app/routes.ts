@@ -65,7 +65,18 @@ export default [
 
   route("api/accounts/refresh", "./routes/api/accounts/refresh.ts"),
 
-  route("react_devtools_backend_compact.js.map", "./routes/dummy/devtools.tsx"),
-  route("installHook.js.map", "./routes/dummy/hook.tsx"),
-  route("passkeys.js.map", "./routes/dummy/passkeys.tsx"),
+  ...(process.env["NODE_ENV"] === "development"
+    ? [
+        route(
+          "react_devtools_backend_compact.js.map",
+          "./routes/dummy/devtools.tsx",
+        ),
+        route("installHook.js.map", "./routes/dummy/hook.tsx"),
+        route("passkeys.js.map", "./routes/dummy/passkeys.tsx"),
+        route(
+          ".well-known/appspecific/com.chrome.devtools.json",
+          "./routes/dummy/chrome_devtools.tsx",
+        ),
+      ]
+    : []),
 ] satisfies RouteConfig;

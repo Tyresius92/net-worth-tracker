@@ -10,7 +10,6 @@
 
   &[class*="active"] {
     border-radius: 12px;
-    color: var(--color-red-9);
     font-weight: bold;
   }
 }

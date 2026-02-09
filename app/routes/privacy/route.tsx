@@ -143,8 +143,8 @@ export default function PrivacyPolicy() {
         <h2>Cookies</h2>
         <p>
           We use a single, required cookie to manage user authentication and
-          login state. We do not use analytics, advertising, or tracking
-          cookies.
+          login state, as well as your light or dark mode preference. We do not
+          use analytics, advertising, or tracking cookies.
         </p>
       </Box>
 

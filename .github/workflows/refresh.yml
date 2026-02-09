@@ -15,7 +15,15 @@ jobs:
         uses: actions/checkout@v2
       - name: Run Script for Prod
         run: |
-          curl -X POST -H 'Content-Type: application/json' -d '{"refresh": "authorized"}' https://net-worth-tracker-3c5c.fly.dev/api/accounts/refresh
+          curl -X POST \
+            -H 'Content-Type: application/json' \
+            -H "Authorization: Bearer ${{ secrets.REFRESH_API_SECRET }}" \
+            -d '{"refresh": "authorized"}' \
+            https://net-worth-tracker-3c5c.fly.dev/api/accounts/refresh
       - name: Run Script for Staging
         run: |
-          curl -X POST -H 'Content-Type: application/json' -d '{"refresh": "authorized"}' https://net-worth-tracker-3c5c-staging.fly.dev/api/accounts/refresh
+          curl -X POST \
+            -H 'Content-Type: application/json' \
+            -H "Authorization: Bearer ${{ secrets.REFRESH_API_SECRET }}" \
+            -d '{"refresh": "authorized"}' \
+            https://net-worth-tracker-3c5c-staging.fly.dev/api/accounts/refresh

@@ -1,0 +1,7 @@
+.divider {
+  background-color: var(--color-sand-12);
+  flex-shrink: 0;
+  height: 1px;
+  margin-block: var(--space-12);
+  opacity: 70%;
+}

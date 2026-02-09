@@ -1,7 +1,9 @@
 .link {
-  color: var(--color-orange-11);
+  color: var(--color-sand-12);
+  text-decoration: underline;
+  text-decoration-color: var(--sand-8);
 
   &:visited {
-    color: var(--color-orange-11);
+    color: var(--color-sand-12);
   }
 }

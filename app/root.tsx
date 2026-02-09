@@ -6,7 +6,6 @@ import type {
 } from "react-router";
 import {
   createCookie,
-  Form,
   Links,
   Meta,
   Outlet,
@@ -21,11 +20,9 @@ import { getUser } from "~/session.server";
 import type { Route } from "./+types/root";
 import lightColors from "./components/_GlobalStyles/colors.css?url";
 import spaceStyles from "./components/_GlobalStyles/space.css?url";
-import { Box } from "./components/Box/Box";
-import { Button } from "./components/Button/Button";
 import { Flex } from "./components/Flex/Flex";
 import { Link } from "./components/Link/Link";
-import { NavLink } from "./components/NavLink/NavLink";
+import { Masthead } from "./components/Masthead/Masthead";
 import styles from "./root.css?url";
 
 export const prefs = createCookie("user-prefs");
@@ -86,13 +83,15 @@ export default function App({ loaderData }: Route.ComponentProps) {
       <body
         className={colorMode}
         style={{
-          height: "100%",
+          minHeight: "calc(100% - 24px)",
           display: "flex",
           flexDirection: "column",
           flexGrow: 1,
+          padding: 12,
         }}
       >
-        <nav className="nav">
+        <Masthead user={loaderData.user} />
+        {/* <nav className="nav">
           <Box>
             <h1>
               <NavLink to="/">Net Worth Tracker</NavLink>
@@ -131,9 +130,9 @@ export default function App({ loaderData }: Route.ComponentProps) {
                 </>
               ) : (
                 <>
-                  {/* <li>
+                  <li>
                     <NavLink to="/join">Join</NavLink>
-                  </li> */}
+                  </li> 
                   <li>
                     <NavLink to="/login">Login</NavLink>
                   </li>
@@ -151,23 +150,11 @@ export default function App({ loaderData }: Route.ComponentProps) {
               </li>
             </ul>
           </Box>
-        </nav>
-        <main
-          style={{
-            flexGrow: 1,
-            backgroundColor: "var(--color-indigo-2)",
-            color: "var(--color-slate-12)",
-            padding: "var(--space-32)",
-          }}
-        >
+        </nav> */}
+        <main>
           <Outlet />
         </main>
-        <footer
-          style={{
-            backgroundColor: "var(--color-indigo-4)",
-            padding: "var(--space-32)",
-          }}
-        >
+        <footer>
           <Flex flexDirection="column" gap={16}>
             <Link to="privacy">Privacy policy</Link>
             <Link to="contact">Contact</Link>

@@ -1,8 +1,10 @@
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 
+import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
 import { getUser } from "~/session.server";
+import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 import { getUserNetWorth } from "~/utils/netWorthUtils.server";
 
@@ -14,7 +16,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await getUser(request);
 
   if (!user) {
-    return { user, netWorth: null };
+    return { user, netWorth: 0, netWorthFromThirtyDaysAgo: 0 };
   }
 
   const userData = await prisma.user.findFirstOrThrow({
@@ -37,15 +39,85 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       },
     },
   });
+  const today = new Date();
+  const dataFromThirtyDaysAgo = await prisma.user.findFirstOrThrow({
+    where: {
+      id: user.id,
+    },
+    include: {
+      accounts: {
+        where: {
+          closedAt: null,
+        },
+        include: {
+          balanceSnapshots: {
+            take: 1,
+            orderBy: {
+              dateTime: "desc",
+            },
+            where: {
+              dateTime: {
+                // 30 days ago
+                lte: new Date(new Date().setDate(today.getDate() - 30)),
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const accounts = await prisma.account.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      balanceSnapshots: {
+        select: {
+          id: true,
+          amount: true,
+          date: true,
+        },
+        orderBy: {
+          dateTime: "asc",
+        },
+      },
+    },
+  });
+
+  const snapshots = accounts.flatMap((account) =>
+    fillDailyBalanceDayData(account.balanceSnapshots),
+  );
+
+  const dailyAmounts = snapshots.reduce<Record<string, number>>((acc, curr) => {
+    if (typeof acc[curr.date] !== "number") {
+      acc[curr.date] = 0;
+    }
+
+    acc[curr.date] += curr.amount;
+
+    return acc;
+  }, {});
+
+  const balanceDays = Object.entries(dailyAmounts)
+    .map(([date, amount]) => ({
+      date,
+      amount,
+    }))
+    .sort((a, b) => (a.date < b.date ? -1 : 1));
 
   return {
     user,
     netWorth: getUserNetWorth(userData.accounts),
+    netWorthFromThirtyDaysAgo: getUserNetWorth(dataFromThirtyDaysAgo.accounts),
+    balances: balanceDays,
   };
 };
 
 export default function Index({ loaderData }: Route.ComponentProps) {
-  const { user, netWorth } = loaderData;
+  const { user, netWorth, netWorthFromThirtyDaysAgo } = loaderData;
+
+  const change = netWorth - netWorthFromThirtyDaysAgo;
 
   return (
     <div
@@ -54,22 +126,21 @@ export default function Index({ loaderData }: Route.ComponentProps) {
       }}
     >
       <Box>
-        <h1
-          style={{
-            color: "var(--color-orange-9)",
-          }}
-        >
-          Money Chomp
-        </h1>
-        <h2 style={{ color: "var(--color-slate-12)" }}>
-          Take a bite out of your finances.
-        </h2>
-      </Box>
-      <Box>
         {user ? (
           <Box>
-            <h3>Hello, {user.firstName}!</h3>
-            <h4>Your net worth is {formatCurrency(netWorth)}</h4>
+            <h1 style={{ textTransform: "uppercase" }}>
+              Your net worth is {formatCurrency(netWorth)}
+            </h1>
+
+            {change !== 0 ? (
+              <h2>
+                {change > 0 ? "Up" : "Down"}{" "}
+                {formatCurrency(change, { includeCents: false })} over the last
+                30 days
+              </h2>
+            ) : null}
+
+            <BalanceChart balances={loaderData.balances} />
           </Box>
         ) : null}
       </Box>
