@@ -1,10 +1,10 @@
 import { Box } from "../Box/Box";
-import { NavLink } from "../NavLink/NavLink";
 
 export const Navbar = () => {
   return (
     <nav className="nav">
-      <Box>
+      <Box>Will probably delete later</Box>
+      {/* <Box>
         <h1>
           <NavLink to="/">Net Worth Tracker</NavLink>
         </h1>
@@ -42,9 +42,9 @@ export const Navbar = () => {
             </>
           ) : (
             <>
-              {/* <li>
-                    <NavLink to="/join">Join</NavLink>
-                  </li> */}
+              <li>
+                <NavLink to="/join">Join</NavLink>
+              </li>
               <li>
                 <NavLink to="/login">Login</NavLink>
               </li>
@@ -61,7 +61,7 @@ export const Navbar = () => {
             </fetcher.Form>
           </li>
         </ul>
-      </Box>
+      </Box> */}
     </nav>
   );
 };
