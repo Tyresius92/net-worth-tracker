@@ -20,6 +20,8 @@ export default [
     route("enable_mfa", "./routes/profile/enable_mfa/route.tsx"),
   ]),
 
+  route("settings", "./routes/settings/route.tsx"),
+
   route("users", "./routes/users/layout.tsx", [
     index("./routes/users/route.tsx"),
   ]),
