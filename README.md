@@ -10,7 +10,7 @@ This project prioritizes **long-term data ownership**, **correctness**, and **in
 
 When Mint shut down, I lost nearly eight years of net worth history. Replacing it meant learning a new tool with no guarantee of long-term stability or data portability.
 
-Rather than repeat that cycle, I built a small, self-hosted system that:
+Rather than repeat that cycle, I built a small app that:
 
 - I fully control
 - Stores historical data durably
