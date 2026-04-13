@@ -29,53 +29,66 @@ export const BalanceChart = ({ balances }: BalanceChartProps) => {
   }
 
   return (
-    <div style={{ width: 730, height: 350 }}>
-      <ComposedChart
-        id="asdf"
-        width={730}
-        height={450}
-        margin={{
-          right: 20,
-          left: 20,
-          // top: 20, bottom: 20
+    <div style={{}}>
+      <h2>Your net worth history</h2>
+      <div
+        style={{
+          alignItems: "center",
+          backgroundColor: "var(--color-sand-5)",
+          borderRadius: 32,
+          display: "flex",
+          width: 730,
+          height: 400,
         }}
-        data={balances.map((snap) => ({
-          date: snap.date,
-          amount: snap.amount / 100,
-        }))}
       >
-        <XAxis
-          dataKey="date"
-          // tickMargin={40}
-          height={200}
-          minTickGap={20}
-          angle={-60}
-          textAnchor="end"
-        />
-        <YAxis
-          tickFormatter={(val) =>
-            formatCurrency(val * 100, { includeCents: false })
-          }
-        />
-        <Tooltip
-          formatter={(val) => {
-            if (typeof val !== "number") {
-              return `Invalid type: ${typeof val}`;
-            }
-
-            return formatCurrency(val * 100);
+        <ComposedChart
+          // id="asdf"
+          width={730}
+          height={400}
+          margin={{
+            right: 20,
+            left: 20,
+            top: 20,
+            bottom: 20,
           }}
-        />
-        <ReferenceLine y={0} stroke="#000" />
-        <Line
-          isAnimationActive={false}
-          type="monotone"
-          dataKey="amount"
-          stroke="green"
-          dot={false}
-          activeDot={true}
-        />
-      </ComposedChart>
+          data={balances.map((snap) => ({
+            date: snap.date,
+            amount: snap.amount / 100,
+          }))}
+        >
+          {/* <Legend /> */}
+          <XAxis
+            dataKey="date"
+            height={90}
+            minTickGap={20}
+            angle={-60}
+            textAnchor="end"
+          />
+          <YAxis
+            tickFormatter={(val) =>
+              formatCurrency(val * 100, { includeCents: false })
+            }
+          />
+          <Tooltip
+            formatter={(val) => {
+              if (typeof val !== "number") {
+                return `Invalid type: ${typeof val}`;
+              }
+
+              return formatCurrency(val * 100);
+            }}
+          />
+          <ReferenceLine y={0} stroke="#000" />
+          <Line
+            isAnimationActive={false}
+            type="monotone"
+            dataKey="amount"
+            stroke="green"
+            dot={false}
+            activeDot={true}
+          />
+        </ComposedChart>
+      </div>
     </div>
   );
 };

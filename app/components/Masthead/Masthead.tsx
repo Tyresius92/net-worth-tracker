@@ -35,14 +35,16 @@ export const Masthead = ({ user }: MastheadProps) => {
       <Divider />
       <nav>
         <Flex justifyContent="flex-end" gap={32}>
-          <NavLink to="/accounts">Accounts</NavLink>
-          <NavLink to="/settings">Settings</NavLink>
           {user ? (
-            <Box p={12}>
-              <Form method="post" action="logout">
-                <Button type="submit">Log Out</Button>
-              </Form>
-            </Box>
+            <>
+              <NavLink to="/accounts">Accounts</NavLink>
+              <NavLink to="/settings">Settings</NavLink>
+              <Box p={12}>
+                <Form method="post" action="logout">
+                  <Button type="submit">Log Out</Button>
+                </Form>
+              </Box>
+            </>
           ) : (
             <>
               <NavLink to="/join">Join</NavLink>

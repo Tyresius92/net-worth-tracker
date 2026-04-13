@@ -31,8 +31,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const totp = new TOTP({
     issuer:
       process.env.NODE_ENV === "production"
-        ? "Money Chomp"
-        : "Money Chomp Testing",
+        ? "The Ledger"
+        : "The Ledger Testing",
     label: user.email,
     algorithm: "SHA1",
     digits: 6,
@@ -71,8 +71,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const totp = new TOTP({
     issuer:
       process.env.NODE_ENV === "production"
-        ? "Money Chomp"
-        : "Money Chomp Testing",
+        ? "The Ledger"
+        : "The Ledger Testing",
     label: user.email,
     secret: Secret.fromBase32(secretBase32),
   });

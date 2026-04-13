@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 
 import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";
+import { Flex } from "~/components/Flex/Flex";
 import { prisma } from "~/db.server";
 import { getLatestBalancesAsOfDate } from "~/models/user.server";
 import { getUser } from "~/session.server";
@@ -138,32 +139,39 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             <h1 style={{ textTransform: "uppercase" }}>
               Your net worth is {formatCurrency(netWorth)}
             </h1>
+            <Flex gap={32} justifyContent="space-between">
+              <Box>
+                <h2>Highlights</h2>
+                <ul>
+                  {thirtyDayChange !== 0 ? (
+                    <li>
+                      {thirtyDayChange > 0 ? "Up" : "Down"}{" "}
+                      {formatCurrency(thirtyDayChange, { includeCents: false })}{" "}
+                      over the last 30 days
+                    </li>
+                  ) : null}
 
-            {thirtyDayChange !== 0 ? (
-              <h2>
-                {thirtyDayChange > 0 ? "Up" : "Down"}{" "}
-                {formatCurrency(thirtyDayChange, { includeCents: false })} over
-                the last 30 days
-              </h2>
-            ) : null}
+                  {thisYearChange !== 0 ? (
+                    <li>
+                      {thisYearChange > 0 ? "Up" : "Down"}{" "}
+                      {formatCurrency(thisYearChange, { includeCents: false })}{" "}
+                      since the beginning of this year
+                    </li>
+                  ) : null}
 
-            {thisYearChange !== 0 ? (
-              <h2>
-                {thisYearChange > 0 ? "Up" : "Down"}{" "}
-                {formatCurrency(thisYearChange, { includeCents: false })} since
-                the beginning of this year
-              </h2>
-            ) : null}
-
-            {oneYearChange !== 0 ? (
-              <h2>
-                {oneYearChange > 0 ? "Up" : "Down"}{" "}
-                {formatCurrency(oneYearChange, { includeCents: false })} over
-                the last year
-              </h2>
-            ) : null}
-
-            <BalanceChart balances={loaderData.balances} />
+                  {oneYearChange !== 0 ? (
+                    <li>
+                      {oneYearChange > 0 ? "Up" : "Down"}{" "}
+                      {formatCurrency(oneYearChange, { includeCents: false })}{" "}
+                      over the last year
+                    </li>
+                  ) : null}
+                </ul>
+              </Box>
+              <Box>
+                <BalanceChart balances={loaderData.balances} />
+              </Box>
+            </Flex>
           </Box>
         ) : null}
       </Box>

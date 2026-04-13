@@ -23,7 +23,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     user: {
       client_user_id: userId,
     },
-    client_name: "Money Chomp",
+    client_name: "The Ledger",
     products: [Products.Transactions],
     language: "en",
     country_codes: [CountryCode.Us],
