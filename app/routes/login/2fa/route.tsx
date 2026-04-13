@@ -31,7 +31,7 @@ export async function action({ request }: { request: Request }) {
   }
 
   const totp = new TOTP({
-    issuer: "Money Chomp",
+    issuer: "The Ledger",
     label: user.email,
     secret: Secret.fromBase32(user.twoFactorSecret!),
   });

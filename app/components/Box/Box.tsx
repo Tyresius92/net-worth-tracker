@@ -54,6 +54,7 @@ export const Box = ({
   return (
     <div
       style={{
+        borderRadius: "inherit",
         ...(pl && { paddingInlineStart: `var(--space-${pl})` }),
         ...(pr && { paddingInlineEnd: `var(--space-${pr})` }),
         ...(pt && { paddingBlockStart: `var(--space-${pt})` }),

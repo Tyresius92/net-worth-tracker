@@ -27,7 +27,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     user: {
       client_user_id: userId,
     },
-    client_name: "Money Chomp",
+    client_name: "The Ledger",
     access_token: plaidItem.accessToken,
     language: "en",
     country_codes: [CountryCode.Us],

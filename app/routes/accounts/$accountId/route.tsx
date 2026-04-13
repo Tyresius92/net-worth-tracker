@@ -37,6 +37,11 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
           dateTime: "desc",
         },
       },
+      plaidAccount: {
+        select: {
+          plaidItemId: true,
+        },
+      },
     },
   });
 
