@@ -14,7 +14,6 @@ import {
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
-import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { verifyLogin } from "~/models/user.server";
 import {
@@ -71,6 +70,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (user.twoFactorEnabled) {
     session.set("2fa:user-id", user.id);
+    session.set("2fa:remember", remember === "on" ? true : false);
     return redirect("./2fa", {
       headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
     });
@@ -128,21 +128,8 @@ export default function LoginPage() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <Button type="submit">Log in</Button>
           <Box>
-            <Box>
-              <input id="remember" name="remember" type="checkbox" />
-              <label htmlFor="remember">Remember me</label>
-            </Box>
-            <Box>
-              Don&apos;t have an account?{" "}
-              <Link
-                to={{
-                  pathname: "/join",
-                  search: searchParams.toString(),
-                }}
-              >
-                Sign up
-              </Link>
-            </Box>
+            <input id="remember" name="remember" type="checkbox" />
+            <label htmlFor="remember">Remember me</label>
           </Box>
         </Form>
       </Box>
