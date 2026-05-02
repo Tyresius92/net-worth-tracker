@@ -169,7 +169,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                 </ul>
               </Box>
               <Flex flexGrow={1}>
-                <BalanceChart balances={loaderData.balances} />
+                <BalanceChart balances={loaderData.balances} title="Net worth history" />
               </Flex>
             </Flex>
           </Box>

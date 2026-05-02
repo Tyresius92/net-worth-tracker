@@ -9,6 +9,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { VisuallyHidden } from "~/components/VisuallyHidden/VisuallyHidden";
 import { formatCurrency } from "~/utils/currencyUtils";
 
 import styles from "./BalanceChart.module.css";
@@ -18,9 +19,10 @@ export interface BalanceChartProps {
     date: string;
     amount: number;
   }[];
+  title: string;
 }
 
-export const BalanceChart = ({ balances }: BalanceChartProps) => {
+export const BalanceChart = ({ balances, title }: BalanceChartProps) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -32,9 +34,10 @@ export const BalanceChart = ({ balances }: BalanceChartProps) => {
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} aria-label={title}>
       <ResponsiveContainer width="100%" height={400}>
         <ComposedChart
+          accessibilityLayer
           margin={{ right: 20, left: 20, top: 20, bottom: 20 }}
           data={balances.map((snap) => ({
             date: snap.date,
@@ -82,6 +85,25 @@ export const BalanceChart = ({ balances }: BalanceChartProps) => {
           />
         </ComposedChart>
       </ResponsiveContainer>
+      <VisuallyHidden>
+        <table>
+          <caption>{title}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {balances.map((balance) => (
+              <tr key={balance.date}>
+                <td>{balance.date}</td>
+                <td>{formatCurrency(balance.amount)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </VisuallyHidden>
     </div>
   );
 };
