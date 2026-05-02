@@ -168,9 +168,9 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                   ) : null}
                 </ul>
               </Box>
-              <Box>
+              <Flex flexGrow={1}>
                 <BalanceChart balances={loaderData.balances} />
-              </Box>
+              </Flex>
             </Flex>
           </Box>
         ) : null}
