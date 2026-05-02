@@ -20,6 +20,7 @@ import { getUser } from "~/session.server";
 import type { Route } from "./+types/root";
 import lightColors from "./components/_GlobalStyles/colors.css?url";
 import spaceStyles from "./components/_GlobalStyles/space.css?url";
+import { Button } from "./components/Button/Button";
 import { Flex } from "./components/Flex/Flex";
 import { Link } from "./components/Link/Link";
 import { Masthead } from "./components/Masthead/Masthead";
@@ -91,67 +92,17 @@ export default function App({ loaderData }: Route.ComponentProps) {
           padding: 12,
         }}
       >
-        <Masthead user={loaderData.user} />
-        {/* <nav className="nav">
-          <Box>
-            <h1>
-              <NavLink to="/">Net Worth Tracker</NavLink>
-            </h1>
-          </Box>
-          <Box>
-            <ul className="nav-links">
-              {loaderData.user ? (
-                <>
-                  {loaderData.user.role === "admin" ? (
-                    <>
-                      <li>
-                        <NavLink to="/users">Users</NavLink>
-                      </li>
-                      <li>
-                        <NavLink to="/contact/messages">
-                          Contact Form Submissions
-                        </NavLink>
-                      </li>
-                    </>
-                  ) : null}
-                  <li>
-                    <NavLink to="/profile">My Profile</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/accounts">Accounts</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/plaid_items">Plaid Items</NavLink>
-                  </li>
-                  <li>
-                    <Form method="post" action="logout">
-                      <Button type="submit">Log Out</Button>
-                    </Form>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <NavLink to="/join">Join</NavLink>
-                  </li> 
-                  <li>
-                    <NavLink to="/login">Login</NavLink>
-                  </li>
-                </>
-              )}
-              <li>
-                <fetcher.Form method="post">
-                  <Button
-                    name="colorMode"
-                    value={colorMode === "dark" ? "light" : "dark"}
-                  >
-                    {colorMode === "dark" ? "Light Mode" : "Dark Mode"}
-                  </Button>
-                </fetcher.Form>
-              </li>
-            </ul>
-          </Box>
-        </nav> */}
+        <Masthead user={loaderData.user}>
+          <fetcher.Form method="post">
+            <Button
+              type="submit"
+              name="colorMode"
+              value={colorMode === "dark" ? "light" : "dark"}
+            >
+              {colorMode === "dark" ? "Light Mode" : "Dark Mode"}
+            </Button>
+          </fetcher.Form>
+        </Masthead>
         <main>
           <Outlet />
         </main>
