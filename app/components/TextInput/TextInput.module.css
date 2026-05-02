@@ -4,13 +4,12 @@
 
 .input {
   background: transparent;
-  border: none;
-  border-block-end: 1px solid var(--color-sand-12);
+  border: 1px solid var(--color-sand-12);
   border-radius: 0;
   color: inherit;
   font: inherit;
   padding-block: var(--space-6);
-  padding-inline: 0;
+  padding-inline: var(--space-8);
   width: 100%;
 
   &:focus-visible {
@@ -24,7 +23,7 @@
   }
 
   &[aria-invalid="true"] {
-    border-block-end-color: var(--color-red-9);
+    border-color: var(--color-red-9);
   }
 }
 
