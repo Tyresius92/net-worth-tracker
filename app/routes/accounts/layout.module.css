@@ -40,7 +40,9 @@
 
 .nav a[class*="active"] {
   background-color: var(--color-sand-4);
+  border-block-end: none;
   border-inline-start: 3px solid var(--color-sand-12);
   font-weight: bold;
+  padding-block-end: var(--space-12);
   padding-inline-start: calc(var(--space-12) - 3px);
 }

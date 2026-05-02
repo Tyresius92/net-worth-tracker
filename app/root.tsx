@@ -81,6 +81,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         <Links />
       </head>
       <body
+        id="root"
         className={colorMode}
         style={{
           minHeight: "calc(100% - 24px)",
