@@ -122,7 +122,6 @@ body {
 
 main {
   flex-grow: 1;
-  padding: var(--space-32);
 }
 
 h1,

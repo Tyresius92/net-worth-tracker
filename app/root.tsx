@@ -21,8 +21,7 @@ import type { Route } from "./+types/root";
 import lightColors from "./components/_GlobalStyles/colors.css?url";
 import spaceStyles from "./components/_GlobalStyles/space.css?url";
 import { Button } from "./components/Button/Button";
-import { Flex } from "./components/Flex/Flex";
-import { Link } from "./components/Link/Link";
+import { Footer } from "./components/Footer/Footer";
 import { Masthead } from "./components/Masthead/Masthead";
 import styles from "./root.css?url";
 
@@ -89,7 +88,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
           display: "flex",
           flexDirection: "column",
           flexGrow: 1,
-          padding: 12,
+          padding: "var(--space-24)",
         }}
       >
         <Masthead user={loaderData.user}>
@@ -106,21 +105,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         <main>
           <Outlet />
         </main>
-        <footer>
-          <Flex flexDirection="column" gap={16}>
-            {!loaderData.user ? (
-              <Link
-                href="https://github.com/Tyresius92/net-worth-tracker"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View source on GitHub
-              </Link>
-            ) : null}
-            <Link to="privacy">Privacy policy</Link>
-            <Link to="contact">Contact</Link>
-          </Flex>
-        </footer>
+        <Footer user={loaderData.user} />
         <ScrollRestoration />
         <script
           dangerouslySetInnerHTML={{
