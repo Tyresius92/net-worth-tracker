@@ -1,15 +1,16 @@
 import { Secret, TOTP } from "otpauth";
-import { Form, redirect } from "react-router";
+import { Form } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
-import { getSession, sessionStorage } from "~/session.server";
+import { createUserSession, getSession } from "~/session.server";
 
 export async function action({ request }: { request: Request }) {
   const session = await getSession(request);
   const userId = session.get("2fa:user-id");
+  const remember = session.get("2fa:remember");
   const formData = await request.formData();
   const token = formData.get("token");
 
@@ -47,10 +48,14 @@ export async function action({ request }: { request: Request }) {
 
   // Finalize login
   session.unset("2fa:user-id");
+  session.unset("2fa:remember");
   session.set("userId", user.id);
 
-  return redirect("/", {
-    headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
+  return createUserSession({
+    request,
+    userId: user.id,
+    remember,
+    redirectTo: "/",
   });
 }
 
