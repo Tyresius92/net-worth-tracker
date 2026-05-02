@@ -1,7 +1,8 @@
 import { useId } from "react";
 
-import { Box } from "../Box/Box";
 import { Flex } from "../Flex/Flex";
+
+import styles from "./Select.module.css";
 
 export interface SelectProps {
   name: string;
@@ -11,6 +12,7 @@ export interface SelectProps {
     label: string;
   }[];
   defaultValue?: string;
+  disabled?: boolean;
   errorMessage?: string;
 }
 
@@ -19,6 +21,7 @@ export const Select = ({
   name,
   options,
   defaultValue,
+  disabled,
   errorMessage,
 }: SelectProps) => {
   const inputId = useId();
@@ -26,14 +29,16 @@ export const Select = ({
 
   return (
     <Flex flexDirection="column" gap={4} mb={20}>
-      <label htmlFor={inputId}>{label}</label>
+      <label htmlFor={inputId} className={styles.label}>{label}</label>
 
       <select
         name={name}
         id={inputId}
         defaultValue={defaultValue}
+        disabled={disabled}
         aria-describedby={errorId}
         aria-invalid={errorMessage ? true : undefined}
+        className={styles.select}
       >
         <option value="">--Please choose an option--</option>
         {options.map((option) => (
@@ -42,7 +47,11 @@ export const Select = ({
           </option>
         ))}
       </select>
-      {errorMessage ? <Box id={errorId}>{errorMessage}</Box> : null}
+      {errorMessage ? (
+        <div id={errorId} className={styles.error_message}>
+          &#9888; {errorMessage}
+        </div>
+      ) : null}
     </Flex>
   );
 };
