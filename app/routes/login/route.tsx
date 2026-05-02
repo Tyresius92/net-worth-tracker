@@ -15,6 +15,7 @@ import {
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
+import { TextInput } from "~/components/TextInput/TextInput";
 import { verifyLogin } from "~/models/user.server";
 import {
   createUserSession,
@@ -104,44 +105,25 @@ export default function LoginPage() {
     <Box>
       <Box>
         <Form method="post">
-          <Box>
-            <label htmlFor="email">Email address</label>
-            <Box>
-              <input
-                ref={emailRef}
-                id="email"
-                required
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus={true}
-                name="email"
-                type="email"
-                autoComplete="email"
-                aria-invalid={actionData?.errors?.email ? true : undefined}
-                aria-describedby="email-error"
-              />
-              {actionData?.errors?.email ? (
-                <Box id="email-error">{actionData.errors.email}</Box>
-              ) : null}
-            </Box>
-          </Box>
-
-          <Box>
-            <label htmlFor="password">Password</label>
-            <Box>
-              <input
-                id="password"
-                ref={passwordRef}
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                aria-invalid={actionData?.errors?.password ? true : undefined}
-                aria-describedby="password-error"
-              />
-              {actionData?.errors?.password ? (
-                <Box id="password-error">{actionData.errors.password}</Box>
-              ) : null}
-            </Box>
-          </Box>
+          <TextInput
+            ref={emailRef}
+            type="email"
+            label="Email address"
+            name="email"
+            required
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
+            autoComplete="email"
+            errorMessage={actionData?.errors?.email ?? undefined}
+          />
+          <TextInput
+            ref={passwordRef}
+            type="password"
+            label="Password"
+            name="password"
+            autoComplete="current-password"
+            errorMessage={actionData?.errors?.password ?? undefined}
+          />
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <Button type="submit">Log in</Button>

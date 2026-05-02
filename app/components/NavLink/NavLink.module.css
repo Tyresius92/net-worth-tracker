@@ -9,7 +9,8 @@
   }
 
   &[class*="active"] {
-    border-radius: 12px;
+    border-block-end: 2px solid var(--color-sand-12);
     font-weight: bold;
+    padding-block-end: calc(var(--space-12) - 2px);
   }
 }

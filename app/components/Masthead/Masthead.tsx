@@ -7,7 +7,7 @@ import { Flex } from "../Flex/Flex";
 import { NavLink } from "../NavLink/NavLink";
 
 export interface MastheadProps {
-  user: { id: string } | null;
+  user: { id: string; twoFactorEnabled: boolean } | null;
 }
 
 export const Masthead = ({ user }: MastheadProps) => {
@@ -34,9 +34,12 @@ export const Masthead = ({ user }: MastheadProps) => {
       <Flex justifyContent="center">{formatDate(new Date())}</Flex>
       <Divider />
       <nav>
-        <Flex justifyContent="flex-end" gap={32}>
+        <Flex justifyContent="flex-end" gap={32} alignItems="center">
           {user ? (
             <>
+              {user.twoFactorEnabled ? (
+                <NavLink to="/plaid_items">Plaid Items</NavLink>
+              ) : null}
               <NavLink to="/accounts">Accounts</NavLink>
               <NavLink to="/settings">Settings</NavLink>
               <Box p={12}>
@@ -47,7 +50,6 @@ export const Masthead = ({ user }: MastheadProps) => {
             </>
           ) : (
             <>
-              <NavLink to="/join">Join</NavLink>
               <NavLink to="/login">Login</NavLink>
             </>
           )}

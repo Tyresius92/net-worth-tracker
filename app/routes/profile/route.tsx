@@ -109,7 +109,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
       <h2>Your Net Worth: {formatCurrency(loaderData.netWorth)}</h2>
 
       <h2>Net worth history</h2>
-      <BalanceChart balances={loaderData.balances} />
+      <BalanceChart balances={loaderData.balances} title="Net worth history" />
 
       <h2>Net worth breakdown</h2>
       <Table caption="Net worth breakdown">

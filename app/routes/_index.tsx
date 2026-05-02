@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 
 import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";
+import { Divider } from "~/components/Divider/Divider";
 import { Flex } from "~/components/Flex/Flex";
 import { prisma } from "~/db.server";
 import { getLatestBalancesAsOfDate } from "~/models/user.server";
@@ -12,19 +13,77 @@ import { getDateNDaysAgo } from "~/utils/dateUtils";
 import { getUserNetWorth } from "~/utils/netWorthUtils.server";
 
 import type { Route } from "./+types/_index";
+import styles from "./_index.module.css";
 
-export const meta: MetaFunction = () => [{ title: "Net Worth Tracker" }];
+export const meta: MetaFunction = () => [{ title: "The Ledger" }];
+
+function generateDemoBalances() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const startDate = new Date(today);
+  startDate.setMonth(startDate.getMonth() - 24);
+
+  const totalMs = today.getTime() - startDate.getTime();
+  const balances: { date: string; amount: number }[] = [];
+  const current = new Date(startDate);
+
+  while (current <= today) {
+    const elapsed = current.getTime() - startDate.getTime();
+    const progress = elapsed / totalMs;
+    const weekIndex = Math.floor(elapsed / (7 * 24 * 60 * 60 * 1000));
+
+    const base = 8_500_000 + progress * 8_000_000;
+    const wave1 = Math.sin((weekIndex * 2 * Math.PI) / 26) * 300_000;
+    const wave2 = Math.sin((weekIndex * 2 * Math.PI) / 52) * 600_000;
+    const wave3 = Math.sin((weekIndex * 2 * Math.PI) / 13) * 150_000;
+
+    balances.push({
+      date: current.toISOString().split("T")[0],
+      amount: Math.round(base + wave1 + wave2 + wave3),
+    });
+
+    current.setDate(current.getDate() + 7);
+  }
+
+  return balances;
+}
+
+function findDemoAmountAtDate(
+  balances: { date: string; amount: number }[],
+  target: Date,
+) {
+  const targetStr = target.toISOString().split("T")[0];
+  let closest = balances[0];
+  for (const b of balances) {
+    if (b.date <= targetStr) closest = b;
+  }
+  return closest?.amount ?? 0;
+}
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await getUser(request);
 
   if (!user) {
+    const demoBalances = generateDemoBalances();
+    const demoNetWorth = demoBalances[demoBalances.length - 1]?.amount ?? 0;
+
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const startOfYear = new Date(new Date().getFullYear(), 0, 1);
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
     return {
       user,
-      netWorth: 0,
-      netWorthFromThirtyDaysAgo: 0,
-      netWorthFromStartOfYear: 0,
-      netWorthFromOneYearAgo: 0,
+      netWorth: demoNetWorth,
+      netWorthFromThirtyDaysAgo: findDemoAmountAtDate(
+        demoBalances,
+        thirtyDaysAgo,
+      ),
+      netWorthFromStartOfYear: findDemoAmountAtDate(demoBalances, startOfYear),
+      netWorthFromOneYearAgo: findDemoAmountAtDate(demoBalances, oneYearAgo),
+      balances: demoBalances,
     };
   }
 
@@ -135,44 +194,113 @@ export default function Index({ loaderData }: Route.ComponentProps) {
     >
       <Box>
         {user ? (
+          <h1 style={{ textTransform: "uppercase" }}>
+            Your net worth is {formatCurrency(netWorth)}
+          </h1>
+        ) : (
+          <div className={styles.hero}>
+            <h2 className={styles.headline}>
+              Built after Mint shut down. Built to last.
+            </h2>
+            <p className={styles.deck}>
+              A self-hosted net worth tracker with automatic daily syncing,
+              historical snapshots, and full data ownership - designed to run
+              forever at near-zero cost.
+            </p>
+            <p className={styles.byline}>By Tyrel Clayton · Est. 2024</p>
+          </div>
+        )}
+        <Flex gap={32} justifyContent="space-between">
           <Box>
-            <h1 style={{ textTransform: "uppercase" }}>
-              Your net worth is {formatCurrency(netWorth)}
-            </h1>
-            <Flex gap={32} justifyContent="space-between">
-              <Box>
-                <h2>Highlights</h2>
-                <ul>
-                  {thirtyDayChange !== 0 ? (
-                    <li>
-                      {thirtyDayChange > 0 ? "Up" : "Down"}{" "}
-                      {formatCurrency(thirtyDayChange, { includeCents: false })}{" "}
-                      over the last 30 days
-                    </li>
-                  ) : null}
+            <h2>Highlights</h2>
+            <ul>
+              {thirtyDayChange !== 0 ? (
+                <li>
+                  {thirtyDayChange > 0 ? "Up" : "Down"}{" "}
+                  {formatCurrency(thirtyDayChange, { includeCents: false })}{" "}
+                  over the last 30 days
+                </li>
+              ) : null}
 
-                  {thisYearChange !== 0 ? (
-                    <li>
-                      {thisYearChange > 0 ? "Up" : "Down"}{" "}
-                      {formatCurrency(thisYearChange, { includeCents: false })}{" "}
-                      since the beginning of this year
-                    </li>
-                  ) : null}
+              {thisYearChange !== 0 ? (
+                <li>
+                  {thisYearChange > 0 ? "Up" : "Down"}{" "}
+                  {formatCurrency(thisYearChange, { includeCents: false })}{" "}
+                  since the beginning of this year
+                </li>
+              ) : null}
 
-                  {oneYearChange !== 0 ? (
-                    <li>
-                      {oneYearChange > 0 ? "Up" : "Down"}{" "}
-                      {formatCurrency(oneYearChange, { includeCents: false })}{" "}
-                      over the last year
-                    </li>
-                  ) : null}
-                </ul>
-              </Box>
-              <Box>
-                <BalanceChart balances={loaderData.balances} />
-              </Box>
-            </Flex>
+              {oneYearChange !== 0 ? (
+                <li>
+                  {oneYearChange > 0 ? "Up" : "Down"}{" "}
+                  {formatCurrency(oneYearChange, { includeCents: false })} over
+                  the last year
+                </li>
+              ) : null}
+            </ul>
           </Box>
+          <Flex flexGrow={1}>
+            <BalanceChart
+              balances={loaderData.balances}
+              title="Net worth history"
+            />
+          </Flex>
+        </Flex>
+        {!user ? (
+          <>
+            <Divider />
+            <div className={styles.editorial}>
+              <div className={styles.story}>
+                <p>
+                  In early 2024, Mint - Intuit&apos;s personal finance app -
+                  shut down after 17 years, taking years of financial history
+                  with it. Rather than migrate to another product with no
+                  guarantee of longevity, I built a replacement I fully control.
+                </p>
+                <p>
+                  Every decision in this project reflects a single priority:
+                  durability. SQLite instead of Postgres - because a single file
+                  is simpler to back up and reason about. Daily pulls instead of
+                  webhooks - because they&apos;re free, predictable, and degrade
+                  gracefully when they miss a day. Cookie sessions instead of
+                  OAuth - because they&apos;re easy to audit and require no
+                  third party.
+                </p>
+                <p>
+                  The result has been running reliably in production since
+                  January 2026. It syncs automatically each day via a scheduled
+                  GitHub Actions job, requires almost no ongoing maintenance,
+                  and will cost roughly the same to run in ten years as it does
+                  today.
+                </p>
+              </div>
+              <aside className={styles.specsBox}>
+                <h3 className={styles.specsTitle}>Specifications</h3>
+                <dl className={styles.specsList}>
+                  <div className={styles.specsItem}>
+                    <dt className={styles.specsLabel}>Stack</dt>
+                    <dd>React Router 7 · SQLite · Prisma · Plaid · Fly.io</dd>
+                  </div>
+                  <div className={styles.specsItem}>
+                    <dt className={styles.specsLabel}>Auth</dt>
+                    <dd>Cookie sessions · TOTP two-factor authentication</dd>
+                  </div>
+                  <div className={styles.specsItem}>
+                    <dt className={styles.specsLabel}>Data model</dt>
+                    <dd>Daily balance snapshots with carry-forward logic</dd>
+                  </div>
+                  <div className={styles.specsItem}>
+                    <dt className={styles.specsLabel}>Background jobs</dt>
+                    <dd>Scheduled GitHub Actions cron trigger</dd>
+                  </div>
+                  <div className={styles.specsItem}>
+                    <dt className={styles.specsLabel}>Testing</dt>
+                    <dd>Vitest · Cypress</dd>
+                  </div>
+                </dl>
+              </aside>
+            </div>
+          </>
         ) : null}
       </Box>
     </div>

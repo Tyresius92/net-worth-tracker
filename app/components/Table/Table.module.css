@@ -1,0 +1,46 @@
+.scroll-wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  border-block-end: 2px solid var(--color-sand-12);
+  border-block-start: 2px solid var(--color-sand-12);
+  border-collapse: collapse;
+  width: fit-content;
+}
+
+.caption {
+  caption-side: top;
+  font-family: "Libre Baskerville";
+  font-weight: bold;
+  padding-block-end: var(--space-8);
+  text-align: start;
+}
+
+.head {
+  border-block-end: 2px solid var(--color-sand-12);
+}
+
+.column-header {
+  font-weight: bold;
+  min-width: fit-content;
+  padding-block: var(--space-8);
+  padding-inline: var(--space-12);
+  text-align: start;
+}
+
+.row:nth-child(even) {
+  background-color: var(--color-sand-4);
+}
+
+.cell {
+  border-block-end: 1px solid var(--color-sand-7);
+  padding-block: var(--space-8);
+  padding-inline: var(--space-12);
+}
+
+.row-header {
+  font-weight: bold;
+  padding-block: var(--space-8);
+  padding-inline: var(--space-12);
+}

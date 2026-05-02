@@ -1,17 +1,18 @@
-import { AccountType } from "@prisma/client";
 import { LoaderFunctionArgs, Outlet } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
+import { NavLink } from "~/components/NavLink/NavLink";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
 import {
-  toPrettyAccountType,
   getAccountDisplayName,
+  toPrettyAccountType,
 } from "~/utils/accountUtils";
 
 import type { Route } from "./+types/layout";
+import styles from "./layout.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
@@ -42,48 +43,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   };
 };
 
-const accountTypes: AccountType[] = [
-  "checking",
-  "savings",
-  "money_market",
-  "property",
-  "retirement_401k",
-  "traditional_ira",
-  "roth_ira",
-  "credit_card",
-  "mortgage",
-  "loan",
-  "other",
-] as const;
-
-const AccountList = ({
-  accounts,
-  accountType,
-}: {
-  accounts: Route.ComponentProps["loaderData"]["accounts"];
-  accountType: AccountType;
-}) => {
-  if (accounts.length === 0) {
-    return <></>;
-  }
-
-  return (
-    <Box pl={12}>
-      <h3>{toPrettyAccountType(accountType)}</h3>
-      <ul>
-        {accounts.map((account) => (
-          <li key={account.id}>
-            <Link to={account.id}>
-              {getAccountDisplayName(account)}{" "}
-              {account.plaidAccount ? "(Plaid)" : "(Manual)"}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </Box>
-  );
-};
-
 export default function LinkedAccountsLayout({
   loaderData,
 }: Route.ComponentProps) {
@@ -92,43 +51,49 @@ export default function LinkedAccountsLayout({
 
   return (
     <Flex gap={32}>
-      <nav>
-        <Box bg="slate-4" p={32}>
-          <Flex mb={32} flexDirection="column" gap={16}>
-            <Link to="new">Create Account</Link>
-            {loaderData.user.twoFactorEnabled ? (
-              <Link to="new/plaid">Create Account using Plaid</Link>
-            ) : null}
-          </Flex>
-          <Box>
-            <h2>Open Accounts</h2>
-            {accountTypes.map((type) => {
-              return (
-                <AccountList
-                  key={type}
-                  accountType={type}
-                  accounts={openAccounts.filter((acc) => acc.type === type)}
-                />
-              );
-            })}
-          </Box>
-          {closedAccounts.length ? (
-            <Box>
-              <h2>Closed Accounts</h2>
-              {accountTypes.map((type) => {
-                return (
-                  <AccountList
-                    key={type}
-                    accountType={type}
-                    accounts={closedAccounts.filter((acc) => acc.type === type)}
-                  />
-                );
-              })}
-            </Box>
+      <nav className={styles.nav}>
+        <div className={styles["create-links"]}>
+          <Link to="new">Create Account</Link>
+          {loaderData.user.twoFactorEnabled ? (
+            <Link to="new/plaid">Create Account using Plaid</Link>
           ) : null}
-        </Box>
+        </div>
+        <div>
+          <h2 className={styles["section-heading"]}>Open Accounts</h2>
+          <ul className={styles["account-list"]}>
+            {openAccounts.map((account) => (
+              <li key={account.id} className={styles["account-item"]}>
+                <NavLink to={account.id}>
+                  {getAccountDisplayName(account)}
+                  <div className={styles["account-meta"]}>
+                    {toPrettyAccountType(account.type)} ·{" "}
+                    {account.plaidAccount ? "Linked with Plaid" : "Manual"}
+                  </div>
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {closedAccounts.length ? (
+          <div>
+            <h2 className={styles["section-heading"]}>Closed Accounts</h2>
+            <ul className={styles["account-list"]}>
+              {closedAccounts.map((account) => (
+                <li key={account.id} className={styles["account-item"]}>
+                  <NavLink to={account.id}>
+                    {getAccountDisplayName(account)}
+                  </NavLink>
+                  <div className={styles["account-meta"]}>
+                    {toPrettyAccountType(account.type)} ·{" "}
+                    {account.plaidAccount ? "Plaid" : "Manual"}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </nav>
-      <Box py={32}>
+      <Box px={32} py={32}>
         <Outlet />
       </Box>
     </Flex>

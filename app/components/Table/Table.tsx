@@ -1,11 +1,10 @@
-import { Box } from "../Box/Box";
-
 import { TableBody } from "./Body";
 import { TableCell } from "./Cell";
 import { TableColumnHeader } from "./ColumnHeader";
 import { TableHead } from "./Head";
 import { TableRow } from "./Row";
 import { TableRowHeader } from "./RowHeader";
+import styles from "./Table.module.css";
 
 export interface TableProps {
   children: React.ReactNode;
@@ -14,12 +13,12 @@ export interface TableProps {
 
 export const Table = ({ children, caption }: TableProps): JSX.Element => {
   return (
-    <Box>
-      <table>
-        <caption>{caption}</caption>
+    <div className={styles["scroll-wrapper"]}>
+      <table className={styles.table}>
+        <caption className={styles.caption}>{caption}</caption>
         {children}
       </table>
-    </Box>
+    </div>
   );
 };
 

@@ -1,3 +1,5 @@
+import styles from "./Table.module.css";
+
 export interface TableColumnHeaderProps {
   children: React.ReactNode;
 }
@@ -5,5 +7,5 @@ export interface TableColumnHeaderProps {
 export const TableRowHeader = ({
   children,
 }: TableColumnHeaderProps): JSX.Element => {
-  return <th scope="row">{children}</th>;
+  return <th scope="row" className={styles["row-header"]}>{children}</th>;
 };
