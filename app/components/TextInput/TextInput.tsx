@@ -15,6 +15,7 @@ interface TextInputProps
     | "defaultValue"
     | "disabled"
     | "step"
+    | "minLength"
   > {
   label: string;
   name: string;
@@ -36,15 +37,16 @@ const TextInputWithForwardedRef = React.forwardRef(
 
     return (
       <Flex flexDirection="column" gap={4} mb={20}>
-        <label htmlFor={inputId}>{label}</label>
+        <label htmlFor={inputId} className={styles.label}>{label}</label>
         <input
           id={inputId}
           ref={ref}
           aria-describedby={`${errorId} ${hintId}`}
           aria-invalid={errorMessage ? true : undefined}
+          className={styles.input}
           {...rest}
         />
-        {hintText ? <div id={hintId}>&#9432; {hintText}</div> : null}
+        {hintText ? <div id={hintId} className={styles.hint}>&#9432; {hintText}</div> : null}
         {errorMessage ? (
           <div id={errorId} className={styles.error_message}>
             &#9888; {errorMessage}

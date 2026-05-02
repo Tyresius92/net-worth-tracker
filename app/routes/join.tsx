@@ -15,6 +15,7 @@ import {
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
+import { TextInput } from "~/components/TextInput/TextInput";
 import { createUser, getUserByEmail } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
@@ -122,84 +123,43 @@ export default function Join() {
     <Box>
       <Box>
         <Form method="post">
-          <Box>
-            <label htmlFor="email">Email address</label>
-            <Box>
-              <input
-                ref={emailRef}
-                id="email"
-                required
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus={true}
-                name="email"
-                type="email"
-                autoComplete="email"
-                aria-invalid={actionData?.errors?.email ? true : undefined}
-                aria-describedby="email-error"
-              />
-              {actionData?.errors?.email ? (
-                <Box id="email-error">{actionData.errors.email}</Box>
-              ) : null}
-            </Box>
-          </Box>
-
-          <Box>
-            <label htmlFor="password">Password</label>
-            <Box>
-              <input
-                id="password"
-                ref={passwordRef}
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                aria-invalid={actionData?.errors?.password ? true : undefined}
-                aria-describedby="password-error"
-              />
-              {actionData?.errors?.password ? (
-                <Box id="password-error">{actionData.errors.password}</Box>
-              ) : null}
-            </Box>
-          </Box>
-
-          <Box>
-            <label htmlFor="firstName">First name</label>
-            <Box>
-              <input
-                ref={emailRef}
-                id="firstName"
-                required
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                name="firstName"
-                type="text"
-                autoComplete="given-name"
-                aria-invalid={actionData?.errors?.firstName ? true : undefined}
-                aria-describedby="firstname-error"
-              />
-              {actionData?.errors?.firstName ? (
-                <Box id="firstname-error">{actionData.errors.firstName}</Box>
-              ) : null}
-            </Box>
-          </Box>
-
-          <Box>
-            <label htmlFor="lastName">Last name</label>
-            <Box>
-              <input
-                ref={emailRef}
-                id="lastName"
-                required
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                name="lastName"
-                type="text"
-                autoComplete="family-name"
-                aria-invalid={actionData?.errors?.lastName ? true : undefined}
-                aria-describedby="lastname-error"
-              />
-              {actionData?.errors?.lastName ? (
-                <Box id="lastname-error">{actionData.errors.lastName}</Box>
-              ) : null}
-            </Box>
-          </Box>
+          <TextInput
+            ref={emailRef}
+            type="email"
+            label="Email address"
+            name="email"
+            required
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
+            autoComplete="email"
+            errorMessage={actionData?.errors?.email ?? undefined}
+          />
+          <TextInput
+            ref={passwordRef}
+            type="password"
+            label="Password"
+            name="password"
+            autoComplete="new-password"
+            errorMessage={actionData?.errors?.password ?? undefined}
+          />
+          <TextInput
+            ref={emailRef}
+            type="text"
+            label="First name"
+            name="firstName"
+            required
+            autoComplete="given-name"
+            errorMessage={actionData?.errors?.firstName ?? undefined}
+          />
+          <TextInput
+            ref={emailRef}
+            type="text"
+            label="Last name"
+            name="lastName"
+            required
+            autoComplete="family-name"
+            errorMessage={actionData?.errors?.lastName ?? undefined}
+          />
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <Button type="submit">Create Account</Button>
