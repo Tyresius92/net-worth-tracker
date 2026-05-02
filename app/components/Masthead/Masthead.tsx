@@ -50,7 +50,6 @@ export const Masthead = ({ user }: MastheadProps) => {
             </>
           ) : (
             <>
-              <NavLink to="/join">Join</NavLink>
               <NavLink to="/login">Login</NavLink>
             </>
           )}

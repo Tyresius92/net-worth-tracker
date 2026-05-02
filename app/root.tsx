@@ -157,6 +157,15 @@ export default function App({ loaderData }: Route.ComponentProps) {
         </main>
         <footer>
           <Flex flexDirection="column" gap={16}>
+            {!loaderData.user ? (
+              <Link
+                href="https://github.com/Tyresius92/net-worth-tracker"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View source on GitHub
+              </Link>
+            ) : null}
             <Link to="privacy">Privacy policy</Link>
             <Link to="contact">Contact</Link>
           </Flex>
