@@ -8,9 +8,10 @@ import { NavLink } from "../NavLink/NavLink";
 
 export interface MastheadProps {
   user: { id: string; twoFactorEnabled: boolean } | null;
+  children: React.ReactNode;
 }
 
-export const Masthead = ({ user }: MastheadProps) => {
+export const Masthead = ({ user, children }: MastheadProps) => {
   const formatDate = (date: Date) => {
     const foo = new Intl.DateTimeFormat("en-US", {
       weekday: "long",
@@ -53,6 +54,7 @@ export const Masthead = ({ user }: MastheadProps) => {
               <NavLink to="/login">Login</NavLink>
             </>
           )}
+          {children}
         </Flex>
       </nav>
     </Box>
