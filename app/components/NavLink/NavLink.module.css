@@ -9,7 +9,6 @@
   }
 
   &[class*="active"] {
-    border-radius: 12px;
     font-weight: bold;
   }
 }
