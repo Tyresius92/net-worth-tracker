@@ -1,0 +1,25 @@
+.footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding-block: var(--space-16);
+}
+
+.copyright {
+  color: var(--color-sand-11);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.links {
+  align-items: center;
+  display: flex;
+  font-size: 0.85rem;
+  gap: var(--space-16);
+}
+
+.separator {
+  color: var(--color-sand-9);
+  user-select: none;
+}
