@@ -13,15 +13,10 @@ const omitConfig = {
 } as const;
 
 // Hard-code a unique key, so we can look up the client when this module gets re-imported
-const prisma = singleton("prisma", () =>
-  new PrismaClient({
+const prisma = singleton("prisma", () => {
+  let client = new PrismaClient({
     omit: omitConfig,
   })
-    .$extends(
-      fieldEncryptionExtension({
-        encryptionKey: process.env.PRISMA_FIELD_ENCRYPTION_KEY,
-      }),
-    )
     .$extends({
       name: "ComputeBalanceSnapshotDateExtension",
       result: {
@@ -47,8 +42,18 @@ const prisma = singleton("prisma", () =>
           },
         },
       },
-    }),
-);
+    });
+
+  if (process.env["NODE_ENV"] === "production") {
+    client = client.$extends(
+      fieldEncryptionExtension({
+        encryptionKey: process.env.PRISMA_FIELD_ENCRYPTION_KEY,
+      }),
+    );
+  }
+
+  return client;
+});
 
 prisma.$connect();
 

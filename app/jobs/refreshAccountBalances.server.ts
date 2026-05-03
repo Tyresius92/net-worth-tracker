@@ -27,11 +27,12 @@ export const refreshAccountBalances = async () => {
     `${new Date().toISOString()}: found ${plaidItems.length} Plaid Items`,
   );
 
-  plaidItems.forEach(async (item) => {
-    console.log(
-      `${new Date().toISOString()}: refreshing Plaid Item ${item.id}`,
-    );
-    try {
+  const results = await Promise.allSettled(
+    plaidItems.map(async (item) => {
+      console.log(
+        `${new Date().toISOString()}: refreshing Plaid Item ${item.id}`,
+      );
+
       const plaidAccounts = await plaidClient.accountsGet({
         access_token: item.accessToken,
       });
@@ -67,12 +68,18 @@ export const refreshAccountBalances = async () => {
           return balance;
         }),
       );
-    } catch (e: unknown) {
-      console.log(
-        `${new Date().toISOString()}: something went wrong calling accountsGet for PlaidItem ${item.id}: ${e}`,
-      );
-    }
+    }),
+  );
 
-    console.log(`${new Date().toISOString()}: job complete`);
-  });
+  const failures = results.filter(
+    (r): r is PromiseRejectedResult => r.status === "rejected",
+  );
+  failures.forEach((f) =>
+    console.log(
+      `${new Date().toISOString()}: item refresh failed: ${f.reason}`,
+    ),
+  );
+  console.log(
+    `${new Date().toISOString()}: job complete (${results.length - failures.length}/${results.length} items succeeded)`,
+  );
 };
