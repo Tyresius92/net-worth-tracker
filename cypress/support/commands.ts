@@ -5,38 +5,27 @@ declare global {
   namespace Cypress {
     interface Chainable {
       /**
-       * Logs in with a random user. Yields the user and adds an alias to the user
+       * Creates a test user in the database and sets the session cookie.
+       * Yields the user object and registers it under the "@user" alias for cleanup.
        *
-       * @returns {typeof login}
-       * @memberof Chainable
-       * @example
-       *    cy.login()
-       * @example
-       *    cy.login({ email: 'whatever@example.com' })
+       * @example cy.login()
+       * @example cy.login({ email: 'whatever@example.com' })
        */
       login: typeof login;
 
       /**
-       * Deletes the current @user
+       * Deletes the current @user from the database and clears the session cookie.
        *
-       * @returns {typeof cleanupUser}
-       * @memberof Chainable
-       * @example
-       *    cy.cleanupUser()
-       * @example
-       *    cy.cleanupUser({ email: 'whatever@example.com' })
+       * @example cy.cleanupUser()
+       * @example cy.cleanupUser({ email: 'whatever@example.com' })
        */
       cleanupUser: typeof cleanupUser;
 
       /**
-       * Extends the standard visit command to wait for the page to load
+       * Visits a URL and waits for the pathname to settle.
        *
-       * @returns {typeof visitAndCheck}
-       * @memberof Chainable
-       * @example
-       *    cy.visitAndCheck('/')
-       *  @example
-       *    cy.visitAndCheck('/', 500)
+       * @example cy.visitAndCheck('/')
+       * @example cy.visitAndCheck('/', 500)
        */
       visitAndCheck: typeof visitAndCheck;
     }
@@ -49,14 +38,9 @@ function login({
   email?: string;
 } = {}) {
   cy.then(() => ({ email })).as("user");
-  cy.exec(`npx tsx ./cypress/support/create-user.ts "${email}"`).then(
-    ({ stdout }) => {
-      const cookieValue = stdout
-        .replace(/.*<cookie>(?<cookieValue>.*)<\/cookie>.*/s, "$<cookieValue>")
-        .trim();
-      cy.setCookie("__session", cookieValue);
-    },
-  );
+  cy.task("createUser", email).then((cookieValue) => {
+    cy.setCookie("__session", cookieValue as string);
+  });
   return cy.get("@user");
 }
 
@@ -76,7 +60,7 @@ function cleanupUser({ email }: { email?: string } = {}) {
 }
 
 function deleteUserByEmail(email: string) {
-  cy.exec(`npx tsx ./cypress/support/delete-user.ts "${email}"`);
+  cy.task("deleteUser", email);
   cy.clearCookie("__session");
 }
 
