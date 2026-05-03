@@ -50,15 +50,23 @@ export const BalanceChart = ({ balances, title }: BalanceChartProps) => {
             minTickGap={20}
             angle={-60}
             textAnchor="end"
-            tick={{ fill: "var(--color-sand-11)" }}
-            stroke="var(--color-sand-7)"
+            tick={{
+              fill: "var(--color-sand-11)",
+              color: "var(--color-sand-11)",
+              fontWeight: "bold",
+            }}
+            stroke="var(--color-sand-11)"
           />
           <YAxis
             tickFormatter={(val) =>
               formatCurrency(val * 100, { includeCents: false })
             }
-            tick={{ fill: "var(--color-sand-11)" }}
-            stroke="var(--color-sand-7)"
+            tick={{
+              fill: "var(--color-sand-11)",
+              color: "var(--color-sand-11)",
+              fontWeight: "bold",
+            }}
+            stroke="var(--color-sand-11)"
           />
           <Tooltip
             formatter={(val) => {
@@ -69,7 +77,6 @@ export const BalanceChart = ({ balances, title }: BalanceChartProps) => {
             }}
             contentStyle={{
               backgroundColor: "var(--color-sand-2)",
-              border: "1px solid var(--color-sand-7)",
               borderRadius: 0,
               color: "var(--color-sand-12)",
             }}
@@ -80,6 +87,7 @@ export const BalanceChart = ({ balances, title }: BalanceChartProps) => {
             type="monotone"
             dataKey="amount"
             stroke="var(--color-sand-12)"
+            strokeWidth={2}
             dot={false}
             activeDot={true}
           />
