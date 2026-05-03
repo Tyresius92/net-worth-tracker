@@ -4,7 +4,9 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "react-router";
+import { useEffect } from "react";
 import {
+  isRouteErrorResponse,
   createCookie,
   Links,
   Meta,
@@ -14,6 +16,8 @@ import {
   useFetcher,
   useLoaderData,
 } from "react-router";
+
+import { logger } from "~/logger";
 
 import { getUser } from "~/session.server";
 
@@ -61,10 +65,45 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   });
 };
 
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  let message = "Oops!";
+  let details = "An unexpected error occurred.";
+  let stack;
+
+  if (isRouteErrorResponse(error)) {
+    message = error.status === 404 ? "404" : "Error";
+    details =
+      error.status === 404
+        ? "The requested page could not be found."
+        : error.statusText || details;
+  } else if (error && error instanceof Error) {
+    // Only capture non-404 errors (all errors here are already non-RouteErrorResponse)
+    logger.error(error);
+    details = error.message;
+    stack = error.stack;
+  }
+
+  return (
+    <main>
+      <h1>{message}</h1>
+      <p>{details}</p>
+      {stack ? (
+        <pre>
+          <code>{stack}</code>
+        </pre>
+      ) : null}
+    </main>
+  );
+}
+
 export default function App({ loaderData }: Route.ComponentProps) {
   const nonce = useNonce();
   const fetcher = useFetcher();
   let { colorMode } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    logger.setUser(loaderData.user ? { id: loaderData.user.id } : null);
+  }, [loaderData.user]);
 
   // use optimistic UI to immediately change the UI state
   if (fetcher.formData?.has("colorMode")) {

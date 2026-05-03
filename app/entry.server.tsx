@@ -7,12 +7,17 @@
 import { PassThrough } from "node:stream";
 
 import { createReadableStreamFromReadable } from "@react-router/node";
+import * as Sentry from "@sentry/react-router";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import { ServerRouter } from "react-router";
 import type { EntryContext } from "react-router";
 
 import { NonceContext } from "./nonce";
+
+export const handleError = Sentry.createSentryHandleError({
+  logErrors: false,
+});
 
 export const streamTimeout = 5000;
 
@@ -23,7 +28,8 @@ function buildCsp(nonce: string) {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
-    "connect-src 'self'",
+    "connect-src 'self' https://*.ingest.sentry.io https://*.ingest.us.sentry.io",
+    "worker-src blob: 'self'",
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
@@ -45,7 +51,7 @@ function setSecurityHeaders(headers: Headers, nonce: string) {
   );
 }
 
-export default function handleRequest(
+async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
@@ -163,3 +169,4 @@ function handleBrowserRequest(
     setTimeout(abort, streamTimeout + 1000);
   });
 }
+export default Sentry.wrapSentryHandleRequest(handleRequest);

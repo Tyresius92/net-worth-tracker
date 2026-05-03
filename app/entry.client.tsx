@@ -3,10 +3,26 @@
  * You are free to delete this file if you'd like to, but if you ever want it revealed again, you can run `npx remix reveal` ✨
  * For more information, see https://remix.run/docs/en/main/file-conventions/entry.client
  */
-
+import {
+  init,
+  reactRouterTracingIntegration,
+  replayIntegration,
+} from "@sentry/react-router";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
+
+init({
+  dsn: "https://6e947b5e11dca72072823b8789a39032@o4511327942475776.ingest.us.sentry.io/4511327945490432",
+  enabled: import.meta.env.MODE === "production",
+  environment: import.meta.env.MODE,
+  integrations: [reactRouterTracingIntegration(), replayIntegration()],
+  enableLogs: true,
+  tracesSampleRate: 1.0,
+  tracePropagationTargets: [/^\//],
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
+});
 
 startTransition(() => {
   hydrateRoot(

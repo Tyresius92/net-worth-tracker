@@ -15,6 +15,7 @@ import {
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { TextInput } from "~/components/TextInput/TextInput";
+import { logger } from "~/logger";
 import { verifyLogin } from "~/models/user.server";
 import {
   createUserSession,
@@ -42,6 +43,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const ip = getClientIp(request);
   const emailKey = typeof email === "string" ? email.toLowerCase() : "invalid";
   if (isRateLimited(`${ip}:${emailKey}`)) {
+    logger.warn("Login rate limit hit", { ip, email: emailKey });
     return data(
       { errors: { email: "Too many login attempts. Try again in 15 minutes.", password: null } },
       { status: 429 },

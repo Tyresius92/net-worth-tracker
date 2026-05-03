@@ -13,3 +13,5 @@ node_modules
 /prisma/test-data.db-journal
 
 /info_arch.md
+# Sentry Config File
+.env.sentry-build-plugin
