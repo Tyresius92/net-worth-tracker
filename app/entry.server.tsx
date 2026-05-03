@@ -14,6 +14,28 @@ import type { EntryContext } from "react-router";
 
 export const streamTimeout = 5000;
 
+const CSP = [
+  "default-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join("; ");
+
+function setSecurityHeaders(headers: Headers) {
+  headers.set("Content-Security-Policy", CSP);
+  headers.set("X-Frame-Options", "DENY");
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), interest-cohort=()",
+  );
+}
+
 export default function handleRequest(
   request: Request,
   responseStatusCode: number,
@@ -48,6 +70,7 @@ function handleBotRequest(
         onAllReady() {
           const body = new PassThrough();
 
+          setSecurityHeaders(responseHeaders);
           responseHeaders.set("Content-Type", "text/html");
 
           resolve(
@@ -88,6 +111,7 @@ function handleBrowserRequest(
         onShellReady() {
           const body = new PassThrough();
 
+          setSecurityHeaders(responseHeaders);
           responseHeaders.set("Content-Type", "text/html");
 
           resolve(

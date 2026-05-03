@@ -41,9 +41,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   return {
     user: await getUser(request),
-    ENV: {
-      STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
-    },
     colorMode: cookie.colorMode,
   };
 };
@@ -107,11 +104,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
         </main>
         <Footer user={loaderData.user} />
         <ScrollRestoration />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(loaderData.ENV)}`,
-          }}
-        />
         <Scripts />
       </body>
     </html>
