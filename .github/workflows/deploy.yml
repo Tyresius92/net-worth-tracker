@@ -28,7 +28,7 @@ jobs:
         with:
           cache: npm
           cache-dependency-path: ./package.json
-          node-version: 18
+          node-version: 22
 
       - name: 📥 Install deps
         run: npm install
@@ -48,7 +48,7 @@ jobs:
         with:
           cache: npm
           cache-dependency-path: ./package.json
-          node-version: 18
+          node-version: 22
 
       - name: 📥 Install deps
         run: npm install
@@ -68,7 +68,7 @@ jobs:
         with:
           cache: npm
           cache-dependency-path: ./package.json
-          node-version: 18
+          node-version: 22
 
       - name: 📥 Install deps
         run: npm install
@@ -84,14 +84,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 🏄 Copy test env vars
-        run: cp .env.example .env
+        run: cp .env.test .env
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
           cache: npm
           cache-dependency-path: ./package.json
-          node-version: 18
+          node-version: 22
 
       - name: 📥 Install deps
         run: npm install
@@ -107,6 +107,7 @@ jobs:
         with:
           start: npm run start:mocks
           wait-on: http://localhost:8811
+          browser: firefox
         env:
           PORT: 8811
 

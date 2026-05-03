@@ -5,7 +5,8 @@
     "**/*.ts",
     "**/*.tsx",
 
-    ".react-router/types/**/*"
+    ".react-router/types/**/*",
+    "mocks/index.ts"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
@@ -26,6 +27,7 @@
       "~/*": ["./app/*"]
     },
     "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true

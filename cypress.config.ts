@@ -1,9 +1,9 @@
-import { defineConfig } from "cypress";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { createCookieSessionStorage } from "react-router";
 import { parse } from "cookie";
+import { defineConfig } from "cypress";
 import * as dotenv from "dotenv";
+import { createCookieSessionStorage } from "react-router";
 
 import { CYPRESS_TEST_PASSWORD } from "./cypress/support/constants";
 
@@ -40,7 +40,7 @@ export default defineConfig({
           return null;
         },
 
-        async createUser(email: string): Promise<string> {
+        async createUser(email: string): Promise<string | undefined> {
           const hash = await bcrypt.hash(CYPRESS_TEST_PASSWORD, 10);
           const user = await prismaClient.user.create({
             data: {
