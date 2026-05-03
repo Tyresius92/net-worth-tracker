@@ -23,6 +23,7 @@ import spaceStyles from "./components/_GlobalStyles/space.css?url";
 import { Button } from "./components/Button/Button";
 import { Footer } from "./components/Footer/Footer";
 import { Masthead } from "./components/Masthead/Masthead";
+import { useNonce } from "./nonce";
 import styles from "./root.css?url";
 
 export const prefs = createCookie("user-prefs");
@@ -61,6 +62,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function App({ loaderData }: Route.ComponentProps) {
+  const nonce = useNonce();
   const fetcher = useFetcher();
   let { colorMode } = useLoaderData<typeof loader>();
 
@@ -103,8 +105,8 @@ export default function App({ loaderData }: Route.ComponentProps) {
           <Outlet />
         </main>
         <Footer user={loaderData.user} />
-        <ScrollRestoration />
-        <Scripts />
+        <ScrollRestoration nonce={nonce} />
+        <Scripts nonce={nonce} />
       </body>
     </html>
   );

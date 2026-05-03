@@ -12,21 +12,30 @@ import { renderToPipeableStream } from "react-dom/server";
 import { ServerRouter } from "react-router";
 import type { EntryContext } from "react-router";
 
+import { NonceContext } from "./nonce";
+
 export const streamTimeout = 5000;
 
-const CSP = [
-  "default-src 'self'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data:",
-  "font-src 'self'",
-  "connect-src 'self'",
-  "frame-ancestors 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-].join("; ");
+function buildCsp(nonce: string) {
+  return [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}'`,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data:",
+    "font-src 'self'",
+    "connect-src 'self'",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join("; ");
+}
 
-function setSecurityHeaders(headers: Headers) {
-  headers.set("Content-Security-Policy", CSP);
+function generateNonce() {
+  return Buffer.from(crypto.randomUUID()).toString("base64");
+}
+
+function setSecurityHeaders(headers: Headers, nonce: string) {
+  headers.set("Content-Security-Policy", buildCsp(nonce));
   headers.set("X-Frame-Options", "DENY");
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
@@ -64,13 +73,21 @@ function handleBotRequest(
   reactRouterContext: EntryContext,
 ) {
   return new Promise((resolve, reject) => {
+    const nonce = generateNonce();
     const { abort, pipe } = renderToPipeableStream(
-      <ServerRouter context={reactRouterContext} url={request.url} />,
+      <NonceContext.Provider value={nonce}>
+        <ServerRouter
+          context={reactRouterContext}
+          url={request.url}
+          nonce={nonce}
+        />
+      </NonceContext.Provider>,
       {
+        nonce,
         onAllReady() {
           const body = new PassThrough();
 
-          setSecurityHeaders(responseHeaders);
+          setSecurityHeaders(responseHeaders, nonce);
           responseHeaders.set("Content-Type", "text/html");
 
           resolve(
@@ -105,13 +122,21 @@ function handleBrowserRequest(
   reactRouterContext: EntryContext,
 ) {
   return new Promise((resolve, reject) => {
+    const nonce = generateNonce();
     const { abort, pipe } = renderToPipeableStream(
-      <ServerRouter context={reactRouterContext} url={request.url} />,
+      <NonceContext.Provider value={nonce}>
+        <ServerRouter
+          context={reactRouterContext}
+          url={request.url}
+          nonce={nonce}
+        />
+      </NonceContext.Provider>,
       {
+        nonce,
         onShellReady() {
           const body = new PassThrough();
 
-          setSecurityHeaders(responseHeaders);
+          setSecurityHeaders(responseHeaders, nonce);
           responseHeaders.set("Content-Type", "text/html");
 
           resolve(
