@@ -6,6 +6,7 @@ import { Button } from "~/components/Button/Button";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
 import { createUserSession, getSession } from "~/session.server";
+import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
 
 export async function action({ request }: { request: Request }) {
   const session = await getSession(request);
@@ -13,6 +14,11 @@ export async function action({ request }: { request: Request }) {
   const remember = session.get("2fa:remember");
   const formData = await request.formData();
   const token = formData.get("token");
+
+  const ip = getClientIp(request);
+  if (isRateLimited(`2fa:${ip}:${userId ?? "unknown"}`)) {
+    throw new Response("Too many attempts. Try again in 15 minutes.", { status: 429 });
+  }
 
   const user = await prisma.user.findUnique({
     where: { id: userId },

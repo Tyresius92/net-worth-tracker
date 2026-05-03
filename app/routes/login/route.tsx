@@ -23,6 +23,7 @@ import {
   sessionStorage,
 } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
+import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
@@ -37,6 +38,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const password = formData.get("password");
   const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
   const remember = formData.get("remember");
+
+  const ip = getClientIp(request);
+  const emailKey = typeof email === "string" ? email.toLowerCase() : "invalid";
+  if (isRateLimited(`${ip}:${emailKey}`)) {
+    return data(
+      { errors: { email: "Too many login attempts. Try again in 15 minutes.", password: null } },
+      { status: 429 },
+    );
+  }
 
   if (!validateEmail(email)) {
     return data(
