@@ -200,7 +200,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         ) : (
           <div className={styles.hero}>
             <h2 className={styles.headline}>
-              Built after Mint shut down. Built to last.
+              I built the finance tool I couldn&apos;t find.
             </h2>
             <p className={styles.deck}>
               A self-hosted net worth tracker with automatic daily syncing,
@@ -252,10 +252,10 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             <div className={styles.editorial}>
               <div className={styles.story}>
                 <p>
-                  In early 2024, Mint - Intuit&apos;s personal finance app -
-                  shut down after 17 years, taking years of financial history
-                  with it. Rather than migrate to another product with no
-                  guarantee of longevity, I built a replacement I fully control.
+                  I lost years of financial history when Mint - Intuit&apos;s
+                  personal finance app - shut down in early 2024. Rather than
+                  migrate to another product with no guarantee of longevity, I
+                  built a replacement I fully control.
                 </p>
                 <p>
                   Every decision in this project reflects a single priority:
@@ -270,8 +270,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                   The result has been running reliably in production since
                   January 2026. It syncs automatically each day via a scheduled
                   GitHub Actions job, requires almost no ongoing maintenance,
-                  and will cost roughly the same to run in ten years as it does
-                  today.
+                  and has cost almost nothing to operate since launch.
                 </p>
               </div>
               <aside className={styles.specsBox}>
