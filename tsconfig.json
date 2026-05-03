@@ -5,7 +5,8 @@
     "**/*.ts",
     "**/*.tsx",
 
-    ".react-router/types/**/*"
+    ".react-router/types/**/*",
+    "mocks/index.js"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
