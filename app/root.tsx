@@ -1,10 +1,10 @@
+import { useEffect } from "react";
 import type {
   ActionFunctionArgs,
   LinksFunction,
   LoaderFunctionArgs,
   MetaFunction,
 } from "react-router";
-import { useEffect } from "react";
 import {
   isRouteErrorResponse,
   createCookie,
@@ -18,7 +18,6 @@ import {
 } from "react-router";
 
 import { logger } from "~/logger";
-
 import { getUser } from "~/session.server";
 
 import type { Route } from "./+types/root";
