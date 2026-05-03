@@ -5,7 +5,7 @@ import { nodeProfilingIntegration } from "@sentry/profiling-node";
 Sentry.init({
   dsn: "https://6e947b5e11dca72072823b8789a39032@o4511327942475776.ingest.us.sentry.io/4511327945490432",
   enabled: process.env.NODE_ENV === "production",
-  environment: process.env.NODE_ENV,
+  environment: process.env.APP_ENV ?? process.env.NODE_ENV,
 
   // Enable logs to be sent to Sentry
   enableLogs: true,
