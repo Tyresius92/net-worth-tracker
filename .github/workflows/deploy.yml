@@ -107,6 +107,7 @@ jobs:
         with:
           start: npm run start:mocks
           wait-on: http://localhost:8811
+          browser: firefox
         env:
           PORT: 8811
 
