@@ -8,6 +8,12 @@ export default defineConfig((config) => ({
     port: 3000,
   },
 
+  define: {
+    "import.meta.env.APP_ENV": JSON.stringify(
+      process.env.APP_ENV || "development",
+    ),
+  },
+
   plugins: [
     reactRouter(),
     tsconfigPaths(),

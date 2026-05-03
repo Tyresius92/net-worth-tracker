@@ -15,7 +15,7 @@ import { HydratedRouter } from "react-router/dom";
 init({
   dsn: "https://6e947b5e11dca72072823b8789a39032@o4511327942475776.ingest.us.sentry.io/4511327945490432",
   enabled: import.meta.env.MODE === "production",
-  environment: import.meta.env.MODE,
+  environment: import.meta.env.APP_ENV ?? import.meta.env.MODE,
   integrations: [reactRouterTracingIntegration(), replayIntegration()],
   enableLogs: true,
   tracesSampleRate: 1.0,
