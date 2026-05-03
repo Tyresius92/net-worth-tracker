@@ -39,7 +39,9 @@ function login({
 } = {}) {
   cy.then(() => ({ email })).as("user");
   cy.task("createUser", email).then((cookieValue) => {
-    cy.setCookie("__session", cookieValue as string);
+    if (typeof cookieValue === "string") {
+      cy.setCookie("__session", cookieValue);
+    }
   });
   return cy.get("@user");
 }
