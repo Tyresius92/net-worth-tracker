@@ -15,6 +15,7 @@ import {
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { TextInput } from "~/components/TextInput/TextInput";
+import { logger } from "~/logger";
 import { verifyLogin } from "~/models/user.server";
 import {
   createUserSession,
@@ -23,6 +24,7 @@ import {
   sessionStorage,
 } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
+import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
@@ -37,6 +39,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const password = formData.get("password");
   const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
   const remember = formData.get("remember");
+
+  const ip = getClientIp(request);
+  const emailKey = typeof email === "string" ? email.toLowerCase() : "invalid";
+  if (isRateLimited(`${ip}:${emailKey}`)) {
+    logger.warn("Login rate limit hit", { ip, email: emailKey });
+    return data(
+      { errors: { email: "Too many login attempts. Try again in 15 minutes.", password: null } },
+      { status: 429 },
+    );
+  }
 
   if (!validateEmail(email)) {
     return data(

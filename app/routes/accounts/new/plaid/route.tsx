@@ -10,6 +10,7 @@ import {
 
 import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
+import { logger } from "~/logger";
 import { plaidClient } from "~/plaid";
 import { requireUserId } from "~/session.server";
 import { getAccountType } from "~/utils/accountUtils.server";
@@ -142,6 +143,16 @@ export default function NewPlaidItemRoute({
       fetcher.submit(formData, {
         method: "post",
       });
+    },
+    onExit(err, metadata) {
+      if (err) {
+        logger.warn("Plaid Link exited with error", {
+          errorCode: err.error_code,
+          errorType: err.error_type,
+          errorMessage: err.error_message,
+          status: metadata.status,
+        });
+      }
     },
     token: loaderData.linkToken,
   });

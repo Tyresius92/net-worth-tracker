@@ -1,4 +1,5 @@
 import { prisma } from "~/db.server";
+import { logger } from "~/logger";
 import { plaidClient } from "~/plaid";
 
 export const refreshAccountBalances = async () => {
@@ -23,63 +24,65 @@ export const refreshAccountBalances = async () => {
     },
   });
 
-  console.log(
-    `${new Date().toISOString()}: found ${plaidItems.length} Plaid Items`,
-  );
+  logger.info("Balance refresh job started", { itemCount: plaidItems.length });
 
   const results = await Promise.allSettled(
     plaidItems.map(async (item) => {
-      console.log(
-        `${new Date().toISOString()}: refreshing Plaid Item ${item.id}`,
-      );
+      logger.info("Refreshing Plaid item", { itemId: item.id });
 
-      const plaidAccounts = await plaidClient.accountsGet({
-        access_token: item.accessToken,
-      });
+      try {
+        const plaidAccounts = await plaidClient.accountsGet({
+          access_token: item.accessToken,
+        });
 
-      const accountsFromResponse = plaidAccounts.data.accounts;
+        const accountsFromResponse = plaidAccounts.data.accounts;
 
-      await Promise.all(
-        item.plaidAccounts.map(async (dbAccount) => {
-          const accountDict = accountsFromResponse.find(
-            (responseAcc) =>
-              (responseAcc.persistent_account_id ?? responseAcc.account_id) ===
-              dbAccount.plaidAccountId,
-          );
+        await Promise.all(
+          item.plaidAccounts.map(async (dbAccount) => {
+            const accountDict = accountsFromResponse.find(
+              (responseAcc) =>
+                (responseAcc.persistent_account_id ??
+                  responseAcc.account_id) === dbAccount.plaidAccountId,
+            );
 
-          const currentBalance = accountDict?.balances.current ?? 0;
-          const accountType = accountDict?.type ?? "other";
-          const normalizedBalance = ["credit", "loan"].includes(accountType)
-            ? currentBalance * -1
-            : currentBalance;
+            const currentBalance = accountDict?.balances.current ?? 0;
+            const accountType = accountDict?.type ?? "other";
+            const normalizedBalance = ["credit", "loan"].includes(accountType)
+              ? currentBalance * -1
+              : currentBalance;
 
-          const balance = await prisma.balanceSnapshot.create({
-            data: {
+            const balance = await prisma.balanceSnapshot.create({
+              data: {
+                accountId: dbAccount.account.id,
+                dateTime: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+                amount: normalizedBalance * 100,
+              },
+            });
+
+            logger.info("Balance snapshot created", {
+              itemId: item.id,
               accountId: dbAccount.account.id,
-              dateTime: new Date(new Date().setUTCHours(0, 0, 0, 0)),
-              amount: normalizedBalance * 100,
-            },
-          });
+            });
 
-          console.log(
-            `${new Date().toISOString()}: newBalance for Plaid Item ${item.id}`,
-          );
-
-          return balance;
-        }),
-      );
+            return balance;
+          }),
+        );
+      } catch (err) {
+        logger.error(err instanceof Error ? err : new Error(String(err)), {
+          itemId: item.id,
+        });
+        throw err;
+      }
     }),
   );
 
   const failures = results.filter(
     (r): r is PromiseRejectedResult => r.status === "rejected",
   );
-  failures.forEach((f) =>
-    console.log(
-      `${new Date().toISOString()}: item refresh failed: ${f.reason}`,
-    ),
-  );
-  console.log(
-    `${new Date().toISOString()}: job complete (${results.length - failures.length}/${results.length} items succeeded)`,
-  );
+
+  logger.info("Balance refresh job complete", {
+    succeeded: results.length - failures.length,
+    failed: failures.length,
+    total: results.length,
+  });
 };

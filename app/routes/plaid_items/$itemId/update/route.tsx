@@ -5,6 +5,7 @@ import { LoaderFunctionArgs, redirect, useFetcher } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
+import { logger } from "~/logger";
 import { plaidClient } from "~/plaid";
 import { requireUserId } from "~/session.server";
 
@@ -61,6 +62,16 @@ export default function PlaidItemRepairRoute({
       fetcher.submit(formData, {
         method: "post",
       });
+    },
+    onExit(err, metadata) {
+      if (err) {
+        logger.warn("Plaid Link exited with error during repair", {
+          errorCode: err.error_code,
+          errorType: err.error_type,
+          errorMessage: err.error_message,
+          status: metadata.status,
+        });
+      }
     },
     token: loaderData.linkToken,
   });
