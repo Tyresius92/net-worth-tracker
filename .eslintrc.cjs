@@ -19,6 +19,9 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
+  ignorePatterns: [
+    '__generated__'
+  ],
 
   // Base config
   extends: ["eslint:recommended"],

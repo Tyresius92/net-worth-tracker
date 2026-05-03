@@ -7,6 +7,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator fabbrica {
+  provider = "prisma-fabbrica"
+  output = "../app/__generated__/fabbrica"
+  noTranspile = true
+}
+
 model User {
   id String @id @default(cuid())
 

@@ -9,5 +9,7 @@ node_modules
 /cypress/videos
 /prisma/data.db
 /prisma/data.db-journal
+/prisma/test-data.db
+/prisma/test-data.db-journal
 
 /info_arch.md
