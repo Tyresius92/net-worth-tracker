@@ -5,7 +5,8 @@ import {
 
 import styles from "./NavLink.module.css";
 
-export interface NavLinkProps extends Pick<RRNavLinkProps, "to" | "children"> {}
+export interface NavLinkProps
+  extends Pick<RRNavLinkProps, "to" | "children" | "preventScrollReset"> {}
 
 export const NavLink = (props: NavLinkProps) => {
   return <RRNavLink {...props} className={styles.link} />;
