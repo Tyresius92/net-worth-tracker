@@ -14,7 +14,7 @@ import { requireUserId } from "~/session.server";
 import {
   toPrettyAccountType,
   accountTypesList,
-  isAccountType,
+  validateAccountForm,
 } from "~/utils/accountUtils";
 
 import type { Route } from "./+types/route";
@@ -37,39 +37,18 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const formData = await request.formData();
 
-  const customName = formData.get("customName");
-  const type = formData.get("type");
-
-  if (typeof customName !== "string" || customName === "") {
-    return {
-      errors: {
-        customName: "This field is required",
-      },
-    };
+  const result = validateAccountForm(formData);
+  if (!result.success) {
+    return { errors: result.errors };
   }
 
-  if (typeof type !== "string" || type === "") {
-    return {
-      errors: {
-        type: "This field is required",
-      },
-    };
-  }
-
-  // Validate that type is a valid AccountType
-  if (!isAccountType(type)) {
-    return {
-      errors: {
-        type: "Invalid account type",
-      },
-    };
-  }
+  const { customName, type } = result.data;
 
   const account = await prisma.account.create({
     data: {
       userId,
       customName,
-      type, // type is now validated as AccountType
+      type,
     },
   });
 

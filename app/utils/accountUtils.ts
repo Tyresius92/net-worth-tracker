@@ -181,3 +181,28 @@ export const getAccountDisplayName = (account: AccountDisplayNameInput) => {
     "[Unnamed Account]"
   );
 };
+
+type AccountFormErrors = { customName?: string; type?: string };
+
+type AccountFormResult =
+  | { success: true; data: { customName: string; type: AccountType } }
+  | { success: false; errors: AccountFormErrors };
+
+export function validateAccountForm(formData: FormData): AccountFormResult {
+  const customName = formData.get("customName");
+  const type = formData.get("type");
+
+  if (typeof customName !== "string" || customName === "") {
+    return { success: false, errors: { customName: "This field is required" } };
+  }
+
+  if (typeof type !== "string" || type === "") {
+    return { success: false, errors: { type: "This field is required" } };
+  }
+
+  if (!isAccountType(type)) {
+    return { success: false, errors: { type: "Invalid account type" } };
+  }
+
+  return { success: true, data: { customName, type } };
+}
