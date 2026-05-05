@@ -28,7 +28,7 @@ Rather than repeat that cycle, I built a small, self-hosted system that:
   - Carry-forward logic for missing days
 - Net worth and account balance charts
   - Charts render client-side due to Recharts SSR limitations
-- Two-factor authentication (2FA) for login (required for Plaid integrations)
+- Mandatory two-factor authentication (2FA) for login
 - Accessible, semantic HTML-first UI
 - Staging and production environments
 - Automated daily refresh job
@@ -62,51 +62,9 @@ Rather than repeat that cycle, I built a small, self-hosted system that:
 
 ---
 
-## Design Decisions & Tradeoffs
+## Architecture
 
-### SQLite in Production
-
-This application uses SQLite intentionally.
-
-Given the constraints of the system — a single user, low write concurrency, predictable access patterns, and a total data size well under 1GB — SQLite provides several advantages:
-
-- Extremely low operational overhead
-- Strong correctness guarantees
-- Simple deployment and backup
-- No additional infrastructure to manage
-
-For systems with higher write concurrency, multi-tenant access, or horizontal scaling requirements, a client/server database would be a better choice. Those tradeoffs are explicitly out of scope for this project.
-
----
-
-## Data Syncing Model
-
-Rather than relying on webhooks, this app performs a **daily pull** of account balances from Plaid:
-
-- A scheduled job triggers a server endpoint once per day
-- Balances are snapshotted and stored
-- Missing dates carry forward the most recent known balance
-
-This approach was chosen because:
-
-- It is free within Plaid’s limits
-- It is simpler to reason about operationally
-- Occasional missed days degrade gracefully
-
----
-
-## Authentication & 2FA
-
-Plaid requires two-factor authentication for applications accessing financial data.
-
-This project implements:
-
-- Cookie-based session authentication using `createCookieSessionStorage`
-- Username/password login with mandatory 2FA
-- Secure storage of Plaid tokens using Fly.io secrets
-- No public sign-up flow (single-user system)
-
-2FA was added both to meet Plaid requirements and to ensure the system meets a baseline level of security appropriate for financial data.
+Significant architectural decisions — framework, hosting, database, data model, syncing strategy, authentication, and visual direction — are documented as Architecture Decision Records in [`docs/adr/`](docs/adr/).
 
 ---
 
@@ -152,17 +110,3 @@ Environment variables are required for:
 
 See `.env.example` for details.
 
----
-
-## Why This Exists on My Resume
-
-This project is not meant to be impressive in isolation.
-
-It exists to demonstrate:
-
-- End-to-end ownership of a real system
-- Intentional architectural tradeoffs
-- Modern React Router patterns
-- Accessibility-first UI decisions
-- Comfort working with authentication, background jobs, and deployment
-- Shipping something durable and actually used
