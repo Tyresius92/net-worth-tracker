@@ -17,3 +17,4 @@ ADRs are numbered in roughly chronological order of dependency. Later decisions 
 | [007](ADR-007-styling-css-modules.md) | CSS Modules for Component Styling | CSS Modules for colocation; design system owns all styles, application owns business logic |
 | [008](ADR-008-two-factor-authentication.md) | Mandatory TOTP Two-Factor Authentication | TOTP via authenticator app; no third-party service dependency; mandatory for all logins |
 | [009](ADR-009-monochrome-visual-direction.md) | Monochrome Visual Direction | Newspaper-inspired aesthetic; typography over color; color reserved for meaning |
+| [010](ADR-010-form-validation-approach.md) | Manual Form Validation over Schema Validation Library | Evaluated Zod and Prisma codegen; addressed concrete defects with shared helpers instead |
