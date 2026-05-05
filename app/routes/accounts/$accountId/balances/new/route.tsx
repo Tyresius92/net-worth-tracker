@@ -65,10 +65,10 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const amount = formData.get("amount");
   const dateTime = formData.get("dateTime");
 
-  if (typeof amount !== "string") {
+  if (typeof amount !== "string" || isNaN(parseFloat(amount))) {
     return {
       errors: {
-        amount: "Amount must be a string",
+        amount: "Amount must be a valid number",
       },
     };
   }
