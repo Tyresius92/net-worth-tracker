@@ -24,12 +24,13 @@ export const streamTimeout = 5000;
 function buildCsp(nonce: string) {
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}'`,
+    `script-src 'self' 'nonce-${nonce}' https://cdn.plaid.com`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
     "connect-src 'self' https://*.ingest.sentry.io https://*.ingest.us.sentry.io",
     "worker-src blob: 'self'",
+    "frame-src https://cdn.plaid.com",
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",

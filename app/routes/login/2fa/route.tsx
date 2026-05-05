@@ -17,7 +17,9 @@ export async function action({ request }: { request: Request }) {
 
   const ip = getClientIp(request);
   if (isRateLimited(`2fa:${ip}:${userId ?? "unknown"}`)) {
-    throw new Response("Too many attempts. Try again in 15 minutes.", { status: 429 });
+    throw new Response("Too many attempts. Try again in 15 minutes.", {
+      status: 429,
+    });
   }
 
   const user = await prisma.user.findUnique({

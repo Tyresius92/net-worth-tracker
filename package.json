@@ -17,6 +17,7 @@
     "pretest:e2e:run": "npm run build",
     "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 \"npx cypress run --browser firefox\"",
     "test:db:migrate": "node --env-file=.env.test ./node_modules/.bin/prisma migrate deploy",
+    "dev:db:reset": "node --env-file=.env ./node_modules/.bin/prisma migrate reset --force --skip-seed",
     "test:db:reset": "node --env-file=.env.test ./node_modules/.bin/prisma migrate reset --force --skip-seed",
     "typecheck": "react-router typegen && tsc && tsc -p cypress",
     "validate": "npm-run-all --parallel \"test -- --run\" lint typecheck test:e2e:run"

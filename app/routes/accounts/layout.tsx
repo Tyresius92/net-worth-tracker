@@ -63,7 +63,7 @@ export default function LinkedAccountsLayout({
           <ul className={styles["account-list"]}>
             {openAccounts.map((account) => (
               <li key={account.id} className={styles["account-item"]}>
-                <NavLink to={account.id}>
+                <NavLink to={account.id} preventScrollReset>
                   {getAccountDisplayName(account)}
                   <div className={styles["account-meta"]}>
                     {toPrettyAccountType(account.type)} ·{" "}
@@ -80,7 +80,7 @@ export default function LinkedAccountsLayout({
             <ul className={styles["account-list"]}>
               {closedAccounts.map((account) => (
                 <li key={account.id} className={styles["account-item"]}>
-                  <NavLink to={account.id}>
+                  <NavLink to={account.id} preventScrollReset>
                     {getAccountDisplayName(account)}
                   </NavLink>
                   <div className={styles["account-meta"]}>
