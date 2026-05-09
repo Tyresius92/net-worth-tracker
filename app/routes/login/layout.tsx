@@ -1,5 +1,11 @@
 import { Outlet } from "react-router";
 
+import styles from "./layout.module.css";
+
 export default function LoginLayout() {
-  return <Outlet />;
+  return (
+    <div className={styles.layout}>
+      <Outlet />
+    </div>
+  );
 }
