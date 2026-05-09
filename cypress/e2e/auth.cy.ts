@@ -21,8 +21,10 @@ describe("protected route redirects", () => {
 describe("logout", () => {
   it("logs out and redirects to home", () => {
     cy.login();
-    cy.visit("/");
+    cy.visit("/accounts");
+    cy.intercept("POST", "/logout.data").as("logoutRequest");
     cy.findByRole("button", { name: /log out/i }).click();
+    cy.wait("@logoutRequest");
     cy.location("pathname").should("eq", "/");
     cy.getCookie("__session").should("be.null");
     cy.cleanupUser();
@@ -30,8 +32,10 @@ describe("logout", () => {
 
   it("clears the session so protected routes redirect to login after logout", () => {
     cy.login();
-    cy.visit("/");
+    cy.visit("/accounts");
+    cy.intercept("POST", "/logout.data").as("logoutRequest");
     cy.findByRole("button", { name: /log out/i }).click();
+    cy.wait("@logoutRequest");
     cy.location("pathname").should("eq", "/");
     cy.getCookie("__session").should("be.null");
     cy.visit("/accounts");
