@@ -34,7 +34,7 @@ export const Masthead = ({ user, children }: MastheadProps) => {
       <Divider />
       <Flex justifyContent="center">{formatDate(new Date())}</Flex>
       <Divider />
-      <nav>
+      <nav aria-label="Main">
         <Flex justifyContent="flex-end" gap={32} alignItems="center">
           {user ? (
             <>

@@ -35,6 +35,7 @@ describe("logout", () => {
     cy.login();
     cy.visit("/");
     cy.findByRole("button", { name: /log out/i }).click();
+    cy.location("pathname").should("eq", "/");
     cy.visit("/accounts");
     cy.location("pathname").should("eq", "/login");
   });

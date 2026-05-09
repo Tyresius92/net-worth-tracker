@@ -19,6 +19,11 @@ describe("Masthead", () => {
     expect(screen.getByRole("heading", { name: /the ledger/i })).toBeInTheDocument();
   });
 
+  it("has an accessible label on the nav element", () => {
+    renderWithRouter(<Masthead user={null}>content</Masthead>);
+    expect(screen.getByRole("navigation", { name: /main/i })).toBeInTheDocument();
+  });
+
   it("shows the Log Out button when a user is logged in", () => {
     renderWithRouter(
       <Masthead user={{ id: "user-1", twoFactorEnabled: false }}>content</Masthead>,
