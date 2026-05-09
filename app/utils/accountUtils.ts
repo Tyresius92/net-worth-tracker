@@ -182,7 +182,10 @@ export const getAccountDisplayName = (account: AccountDisplayNameInput) => {
   );
 };
 
-type AccountFormErrors = { customName?: string; type?: string };
+interface AccountFormErrors {
+  customName?: string;
+  type?: string;
+}
 
 type AccountFormResult =
   | { success: true; data: { customName: string; type: AccountType } }

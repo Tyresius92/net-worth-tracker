@@ -7,7 +7,11 @@ describe("Table", () => {
   it("renders the caption", () => {
     render(
       <Table caption="Accounts">
-        <Table.Body />
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>Hello</Table.Cell>
+          </Table.Row>
+        </Table.Body>
       </Table>,
     );
     expect(screen.getByText("Accounts")).toBeInTheDocument();
@@ -20,7 +24,11 @@ describe("Table", () => {
           <Table.ColumnHeader>Name</Table.ColumnHeader>
           <Table.ColumnHeader>Balance</Table.ColumnHeader>
         </Table.Head>
-        <Table.Body />
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>Hello</Table.Cell>
+          </Table.Row>
+        </Table.Body>
       </Table>,
     );
     const headers = screen.getAllByRole("columnheader");

@@ -1,5 +1,5 @@
-import { createRef } from "react";
 import { render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, it, expect } from "vitest";
 
 import { TextInput } from "./TextInput";
@@ -12,7 +12,10 @@ describe("TextInput", () => {
 
   it("forwards the type prop to the input", () => {
     render(<TextInput label="Password" name="password" type="password" />);
-    expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
+    expect(screen.getByLabelText("Password")).toHaveAttribute(
+      "type",
+      "password",
+    );
   });
 
   it("is disabled when the disabled prop is set", () => {
@@ -22,14 +25,29 @@ describe("TextInput", () => {
 
   it("renders the error message when errorMessage is provided", () => {
     render(
-      <TextInput label="Email" name="email" type="email" errorMessage="Invalid email" />,
+      <TextInput
+        label="Email"
+        name="email"
+        type="email"
+        errorMessage="Invalid email"
+      />,
     );
     expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
   });
 
   it("sets aria-invalid when errorMessage is provided", () => {
-    render(<TextInput label="Email" name="email" type="email" errorMessage="Required" />);
-    expect(screen.getByLabelText("Email")).toHaveAttribute("aria-invalid", "true");
+    render(
+      <TextInput
+        label="Email"
+        name="email"
+        type="email"
+        errorMessage="Required"
+      />,
+    );
+    expect(screen.getByLabelText("Email")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
   });
 
   it("does not set aria-invalid when errorMessage is absent", () => {
