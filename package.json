@@ -53,6 +53,7 @@
     "@react-router/dev": "^7.0.0",
     "@testing-library/cypress": "^10.0.2",
     "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/eslint": "^8.56.12",
     "@types/node": "^22.9.3",

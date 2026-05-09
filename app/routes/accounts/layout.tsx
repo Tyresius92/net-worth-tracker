@@ -51,7 +51,7 @@ export default function LinkedAccountsLayout({
 
   return (
     <Flex gap={32}>
-      <nav className={styles.nav}>
+      <nav aria-label="Accounts" className={styles.nav}>
         <div className={styles["create-links"]}>
           <Link to="new">Create Account</Link>
           {loaderData.user.twoFactorEnabled ? (
