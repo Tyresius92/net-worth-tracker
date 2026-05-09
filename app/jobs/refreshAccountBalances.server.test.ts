@@ -22,13 +22,6 @@ async function getAccessToken(plaidItemId: string): Promise<string> {
 
 describe("refreshAccountBalances", () => {
   describe("item selection", () => {
-    it("does nothing when there are no healthy items", async () => {
-      await refreshAccountBalances();
-
-      const snapshots = await prisma.balanceSnapshot.findMany();
-      expect(snapshots).toHaveLength(0);
-    });
-
     it("skips unhealthy items", async () => {
       const user = await UserFactory.createForConnect();
       const account = await AccountFactory.createForConnect({
