@@ -1,7 +1,15 @@
 .divider {
   background-color: var(--color-sand-12);
+  border: none;
   flex-shrink: 0;
   height: 1px;
   margin-block: var(--space-12);
   opacity: 70%;
+}
+
+.light {
+  background-color: var(--color-sand-8);
+  border: none;
+  height: 1px;
+  margin: 0;
 }

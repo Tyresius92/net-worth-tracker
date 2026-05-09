@@ -23,6 +23,7 @@ export interface BoxProps
   mb?: BoxMarginOption;
 
   bg?: ColorOption;
+  borderColor?: ColorOption;
   color?: ColorOption;
 
   maxWidth?: number;
@@ -47,6 +48,7 @@ export const Box = ({
   mb = my,
 
   bg,
+  borderColor,
   color,
 
   maxWidth,
@@ -74,6 +76,7 @@ export const Box = ({
         }),
 
         ...(bg && { backgroundColor: `var(--color-${bg})` }),
+        ...(borderColor && { border: `1px solid var(--color-${borderColor})` }),
         ...(color && { color: `var(--color-${color})` }),
         ...(maxWidth && { maxWidth: `${maxWidth}px` }),
       }}

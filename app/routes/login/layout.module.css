@@ -1,0 +1,6 @@
+.layout {
+  margin-inline: auto;
+  max-width: 420px;
+  padding-block-start: var(--space-48);
+  padding-inline: var(--space-16);
+}

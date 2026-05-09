@@ -14,7 +14,11 @@ import {
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
+import { Checkbox } from "~/components/Checkbox/Checkbox";
+import { Divider } from "~/components/Divider/Divider";
 import { TextInput } from "~/components/TextInput/TextInput";
+import styles from "./login.module.css";
+
 import { logger } from "~/logger";
 import { verifyLogin } from "~/models/user.server";
 import {
@@ -114,8 +118,15 @@ export default function LoginPage() {
   }, [actionData]);
 
   return (
-    <Box>
-      <Box>
+    <>
+      <div className={styles.headlineArea}>
+        <Divider variant="light" />
+        <h2 className={styles.headline}>Subscriber Access</h2>
+        <Divider variant="light" />
+        <p className={styles.tagline}>Track your net worth, issue by issue.</p>
+      </div>
+
+      <Box borderColor="sand-12" p={24}>
         <Form method="post">
           <TextInput
             ref={emailRef}
@@ -136,15 +147,13 @@ export default function LoginPage() {
             autoComplete="current-password"
             errorMessage={actionData?.errors?.password ?? undefined}
           />
-
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          <Button type="submit">Log in</Button>
-          <Box>
-            <input id="remember" name="remember" type="checkbox" />
-            <label htmlFor="remember">Remember me</label>
-          </Box>
+          <div className={styles.actions}>
+            <Button type="submit">Log in</Button>
+            <Checkbox name="remember" label="Remember me" />
+          </div>
         </Form>
       </Box>
-    </Box>
+    </>
   );
 }

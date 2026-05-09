@@ -1,16 +1,21 @@
-import { Box } from "~/components/Box/Box";
+import { Divider } from "~/components/Divider/Divider";
 import { Link } from "~/components/Link/Link";
+
+import styles from "./privacy.module.css";
 
 export default function PrivacyPolicy() {
   return (
-    <Box p={32} maxWidth={800} mx="auto">
-      <h1>Privacy Policy</h1>
+    <article className={styles.article}>
+      <div className={styles.headlineArea}>
+        <Divider variant="light" />
+        <h1>Privacy Policy</h1>
+        <Divider variant="light" />
+        <p className={styles.dateline}>Last Revised: January 2, 2026</p>
+      </div>
 
-      <p>Last edited: Jan 2, 2026</p>
-
-      <Box>
+      <section>
         <h2>About This Policy</h2>
-        <p>
+        <p className={styles.firstParagraph}>
           This Privacy Policy explains how we collect, use, store, and protect
           your information when you use our service. We may update this policy
           from time to time to reflect changes in the law or our practices. Any
@@ -23,9 +28,9 @@ export default function PrivacyPolicy() {
             provide the service.
           </strong>
         </p>
-      </Box>
+      </section>
 
-      <Box>
+      <section>
         <h2>Our Principles</h2>
         <ul>
           <li>
@@ -40,9 +45,9 @@ export default function PrivacyPolicy() {
             service
           </li>
         </ul>
-      </Box>
+      </section>
 
-      <Box>
+      <section>
         <h2>Information We Collect</h2>
 
         <h3>Information You Provide Directly</h3>
@@ -75,9 +80,9 @@ export default function PrivacyPolicy() {
           We use data provided by Plaid solely to provide the features you
           request, and in accordance with Plaid&apos;s Data Use Policy.
         </p>
-      </Box>
+      </section>
 
-      <Box>
+      <section>
         <h2>How We Use Your Information</h2>
         <p>
           We use your information only to display your net worth and related
@@ -88,9 +93,9 @@ export default function PrivacyPolicy() {
           We do not build advertising profiles, sell your data, or use your data
           for marketing purposes.
         </p>
-      </Box>
+      </section>
 
-      <Box>
+      <section>
         <h2>Data Retention</h2>
         <p>
           We retain your data only for as long as your account is active or as
@@ -106,9 +111,9 @@ export default function PrivacyPolicy() {
           disaster recovery and are not accessed except in the event of system
           failure.
         </p>
-      </Box>
+      </section>
 
-      <Box>
+      <section>
         <h2>Data Storage and Security</h2>
         <p>
           Your data is stored in a database hosted by our infrastructure
@@ -123,9 +128,9 @@ export default function PrivacyPolicy() {
           Certain non-sensitive derived values (such as account balances) may be
           stored unencrypted for operational or performance reasons.
         </p>
-      </Box>
+      </section>
 
-      <Box>
+      <section>
         <h2>Your Rights</h2>
         <p>
           Depending on your location, you may have rights under applicable
@@ -137,34 +142,34 @@ export default function PrivacyPolicy() {
           them by contacting us via our{" "}
           <Link to="contact">Contact Us Page</Link>.
         </p>
-      </Box>
+      </section>
 
-      <Box>
+      <section>
         <h2>Cookies</h2>
         <p>
           We use a single, required cookie to manage user authentication and
           login state, as well as your light or dark mode preference. We do not
           use analytics, advertising, or tracking cookies.
         </p>
-      </Box>
+      </section>
 
-      <Box>
+      <section>
         <h2>Legal Disclosures</h2>
         <p>
           We may disclose information if required to do so by law or in response
           to a valid legal request. When possible, we limit disclosures to the
           minimum required by law.
         </p>
-      </Box>
+      </section>
 
-      <Box>
+      <section>
         <h2>Contact Us</h2>
         <p>
           If you have questions about this Privacy Policy or would like to
           exercise your privacy rights, please contact us via our{" "}
           <Link to="contact">Contact Us Page</Link>.
         </p>
-      </Box>
-    </Box>
+      </section>
+    </article>
   );
 }

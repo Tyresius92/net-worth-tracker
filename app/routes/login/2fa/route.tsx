@@ -3,7 +3,11 @@ import { Form } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
+import { Divider } from "~/components/Divider/Divider";
+import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
+
+import styles from "./twofa.module.css";
 import { prisma } from "~/db.server";
 import { createUserSession, getSession } from "~/session.server";
 import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
@@ -69,11 +73,25 @@ export async function action({ request }: { request: Request }) {
 
 export default function TwoFactorAuth() {
   return (
-    <Box>
-      <Form method="post">
-        <TextInput label="2FA Token" name="token" required type="number" />
-        <Button type="submit">Submit</Button>
-      </Form>
-    </Box>
+    <>
+      <div className={styles.headlineArea}>
+        <Divider variant="light" />
+        <h2 className={styles.headline}>Verification Required</h2>
+        <Divider variant="light" />
+        <p className={styles.descriptor}>
+          Enter the 6-digit code from your authenticator app to continue.
+        </p>
+      </div>
+
+      <Box borderColor="sand-12" p={24}>
+        <Form method="post">
+          <TextInput label="Verification Code" name="token" required type="number" />
+          <div className={styles.actions}>
+            <Button type="submit">Verify</Button>
+            <Link to="/login">Back to login</Link>
+          </div>
+        </Form>
+      </Box>
+    </>
   );
 }

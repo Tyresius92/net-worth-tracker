@@ -1,0 +1,79 @@
+/* ── Article layout ───────────────────────────── */
+
+.article {
+  padding: var(--space-32);
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+/* ── Headline area ────────────────────────────── */
+
+.headlineArea {
+  margin-block-end: var(--space-32);
+}
+
+
+.article h1 {
+  font-size: 2.75rem;
+  line-height: 1.1;
+  text-align: center;
+  padding-block: var(--space-16);
+}
+
+.dateline {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-sand-11);
+  text-align: center;
+  padding-block: var(--space-8);
+  border-bottom: 1px solid var(--color-sand-8);
+}
+
+/* ── Section headings ─────────────────────────── */
+
+.article h2 {
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  border-top: 1px solid var(--color-sand-8);
+  border-bottom: 1px solid var(--color-sand-8);
+  padding-block: var(--space-8);
+  margin-block-start: var(--space-32);
+  margin-block-end: var(--space-16);
+}
+
+.article h3 {
+  font-style: italic;
+  margin-block-start: var(--space-16);
+  margin-block-end: var(--space-8);
+}
+
+/* ── Body text ────────────────────────────────── */
+
+.article section p {
+  text-align: justify;
+  hyphens: auto;
+  line-height: 1.7;
+  margin-block-end: var(--space-12);
+}
+
+.article ul {
+  padding-inline-start: var(--space-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  line-height: 1.6;
+}
+
+/* ── Drop cap ─────────────────────────────────── */
+
+.firstParagraph::first-letter {
+  float: left;
+  font-family: "Libre Baskerville";
+  font-size: 4rem;
+  line-height: 0.85;
+  padding-inline-end: var(--space-8);
+  margin-block-end: 0;
+}
