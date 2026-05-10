@@ -1,12 +1,19 @@
-import { type RouteConfig, route, index } from "@react-router/dev/routes";
+import {
+  type RouteConfig,
+  route,
+  index,
+  layout,
+} from "@react-router/dev/routes";
 
 export default [
   index("./routes/_index.tsx"),
   route("healthcheck", "./routes/healthcheck.tsx"),
   // route("join", "./routes/join.tsx"),
-  route("login", "./routes/login/layout.tsx", [
-    index("./routes/login/route.tsx"),
-    route("2fa", "./routes/login/2fa/route.tsx"),
+  layout("./routes/login/layout.tsx", [
+    route("login", "./routes/login/route.tsx"),
+    route("login/2fa", "./routes/login/2fa/route.tsx"),
+    route("forgot-password", "./routes/forgot-password/route.tsx"),
+    route("reset-password", "./routes/reset-password/route.tsx"),
   ]),
   route("logout", "./routes/logout.tsx"),
 

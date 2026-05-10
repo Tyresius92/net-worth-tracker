@@ -16,6 +16,7 @@ import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Checkbox } from "~/components/Checkbox/Checkbox";
 import { Divider } from "~/components/Divider/Divider";
+import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import styles from "./login.module.css";
 
@@ -87,7 +88,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (user.twoFactorEnabled) {
     session.set("2fa:user-id", user.id);
     session.set("2fa:remember", remember === "on" ? true : false);
-    return redirect("./2fa", {
+    return redirect("/login/2fa", {
       headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
     });
   }
@@ -151,6 +152,7 @@ export default function LoginPage() {
           <div className={styles.actions}>
             <Button type="submit">Log in</Button>
             <Checkbox name="remember" label="Remember me" />
+            <Link to="/forgot-password">Forgot password?</Link>
           </div>
         </Form>
       </Box>
