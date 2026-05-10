@@ -24,8 +24,8 @@
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 2px var(--color-sand-3), 0 0 0 4px var(--color-sand-11);
-    outline: none;
+    outline: 2px solid var(--color-sand-11);
+    outline-offset: 2px;
   }
 
   &[data-disabled] {
