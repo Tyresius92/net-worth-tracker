@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { parse } from "cookie";
@@ -55,6 +57,30 @@ export default defineConfig({
           const setCookieHeader = await sessionStorage.commitSession(session);
           const { __session: cookieValue } = parse(setCookieHeader);
           return cookieValue;
+        },
+
+        async createPasswordResetToken(email: string): Promise<string | null> {
+          const user = await prismaClient.user.findUnique({ where: { email } });
+          if (!user) return null;
+
+          const token = crypto.randomBytes(32).toString("hex");
+          const tokenHash = crypto
+            .createHash("sha256")
+            .update(token)
+            .digest("hex");
+
+          await prismaClient.passwordResetToken.deleteMany({
+            where: { userId: user.id },
+          });
+          await prismaClient.passwordResetToken.create({
+            data: {
+              tokenHash,
+              expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+              userId: user.id,
+            },
+          });
+
+          return token;
         },
 
         async deleteUser(email: string): Promise<null> {
