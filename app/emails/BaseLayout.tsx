@@ -11,13 +11,7 @@ import {
   Text,
 } from "react-email";
 
-const colors = {
-  sand3: "#f1f0ef",
-  sand7: "#cfceca",
-  sand11: "#63635e",
-  sand12: "#21201c",
-  white: "#fdfdfc",
-};
+import { colors } from "~/components/_GlobalStyles/colors";
 
 const fonts = {
   serif: "Georgia, 'Times New Roman', serif",
@@ -56,13 +50,13 @@ export function BaseLayout({ preview, children }: BaseLayoutProps) {
 
 const styles = {
   body: {
-    backgroundColor: colors.sand3,
+    backgroundColor: colors["sand-3"],
     fontFamily: fonts.serif,
     margin: "0",
     padding: "32px 16px",
   },
   container: {
-    backgroundColor: colors.white,
+    backgroundColor: colors["sand-1"],
     borderRadius: "4px",
     margin: "0 auto",
     maxWidth: "560px",
@@ -72,7 +66,7 @@ const styles = {
     marginBottom: "24px",
   },
   siteName: {
-    color: colors.sand12,
+    color: colors["sand-12"],
     fontFamily: fonts.serif,
     fontSize: "28px",
     fontWeight: "normal",
@@ -80,7 +74,7 @@ const styles = {
     margin: "0 0 20px",
   },
   divider: {
-    borderColor: colors.sand7,
+    borderColor: colors["sand-7"],
     borderTopWidth: "1px",
     margin: "0",
   },
@@ -91,7 +85,7 @@ const styles = {
     marginTop: "8px",
   },
   footerText: {
-    color: colors.sand11,
+    color: colors["sand-11"],
     fontSize: "12px",
     letterSpacing: "0.05em",
     margin: "12px 0 0",
