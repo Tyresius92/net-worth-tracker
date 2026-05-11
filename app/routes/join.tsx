@@ -19,6 +19,7 @@ import { TextInput } from "~/components/TextInput/TextInput";
 import { createUser, getUserByEmail } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
+import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
@@ -27,6 +28,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
+  const ip = getClientIp(request);
+  if (isRateLimited(`join:${ip}`)) {
+    return data(
+      { errors: { email: "Too many attempts. Try again in 15 minutes.", password: null, firstName: null, lastName: null } },
+      { status: 429 },
+    );
+  }
+
   const formData = await request.formData();
   const email = formData.get("email");
   const firstName = formData.get("firstName");
