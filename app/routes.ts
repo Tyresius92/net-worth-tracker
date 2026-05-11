@@ -22,12 +22,11 @@ export default [
 
   route("privacy", "./routes/privacy/route.tsx"),
 
-  route("profile", "./routes/profile/layout.tsx", [
-    index("./routes/profile/route.tsx"),
-    route("enable_mfa", "./routes/profile/enable_mfa/route.tsx"),
+  route("settings", "./routes/settings/layout.tsx", [
+    index("./routes/settings/route.tsx"),
+    route("enable_mfa", "./routes/settings/enable_mfa/route.tsx"),
+    route("recovery-codes", "./routes/settings/recovery-codes/route.tsx"),
   ]),
-
-  route("settings", "./routes/settings/route.tsx"),
 
   route("users", "./routes/users/layout.tsx", [
     index("./routes/users/route.tsx"),

@@ -23,3 +23,16 @@
   flex-direction: column;
   gap: var(--space-12);
 }
+
+.toggleLink {
+  all: unset;
+  color: var(--color-sand-11);
+  cursor: pointer;
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.toggleLink:hover {
+  color: var(--color-sand-12);
+}

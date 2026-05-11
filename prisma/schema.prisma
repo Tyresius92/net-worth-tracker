@@ -33,6 +33,7 @@ model User {
   accounts             Account[]
   plaidItems           PlaidItem[]
   passwordResetTokens  PasswordResetToken[]
+  recoveryCodes        RecoveryCode[]
 }
 
 model Password {
@@ -159,6 +160,15 @@ model PasswordResetToken {
   expiresAt DateTime
   usedAt    DateTime?
 
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+}
+
+model RecoveryCode {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  codeHash  String
+  usedAt    DateTime?
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 }

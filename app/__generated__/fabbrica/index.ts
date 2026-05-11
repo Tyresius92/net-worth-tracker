@@ -6,6 +6,7 @@ import type { BalanceSnapshot } from "@prisma/client";
 import type { PlaidItem } from "@prisma/client";
 import type { PlaidAccount } from "@prisma/client";
 import type { PasswordResetToken } from "@prisma/client";
+import type { RecoveryCode } from "@prisma/client";
 import type { ContactFormSubmission } from "@prisma/client";
 import type { UserRole } from "@prisma/client";
 import type { AccountType } from "@prisma/client";
@@ -55,6 +56,10 @@ const modelFieldDefinitions: ModelWithFields[] = [{
                 name: "passwordResetTokens",
                 type: "PasswordResetToken",
                 relationName: "PasswordResetTokenToUser"
+            }, {
+                name: "recoveryCodes",
+                type: "RecoveryCode",
+                relationName: "RecoveryCodeToUser"
             }]
     }, {
         name: "Password",
@@ -122,6 +127,13 @@ const modelFieldDefinitions: ModelWithFields[] = [{
                 relationName: "PasswordResetTokenToUser"
             }]
     }, {
+        name: "RecoveryCode",
+        fields: [{
+                name: "user",
+                type: "User",
+                relationName: "RecoveryCodeToUser"
+            }]
+    }, {
         name: "ContactFormSubmission",
         fields: []
     }];
@@ -152,6 +164,7 @@ type UserFactoryDefineInput = {
     accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
     plaidItems?: Prisma.PlaidItemCreateNestedManyWithoutUserInput;
     passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
+    recoveryCodes?: Prisma.RecoveryCodeCreateNestedManyWithoutUserInput;
 };
 
 type UserTransientFields = Record<string, unknown> & Partial<Record<keyof UserFactoryDefineInput, never>>;
@@ -1427,6 +1440,160 @@ export const definePasswordResetTokenFactory = (<TOptions extends PasswordResetT
 }) as PasswordResetTokenFactoryBuilder;
 
 definePasswordResetTokenFactory.withTransientFields = defaultTransientFieldValues => options => definePasswordResetTokenFactoryInternal(options, defaultTransientFieldValues);
+
+type RecoveryCodeScalarOrEnumFields = {
+    codeHash: string;
+};
+
+type RecoveryCodeuserFactory = {
+    _factoryFor: "User";
+    build: () => PromiseLike<Prisma.UserCreateNestedOneWithoutRecoveryCodesInput["create"]>;
+};
+
+type RecoveryCodeFactoryDefineInput = {
+    id?: string;
+    createdAt?: Date;
+    codeHash?: string;
+    usedAt?: Date | null;
+    user: RecoveryCodeuserFactory | Prisma.UserCreateNestedOneWithoutRecoveryCodesInput;
+};
+
+type RecoveryCodeTransientFields = Record<string, unknown> & Partial<Record<keyof RecoveryCodeFactoryDefineInput, never>>;
+
+type RecoveryCodeFactoryTrait<TTransients extends Record<string, unknown>> = {
+    data?: Resolver<Partial<RecoveryCodeFactoryDefineInput>, BuildDataOptions<TTransients>>;
+} & CallbackDefineOptions<RecoveryCode, Prisma.RecoveryCodeCreateInput, TTransients>;
+
+type RecoveryCodeFactoryDefineOptions<TTransients extends Record<string, unknown> = Record<string, unknown>> = {
+    defaultData: Resolver<RecoveryCodeFactoryDefineInput, BuildDataOptions<TTransients>>;
+    traits?: {
+        [traitName: string | symbol]: RecoveryCodeFactoryTrait<TTransients>;
+    };
+} & CallbackDefineOptions<RecoveryCode, Prisma.RecoveryCodeCreateInput, TTransients>;
+
+function isRecoveryCodeuserFactory(x: RecoveryCodeuserFactory | Prisma.UserCreateNestedOneWithoutRecoveryCodesInput | undefined): x is RecoveryCodeuserFactory {
+    return (x as any)?._factoryFor === "User";
+}
+
+type RecoveryCodeTraitKeys<TOptions extends RecoveryCodeFactoryDefineOptions<any>> = Exclude<keyof TOptions["traits"], number>;
+
+export interface RecoveryCodeFactoryInterfaceWithoutTraits<TTransients extends Record<string, unknown>> {
+    readonly _factoryFor: "RecoveryCode";
+    build(inputData?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<Prisma.RecoveryCodeCreateInput>;
+    buildCreateInput(inputData?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<Prisma.RecoveryCodeCreateInput>;
+    buildList(list: readonly Partial<Prisma.RecoveryCodeCreateInput & TTransients>[]): PromiseLike<Prisma.RecoveryCodeCreateInput[]>;
+    buildList(count: number, item?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<Prisma.RecoveryCodeCreateInput[]>;
+    pickForConnect(inputData: RecoveryCode): Pick<RecoveryCode, "id">;
+    create(inputData?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<RecoveryCode>;
+    createList(list: readonly Partial<Prisma.RecoveryCodeCreateInput & TTransients>[]): PromiseLike<RecoveryCode[]>;
+    createList(count: number, item?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<RecoveryCode[]>;
+    createForConnect(inputData?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<Pick<RecoveryCode, "id">>;
+}
+
+export interface RecoveryCodeFactoryInterface<TTransients extends Record<string, unknown> = Record<string, unknown>, TTraitName extends TraitName = TraitName> extends RecoveryCodeFactoryInterfaceWithoutTraits<TTransients> {
+    use(name: TTraitName, ...names: readonly TTraitName[]): RecoveryCodeFactoryInterfaceWithoutTraits<TTransients>;
+}
+
+function autoGenerateRecoveryCodeScalarsOrEnums({ seq }: {
+    readonly seq: number;
+}): RecoveryCodeScalarOrEnumFields {
+    return {
+        codeHash: getScalarFieldValueGenerator().String({ modelName: "RecoveryCode", fieldName: "codeHash", isId: false, isUnique: false, seq })
+    };
+}
+
+function defineRecoveryCodeFactoryInternal<TTransients extends Record<string, unknown>, TOptions extends RecoveryCodeFactoryDefineOptions<TTransients>>({ defaultData: defaultDataResolver, onAfterBuild, onBeforeCreate, onAfterCreate, traits: traitsDefs = {} }: TOptions, defaultTransientFieldValues: TTransients): RecoveryCodeFactoryInterface<TTransients, RecoveryCodeTraitKeys<TOptions>> {
+    const getFactoryWithTraits = (traitKeys: readonly RecoveryCodeTraitKeys<TOptions>[] = []) => {
+        const seqKey = {};
+        const getSeq = () => getSequenceCounter(seqKey);
+        const screen = createScreener("RecoveryCode", modelFieldDefinitions);
+        const handleAfterBuild = createCallbackChain([
+            onAfterBuild,
+            ...traitKeys.map(traitKey => traitsDefs[traitKey]?.onAfterBuild),
+        ]);
+        const handleBeforeCreate = createCallbackChain([
+            ...traitKeys.slice().reverse().map(traitKey => traitsDefs[traitKey]?.onBeforeCreate),
+            onBeforeCreate,
+        ]);
+        const handleAfterCreate = createCallbackChain([
+            onAfterCreate,
+            ...traitKeys.map(traitKey => traitsDefs[traitKey]?.onAfterCreate),
+        ]);
+        const build = async (inputData: Partial<Prisma.RecoveryCodeCreateInput & TTransients> = {}) => {
+            const seq = getSeq();
+            const requiredScalarData = autoGenerateRecoveryCodeScalarsOrEnums({ seq });
+            const resolveValue = normalizeResolver<RecoveryCodeFactoryDefineInput, BuildDataOptions<any>>(defaultDataResolver);
+            const [transientFields, filteredInputData] = destructure(defaultTransientFieldValues, inputData);
+            const resolverInput = { seq, ...transientFields };
+            const defaultData = await traitKeys.reduce(async (queue, traitKey) => {
+                const acc = await queue;
+                const resolveTraitValue = normalizeResolver<Partial<RecoveryCodeFactoryDefineInput>, BuildDataOptions<TTransients>>(traitsDefs[traitKey]?.data ?? {});
+                const traitData = await resolveTraitValue(resolverInput);
+                return {
+                    ...acc,
+                    ...traitData,
+                };
+            }, resolveValue(resolverInput));
+            const defaultAssociations = {
+                user: isRecoveryCodeuserFactory(defaultData.user) ? {
+                    create: await defaultData.user.build()
+                } : defaultData.user
+            } as Prisma.RecoveryCodeCreateInput;
+            const data: Prisma.RecoveryCodeCreateInput = { ...requiredScalarData, ...defaultData, ...defaultAssociations, ...filteredInputData };
+            await handleAfterBuild(data, transientFields);
+            return data;
+        };
+        const buildList = (...args: unknown[]) => Promise.all(normalizeList<Partial<Prisma.RecoveryCodeCreateInput & TTransients>>(...args).map(data => build(data)));
+        const pickForConnect = (inputData: RecoveryCode) => ({
+            id: inputData.id
+        });
+        const create = async (inputData: Partial<Prisma.RecoveryCodeCreateInput & TTransients> = {}) => {
+            const data = await build({ ...inputData }).then(screen);
+            const [transientFields] = destructure(defaultTransientFieldValues, inputData);
+            await handleBeforeCreate(data, transientFields);
+            const createdData = await getClient<PrismaClient>().recoveryCode.create({ data });
+            await handleAfterCreate(createdData, transientFields);
+            return createdData;
+        };
+        const createList = (...args: unknown[]) => Promise.all(normalizeList<Partial<Prisma.RecoveryCodeCreateInput & TTransients>>(...args).map(data => create(data)));
+        const createForConnect = (inputData: Partial<Prisma.RecoveryCodeCreateInput & TTransients> = {}) => create(inputData).then(pickForConnect);
+        return {
+            _factoryFor: "RecoveryCode" as const,
+            build,
+            buildList,
+            buildCreateInput: build,
+            pickForConnect,
+            create,
+            createList,
+            createForConnect,
+        };
+    };
+    const factory = getFactoryWithTraits();
+    const useTraits = (name: RecoveryCodeTraitKeys<TOptions>, ...names: readonly RecoveryCodeTraitKeys<TOptions>[]) => {
+        return getFactoryWithTraits([name, ...names]);
+    };
+    return {
+        ...factory,
+        use: useTraits,
+    };
+}
+
+interface RecoveryCodeFactoryBuilder {
+    <TOptions extends RecoveryCodeFactoryDefineOptions>(options: TOptions): RecoveryCodeFactoryInterface<{}, RecoveryCodeTraitKeys<TOptions>>;
+    withTransientFields: <TTransients extends RecoveryCodeTransientFields>(defaultTransientFieldValues: TTransients) => <TOptions extends RecoveryCodeFactoryDefineOptions<TTransients>>(options: TOptions) => RecoveryCodeFactoryInterface<TTransients, RecoveryCodeTraitKeys<TOptions>>;
+}
+
+/**
+ * Define factory for {@link RecoveryCode} model.
+ *
+ * @param options
+ * @returns factory {@link RecoveryCodeFactoryInterface}
+ */
+export const defineRecoveryCodeFactory = (<TOptions extends RecoveryCodeFactoryDefineOptions>(options: TOptions): RecoveryCodeFactoryInterface<TOptions> => {
+    return defineRecoveryCodeFactoryInternal(options, {});
+}) as RecoveryCodeFactoryBuilder;
+
+defineRecoveryCodeFactory.withTransientFields = defaultTransientFieldValues => options => defineRecoveryCodeFactoryInternal(options, defaultTransientFieldValues);
 
 type ContactFormSubmissionScalarOrEnumFields = {
     emailAddress: string;

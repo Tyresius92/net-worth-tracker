@@ -1,0 +1,64 @@
+.page {
+  max-width: 640px;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-block-end: var(--space-24);
+}
+
+.section {
+  margin-block-end: var(--space-24);
+}
+
+.sectionHeading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-sand-11);
+  margin-block-end: var(--space-12);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding-block: var(--space-12);
+}
+
+.row + .row {
+  border-block-start: 1px solid var(--color-sand-3);
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.value {
+  font-size: 0.875rem;
+  color: var(--color-sand-11);
+  text-align: end;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.badge.enabled {
+  background: var(--color-sand-3);
+  color: var(--color-sand-12);
+}
+
+.badge.disabled {
+  background: var(--color-sand-3);
+  color: var(--color-sand-11);
+}

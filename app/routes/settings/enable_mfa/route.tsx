@@ -12,6 +12,7 @@ import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
+import { generateRecoveryCodes } from "~/models/recovery-code.server";
 import { getSession, requireUser, sessionStorage } from "~/session.server";
 
 import type { Route } from "./+types/route";
@@ -94,7 +95,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   session.unset("2fa:temp-secret");
 
-  return redirect("/profile", {
+  const codes = await generateRecoveryCodes(user.id);
+  session.set("recovery-codes:new-codes", codes);
+
+  return redirect("/settings/recovery-codes", {
     headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
   });
 };
