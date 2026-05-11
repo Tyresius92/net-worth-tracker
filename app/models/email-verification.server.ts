@@ -8,7 +8,9 @@ function hashToken(token: string): string {
   return crypto.createHash("sha256").update(token).digest("hex");
 }
 
-export async function createEmailVerificationToken(userId: string): Promise<string> {
+export async function createEmailVerificationToken(
+  userId: string,
+): Promise<string> {
   await prisma.emailVerificationToken.deleteMany({ where: { userId } });
 
   const token = crypto.randomBytes(32).toString("hex");
@@ -30,14 +32,19 @@ export async function verifyEmailVerificationToken(token: string) {
     include: { user: { select: { id: true, email: true, firstName: true } } },
   });
 
-  if (!record) return null;
+  if (!record) {
+    return null;
+  }
   if (record.usedAt) return null;
   if (record.expiresAt < new Date()) return null;
 
   return record;
 }
 
-export async function consumeEmailVerificationToken(tokenId: string, userId: string): Promise<void> {
+export async function consumeEmailVerificationToken(
+  tokenId: string,
+  userId: string,
+): Promise<void> {
   await prisma.$transaction([
     prisma.emailVerificationToken.update({
       where: { id: tokenId },
