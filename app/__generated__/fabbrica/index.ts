@@ -6,6 +6,7 @@ import type { BalanceSnapshot } from "@prisma/client";
 import type { PlaidItem } from "@prisma/client";
 import type { PlaidAccount } from "@prisma/client";
 import type { PasswordResetToken } from "@prisma/client";
+import type { EmailVerificationToken } from "@prisma/client";
 import type { RecoveryCode } from "@prisma/client";
 import type { ContactFormSubmission } from "@prisma/client";
 import type { UserRole } from "@prisma/client";
@@ -60,6 +61,10 @@ const modelFieldDefinitions: ModelWithFields[] = [{
                 name: "recoveryCodes",
                 type: "RecoveryCode",
                 relationName: "RecoveryCodeToUser"
+            }, {
+                name: "emailVerificationTokens",
+                type: "EmailVerificationToken",
+                relationName: "EmailVerificationTokenToUser"
             }]
     }, {
         name: "Password",
@@ -127,6 +132,13 @@ const modelFieldDefinitions: ModelWithFields[] = [{
                 relationName: "PasswordResetTokenToUser"
             }]
     }, {
+        name: "EmailVerificationToken",
+        fields: [{
+                name: "user",
+                type: "User",
+                relationName: "EmailVerificationTokenToUser"
+            }]
+    }, {
         name: "RecoveryCode",
         fields: [{
                 name: "user",
@@ -156,6 +168,7 @@ type UserFactoryDefineInput = {
     email?: string;
     firstName?: string;
     lastName?: string;
+    emailVerifiedAt?: Date | null;
     twoFactorEnabled?: boolean;
     twoFactorSecret?: string | null;
     role?: UserRole;
@@ -165,6 +178,7 @@ type UserFactoryDefineInput = {
     plaidItems?: Prisma.PlaidItemCreateNestedManyWithoutUserInput;
     passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
     recoveryCodes?: Prisma.RecoveryCodeCreateNestedManyWithoutUserInput;
+    emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput;
 };
 
 type UserTransientFields = Record<string, unknown> & Partial<Record<keyof UserFactoryDefineInput, never>>;
@@ -1440,6 +1454,163 @@ export const definePasswordResetTokenFactory = (<TOptions extends PasswordResetT
 }) as PasswordResetTokenFactoryBuilder;
 
 definePasswordResetTokenFactory.withTransientFields = defaultTransientFieldValues => options => definePasswordResetTokenFactoryInternal(options, defaultTransientFieldValues);
+
+type EmailVerificationTokenScalarOrEnumFields = {
+    tokenHash: string;
+    expiresAt: Date;
+};
+
+type EmailVerificationTokenuserFactory = {
+    _factoryFor: "User";
+    build: () => PromiseLike<Prisma.UserCreateNestedOneWithoutEmailVerificationTokensInput["create"]>;
+};
+
+type EmailVerificationTokenFactoryDefineInput = {
+    id?: string;
+    createdAt?: Date;
+    tokenHash?: string;
+    expiresAt?: Date;
+    usedAt?: Date | null;
+    user: EmailVerificationTokenuserFactory | Prisma.UserCreateNestedOneWithoutEmailVerificationTokensInput;
+};
+
+type EmailVerificationTokenTransientFields = Record<string, unknown> & Partial<Record<keyof EmailVerificationTokenFactoryDefineInput, never>>;
+
+type EmailVerificationTokenFactoryTrait<TTransients extends Record<string, unknown>> = {
+    data?: Resolver<Partial<EmailVerificationTokenFactoryDefineInput>, BuildDataOptions<TTransients>>;
+} & CallbackDefineOptions<EmailVerificationToken, Prisma.EmailVerificationTokenCreateInput, TTransients>;
+
+type EmailVerificationTokenFactoryDefineOptions<TTransients extends Record<string, unknown> = Record<string, unknown>> = {
+    defaultData: Resolver<EmailVerificationTokenFactoryDefineInput, BuildDataOptions<TTransients>>;
+    traits?: {
+        [traitName: string | symbol]: EmailVerificationTokenFactoryTrait<TTransients>;
+    };
+} & CallbackDefineOptions<EmailVerificationToken, Prisma.EmailVerificationTokenCreateInput, TTransients>;
+
+function isEmailVerificationTokenuserFactory(x: EmailVerificationTokenuserFactory | Prisma.UserCreateNestedOneWithoutEmailVerificationTokensInput | undefined): x is EmailVerificationTokenuserFactory {
+    return (x as any)?._factoryFor === "User";
+}
+
+type EmailVerificationTokenTraitKeys<TOptions extends EmailVerificationTokenFactoryDefineOptions<any>> = Exclude<keyof TOptions["traits"], number>;
+
+export interface EmailVerificationTokenFactoryInterfaceWithoutTraits<TTransients extends Record<string, unknown>> {
+    readonly _factoryFor: "EmailVerificationToken";
+    build(inputData?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<Prisma.EmailVerificationTokenCreateInput>;
+    buildCreateInput(inputData?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<Prisma.EmailVerificationTokenCreateInput>;
+    buildList(list: readonly Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>[]): PromiseLike<Prisma.EmailVerificationTokenCreateInput[]>;
+    buildList(count: number, item?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<Prisma.EmailVerificationTokenCreateInput[]>;
+    pickForConnect(inputData: EmailVerificationToken): Pick<EmailVerificationToken, "id">;
+    create(inputData?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<EmailVerificationToken>;
+    createList(list: readonly Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>[]): PromiseLike<EmailVerificationToken[]>;
+    createList(count: number, item?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<EmailVerificationToken[]>;
+    createForConnect(inputData?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<Pick<EmailVerificationToken, "id">>;
+}
+
+export interface EmailVerificationTokenFactoryInterface<TTransients extends Record<string, unknown> = Record<string, unknown>, TTraitName extends TraitName = TraitName> extends EmailVerificationTokenFactoryInterfaceWithoutTraits<TTransients> {
+    use(name: TTraitName, ...names: readonly TTraitName[]): EmailVerificationTokenFactoryInterfaceWithoutTraits<TTransients>;
+}
+
+function autoGenerateEmailVerificationTokenScalarsOrEnums({ seq }: {
+    readonly seq: number;
+}): EmailVerificationTokenScalarOrEnumFields {
+    return {
+        tokenHash: getScalarFieldValueGenerator().String({ modelName: "EmailVerificationToken", fieldName: "tokenHash", isId: false, isUnique: true, seq }),
+        expiresAt: getScalarFieldValueGenerator().DateTime({ modelName: "EmailVerificationToken", fieldName: "expiresAt", isId: false, isUnique: false, seq })
+    };
+}
+
+function defineEmailVerificationTokenFactoryInternal<TTransients extends Record<string, unknown>, TOptions extends EmailVerificationTokenFactoryDefineOptions<TTransients>>({ defaultData: defaultDataResolver, onAfterBuild, onBeforeCreate, onAfterCreate, traits: traitsDefs = {} }: TOptions, defaultTransientFieldValues: TTransients): EmailVerificationTokenFactoryInterface<TTransients, EmailVerificationTokenTraitKeys<TOptions>> {
+    const getFactoryWithTraits = (traitKeys: readonly EmailVerificationTokenTraitKeys<TOptions>[] = []) => {
+        const seqKey = {};
+        const getSeq = () => getSequenceCounter(seqKey);
+        const screen = createScreener("EmailVerificationToken", modelFieldDefinitions);
+        const handleAfterBuild = createCallbackChain([
+            onAfterBuild,
+            ...traitKeys.map(traitKey => traitsDefs[traitKey]?.onAfterBuild),
+        ]);
+        const handleBeforeCreate = createCallbackChain([
+            ...traitKeys.slice().reverse().map(traitKey => traitsDefs[traitKey]?.onBeforeCreate),
+            onBeforeCreate,
+        ]);
+        const handleAfterCreate = createCallbackChain([
+            onAfterCreate,
+            ...traitKeys.map(traitKey => traitsDefs[traitKey]?.onAfterCreate),
+        ]);
+        const build = async (inputData: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients> = {}) => {
+            const seq = getSeq();
+            const requiredScalarData = autoGenerateEmailVerificationTokenScalarsOrEnums({ seq });
+            const resolveValue = normalizeResolver<EmailVerificationTokenFactoryDefineInput, BuildDataOptions<any>>(defaultDataResolver);
+            const [transientFields, filteredInputData] = destructure(defaultTransientFieldValues, inputData);
+            const resolverInput = { seq, ...transientFields };
+            const defaultData = await traitKeys.reduce(async (queue, traitKey) => {
+                const acc = await queue;
+                const resolveTraitValue = normalizeResolver<Partial<EmailVerificationTokenFactoryDefineInput>, BuildDataOptions<TTransients>>(traitsDefs[traitKey]?.data ?? {});
+                const traitData = await resolveTraitValue(resolverInput);
+                return {
+                    ...acc,
+                    ...traitData,
+                };
+            }, resolveValue(resolverInput));
+            const defaultAssociations = {
+                user: isEmailVerificationTokenuserFactory(defaultData.user) ? {
+                    create: await defaultData.user.build()
+                } : defaultData.user
+            } as Prisma.EmailVerificationTokenCreateInput;
+            const data: Prisma.EmailVerificationTokenCreateInput = { ...requiredScalarData, ...defaultData, ...defaultAssociations, ...filteredInputData };
+            await handleAfterBuild(data, transientFields);
+            return data;
+        };
+        const buildList = (...args: unknown[]) => Promise.all(normalizeList<Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>>(...args).map(data => build(data)));
+        const pickForConnect = (inputData: EmailVerificationToken) => ({
+            id: inputData.id
+        });
+        const create = async (inputData: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients> = {}) => {
+            const data = await build({ ...inputData }).then(screen);
+            const [transientFields] = destructure(defaultTransientFieldValues, inputData);
+            await handleBeforeCreate(data, transientFields);
+            const createdData = await getClient<PrismaClient>().emailVerificationToken.create({ data });
+            await handleAfterCreate(createdData, transientFields);
+            return createdData;
+        };
+        const createList = (...args: unknown[]) => Promise.all(normalizeList<Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>>(...args).map(data => create(data)));
+        const createForConnect = (inputData: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients> = {}) => create(inputData).then(pickForConnect);
+        return {
+            _factoryFor: "EmailVerificationToken" as const,
+            build,
+            buildList,
+            buildCreateInput: build,
+            pickForConnect,
+            create,
+            createList,
+            createForConnect,
+        };
+    };
+    const factory = getFactoryWithTraits();
+    const useTraits = (name: EmailVerificationTokenTraitKeys<TOptions>, ...names: readonly EmailVerificationTokenTraitKeys<TOptions>[]) => {
+        return getFactoryWithTraits([name, ...names]);
+    };
+    return {
+        ...factory,
+        use: useTraits,
+    };
+}
+
+interface EmailVerificationTokenFactoryBuilder {
+    <TOptions extends EmailVerificationTokenFactoryDefineOptions>(options: TOptions): EmailVerificationTokenFactoryInterface<{}, EmailVerificationTokenTraitKeys<TOptions>>;
+    withTransientFields: <TTransients extends EmailVerificationTokenTransientFields>(defaultTransientFieldValues: TTransients) => <TOptions extends EmailVerificationTokenFactoryDefineOptions<TTransients>>(options: TOptions) => EmailVerificationTokenFactoryInterface<TTransients, EmailVerificationTokenTraitKeys<TOptions>>;
+}
+
+/**
+ * Define factory for {@link EmailVerificationToken} model.
+ *
+ * @param options
+ * @returns factory {@link EmailVerificationTokenFactoryInterface}
+ */
+export const defineEmailVerificationTokenFactory = (<TOptions extends EmailVerificationTokenFactoryDefineOptions>(options: TOptions): EmailVerificationTokenFactoryInterface<TOptions> => {
+    return defineEmailVerificationTokenFactoryInternal(options, {});
+}) as EmailVerificationTokenFactoryBuilder;
+
+defineEmailVerificationTokenFactory.withTransientFields = defaultTransientFieldValues => options => defineEmailVerificationTokenFactoryInternal(options, defaultTransientFieldValues);
 
 type RecoveryCodeScalarOrEnumFields = {
     codeHash: string;

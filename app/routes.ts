@@ -16,6 +16,8 @@ export default [
     route("reset-password", "./routes/reset-password/route.tsx"),
   ]),
   route("logout", "./routes/logout.tsx"),
+  route("verify-email", "./routes/verify-email/route.tsx"),
+  route("verify-email/pending", "./routes/verify-email/pending/route.tsx"),
 
   route("contact", "./routes/contact/route.tsx"),
   route("contact/messages", "./routes/contact/messages/route.tsx"),
@@ -27,6 +29,7 @@ export default [
     route("enable_mfa", "./routes/settings/enable_mfa/route.tsx"),
     route("recovery-codes", "./routes/settings/recovery-codes/route.tsx"),
     route("disable_mfa", "./routes/settings/disable_mfa/route.tsx"),
+    route("change-password", "./routes/settings/change-password/route.tsx"),
   ]),
 
   route("users", "./routes/users/layout.tsx", [

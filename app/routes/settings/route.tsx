@@ -72,6 +72,18 @@ export default function SettingsRoute() {
           )}
         </Box>
       </div>
+
+      <div className={styles.section}>
+        <p className={styles.sectionHeading}>Password</p>
+        <Box borderColor="sand-7">
+          <div className={styles.row}>
+            <span className={styles.label}>Change password</span>
+            <span className={styles.value}>
+              <Link to="/settings/change-password">Change</Link>
+            </span>
+          </div>
+        </Box>
+      </div>
     </div>
   );
 }

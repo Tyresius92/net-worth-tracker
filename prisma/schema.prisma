@@ -23,17 +23,20 @@ model User {
   firstName String
   lastName  String
 
+  emailVerifiedAt DateTime?
+
   twoFactorEnabled Boolean @default(false)
   twoFactorSecret String? /// @encrypted
 
   role UserRole @default(customer)
 
-  password             Password?
-  notes                Note[]
-  accounts             Account[]
-  plaidItems           PlaidItem[]
-  passwordResetTokens  PasswordResetToken[]
-  recoveryCodes        RecoveryCode[]
+  password               Password?
+  notes                  Note[]
+  accounts               Account[]
+  plaidItems             PlaidItem[]
+  passwordResetTokens    PasswordResetToken[]
+  recoveryCodes          RecoveryCode[]
+  emailVerificationTokens EmailVerificationToken[]
 }
 
 model Password {
@@ -156,6 +159,17 @@ model PasswordResetToken {
   id        String    @id @default(cuid())
   createdAt DateTime  @default(now())
 
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
   tokenHash String    @unique
   expiresAt DateTime
   usedAt    DateTime?

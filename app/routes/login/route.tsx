@@ -18,9 +18,9 @@ import { Checkbox } from "~/components/Checkbox/Checkbox";
 import { Divider } from "~/components/Divider/Divider";
 import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
-import styles from "./login.module.css";
-
+import { EmailVerificationEmail } from "~/emails/EmailVerificationEmail";
 import { logger } from "~/logger";
+import { createEmailVerificationToken } from "~/models/email-verification.server";
 import { verifyLogin } from "~/models/user.server";
 import {
   createUserSession,
@@ -29,7 +29,10 @@ import {
   sessionStorage,
 } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
+import { sendEmail } from "~/utils/email.server";
 import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
+
+import styles from "./login.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
@@ -83,6 +86,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       { errors: { email: "Invalid email or password", password: null } },
       { status: 400 },
     );
+  }
+
+  if (!user.emailVerifiedAt) {
+    const token = await createEmailVerificationToken(user.id);
+    const verifyUrl = `${new URL(request.url).origin}/verify-email?token=${token}`;
+    await sendEmail({
+      to: user.email,
+      subject: "Verify your email address",
+      react: <EmailVerificationEmail firstName={user.firstName} verifyUrl={verifyUrl} />,
+    });
+    session.set("pending-verification:userId", user.id);
+    return redirect("/verify-email/pending", {
+      headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
+    });
   }
 
   if (user.twoFactorEnabled) {
