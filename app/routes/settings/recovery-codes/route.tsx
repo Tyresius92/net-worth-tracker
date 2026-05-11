@@ -20,8 +20,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   const session = await getSession(request);
-  const newCodes = session.get("recovery-codes:new-codes") as string[] | undefined;
-  const exhausted = session.get("recovery-codes:exhausted") as boolean | undefined;
+  const newCodes: string[] | undefined = session.get("recovery-codes:new-codes");
+  const exhausted: boolean | undefined = session.get("recovery-codes:exhausted");
 
   session.unset("recovery-codes:new-codes");
   session.unset("recovery-codes:exhausted");
@@ -106,7 +106,7 @@ export default function RecoveryCodesPage() {
         </div>
 
         <div className={styles.actions}>
-          <Link to="/settings">Done, I've saved them</Link>
+          <Link to="/settings">Done, I&apos;ve saved them</Link>
         </div>
       </Box>
     );

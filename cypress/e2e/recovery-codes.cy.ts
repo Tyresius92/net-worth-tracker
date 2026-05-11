@@ -27,7 +27,7 @@ describe("recovery code login", () => {
   });
 
   it("allows login with a recovery code", () => {
-    cy.task("enableUserMFA", { email: userEmail }).then(({ codes }) => {
+    cy.task<{ codes: string[] }>("enableUserMFA", { email: userEmail }).then(({ codes }) => {
       cy.visit("/login");
       cy.findByLabelText(/email address/i).type(userEmail);
       cy.findByLabelText(/password/i).type(CYPRESS_TEST_PASSWORD);
@@ -58,7 +58,7 @@ describe("recovery code login", () => {
   });
 
   it("does not allow a recovery code to be used twice", () => {
-    cy.task("enableUserMFA", { email: userEmail }).then(({ codes }) => {
+    cy.task<{ codes: string[] }>("enableUserMFA", { email: userEmail }).then(({ codes }) => {
       const useCode = (code: string) => {
         cy.visit("/login");
         cy.findByLabelText(/email address/i).type(userEmail);
@@ -80,7 +80,7 @@ describe("recovery code login", () => {
   });
 
   it("redirects to /settings/recovery-codes and shows exhausted warning after the last code is used", () => {
-    cy.task("enableUserMFA", { email: userEmail, codeCount: 1 }).then(({ codes }) => {
+    cy.task<{ codes: string[] }>("enableUserMFA", { email: userEmail, codeCount: 1 }).then(({ codes }) => {
       cy.visit("/login");
       cy.findByLabelText(/email address/i).type(userEmail);
       cy.findByLabelText(/password/i).type(CYPRESS_TEST_PASSWORD);

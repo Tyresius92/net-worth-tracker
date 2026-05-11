@@ -19,7 +19,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   if (userId) return redirect("/");
 
   const session = await getSession(request);
-  const pendingUserId = session.get("pending-verification:userId") as string | undefined;
+  const pendingUserId: string | undefined = session.get("pending-verification:userId");
   if (!pendingUserId) return redirect("/join");
 
   const expired = new URL(request.url).searchParams.get("expired") === "1";
@@ -29,7 +29,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const session = await getSession(request);
-  const pendingUserId = session.get("pending-verification:userId") as string | undefined;
+  const pendingUserId: string | undefined = session.get("pending-verification:userId");
   if (!pendingUserId) return redirect("/join");
 
   const user = await getUserById(pendingUserId);
