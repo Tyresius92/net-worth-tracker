@@ -51,6 +51,13 @@ export default function SettingsRoute() {
                   <Link to="/settings/recovery-codes">Manage</Link>
                 </span>
               </div>
+              <Divider variant="light" />
+              <div className={styles.row}>
+                <span className={styles.label}>Disable two-factor authentication</span>
+                <span className={styles.value}>
+                  <Link to="/settings/disable_mfa">Disable</Link>
+                </span>
+              </div>
             </>
           ) : (
             <div className={styles.row}>

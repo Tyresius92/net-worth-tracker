@@ -150,9 +150,10 @@ export default function LoginPage() {
           />
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <div className={styles.actions}>
-            <Button type="submit">Log in</Button>
             <Checkbox name="remember" label="Remember me" />
+            <Button type="submit">Log in</Button>
             <Link to="/forgot-password">Forgot password?</Link>
+            <Link to="/join">Don&apos;t have an account? Sign up</Link>
           </div>
         </Form>
       </Box>
