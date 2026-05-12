@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import { parse } from "cookie";
 import { defineConfig } from "cypress";
 import * as dotenv from "dotenv";
+import { Secret, TOTP } from "otpauth";
 import { createCookieSessionStorage } from "react-router";
 
 import { CYPRESS_TEST_PASSWORD } from "./cypress/support/constants";
@@ -116,6 +117,20 @@ export default defineConfig({
           await prismaClient.recoveryCode.createMany({ data: createData });
 
           return { codes };
+        },
+
+        async generateTOTPCode(email: string): Promise<string> {
+          const user = await prismaClient.user.findUnique({
+            where: { email },
+            select: { twoFactorSecret: true },
+          });
+          if (!user?.twoFactorSecret) throw new Error(`No TOTP secret for ${email}`);
+          const totp = new TOTP({
+            issuer: "The Ledger",
+            label: email,
+            secret: Secret.fromBase32(user.twoFactorSecret),
+          });
+          return totp.generate();
         },
 
         async deleteUser(email: string): Promise<null> {

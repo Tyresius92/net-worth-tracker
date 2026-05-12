@@ -37,29 +37,35 @@ describe("/settings/disable_mfa", () => {
   });
 
   it("disables 2FA and redirects to /settings on a valid code", () => {
-    cy.visit("/settings/disable_mfa");
-    cy.findByLabelText(/authenticator code/i).type("000000");
-    cy.findByRole("button", { name: /disable two-factor/i }).click();
-    cy.location("pathname").should("eq", "/settings");
-    cy.findByText(/not enabled/i);
+    cy.task<string>("generateTOTPCode", userEmail).then((code) => {
+      cy.visit("/settings/disable_mfa");
+      cy.findByLabelText(/authenticator code/i).type(code);
+      cy.findByRole("button", { name: /disable two-factor/i }).click();
+      cy.location("pathname").should("eq", "/settings");
+      cy.findByText(/not enabled/i);
+    });
   });
 
   it("deletes recovery codes on disable", () => {
-    cy.visit("/settings/disable_mfa");
-    cy.findByLabelText(/authenticator code/i).type("000000");
-    cy.findByRole("button", { name: /disable two-factor/i }).click();
+    cy.task<string>("generateTOTPCode", userEmail).then((code) => {
+      cy.visit("/settings/disable_mfa");
+      cy.findByLabelText(/authenticator code/i).type(code);
+      cy.findByRole("button", { name: /disable two-factor/i }).click();
 
-    cy.visit("/settings/recovery-codes");
-    cy.location("pathname").should("eq", "/settings");
+      cy.visit("/settings/recovery-codes");
+      cy.location("pathname").should("eq", "/settings");
+    });
   });
 
   it("cannot be used twice without re-enabling", () => {
-    cy.visit("/settings/disable_mfa");
-    cy.findByLabelText(/authenticator code/i).type("000000");
-    cy.findByRole("button", { name: /disable two-factor/i }).click();
+    cy.task<string>("generateTOTPCode", userEmail).then((code) => {
+      cy.visit("/settings/disable_mfa");
+      cy.findByLabelText(/authenticator code/i).type(code);
+      cy.findByRole("button", { name: /disable two-factor/i }).click();
 
-    cy.visit("/settings/disable_mfa");
-    cy.location("pathname").should("eq", "/settings");
+      cy.visit("/settings/disable_mfa");
+      cy.location("pathname").should("eq", "/settings");
+    });
   });
 });
 
