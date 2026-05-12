@@ -1,9 +1,6 @@
 -- AlterTable
 ALTER TABLE "User" ADD COLUMN "emailVerifiedAt" DATETIME;
 
--- Backfill: treat all existing users as verified at the time they registered
-UPDATE "User" SET "emailVerifiedAt" = "createdAt" WHERE "emailVerifiedAt" IS NULL;
-
 -- CreateTable
 CREATE TABLE "EmailVerificationToken" (
     "id" TEXT NOT NULL PRIMARY KEY,
