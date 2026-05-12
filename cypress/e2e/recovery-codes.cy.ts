@@ -72,7 +72,7 @@ describe("recovery code login", () => {
 
       useCode(codes[0]);
       cy.location("pathname").should("eq", "/");
-      cy.visit("/logout");
+      cy.findByRole("button", { name: /log out/i }).click();
 
       useCode(codes[0]);
       cy.location("pathname").should("eq", "/login/2fa");
@@ -115,7 +115,7 @@ describe("/settings/recovery-codes page", () => {
 
   it("shows the remaining code count", () => {
     cy.visit("/settings/recovery-codes");
-    cy.findByText(/10.*of 10 recovery codes remaining/i);
+    cy.contains(/10 of 10 recovery codes remaining/i);
   });
 
   it("regenerates codes when a valid TOTP code is entered", () => {

@@ -49,6 +49,7 @@ export default defineConfig({
               email,
               firstName: "Test",
               lastName: "User",
+              emailVerifiedAt: new Date(),
               password: { create: { hash } },
             },
           });
