@@ -16,10 +16,11 @@ import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Checkbox } from "~/components/Checkbox/Checkbox";
 import { Divider } from "~/components/Divider/Divider";
+import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
-import styles from "./login.module.css";
-
+import { EmailVerificationEmail } from "~/emails/EmailVerificationEmail";
 import { logger } from "~/logger";
+import { createEmailVerificationToken } from "~/models/email-verification.server";
 import { verifyLogin } from "~/models/user.server";
 import {
   createUserSession,
@@ -28,7 +29,10 @@ import {
   sessionStorage,
 } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
+import { sendEmail } from "~/utils/email.server";
 import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
+
+import styles from "./login.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
@@ -84,10 +88,24 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
   }
 
+  if (!user.emailVerifiedAt) {
+    const token = await createEmailVerificationToken(user.id);
+    const verifyUrl = `${new URL(request.url).origin}/verify-email?token=${token}`;
+    await sendEmail({
+      to: user.email,
+      subject: "Verify your email address",
+      react: <EmailVerificationEmail firstName={user.firstName} verifyUrl={verifyUrl} />,
+    });
+    session.set("pending-verification:userId", user.id);
+    return redirect("/verify-email/pending", {
+      headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
+    });
+  }
+
   if (user.twoFactorEnabled) {
     session.set("2fa:user-id", user.id);
     session.set("2fa:remember", remember === "on" ? true : false);
-    return redirect("./2fa", {
+    return redirect("/login/2fa", {
       headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
     });
   }
@@ -149,8 +167,10 @@ export default function LoginPage() {
           />
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <div className={styles.actions}>
-            <Button type="submit">Log in</Button>
             <Checkbox name="remember" label="Remember me" />
+            <Button type="submit">Log in</Button>
+            <Link to="/forgot-password">Forgot password?</Link>
+            <Link to="/join">Don&apos;t have an account? Sign up</Link>
           </div>
         </Form>
       </Box>

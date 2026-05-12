@@ -5,6 +5,9 @@ import type { Account } from "@prisma/client";
 import type { BalanceSnapshot } from "@prisma/client";
 import type { PlaidItem } from "@prisma/client";
 import type { PlaidAccount } from "@prisma/client";
+import type { PasswordResetToken } from "@prisma/client";
+import type { EmailVerificationToken } from "@prisma/client";
+import type { RecoveryCode } from "@prisma/client";
 import type { ContactFormSubmission } from "@prisma/client";
 import type { UserRole } from "@prisma/client";
 import type { AccountType } from "@prisma/client";
@@ -50,6 +53,18 @@ const modelFieldDefinitions: ModelWithFields[] = [{
                 name: "plaidItems",
                 type: "PlaidItem",
                 relationName: "PlaidItemToUser"
+            }, {
+                name: "passwordResetTokens",
+                type: "PasswordResetToken",
+                relationName: "PasswordResetTokenToUser"
+            }, {
+                name: "recoveryCodes",
+                type: "RecoveryCode",
+                relationName: "RecoveryCodeToUser"
+            }, {
+                name: "emailVerificationTokens",
+                type: "EmailVerificationToken",
+                relationName: "EmailVerificationTokenToUser"
             }]
     }, {
         name: "Password",
@@ -110,6 +125,27 @@ const modelFieldDefinitions: ModelWithFields[] = [{
                 relationName: "AccountToPlaidAccount"
             }]
     }, {
+        name: "PasswordResetToken",
+        fields: [{
+                name: "user",
+                type: "User",
+                relationName: "PasswordResetTokenToUser"
+            }]
+    }, {
+        name: "EmailVerificationToken",
+        fields: [{
+                name: "user",
+                type: "User",
+                relationName: "EmailVerificationTokenToUser"
+            }]
+    }, {
+        name: "RecoveryCode",
+        fields: [{
+                name: "user",
+                type: "User",
+                relationName: "RecoveryCodeToUser"
+            }]
+    }, {
         name: "ContactFormSubmission",
         fields: []
     }];
@@ -132,6 +168,7 @@ type UserFactoryDefineInput = {
     email?: string;
     firstName?: string;
     lastName?: string;
+    emailVerifiedAt?: Date | null;
     twoFactorEnabled?: boolean;
     twoFactorSecret?: string | null;
     role?: UserRole;
@@ -139,6 +176,9 @@ type UserFactoryDefineInput = {
     notes?: Prisma.NoteCreateNestedManyWithoutUserInput;
     accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
     plaidItems?: Prisma.PlaidItemCreateNestedManyWithoutUserInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
+    recoveryCodes?: Prisma.RecoveryCodeCreateNestedManyWithoutUserInput;
+    emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput;
 };
 
 type UserTransientFields = Record<string, unknown> & Partial<Record<keyof UserFactoryDefineInput, never>>;
@@ -1257,6 +1297,474 @@ export const definePlaidAccountFactory = (<TOptions extends PlaidAccountFactoryD
 }) as PlaidAccountFactoryBuilder;
 
 definePlaidAccountFactory.withTransientFields = defaultTransientFieldValues => options => definePlaidAccountFactoryInternal(options, defaultTransientFieldValues);
+
+type PasswordResetTokenScalarOrEnumFields = {
+    tokenHash: string;
+    expiresAt: Date;
+};
+
+type PasswordResetTokenuserFactory = {
+    _factoryFor: "User";
+    build: () => PromiseLike<Prisma.UserCreateNestedOneWithoutPasswordResetTokensInput["create"]>;
+};
+
+type PasswordResetTokenFactoryDefineInput = {
+    id?: string;
+    createdAt?: Date;
+    tokenHash?: string;
+    expiresAt?: Date;
+    usedAt?: Date | null;
+    user: PasswordResetTokenuserFactory | Prisma.UserCreateNestedOneWithoutPasswordResetTokensInput;
+};
+
+type PasswordResetTokenTransientFields = Record<string, unknown> & Partial<Record<keyof PasswordResetTokenFactoryDefineInput, never>>;
+
+type PasswordResetTokenFactoryTrait<TTransients extends Record<string, unknown>> = {
+    data?: Resolver<Partial<PasswordResetTokenFactoryDefineInput>, BuildDataOptions<TTransients>>;
+} & CallbackDefineOptions<PasswordResetToken, Prisma.PasswordResetTokenCreateInput, TTransients>;
+
+type PasswordResetTokenFactoryDefineOptions<TTransients extends Record<string, unknown> = Record<string, unknown>> = {
+    defaultData: Resolver<PasswordResetTokenFactoryDefineInput, BuildDataOptions<TTransients>>;
+    traits?: {
+        [traitName: string | symbol]: PasswordResetTokenFactoryTrait<TTransients>;
+    };
+} & CallbackDefineOptions<PasswordResetToken, Prisma.PasswordResetTokenCreateInput, TTransients>;
+
+function isPasswordResetTokenuserFactory(x: PasswordResetTokenuserFactory | Prisma.UserCreateNestedOneWithoutPasswordResetTokensInput | undefined): x is PasswordResetTokenuserFactory {
+    return (x as any)?._factoryFor === "User";
+}
+
+type PasswordResetTokenTraitKeys<TOptions extends PasswordResetTokenFactoryDefineOptions<any>> = Exclude<keyof TOptions["traits"], number>;
+
+export interface PasswordResetTokenFactoryInterfaceWithoutTraits<TTransients extends Record<string, unknown>> {
+    readonly _factoryFor: "PasswordResetToken";
+    build(inputData?: Partial<Prisma.PasswordResetTokenCreateInput & TTransients>): PromiseLike<Prisma.PasswordResetTokenCreateInput>;
+    buildCreateInput(inputData?: Partial<Prisma.PasswordResetTokenCreateInput & TTransients>): PromiseLike<Prisma.PasswordResetTokenCreateInput>;
+    buildList(list: readonly Partial<Prisma.PasswordResetTokenCreateInput & TTransients>[]): PromiseLike<Prisma.PasswordResetTokenCreateInput[]>;
+    buildList(count: number, item?: Partial<Prisma.PasswordResetTokenCreateInput & TTransients>): PromiseLike<Prisma.PasswordResetTokenCreateInput[]>;
+    pickForConnect(inputData: PasswordResetToken): Pick<PasswordResetToken, "id">;
+    create(inputData?: Partial<Prisma.PasswordResetTokenCreateInput & TTransients>): PromiseLike<PasswordResetToken>;
+    createList(list: readonly Partial<Prisma.PasswordResetTokenCreateInput & TTransients>[]): PromiseLike<PasswordResetToken[]>;
+    createList(count: number, item?: Partial<Prisma.PasswordResetTokenCreateInput & TTransients>): PromiseLike<PasswordResetToken[]>;
+    createForConnect(inputData?: Partial<Prisma.PasswordResetTokenCreateInput & TTransients>): PromiseLike<Pick<PasswordResetToken, "id">>;
+}
+
+export interface PasswordResetTokenFactoryInterface<TTransients extends Record<string, unknown> = Record<string, unknown>, TTraitName extends TraitName = TraitName> extends PasswordResetTokenFactoryInterfaceWithoutTraits<TTransients> {
+    use(name: TTraitName, ...names: readonly TTraitName[]): PasswordResetTokenFactoryInterfaceWithoutTraits<TTransients>;
+}
+
+function autoGeneratePasswordResetTokenScalarsOrEnums({ seq }: {
+    readonly seq: number;
+}): PasswordResetTokenScalarOrEnumFields {
+    return {
+        tokenHash: getScalarFieldValueGenerator().String({ modelName: "PasswordResetToken", fieldName: "tokenHash", isId: false, isUnique: true, seq }),
+        expiresAt: getScalarFieldValueGenerator().DateTime({ modelName: "PasswordResetToken", fieldName: "expiresAt", isId: false, isUnique: false, seq })
+    };
+}
+
+function definePasswordResetTokenFactoryInternal<TTransients extends Record<string, unknown>, TOptions extends PasswordResetTokenFactoryDefineOptions<TTransients>>({ defaultData: defaultDataResolver, onAfterBuild, onBeforeCreate, onAfterCreate, traits: traitsDefs = {} }: TOptions, defaultTransientFieldValues: TTransients): PasswordResetTokenFactoryInterface<TTransients, PasswordResetTokenTraitKeys<TOptions>> {
+    const getFactoryWithTraits = (traitKeys: readonly PasswordResetTokenTraitKeys<TOptions>[] = []) => {
+        const seqKey = {};
+        const getSeq = () => getSequenceCounter(seqKey);
+        const screen = createScreener("PasswordResetToken", modelFieldDefinitions);
+        const handleAfterBuild = createCallbackChain([
+            onAfterBuild,
+            ...traitKeys.map(traitKey => traitsDefs[traitKey]?.onAfterBuild),
+        ]);
+        const handleBeforeCreate = createCallbackChain([
+            ...traitKeys.slice().reverse().map(traitKey => traitsDefs[traitKey]?.onBeforeCreate),
+            onBeforeCreate,
+        ]);
+        const handleAfterCreate = createCallbackChain([
+            onAfterCreate,
+            ...traitKeys.map(traitKey => traitsDefs[traitKey]?.onAfterCreate),
+        ]);
+        const build = async (inputData: Partial<Prisma.PasswordResetTokenCreateInput & TTransients> = {}) => {
+            const seq = getSeq();
+            const requiredScalarData = autoGeneratePasswordResetTokenScalarsOrEnums({ seq });
+            const resolveValue = normalizeResolver<PasswordResetTokenFactoryDefineInput, BuildDataOptions<any>>(defaultDataResolver);
+            const [transientFields, filteredInputData] = destructure(defaultTransientFieldValues, inputData);
+            const resolverInput = { seq, ...transientFields };
+            const defaultData = await traitKeys.reduce(async (queue, traitKey) => {
+                const acc = await queue;
+                const resolveTraitValue = normalizeResolver<Partial<PasswordResetTokenFactoryDefineInput>, BuildDataOptions<TTransients>>(traitsDefs[traitKey]?.data ?? {});
+                const traitData = await resolveTraitValue(resolverInput);
+                return {
+                    ...acc,
+                    ...traitData,
+                };
+            }, resolveValue(resolverInput));
+            const defaultAssociations = {
+                user: isPasswordResetTokenuserFactory(defaultData.user) ? {
+                    create: await defaultData.user.build()
+                } : defaultData.user
+            } as Prisma.PasswordResetTokenCreateInput;
+            const data: Prisma.PasswordResetTokenCreateInput = { ...requiredScalarData, ...defaultData, ...defaultAssociations, ...filteredInputData };
+            await handleAfterBuild(data, transientFields);
+            return data;
+        };
+        const buildList = (...args: unknown[]) => Promise.all(normalizeList<Partial<Prisma.PasswordResetTokenCreateInput & TTransients>>(...args).map(data => build(data)));
+        const pickForConnect = (inputData: PasswordResetToken) => ({
+            id: inputData.id
+        });
+        const create = async (inputData: Partial<Prisma.PasswordResetTokenCreateInput & TTransients> = {}) => {
+            const data = await build({ ...inputData }).then(screen);
+            const [transientFields] = destructure(defaultTransientFieldValues, inputData);
+            await handleBeforeCreate(data, transientFields);
+            const createdData = await getClient<PrismaClient>().passwordResetToken.create({ data });
+            await handleAfterCreate(createdData, transientFields);
+            return createdData;
+        };
+        const createList = (...args: unknown[]) => Promise.all(normalizeList<Partial<Prisma.PasswordResetTokenCreateInput & TTransients>>(...args).map(data => create(data)));
+        const createForConnect = (inputData: Partial<Prisma.PasswordResetTokenCreateInput & TTransients> = {}) => create(inputData).then(pickForConnect);
+        return {
+            _factoryFor: "PasswordResetToken" as const,
+            build,
+            buildList,
+            buildCreateInput: build,
+            pickForConnect,
+            create,
+            createList,
+            createForConnect,
+        };
+    };
+    const factory = getFactoryWithTraits();
+    const useTraits = (name: PasswordResetTokenTraitKeys<TOptions>, ...names: readonly PasswordResetTokenTraitKeys<TOptions>[]) => {
+        return getFactoryWithTraits([name, ...names]);
+    };
+    return {
+        ...factory,
+        use: useTraits,
+    };
+}
+
+interface PasswordResetTokenFactoryBuilder {
+    <TOptions extends PasswordResetTokenFactoryDefineOptions>(options: TOptions): PasswordResetTokenFactoryInterface<{}, PasswordResetTokenTraitKeys<TOptions>>;
+    withTransientFields: <TTransients extends PasswordResetTokenTransientFields>(defaultTransientFieldValues: TTransients) => <TOptions extends PasswordResetTokenFactoryDefineOptions<TTransients>>(options: TOptions) => PasswordResetTokenFactoryInterface<TTransients, PasswordResetTokenTraitKeys<TOptions>>;
+}
+
+/**
+ * Define factory for {@link PasswordResetToken} model.
+ *
+ * @param options
+ * @returns factory {@link PasswordResetTokenFactoryInterface}
+ */
+export const definePasswordResetTokenFactory = (<TOptions extends PasswordResetTokenFactoryDefineOptions>(options: TOptions): PasswordResetTokenFactoryInterface<TOptions> => {
+    return definePasswordResetTokenFactoryInternal(options, {});
+}) as PasswordResetTokenFactoryBuilder;
+
+definePasswordResetTokenFactory.withTransientFields = defaultTransientFieldValues => options => definePasswordResetTokenFactoryInternal(options, defaultTransientFieldValues);
+
+type EmailVerificationTokenScalarOrEnumFields = {
+    tokenHash: string;
+    expiresAt: Date;
+};
+
+type EmailVerificationTokenuserFactory = {
+    _factoryFor: "User";
+    build: () => PromiseLike<Prisma.UserCreateNestedOneWithoutEmailVerificationTokensInput["create"]>;
+};
+
+type EmailVerificationTokenFactoryDefineInput = {
+    id?: string;
+    createdAt?: Date;
+    tokenHash?: string;
+    expiresAt?: Date;
+    usedAt?: Date | null;
+    user: EmailVerificationTokenuserFactory | Prisma.UserCreateNestedOneWithoutEmailVerificationTokensInput;
+};
+
+type EmailVerificationTokenTransientFields = Record<string, unknown> & Partial<Record<keyof EmailVerificationTokenFactoryDefineInput, never>>;
+
+type EmailVerificationTokenFactoryTrait<TTransients extends Record<string, unknown>> = {
+    data?: Resolver<Partial<EmailVerificationTokenFactoryDefineInput>, BuildDataOptions<TTransients>>;
+} & CallbackDefineOptions<EmailVerificationToken, Prisma.EmailVerificationTokenCreateInput, TTransients>;
+
+type EmailVerificationTokenFactoryDefineOptions<TTransients extends Record<string, unknown> = Record<string, unknown>> = {
+    defaultData: Resolver<EmailVerificationTokenFactoryDefineInput, BuildDataOptions<TTransients>>;
+    traits?: {
+        [traitName: string | symbol]: EmailVerificationTokenFactoryTrait<TTransients>;
+    };
+} & CallbackDefineOptions<EmailVerificationToken, Prisma.EmailVerificationTokenCreateInput, TTransients>;
+
+function isEmailVerificationTokenuserFactory(x: EmailVerificationTokenuserFactory | Prisma.UserCreateNestedOneWithoutEmailVerificationTokensInput | undefined): x is EmailVerificationTokenuserFactory {
+    return (x as any)?._factoryFor === "User";
+}
+
+type EmailVerificationTokenTraitKeys<TOptions extends EmailVerificationTokenFactoryDefineOptions<any>> = Exclude<keyof TOptions["traits"], number>;
+
+export interface EmailVerificationTokenFactoryInterfaceWithoutTraits<TTransients extends Record<string, unknown>> {
+    readonly _factoryFor: "EmailVerificationToken";
+    build(inputData?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<Prisma.EmailVerificationTokenCreateInput>;
+    buildCreateInput(inputData?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<Prisma.EmailVerificationTokenCreateInput>;
+    buildList(list: readonly Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>[]): PromiseLike<Prisma.EmailVerificationTokenCreateInput[]>;
+    buildList(count: number, item?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<Prisma.EmailVerificationTokenCreateInput[]>;
+    pickForConnect(inputData: EmailVerificationToken): Pick<EmailVerificationToken, "id">;
+    create(inputData?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<EmailVerificationToken>;
+    createList(list: readonly Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>[]): PromiseLike<EmailVerificationToken[]>;
+    createList(count: number, item?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<EmailVerificationToken[]>;
+    createForConnect(inputData?: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>): PromiseLike<Pick<EmailVerificationToken, "id">>;
+}
+
+export interface EmailVerificationTokenFactoryInterface<TTransients extends Record<string, unknown> = Record<string, unknown>, TTraitName extends TraitName = TraitName> extends EmailVerificationTokenFactoryInterfaceWithoutTraits<TTransients> {
+    use(name: TTraitName, ...names: readonly TTraitName[]): EmailVerificationTokenFactoryInterfaceWithoutTraits<TTransients>;
+}
+
+function autoGenerateEmailVerificationTokenScalarsOrEnums({ seq }: {
+    readonly seq: number;
+}): EmailVerificationTokenScalarOrEnumFields {
+    return {
+        tokenHash: getScalarFieldValueGenerator().String({ modelName: "EmailVerificationToken", fieldName: "tokenHash", isId: false, isUnique: true, seq }),
+        expiresAt: getScalarFieldValueGenerator().DateTime({ modelName: "EmailVerificationToken", fieldName: "expiresAt", isId: false, isUnique: false, seq })
+    };
+}
+
+function defineEmailVerificationTokenFactoryInternal<TTransients extends Record<string, unknown>, TOptions extends EmailVerificationTokenFactoryDefineOptions<TTransients>>({ defaultData: defaultDataResolver, onAfterBuild, onBeforeCreate, onAfterCreate, traits: traitsDefs = {} }: TOptions, defaultTransientFieldValues: TTransients): EmailVerificationTokenFactoryInterface<TTransients, EmailVerificationTokenTraitKeys<TOptions>> {
+    const getFactoryWithTraits = (traitKeys: readonly EmailVerificationTokenTraitKeys<TOptions>[] = []) => {
+        const seqKey = {};
+        const getSeq = () => getSequenceCounter(seqKey);
+        const screen = createScreener("EmailVerificationToken", modelFieldDefinitions);
+        const handleAfterBuild = createCallbackChain([
+            onAfterBuild,
+            ...traitKeys.map(traitKey => traitsDefs[traitKey]?.onAfterBuild),
+        ]);
+        const handleBeforeCreate = createCallbackChain([
+            ...traitKeys.slice().reverse().map(traitKey => traitsDefs[traitKey]?.onBeforeCreate),
+            onBeforeCreate,
+        ]);
+        const handleAfterCreate = createCallbackChain([
+            onAfterCreate,
+            ...traitKeys.map(traitKey => traitsDefs[traitKey]?.onAfterCreate),
+        ]);
+        const build = async (inputData: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients> = {}) => {
+            const seq = getSeq();
+            const requiredScalarData = autoGenerateEmailVerificationTokenScalarsOrEnums({ seq });
+            const resolveValue = normalizeResolver<EmailVerificationTokenFactoryDefineInput, BuildDataOptions<any>>(defaultDataResolver);
+            const [transientFields, filteredInputData] = destructure(defaultTransientFieldValues, inputData);
+            const resolverInput = { seq, ...transientFields };
+            const defaultData = await traitKeys.reduce(async (queue, traitKey) => {
+                const acc = await queue;
+                const resolveTraitValue = normalizeResolver<Partial<EmailVerificationTokenFactoryDefineInput>, BuildDataOptions<TTransients>>(traitsDefs[traitKey]?.data ?? {});
+                const traitData = await resolveTraitValue(resolverInput);
+                return {
+                    ...acc,
+                    ...traitData,
+                };
+            }, resolveValue(resolverInput));
+            const defaultAssociations = {
+                user: isEmailVerificationTokenuserFactory(defaultData.user) ? {
+                    create: await defaultData.user.build()
+                } : defaultData.user
+            } as Prisma.EmailVerificationTokenCreateInput;
+            const data: Prisma.EmailVerificationTokenCreateInput = { ...requiredScalarData, ...defaultData, ...defaultAssociations, ...filteredInputData };
+            await handleAfterBuild(data, transientFields);
+            return data;
+        };
+        const buildList = (...args: unknown[]) => Promise.all(normalizeList<Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>>(...args).map(data => build(data)));
+        const pickForConnect = (inputData: EmailVerificationToken) => ({
+            id: inputData.id
+        });
+        const create = async (inputData: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients> = {}) => {
+            const data = await build({ ...inputData }).then(screen);
+            const [transientFields] = destructure(defaultTransientFieldValues, inputData);
+            await handleBeforeCreate(data, transientFields);
+            const createdData = await getClient<PrismaClient>().emailVerificationToken.create({ data });
+            await handleAfterCreate(createdData, transientFields);
+            return createdData;
+        };
+        const createList = (...args: unknown[]) => Promise.all(normalizeList<Partial<Prisma.EmailVerificationTokenCreateInput & TTransients>>(...args).map(data => create(data)));
+        const createForConnect = (inputData: Partial<Prisma.EmailVerificationTokenCreateInput & TTransients> = {}) => create(inputData).then(pickForConnect);
+        return {
+            _factoryFor: "EmailVerificationToken" as const,
+            build,
+            buildList,
+            buildCreateInput: build,
+            pickForConnect,
+            create,
+            createList,
+            createForConnect,
+        };
+    };
+    const factory = getFactoryWithTraits();
+    const useTraits = (name: EmailVerificationTokenTraitKeys<TOptions>, ...names: readonly EmailVerificationTokenTraitKeys<TOptions>[]) => {
+        return getFactoryWithTraits([name, ...names]);
+    };
+    return {
+        ...factory,
+        use: useTraits,
+    };
+}
+
+interface EmailVerificationTokenFactoryBuilder {
+    <TOptions extends EmailVerificationTokenFactoryDefineOptions>(options: TOptions): EmailVerificationTokenFactoryInterface<{}, EmailVerificationTokenTraitKeys<TOptions>>;
+    withTransientFields: <TTransients extends EmailVerificationTokenTransientFields>(defaultTransientFieldValues: TTransients) => <TOptions extends EmailVerificationTokenFactoryDefineOptions<TTransients>>(options: TOptions) => EmailVerificationTokenFactoryInterface<TTransients, EmailVerificationTokenTraitKeys<TOptions>>;
+}
+
+/**
+ * Define factory for {@link EmailVerificationToken} model.
+ *
+ * @param options
+ * @returns factory {@link EmailVerificationTokenFactoryInterface}
+ */
+export const defineEmailVerificationTokenFactory = (<TOptions extends EmailVerificationTokenFactoryDefineOptions>(options: TOptions): EmailVerificationTokenFactoryInterface<TOptions> => {
+    return defineEmailVerificationTokenFactoryInternal(options, {});
+}) as EmailVerificationTokenFactoryBuilder;
+
+defineEmailVerificationTokenFactory.withTransientFields = defaultTransientFieldValues => options => defineEmailVerificationTokenFactoryInternal(options, defaultTransientFieldValues);
+
+type RecoveryCodeScalarOrEnumFields = {
+    codeHash: string;
+};
+
+type RecoveryCodeuserFactory = {
+    _factoryFor: "User";
+    build: () => PromiseLike<Prisma.UserCreateNestedOneWithoutRecoveryCodesInput["create"]>;
+};
+
+type RecoveryCodeFactoryDefineInput = {
+    id?: string;
+    createdAt?: Date;
+    codeHash?: string;
+    usedAt?: Date | null;
+    user: RecoveryCodeuserFactory | Prisma.UserCreateNestedOneWithoutRecoveryCodesInput;
+};
+
+type RecoveryCodeTransientFields = Record<string, unknown> & Partial<Record<keyof RecoveryCodeFactoryDefineInput, never>>;
+
+type RecoveryCodeFactoryTrait<TTransients extends Record<string, unknown>> = {
+    data?: Resolver<Partial<RecoveryCodeFactoryDefineInput>, BuildDataOptions<TTransients>>;
+} & CallbackDefineOptions<RecoveryCode, Prisma.RecoveryCodeCreateInput, TTransients>;
+
+type RecoveryCodeFactoryDefineOptions<TTransients extends Record<string, unknown> = Record<string, unknown>> = {
+    defaultData: Resolver<RecoveryCodeFactoryDefineInput, BuildDataOptions<TTransients>>;
+    traits?: {
+        [traitName: string | symbol]: RecoveryCodeFactoryTrait<TTransients>;
+    };
+} & CallbackDefineOptions<RecoveryCode, Prisma.RecoveryCodeCreateInput, TTransients>;
+
+function isRecoveryCodeuserFactory(x: RecoveryCodeuserFactory | Prisma.UserCreateNestedOneWithoutRecoveryCodesInput | undefined): x is RecoveryCodeuserFactory {
+    return (x as any)?._factoryFor === "User";
+}
+
+type RecoveryCodeTraitKeys<TOptions extends RecoveryCodeFactoryDefineOptions<any>> = Exclude<keyof TOptions["traits"], number>;
+
+export interface RecoveryCodeFactoryInterfaceWithoutTraits<TTransients extends Record<string, unknown>> {
+    readonly _factoryFor: "RecoveryCode";
+    build(inputData?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<Prisma.RecoveryCodeCreateInput>;
+    buildCreateInput(inputData?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<Prisma.RecoveryCodeCreateInput>;
+    buildList(list: readonly Partial<Prisma.RecoveryCodeCreateInput & TTransients>[]): PromiseLike<Prisma.RecoveryCodeCreateInput[]>;
+    buildList(count: number, item?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<Prisma.RecoveryCodeCreateInput[]>;
+    pickForConnect(inputData: RecoveryCode): Pick<RecoveryCode, "id">;
+    create(inputData?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<RecoveryCode>;
+    createList(list: readonly Partial<Prisma.RecoveryCodeCreateInput & TTransients>[]): PromiseLike<RecoveryCode[]>;
+    createList(count: number, item?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<RecoveryCode[]>;
+    createForConnect(inputData?: Partial<Prisma.RecoveryCodeCreateInput & TTransients>): PromiseLike<Pick<RecoveryCode, "id">>;
+}
+
+export interface RecoveryCodeFactoryInterface<TTransients extends Record<string, unknown> = Record<string, unknown>, TTraitName extends TraitName = TraitName> extends RecoveryCodeFactoryInterfaceWithoutTraits<TTransients> {
+    use(name: TTraitName, ...names: readonly TTraitName[]): RecoveryCodeFactoryInterfaceWithoutTraits<TTransients>;
+}
+
+function autoGenerateRecoveryCodeScalarsOrEnums({ seq }: {
+    readonly seq: number;
+}): RecoveryCodeScalarOrEnumFields {
+    return {
+        codeHash: getScalarFieldValueGenerator().String({ modelName: "RecoveryCode", fieldName: "codeHash", isId: false, isUnique: false, seq })
+    };
+}
+
+function defineRecoveryCodeFactoryInternal<TTransients extends Record<string, unknown>, TOptions extends RecoveryCodeFactoryDefineOptions<TTransients>>({ defaultData: defaultDataResolver, onAfterBuild, onBeforeCreate, onAfterCreate, traits: traitsDefs = {} }: TOptions, defaultTransientFieldValues: TTransients): RecoveryCodeFactoryInterface<TTransients, RecoveryCodeTraitKeys<TOptions>> {
+    const getFactoryWithTraits = (traitKeys: readonly RecoveryCodeTraitKeys<TOptions>[] = []) => {
+        const seqKey = {};
+        const getSeq = () => getSequenceCounter(seqKey);
+        const screen = createScreener("RecoveryCode", modelFieldDefinitions);
+        const handleAfterBuild = createCallbackChain([
+            onAfterBuild,
+            ...traitKeys.map(traitKey => traitsDefs[traitKey]?.onAfterBuild),
+        ]);
+        const handleBeforeCreate = createCallbackChain([
+            ...traitKeys.slice().reverse().map(traitKey => traitsDefs[traitKey]?.onBeforeCreate),
+            onBeforeCreate,
+        ]);
+        const handleAfterCreate = createCallbackChain([
+            onAfterCreate,
+            ...traitKeys.map(traitKey => traitsDefs[traitKey]?.onAfterCreate),
+        ]);
+        const build = async (inputData: Partial<Prisma.RecoveryCodeCreateInput & TTransients> = {}) => {
+            const seq = getSeq();
+            const requiredScalarData = autoGenerateRecoveryCodeScalarsOrEnums({ seq });
+            const resolveValue = normalizeResolver<RecoveryCodeFactoryDefineInput, BuildDataOptions<any>>(defaultDataResolver);
+            const [transientFields, filteredInputData] = destructure(defaultTransientFieldValues, inputData);
+            const resolverInput = { seq, ...transientFields };
+            const defaultData = await traitKeys.reduce(async (queue, traitKey) => {
+                const acc = await queue;
+                const resolveTraitValue = normalizeResolver<Partial<RecoveryCodeFactoryDefineInput>, BuildDataOptions<TTransients>>(traitsDefs[traitKey]?.data ?? {});
+                const traitData = await resolveTraitValue(resolverInput);
+                return {
+                    ...acc,
+                    ...traitData,
+                };
+            }, resolveValue(resolverInput));
+            const defaultAssociations = {
+                user: isRecoveryCodeuserFactory(defaultData.user) ? {
+                    create: await defaultData.user.build()
+                } : defaultData.user
+            } as Prisma.RecoveryCodeCreateInput;
+            const data: Prisma.RecoveryCodeCreateInput = { ...requiredScalarData, ...defaultData, ...defaultAssociations, ...filteredInputData };
+            await handleAfterBuild(data, transientFields);
+            return data;
+        };
+        const buildList = (...args: unknown[]) => Promise.all(normalizeList<Partial<Prisma.RecoveryCodeCreateInput & TTransients>>(...args).map(data => build(data)));
+        const pickForConnect = (inputData: RecoveryCode) => ({
+            id: inputData.id
+        });
+        const create = async (inputData: Partial<Prisma.RecoveryCodeCreateInput & TTransients> = {}) => {
+            const data = await build({ ...inputData }).then(screen);
+            const [transientFields] = destructure(defaultTransientFieldValues, inputData);
+            await handleBeforeCreate(data, transientFields);
+            const createdData = await getClient<PrismaClient>().recoveryCode.create({ data });
+            await handleAfterCreate(createdData, transientFields);
+            return createdData;
+        };
+        const createList = (...args: unknown[]) => Promise.all(normalizeList<Partial<Prisma.RecoveryCodeCreateInput & TTransients>>(...args).map(data => create(data)));
+        const createForConnect = (inputData: Partial<Prisma.RecoveryCodeCreateInput & TTransients> = {}) => create(inputData).then(pickForConnect);
+        return {
+            _factoryFor: "RecoveryCode" as const,
+            build,
+            buildList,
+            buildCreateInput: build,
+            pickForConnect,
+            create,
+            createList,
+            createForConnect,
+        };
+    };
+    const factory = getFactoryWithTraits();
+    const useTraits = (name: RecoveryCodeTraitKeys<TOptions>, ...names: readonly RecoveryCodeTraitKeys<TOptions>[]) => {
+        return getFactoryWithTraits([name, ...names]);
+    };
+    return {
+        ...factory,
+        use: useTraits,
+    };
+}
+
+interface RecoveryCodeFactoryBuilder {
+    <TOptions extends RecoveryCodeFactoryDefineOptions>(options: TOptions): RecoveryCodeFactoryInterface<{}, RecoveryCodeTraitKeys<TOptions>>;
+    withTransientFields: <TTransients extends RecoveryCodeTransientFields>(defaultTransientFieldValues: TTransients) => <TOptions extends RecoveryCodeFactoryDefineOptions<TTransients>>(options: TOptions) => RecoveryCodeFactoryInterface<TTransients, RecoveryCodeTraitKeys<TOptions>>;
+}
+
+/**
+ * Define factory for {@link RecoveryCode} model.
+ *
+ * @param options
+ * @returns factory {@link RecoveryCodeFactoryInterface}
+ */
+export const defineRecoveryCodeFactory = (<TOptions extends RecoveryCodeFactoryDefineOptions>(options: TOptions): RecoveryCodeFactoryInterface<TOptions> => {
+    return defineRecoveryCodeFactoryInternal(options, {});
+}) as RecoveryCodeFactoryBuilder;
+
+defineRecoveryCodeFactory.withTransientFields = defaultTransientFieldValues => options => defineRecoveryCodeFactoryInternal(options, defaultTransientFieldValues);
 
 type ContactFormSubmissionScalarOrEnumFields = {
     emailAddress: string;

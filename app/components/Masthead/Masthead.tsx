@@ -51,6 +51,7 @@ export const Masthead = ({ user, children }: MastheadProps) => {
             </>
           ) : (
             <>
+              <NavLink to="/join">Sign Up</NavLink>
               <NavLink to="/login">Login</NavLink>
             </>
           )}

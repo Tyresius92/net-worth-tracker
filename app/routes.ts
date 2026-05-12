@@ -1,26 +1,36 @@
-import { type RouteConfig, route, index } from "@react-router/dev/routes";
+import {
+  type RouteConfig,
+  route,
+  index,
+  layout,
+} from "@react-router/dev/routes";
 
 export default [
   index("./routes/_index.tsx"),
   route("healthcheck", "./routes/healthcheck.tsx"),
-  // route("join", "./routes/join.tsx"),
-  route("login", "./routes/login/layout.tsx", [
-    index("./routes/login/route.tsx"),
-    route("2fa", "./routes/login/2fa/route.tsx"),
+  route("join", "./routes/join.tsx"),
+  layout("./routes/login/layout.tsx", [
+    route("login", "./routes/login/route.tsx"),
+    route("login/2fa", "./routes/login/2fa/route.tsx"),
+    route("forgot-password", "./routes/forgot-password/route.tsx"),
+    route("reset-password", "./routes/reset-password/route.tsx"),
   ]),
   route("logout", "./routes/logout.tsx"),
+  route("verify-email", "./routes/verify-email/route.tsx"),
+  route("verify-email/pending", "./routes/verify-email/pending/route.tsx"),
 
   route("contact", "./routes/contact/route.tsx"),
   route("contact/messages", "./routes/contact/messages/route.tsx"),
 
   route("privacy", "./routes/privacy/route.tsx"),
 
-  route("profile", "./routes/profile/layout.tsx", [
-    index("./routes/profile/route.tsx"),
-    route("enable_mfa", "./routes/profile/enable_mfa/route.tsx"),
+  route("settings", "./routes/settings/layout.tsx", [
+    index("./routes/settings/route.tsx"),
+    route("enable_mfa", "./routes/settings/enable_mfa/route.tsx"),
+    route("recovery-codes", "./routes/settings/recovery-codes/route.tsx"),
+    route("disable_mfa", "./routes/settings/disable_mfa/route.tsx"),
+    route("change-password", "./routes/settings/change-password/route.tsx"),
   ]),
-
-  route("settings", "./routes/settings/route.tsx"),
 
   route("users", "./routes/users/layout.tsx", [
     index("./routes/users/route.tsx"),

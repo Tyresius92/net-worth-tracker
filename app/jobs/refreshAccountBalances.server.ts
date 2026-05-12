@@ -21,6 +21,7 @@ export const refreshAccountBalances = async () => {
     },
     where: {
       status: "healthy",
+      user: { twoFactorEnabled: true },
     },
   });
 

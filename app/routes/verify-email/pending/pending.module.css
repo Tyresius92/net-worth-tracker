@@ -1,0 +1,13 @@
+.headline {
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  padding-block: var(--space-12);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.descriptor {
+  color: var(--color-sand-11);
+  font-size: 0.875rem;
+  text-align: center;
+}

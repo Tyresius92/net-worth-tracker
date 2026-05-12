@@ -1,8 +1,8 @@
 describe("protected route redirects", () => {
-  it("redirects /profile to login with correct redirectTo param", () => {
-    cy.visit("/profile");
+  it("redirects /settings to login with correct redirectTo param", () => {
+    cy.visit("/settings");
     cy.location("pathname").should("eq", "/login");
-    cy.location("search").should("include", "redirectTo=%2Fprofile");
+    cy.location("search").should("include", "redirectTo=%2Fsettings");
   });
 
   it("redirects /notes to login with correct redirectTo param", () => {

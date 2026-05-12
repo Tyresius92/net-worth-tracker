@@ -1,0 +1,58 @@
+.headline {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-block-end: var(--space-8);
+}
+
+.descriptor {
+  color: var(--color-sand-11);
+  font-size: 0.875rem;
+  margin-block-end: var(--space-24);
+}
+
+.warning {
+  color: var(--color-sand-11);
+  font-size: 0.875rem;
+  margin-block-end: var(--space-24);
+  padding: var(--space-12);
+  border: 1px solid currentColor;
+  border-radius: 4px;
+}
+
+.codeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  margin-block-end: var(--space-24);
+}
+
+.code {
+  font-family: monospace;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  padding: var(--space-8) var(--space-12);
+  background: var(--color-sand-3);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.code.used {
+  color: var(--color-sand-11);
+  text-decoration: line-through;
+}
+
+.remainingCount {
+  font-size: 0.875rem;
+  color: var(--color-sand-11);
+  margin-block-end: var(--space-24);
+}
+
+.remainingCount strong {
+  color: var(--color-sand-12);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
