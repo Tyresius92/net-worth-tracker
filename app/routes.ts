@@ -8,16 +8,16 @@ import {
 export default [
   index("./routes/_index.tsx"),
   route("healthcheck", "./routes/healthcheck.tsx"),
-  route("join", "./routes/join.tsx"),
   layout("./routes/login/layout.tsx", [
     route("login", "./routes/login/route.tsx"),
     route("login/2fa", "./routes/login/2fa/route.tsx"),
     route("forgot-password", "./routes/forgot-password/route.tsx"),
     route("reset-password", "./routes/reset-password/route.tsx"),
+    route("join", "./routes/join.tsx"),
+    route("verify-email/pending", "./routes/verify-email/pending/route.tsx"),
   ]),
   route("logout", "./routes/logout.tsx"),
   route("verify-email", "./routes/verify-email/route.tsx"),
-  route("verify-email/pending", "./routes/verify-email/pending/route.tsx"),
 
   route("contact", "./routes/contact/route.tsx"),
   route("contact/messages", "./routes/contact/messages/route.tsx"),

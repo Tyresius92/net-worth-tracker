@@ -61,20 +61,22 @@ export default function VerifyEmailPendingPage() {
         <Divider variant="light" />
       </Box>
 
-      <Flex flexDirection="column" alignItems="center" gap={24}>
-        <p className={styles.descriptor}>
-          {expired
-            ? "That verification link has expired. Request a new one below."
-            : "We sent a verification link to your email address. Click it to activate your account. The link expires in 24 hours."}
-        </p>
+      <Box borderColor="sand-12" p={24}>
+        <Flex flexDirection="column" alignItems="center" gap={24}>
+          <p className={styles.descriptor}>
+            {expired
+              ? "That verification link has expired. Request a new one below."
+              : "We sent a verification link to your email address. Click it to activate your account. The link expires in 24 hours."}
+          </p>
 
-        <Form method="post">
-          <Flex flexDirection="column" alignItems="center" gap={12}>
-            <Button type="submit">Resend verification email</Button>
-            <Link to="/login">Back to login</Link>
-          </Flex>
-        </Form>
-      </Flex>
+          <Form method="post">
+            <Flex flexDirection="column" alignItems="center" gap={12}>
+              <Button type="submit">Resend verification email</Button>
+              <Link to="/login">Back to login</Link>
+            </Flex>
+          </Form>
+        </Flex>
+      </Box>
     </>
   );
 }

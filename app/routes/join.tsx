@@ -14,6 +14,7 @@ import {
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
+import { Divider } from "~/components/Divider/Divider";
 import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { EmailVerificationEmail } from "~/emails/EmailVerificationEmail";
@@ -23,6 +24,8 @@ import { getSession, getUserId, sessionStorage } from "~/session.server";
 import { validateEmail } from "~/utils";
 import { sendEmail } from "~/utils/email.server";
 import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
+
+import styles from "./join.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
@@ -114,52 +117,59 @@ export default function Join() {
   }, [actionData]);
 
   return (
-    <Box>
-      <Form method="post">
-        <TextInput
-          ref={emailRef}
-          type="email"
-          label="Email address"
-          name="email"
-          required
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus
-          autoComplete="email"
-          errorMessage={actionData?.errors?.email ?? undefined}
-        />
-        <TextInput
-          type="text"
-          label="First name"
-          name="firstName"
-          required
-          autoComplete="given-name"
-          errorMessage={actionData?.errors?.firstName ?? undefined}
-        />
-        <TextInput
-          type="text"
-          label="Last name"
-          name="lastName"
-          required
-          autoComplete="family-name"
-          errorMessage={actionData?.errors?.lastName ?? undefined}
-        />
-        <TextInput
-          ref={passwordRef}
-          type="password"
-          label="Password"
-          name="password"
-          autoComplete="new-password"
-          errorMessage={actionData?.errors?.password ?? undefined}
-        />
+    <>
+      <div className={styles.headlineArea}>
+        <Divider variant="light" />
+        <h2 className={styles.headline}>Join The Ledger</h2>
+        <Divider variant="light" />
+        <p className={styles.tagline}>Your finances. Your data. No subscription required.</p>
+      </div>
 
-        <Button type="submit">Create Account</Button>
-        <Box mt={12}>
-          Already have an account?{" "}
-          <Link to={{ pathname: "/login", search: searchParams.toString() }}>
-            Log in
-          </Link>
-        </Box>
-      </Form>
-    </Box>
+      <Box borderColor="sand-12" p={24}>
+        <Form method="post">
+          <TextInput
+            ref={emailRef}
+            type="email"
+            label="Email address"
+            name="email"
+            required
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
+            autoComplete="email"
+            errorMessage={actionData?.errors?.email ?? undefined}
+          />
+          <TextInput
+            type="text"
+            label="First name"
+            name="firstName"
+            required
+            autoComplete="given-name"
+            errorMessage={actionData?.errors?.firstName ?? undefined}
+          />
+          <TextInput
+            type="text"
+            label="Last name"
+            name="lastName"
+            required
+            autoComplete="family-name"
+            errorMessage={actionData?.errors?.lastName ?? undefined}
+          />
+          <TextInput
+            ref={passwordRef}
+            type="password"
+            label="Password"
+            name="password"
+            autoComplete="new-password"
+            errorMessage={actionData?.errors?.password ?? undefined}
+          />
+          <div className={styles.actions}>
+            <Button type="submit">Create Account</Button>
+            <Link to={{ pathname: "/login", search: searchParams.toString() }}>
+              Already have an account? Log in
+            </Link>
+          </div>
+        </Form>
+      </Box>
+    </>
   );
 }
