@@ -2,7 +2,6 @@ import { render } from "@react-email/render";
 import type { ReactElement } from "react";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM_EMAIL = process.env.FROM_EMAIL ?? "noreply@theledger.dev";
 
 interface SendEmailOptions {
@@ -19,7 +18,7 @@ export async function sendEmail({ to, subject, react }: SendEmailOptions) {
     return;
   }
 
-  const { error } = await resend.emails.send({
+  const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
     from: FROM_EMAIL,
     to,
     subject,
