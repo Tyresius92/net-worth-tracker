@@ -53,7 +53,7 @@ describe("/settings/disable_mfa", () => {
       cy.findByLabelText(/authenticator code/i).type(code);
       cy.findByRole("button", { name: /disable two-factor/i }).click();
 
-      cy.visitAndCheck("/settings/recovery-codes");
+      cy.visit("/settings/recovery-codes");
       cy.location("pathname").should("eq", "/settings");
     });
   });
@@ -64,28 +64,22 @@ describe("/settings/disable_mfa", () => {
       cy.findByLabelText(/authenticator code/i).type(code);
       cy.findByRole("button", { name: /disable two-factor/i }).click();
 
-      cy.visitAndCheck("/settings/disable_mfa");
+      cy.visit("/settings/disable_mfa");
       cy.location("pathname").should("eq", "/settings");
     });
   });
 });
 
 describe("/settings/disable_mfa without 2FA enabled", () => {
-  beforeEach(() => {
+  it("redirects to /settings", () => {
     const email = faker.internet.email({ provider: "example.com" });
     cy.then(() => ({ email })).as("user");
     cy.task("createUser", email).then((cookieValue) => {
       if (typeof cookieValue === "string")
         cy.setCookie("__session", cookieValue);
     });
-  });
-
-  afterEach(() => {
-    cy.cleanupUser();
-  });
-
-  it("redirects to /settings", () => {
-    cy.visitAndCheck("/settings/disable_mfa");
+    cy.visit("/settings/disable_mfa");
     cy.location("pathname").should("eq", "/settings");
+    cy.cleanupUser();
   });
 });

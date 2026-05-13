@@ -1,18 +1,18 @@
 describe("protected route redirects", () => {
   it("redirects /settings to login with correct redirectTo param", () => {
-    cy.visitAndCheck("/settings");
+    cy.visit("/settings");
     cy.location("pathname").should("eq", "/login");
     cy.location("search").should("include", "redirectTo=%2Fsettings");
   });
 
   it("redirects /notes to login with correct redirectTo param", () => {
-    cy.visitAndCheck("/notes");
+    cy.visit("/notes");
     cy.location("pathname").should("eq", "/login");
     cy.location("search").should("include", "redirectTo=%2Fnotes");
   });
 
   it("redirects /plaid_items to login with correct redirectTo param", () => {
-    cy.visitAndCheck("/plaid_items");
+    cy.visit("/plaid_items");
     cy.location("pathname").should("eq", "/login");
     cy.location("search").should("include", "redirectTo=%2Fplaid_items");
   });
@@ -38,7 +38,7 @@ describe("logout", () => {
     cy.wait("@logoutRequest");
     cy.location("pathname").should("eq", "/");
     cy.getCookie("__session").should("be.null");
-    cy.visitAndCheck("/accounts");
+    cy.visit("/accounts");
     cy.location("pathname").should("eq", "/login");
     cy.cleanupUser();
   });
