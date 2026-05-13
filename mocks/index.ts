@@ -1,11 +1,13 @@
-import { http, passthrough } from "msw";
+import { http, HttpResponse, passthrough } from "msw";
 import { setupServer } from "msw/node";
 
 import { plaidHandlers } from "./plaid";
 
-// put one-off handlers that don't really need an entire file to themselves here
 const miscHandlers = [
   http.post(`${process.env.REMIX_DEV_HTTP_ORIGIN}/ping`, () => passthrough()),
+  http.post("https://api.resend.com/emails", () =>
+    HttpResponse.json({ id: "mock-email-id" }),
+  ),
 ];
 
 export const server = setupServer(...miscHandlers, ...plaidHandlers);

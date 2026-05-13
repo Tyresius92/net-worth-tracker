@@ -13,7 +13,7 @@ describe("forgot-password route", () => {
   });
 
   it("shows a browser validation error for an invalid email format", () => {
-    cy.visit("/forgot-password");
+    cy.visitAndCheck("/forgot-password");
     cy.findByLabelText(/email address/i).type("not-an-email");
     cy.findByRole("button", { name: /send reset link/i }).click();
     cy.get("input:invalid").should("have.length", 1);
@@ -165,7 +165,7 @@ describe("reset-password route", () => {
 
 describe("login route", () => {
   it("has a forgot password link that navigates to /forgot-password", () => {
-    cy.visit("/login");
+    cy.visitAndCheck("/login");
     cy.findByRole("link", { name: /forgot password/i }).click();
     cy.location("pathname").should("eq", "/forgot-password");
   });
