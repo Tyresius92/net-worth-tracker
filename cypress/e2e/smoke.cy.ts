@@ -4,7 +4,7 @@ import { CYPRESS_TEST_PASSWORD } from "../support/constants";
 
 describe("login route", () => {
   it("redirects unauthenticated users to login when visiting a protected route", () => {
-    cy.visit("/accounts");
+    cy.visitAndCheck("/accounts");
     cy.location("pathname").should("eq", "/login");
     cy.location("search").should("include", "redirectTo=%2Faccounts");
   });

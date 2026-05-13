@@ -1,6 +1,6 @@
 describe("protected route", () => {
   it("redirects /accounts to login when unauthenticated", () => {
-    cy.visit("/accounts");
+    cy.visitAndCheck("/accounts");
     cy.location("pathname").should("eq", "/login");
     cy.location("search").should("include", "redirectTo=%2Faccounts");
   });
