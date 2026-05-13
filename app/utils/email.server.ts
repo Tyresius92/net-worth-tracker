@@ -2,6 +2,8 @@ import { render } from "@react-email/render";
 import type { ReactElement } from "react";
 import { Resend } from "resend";
 
+import { logger } from "~/logger";
+
 const FROM_EMAIL = process.env.FROM_EMAIL ?? "noreply@theledger.dev";
 
 interface SendEmailOptions {
@@ -15,6 +17,11 @@ export async function sendEmail({ to, subject, react }: SendEmailOptions) {
 
   if (process.env.NODE_ENV !== "production") {
     console.log(`\n[email] To: ${to} | Subject: ${subject}\n${html}\n`);
+    return;
+  }
+
+  if (!process.env.RESEND_API_KEY) {
+    logger.warn("RESEND_API_KEY not set — skipping email", { to, subject });
     return;
   }
 
