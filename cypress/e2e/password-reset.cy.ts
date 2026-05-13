@@ -24,7 +24,7 @@ describe("forgot-password route", () => {
     cy.then(() => ({ email })).as("user");
     cy.task("createUser", email);
 
-    cy.visit("/forgot-password");
+    cy.visitAndCheck("/forgot-password");
     cy.findByLabelText(/email address/i).type(email);
     cy.findByRole("button", { name: /send reset link/i }).click();
     cy.findByText(/check your inbox/i);

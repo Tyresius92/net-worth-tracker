@@ -132,7 +132,9 @@ describe("/settings/recovery-codes page", () => {
 
   it("regenerates codes when a valid TOTP code is entered", () => {
     cy.visitAndCheck("/settings/recovery-codes");
-    cy.findByLabelText(/authenticator code/i).type("000000");
+    cy.task<string>("generateTOTPCode", userEmail).then((code) => {
+      cy.findByLabelText(/authenticator code/i).type(code);
+    });
     cy.findByRole("button", { name: /generate new codes/i }).click();
 
     cy.location("pathname").should("eq", "/settings/recovery-codes");
@@ -149,7 +151,9 @@ describe("/settings/recovery-codes page", () => {
 
   it("shows newly generated codes exactly once", () => {
     cy.visitAndCheck("/settings/recovery-codes");
-    cy.findByLabelText(/authenticator code/i).type("000000");
+    cy.task<string>("generateTOTPCode", userEmail).then((code) => {
+      cy.findByLabelText(/authenticator code/i).type(code);
+    });
     cy.findByRole("button", { name: /generate new codes/i }).click();
 
     cy.findByText(/save your recovery codes/i);
