@@ -22,6 +22,7 @@ import { getUser } from "~/session.server";
 
 import type { Route } from "./+types/root";
 import lightColors from "./components/_GlobalStyles/colors.css?url";
+import fontSizeStyles from "./components/_GlobalStyles/font-size.css?url";
 import spaceStyles from "./components/_GlobalStyles/space.css?url";
 import { Button } from "./components/Button/Button";
 import { Footer } from "./components/Footer/Footer";
@@ -37,6 +38,7 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
   { rel: "stylesheet", href: lightColors },
   { rel: "stylesheet", href: spaceStyles },
+  { rel: "stylesheet", href: fontSizeStyles },
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

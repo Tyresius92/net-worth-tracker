@@ -1,3 +1,16 @@
+export type FontSizeOption =
+  | 12
+  | 14
+  | 16
+  | 18
+  | 20
+  | 24
+  | 30
+  | 36
+  | 48
+  | 60
+  | 72;
+
 export type SpaceOption =
   | 0
   | 1
