@@ -1,8 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { describe, it, expect } from "vitest";
 
+import { prisma } from "~/db.server";
 import { AccountFactory } from "~/factories/accountFactory";
 import { BalanceSnapshotFactory } from "~/factories/balanceSnapshotFactory";
+import { PlaidItemFactory } from "~/factories/plaidItemFactory";
 import { UserFactory } from "~/factories/userFactory";
 
 import {
@@ -10,6 +12,7 @@ import {
   getUserByEmail,
   createUser,
   deleteUserByEmail,
+  deleteUserById,
   verifyLogin,
   getLatestBalancesAsOfDate,
 } from "./user.server";
@@ -75,6 +78,38 @@ describe("deleteUserByEmail", () => {
     const created = await UserFactory.create();
     await deleteUserByEmail(created.email);
     expect(await getUserByEmail(created.email)).toBeNull();
+  });
+});
+
+describe("deleteUserById", () => {
+  it("removes the user from the database", async () => {
+    const created = await UserFactory.create();
+    await deleteUserById(created.id);
+    expect(await getUserById(created.id)).toBeNull();
+  });
+
+  it("cascades to delete accounts", async () => {
+    const user = await UserFactory.createForConnect();
+    const account = await AccountFactory.create({ user: { connect: user } });
+    await deleteUserById(user.id);
+    expect(await prisma.account.findUnique({ where: { id: account.id } })).toBeNull();
+  });
+
+  it("cascades to delete balance snapshots", async () => {
+    const user = await UserFactory.createForConnect();
+    const account = await AccountFactory.create({ user: { connect: user } });
+    const snapshot = await BalanceSnapshotFactory.create({
+      account: { connect: { id: account.id } },
+    });
+    await deleteUserById(user.id);
+    expect(await prisma.balanceSnapshot.findUnique({ where: { id: snapshot.id } })).toBeNull();
+  });
+
+  it("cascades to delete plaid items", async () => {
+    const user = await UserFactory.createForConnect();
+    const plaidItem = await PlaidItemFactory.create({ user: { connect: user } });
+    await deleteUserById(user.id);
+    expect(await prisma.plaidItem.findUnique({ where: { id: plaidItem.id } })).toBeNull();
   });
 });
 
