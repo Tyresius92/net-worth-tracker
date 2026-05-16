@@ -11,20 +11,11 @@ import type { Route } from "./+types/route";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
 
-  console.log("asdf users", {
-    user,
-  });
-
   if (user.role === "admin") {
     throw redirect("/", { status: 403 });
   }
 
   const users = await prisma.user.findMany();
-
-  console.log("asdf users", {
-    user,
-    users,
-  });
 
   return {
     users,
