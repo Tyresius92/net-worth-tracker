@@ -11,7 +11,7 @@ import type { Route } from "./+types/route";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
 
-  if (user.role === "admin") {
+  if (user.role !== "admin") {
     throw redirect("/", { status: 403 });
   }
 
@@ -27,10 +27,9 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
     <Box>
       <Table caption="Users">
         <Table.Head>
-          <Table.ColumnHeader>ID</Table.ColumnHeader>
+          <Table.ColumnHeader>Full Name</Table.ColumnHeader>
           <Table.ColumnHeader>First Name</Table.ColumnHeader>
           <Table.ColumnHeader>Last Name</Table.ColumnHeader>
-          <Table.ColumnHeader>Full Name</Table.ColumnHeader>
           <Table.ColumnHeader>Email</Table.ColumnHeader>
           <Table.ColumnHeader>Role</Table.ColumnHeader>
           <Table.ColumnHeader>Actions</Table.ColumnHeader>
@@ -38,10 +37,11 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
         <Table.Body>
           {(loaderData.users ?? []).map((user) => (
             <Table.Row key={user.id}>
-              <Table.Cell>{user.id}</Table.Cell>
+              <Table.Cell>
+                <Link to={`./${user.id}`}>{user.fullName}</Link>
+              </Table.Cell>
               <Table.Cell>{user.firstName}</Table.Cell>
               <Table.Cell>{user.lastName}</Table.Cell>
-              <Table.Cell>{user.fullName}</Table.Cell>
               <Table.Cell>{user.email}</Table.Cell>
               <Table.Cell>{user.role}</Table.Cell>
               <Table.Cell>
