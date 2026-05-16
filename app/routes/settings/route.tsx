@@ -84,6 +84,20 @@ export default function SettingsRoute() {
           </div>
         </Box>
       </div>
+
+      <div className={styles.section}>
+        <p className={styles.sectionHeading}>Danger Zone</p>
+        <Box borderColor="red-7">
+          <div className={styles.row}>
+            <span className={styles.label}>
+              Permanently delete your account and all associated data
+            </span>
+            <span className={styles.value}>
+              <Link to="/settings/delete-account">Delete account</Link>
+            </span>
+          </div>
+        </Box>
+      </div>
     </div>
   );
 }

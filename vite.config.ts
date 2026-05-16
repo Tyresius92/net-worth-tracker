@@ -30,4 +30,5 @@ export default defineConfig((config) => ({
   optimizeDeps: {
     exclude: ["@sentry/react-router"],
   },
+  clearScreen: false,
 }));

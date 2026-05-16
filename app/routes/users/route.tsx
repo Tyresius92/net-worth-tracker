@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
@@ -10,11 +11,20 @@ import type { Route } from "./+types/route";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
 
-  if (user.role !== "admin") {
-    return redirect("/", { status: 403 });
+  console.log("asdf users", {
+    user,
+  });
+
+  if (user.role === "admin") {
+    throw redirect("/", { status: 403 });
   }
 
   const users = await prisma.user.findMany();
+
+  console.log("asdf users", {
+    user,
+    users,
+  });
 
   return {
     users,
@@ -32,9 +42,10 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
           <Table.ColumnHeader>Full Name</Table.ColumnHeader>
           <Table.ColumnHeader>Email</Table.ColumnHeader>
           <Table.ColumnHeader>Role</Table.ColumnHeader>
+          <Table.ColumnHeader>Actions</Table.ColumnHeader>
         </Table.Head>
         <Table.Body>
-          {loaderData.users.map((user) => (
+          {(loaderData.users ?? []).map((user) => (
             <Table.Row key={user.id}>
               <Table.Cell>{user.id}</Table.Cell>
               <Table.Cell>{user.firstName}</Table.Cell>
@@ -42,6 +53,11 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
               <Table.Cell>{user.fullName}</Table.Cell>
               <Table.Cell>{user.email}</Table.Cell>
               <Table.Cell>{user.role}</Table.Cell>
+              <Table.Cell>
+                <Link to={`/users/${user.id}`}>View</Link>
+                {" · "}
+                <Link to={`/users/${user.id}/delete`}>Delete</Link>
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

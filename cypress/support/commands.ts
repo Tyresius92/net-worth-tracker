@@ -14,6 +14,15 @@ declare global {
       login: typeof login;
 
       /**
+       * Creates an admin user in the database and sets the session cookie.
+       * Yields the user object and registers it under the "@user" alias for cleanup.
+       *
+       * @example cy.loginAsAdmin()
+       * @example cy.loginAsAdmin({ email: 'admin@example.com' })
+       */
+      loginAsAdmin: typeof loginAsAdmin;
+
+      /**
        * Deletes the current @user from the database and clears the session cookie.
        *
        * @example cy.cleanupUser()
@@ -39,6 +48,20 @@ function login({
 } = {}) {
   cy.then(() => ({ email })).as("user");
   cy.task("createUser", email).then((cookieValue) => {
+    if (typeof cookieValue === "string") {
+      cy.setCookie("__session", cookieValue);
+    }
+  });
+  return cy.get("@user");
+}
+
+function loginAsAdmin({
+  email = faker.internet.email({ provider: "example.com" }),
+}: {
+  email?: string;
+} = {}) {
+  cy.then(() => ({ email })).as("user");
+  cy.task("createAdminUser", email).then((cookieValue) => {
     if (typeof cookieValue === "string") {
       cy.setCookie("__session", cookieValue);
     }
@@ -78,6 +101,7 @@ function visitAndCheck(url: string, waitTime = 1000) {
 
 export const registerCommands = () => {
   Cypress.Commands.add("login", login);
+  Cypress.Commands.add("loginAsAdmin", loginAsAdmin);
   Cypress.Commands.add("cleanupUser", cleanupUser);
   Cypress.Commands.add("visitAndCheck", visitAndCheck);
 };

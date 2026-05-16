@@ -1,5 +1,6 @@
 import crypto from "crypto";
 
+import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { parse } from "cookie";
@@ -48,9 +49,28 @@ export default defineConfig({
           const user = await prismaClient.user.create({
             data: {
               email,
-              firstName: "Test",
+              firstName: faker.person.firstName(),
+              lastName: faker.person.lastName(),
+              emailVerifiedAt: new Date(),
+              password: { create: { hash } },
+            },
+          });
+          const session = await sessionStorage.getSession(null);
+          session.set(USER_SESSION_KEY, user.id);
+          const setCookieHeader = await sessionStorage.commitSession(session);
+          const { __session: cookieValue } = parse(setCookieHeader);
+          return cookieValue;
+        },
+
+        async createAdminUser(email: string): Promise<string | undefined> {
+          const hash = await bcrypt.hash(CYPRESS_TEST_PASSWORD, 10);
+          const user = await prismaClient.user.create({
+            data: {
+              email,
+              firstName: "Admin",
               lastName: "User",
               emailVerifiedAt: new Date(),
+              role: "admin",
               password: { create: { hash } },
             },
           });
@@ -97,7 +117,10 @@ export default defineConfig({
 
           await prismaClient.user.update({
             where: { id: user.id },
-            data: { twoFactorEnabled: true, twoFactorSecret: "JBSWY3DPEHPK3PXP" },
+            data: {
+              twoFactorEnabled: true,
+              twoFactorSecret: "JBSWY3DPEHPK3PXP",
+            },
           });
 
           const codes: string[] = [];
@@ -113,7 +136,9 @@ export default defineConfig({
             createData.push({ codeHash: hash, userId: user.id });
           }
 
-          await prismaClient.recoveryCode.deleteMany({ where: { userId: user.id } });
+          await prismaClient.recoveryCode.deleteMany({
+            where: { userId: user.id },
+          });
           await prismaClient.recoveryCode.createMany({ data: createData });
 
           return { codes };
@@ -124,7 +149,8 @@ export default defineConfig({
             where: { email },
             select: { twoFactorSecret: true },
           });
-          if (!user?.twoFactorSecret) throw new Error(`No TOTP secret for ${email}`);
+          if (!user?.twoFactorSecret)
+            throw new Error(`No TOTP secret for ${email}`);
           const totp = new TOTP({
             issuer: "The Ledger",
             label: email,
