@@ -85,15 +85,26 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main>
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack ? (
-        <pre>
-          <code>{stack}</code>
-        </pre>
-      ) : null}
-    </main>
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <main>
+          <h1>{message}</h1>
+          <p>{details}</p>
+          {stack ? (
+            <pre>
+              <code>{stack}</code>
+            </pre>
+          ) : null}
+        </main>
+        <Scripts />
+      </body>
+    </html>
   );
 }
 
