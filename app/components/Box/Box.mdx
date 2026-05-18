@@ -1,0 +1,19 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+
+import * as BoxStories from "./Box.stories";
+
+<Meta of={BoxStories} />
+
+The Box component is the layout power house of the design system, and should be used for 100% of all layout concerns in The Ledger.
+
+It supports margin, padding, and various border utilities, and is polymorphic, so it can render as a `div`, or as an `article`, `section`, or whatever other block element would be semantically appropriate.
+
+## Padding
+
+<Canvas of={BoxStories.WithPadding} />
+
+## Inputs
+
+Box has the following properties:
+
+<Controls of={BoxStories.Default} />

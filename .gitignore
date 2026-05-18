@@ -15,3 +15,6 @@ node_modules
 /prisma/test-data.db-journal
 
 /info_arch.md
+
+*storybook.log
+storybook-static

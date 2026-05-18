@@ -15,9 +15,9 @@ export default defineConfig((config) => ({
   },
 
   plugins: [
-    reactRouter(),
+    !process.env.STORYBOOK && reactRouter(),
     tsconfigPaths(),
-    sentryReactRouter(
+    !process.env.STORYBOOK && sentryReactRouter(
       {
         org: "tyrel-clayton",
         project: "the-ledger",
@@ -25,7 +25,7 @@ export default defineConfig((config) => ({
       },
       config,
     ),
-  ],
+  ].filter(Boolean),
 
   optimizeDeps: {
     exclude: ["@sentry/react-router"],
