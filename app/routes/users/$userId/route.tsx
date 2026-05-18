@@ -100,14 +100,14 @@ export default function AdminUserDetailPage() {
           ) : (
             user.accounts.map((account, i) => (
               <div key={account.id}>
-                {i > 0 && <Divider variant="light" />}
+                {i > 0 ? <Divider variant="light" /> : null}
                 <div className={styles.row}>
                   <span className={styles.label}>
                     {account.customName ?? "(unnamed)"}
                   </span>
                   <span className={styles.value}>
                     {account.type}
-                    {account.closedAt && " · closed"}
+                    {account.closedAt ? " · closed" : null}
                   </span>
                 </div>
               </div>
@@ -126,7 +126,7 @@ export default function AdminUserDetailPage() {
           ) : (
             user.plaidItems.map((item, i) => (
               <div key={item.id}>
-                {i > 0 && <Divider variant="light" />}
+                {i > 0 ? <Divider variant="light" /> : null}
                 <div className={styles.row}>
                   <span className={styles.label}>{item.institutionName}</span>
                   <span className={styles.value}>

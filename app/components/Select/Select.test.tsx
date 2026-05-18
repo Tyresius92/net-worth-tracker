@@ -46,9 +46,17 @@ describe("Select", () => {
 
   it("sets aria-invalid when errorMessage is provided", () => {
     render(
-      <Select label="Pet" name="pet" options={OPTIONS} errorMessage="Required" />,
+      <Select
+        label="Pet"
+        name="pet"
+        options={OPTIONS}
+        errorMessage="Required"
+      />,
     );
-    expect(screen.getByRole("combobox")).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("combobox")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
   });
 
   it("does not set aria-invalid when errorMessage is absent", () => {

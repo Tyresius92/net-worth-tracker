@@ -43,11 +43,13 @@ The token layer lives in global CSS files by design. Tokens are inherently globa
 ## Consequences
 
 **Positive:**
+
 - Style colocation without route-level boilerplate — `.module.css` files live next to their component file
 - No runtime CSS computation; styles are static and extracted at build time
 - Clear architectural boundary: the design system is the authoritative source for all visual decisions
 - Fully aligned with React Router's philosophy; no additional framework configuration required
 
 **Negative / Tradeoffs:**
+
 - CSS Modules' local scoping is likely unnecessary given the design system structure — styles are already well-bounded by component ownership. The module mechanism earns its place through colocation and Vite's automatic bundling, not through CSS isolation per se.
 - Requires moving away from styled-components, the author's preferred tool in other contexts.

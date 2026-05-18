@@ -28,7 +28,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (typeof confirmation !== "string" || confirmation !== "DELETE") {
     return data(
-      { errors: { ...baseErrors, confirmation: 'Please type DELETE to confirm' } },
+      {
+        errors: {
+          ...baseErrors,
+          confirmation: "Please type DELETE to confirm",
+        },
+      },
       { status: 400 },
     );
   }
@@ -40,7 +45,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
   }
 
-  const record = await prisma.password.findUnique({ where: { userId: user.id } });
+  const record = await prisma.password.findUnique({
+    where: { userId: user.id },
+  });
   if (!record) return redirect("/settings");
 
   const isValid = await bcrypt.compare(password, record.hash);
@@ -76,23 +83,28 @@ export default function DeleteAccountPage() {
     <Box p={24} maxWidth={480}>
       <h1 className={styles.heading}>Delete Account</h1>
 
-      <p className={styles.warning}>This action is permanent and cannot be undone.</p>
+      <p className={styles.warning}>
+        This action is permanent and cannot be undone.
+      </p>
 
       <ul className={styles.consequenceList}>
         <li>Your account will be immediately deleted.</li>
         <li>All of your accounts and balance history will be deleted.</li>
-        <li>All connected bank accounts via Plaid will be disconnected and deleted.</li>
+        <li>
+          All connected bank accounts via Plaid will be disconnected and
+          deleted.
+        </li>
         <li>There is no recovery mechanism.</li>
       </ul>
 
-      {actionData?.errors?.form && (
+      {actionData?.errors?.form ? (
         <p className={styles.formError}>{actionData.errors.form}</p>
-      )}
+      ) : null}
 
       <Form method="post">
         <TextInput
           type="text"
-          label='Type DELETE to confirm'
+          label="Type DELETE to confirm"
           name="confirmation"
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus

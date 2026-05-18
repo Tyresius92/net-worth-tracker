@@ -17,14 +17,15 @@ export default defineConfig((config) => ({
   plugins: [
     !process.env.STORYBOOK && reactRouter(),
     tsconfigPaths(),
-    !process.env.STORYBOOK && sentryReactRouter(
-      {
-        org: "tyrel-clayton",
-        project: "the-ledger",
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-      },
-      config,
-    ),
+    !process.env.STORYBOOK &&
+      sentryReactRouter(
+        {
+          org: "tyrel-clayton",
+          project: "the-ledger",
+          authToken: process.env.SENTRY_AUTH_TOKEN,
+        },
+        config,
+      ),
   ].filter(Boolean),
 
   optimizeDeps: {

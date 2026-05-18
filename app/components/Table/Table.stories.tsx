@@ -1,10 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect } from 'storybook/test';
-import { Table } from './Table';
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
+
+import { Table } from "./Table";
 
 const meta = {
   component: Table,
-  tags: ['ai-generated'],
+  tags: ["ai-generated"],
 } satisfies Meta<typeof Table>;
 
 export default meta;
@@ -12,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const WithData: Story = {
   args: {
-    caption: 'Account balances',
+    caption: "Account balances",
     children: (
       <>
         <Table.Head>
@@ -36,16 +37,16 @@ export const WithData: Story = {
     ),
   },
   play: async ({ canvas }) => {
-    await expect(canvas.getByText('Account balances')).toBeVisible();
-    const headers = canvas.getAllByRole('columnheader');
+    await expect(canvas.getByText("Account balances")).toBeVisible();
+    const headers = canvas.getAllByRole("columnheader");
     await expect(headers).toHaveLength(3);
-    headers.forEach((h) => expect(h).toHaveAttribute('scope', 'col'));
+    headers.forEach((h) => expect(h).toHaveAttribute("scope", "col"));
   },
 };
 
 export const SingleColumn: Story = {
   args: {
-    caption: 'Recent activity',
+    caption: "Recent activity",
     children: (
       <Table.Body>
         <Table.Row>

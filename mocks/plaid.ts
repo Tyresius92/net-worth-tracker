@@ -53,7 +53,11 @@ export function buildPlaidApiAccount(
     PlaidAccount,
     "plaidAccountId" | "name" | "officialName" | "type" | "subtype" | "mask"
   >,
-  overrides?: { current?: number; available?: number | null; limit?: number | null },
+  overrides?: {
+    current?: number;
+    available?: number | null;
+    limit?: number | null;
+  },
 ): PlaidApiAccount {
   return {
     account_id: dbAccount.plaidAccountId,

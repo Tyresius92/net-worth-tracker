@@ -18,24 +18,35 @@ describe("getUserNetWorth", () => {
   });
 
   it("sums the first snapshot from each account", () => {
-    expect(getUserNetWorth([account("a", [10_000]), account("b", [5_000])])).toBe(15_000);
+    expect(
+      getUserNetWorth([account("a", [10_000]), account("b", [5_000])]),
+    ).toBe(15_000);
   });
 
   it("uses only the first snapshot, ignoring the rest", () => {
     // callers order snapshots desc so index 0 is the most recent;
     // the function must not sum all snapshots, only index 0
-    expect(getUserNetWorth([account("a", [10_000, 7_000, 3_000])])).toBe(10_000);
+    expect(getUserNetWorth([account("a", [10_000, 7_000, 3_000])])).toBe(
+      10_000,
+    );
   });
 
   it("handles negative amounts (e.g. credit cards, mortgages)", () => {
     expect(
-      getUserNetWorth([account("checking", [50_000]), account("mortgage", [-200_000])]),
+      getUserNetWorth([
+        account("checking", [50_000]),
+        account("mortgage", [-200_000]),
+      ]),
     ).toBe(-150_000);
   });
 
   it("skips accounts with no snapshots while summing the rest", () => {
     expect(
-      getUserNetWorth([account("a", [10_000]), account("b", []), account("c", [5_000])]),
+      getUserNetWorth([
+        account("a", [10_000]),
+        account("b", []),
+        account("c", [5_000]),
+      ]),
     ).toBe(15_000);
   });
 });

@@ -18,7 +18,9 @@ describe("/users/:userId — admin user detail", () => {
 
   it("is linked from the /users table", () => {
     cy.visitAndCheck("/users");
-    cy.findAllByRole("link", { name: /^view$/i }).first().click();
+    cy.findAllByRole("link", { name: /^view$/i })
+      .first()
+      .click();
     cy.location("pathname").should("match", /^\/users\/.+$/);
   });
 
@@ -37,14 +39,18 @@ describe("/users/:userId — admin user detail", () => {
 
   it("shows empty states when the user has no accounts or plaid connections", () => {
     cy.visitAndCheck("/users");
-    cy.findAllByRole("link", { name: /^view$/i }).first().click();
+    cy.findAllByRole("link", { name: /^view$/i })
+      .first()
+      .click();
     cy.findByText(/no accounts/i);
     cy.findByText(/no plaid connections/i);
   });
 
   it("has a delete account link", () => {
     cy.visitAndCheck("/users");
-    cy.findAllByRole("link", { name: /^view$/i }).first().click();
+    cy.findAllByRole("link", { name: /^view$/i })
+      .first()
+      .click();
     cy.findByRole("link", { name: /delete account/i });
   });
 
@@ -74,20 +80,28 @@ describe("/users/:userId/delete — admin delete user", () => {
 
   it("is linked from the /users table", () => {
     cy.visitAndCheck("/users");
-    cy.findAllByRole("link", { name: /^delete$/i }).first().click();
+    cy.findAllByRole("link", { name: /^delete$/i })
+      .first()
+      .click();
     cy.location("pathname").should("match", /^\/users\/.+\/delete$/);
   });
 
   it("shows the target user's name and email on the confirmation page", () => {
     cy.visitAndCheck("/users");
-    cy.findAllByRole("link", { name: /^delete$/i }).first().click();
+    cy.findAllByRole("link", { name: /^delete$/i })
+      .first()
+      .click();
     cy.findByText(targetEmail);
   });
 
   it("deletes the user and redirects to /users on confirm", () => {
     cy.visitAndCheck("/users");
-    cy.findAllByRole("link", { name: /^delete$/i }).first().click();
-    cy.findByRole("button", { name: /permanently delete this account/i }).click();
+    cy.findAllByRole("link", { name: /^delete$/i })
+      .first()
+      .click();
+    cy.findByRole("button", {
+      name: /permanently delete this account/i,
+    }).click();
     cy.location("pathname").should("eq", "/users");
     cy.findByText(targetEmail).should("not.exist");
   });
@@ -99,7 +113,9 @@ describe("/users/:userId/delete — admin delete user", () => {
       .findByRole("link", { name: /^delete$/i })
       .click();
     cy.findByText(/cannot delete your own account from here/i);
-    cy.findByRole("button", { name: /permanently delete/i }).should("not.exist");
+    cy.findByRole("button", { name: /permanently delete/i }).should(
+      "not.exist",
+    );
   });
 
   it("blocks deletion of the last admin", () => {

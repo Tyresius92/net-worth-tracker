@@ -7,5 +7,9 @@ export interface TableColumnHeaderProps {
 export const TableRowHeader = ({
   children,
 }: TableColumnHeaderProps): JSX.Element => {
-  return <th scope="row" className={styles["row-header"]}>{children}</th>;
+  return (
+    <th scope="row" className={styles["row-header"]}>
+      {children}
+    </th>
+  );
 };

@@ -37,7 +37,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const ip = getClientIp(request);
   if (isRateLimited(`join:${ip}`)) {
     return data(
-      { errors: { email: "Too many attempts. Try again in 15 minutes.", password: null, firstName: null, lastName: null } },
+      {
+        errors: {
+          email: "Too many attempts. Try again in 15 minutes.",
+          password: null,
+          firstName: null,
+          lastName: null,
+        },
+      },
       { status: 429 },
     );
   }
@@ -54,29 +61,49 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   > = { email: null, password: null, firstName: null, lastName: null };
 
   if (!validateEmail(email)) {
-    return data({ errors: { ...baseErrors, email: "Email is invalid" } }, { status: 400 });
+    return data(
+      { errors: { ...baseErrors, email: "Email is invalid" } },
+      { status: 400 },
+    );
   }
 
   if (typeof firstName !== "string" || !firstName) {
-    return data({ errors: { ...baseErrors, firstName: "First name is required" } }, { status: 400 });
+    return data(
+      { errors: { ...baseErrors, firstName: "First name is required" } },
+      { status: 400 },
+    );
   }
 
   if (typeof lastName !== "string" || !lastName) {
-    return data({ errors: { ...baseErrors, lastName: "Last name is required" } }, { status: 400 });
+    return data(
+      { errors: { ...baseErrors, lastName: "Last name is required" } },
+      { status: 400 },
+    );
   }
 
   if (typeof password !== "string" || password.length === 0) {
-    return data({ errors: { ...baseErrors, password: "Password is required" } }, { status: 400 });
+    return data(
+      { errors: { ...baseErrors, password: "Password is required" } },
+      { status: 400 },
+    );
   }
 
   if (password.length < 8) {
-    return data({ errors: { ...baseErrors, password: "Password is too short" } }, { status: 400 });
+    return data(
+      { errors: { ...baseErrors, password: "Password is too short" } },
+      { status: 400 },
+    );
   }
 
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
     return data(
-      { errors: { ...baseErrors, email: "A user already exists with this email" } },
+      {
+        errors: {
+          ...baseErrors,
+          email: "A user already exists with this email",
+        },
+      },
       { status: 400 },
     );
   }
@@ -89,7 +116,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   await sendEmail({
     to: user.email,
     subject: "Verify your email address",
-    react: <EmailVerificationEmail firstName={user.firstName} verifyUrl={verifyUrl} />,
+    react: (
+      <EmailVerificationEmail
+        firstName={user.firstName}
+        verifyUrl={verifyUrl}
+      />
+    ),
   });
 
   const session = await getSession(request);
@@ -122,7 +154,9 @@ export default function Join() {
         <Divider variant="light" />
         <h2 className={styles.headline}>Join The Ledger</h2>
         <Divider variant="light" />
-        <p className={styles.tagline}>Your finances. Your data. No subscription required.</p>
+        <p className={styles.tagline}>
+          Your finances. Your data. No subscription required.
+        </p>
       </div>
 
       <Box borderColor="sand-12" p={24}>

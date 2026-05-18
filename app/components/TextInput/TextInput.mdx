@@ -52,12 +52,44 @@ The `type` prop is required and constrained to a specific set of values. Each ty
     <Table.ColumnHeader>Use for</Table.ColumnHeader>
   </Table.Head>
   <Table.Body>
-    <Table.Row><Table.RowHeader><code>text</code></Table.RowHeader><Table.Cell>General free-text entry</Table.Cell></Table.Row>
-    <Table.Row><Table.RowHeader><code>email</code></Table.RowHeader><Table.Cell>Email addresses</Table.Cell></Table.Row>
-    <Table.Row><Table.RowHeader><code>password</code></Table.RowHeader><Table.Cell>Passwords — value is masked</Table.Cell></Table.Row>
-    <Table.Row><Table.RowHeader><code>number</code></Table.RowHeader><Table.Cell>Numeric values; use <code>step</code> to control increment</Table.Cell></Table.Row>
-    <Table.Row><Table.RowHeader><code>url</code></Table.RowHeader><Table.Cell>URLs</Table.Cell></Table.Row>
-    <Table.Row><Table.RowHeader><code>date</code></Table.RowHeader><Table.Cell>Dates — renders the browser's native date picker</Table.Cell></Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>text</code>
+      </Table.RowHeader>
+      <Table.Cell>General free-text entry</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>email</code>
+      </Table.RowHeader>
+      <Table.Cell>Email addresses</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>password</code>
+      </Table.RowHeader>
+      <Table.Cell>Passwords — value is masked</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>number</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        Numeric values; use <code>step</code> to control increment
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>url</code>
+      </Table.RowHeader>
+      <Table.Cell>URLs</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>date</code>
+      </Table.RowHeader>
+      <Table.Cell>Dates — renders the browser's native date picker</Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
@@ -71,7 +103,7 @@ const inputRef = useRef<HTMLInputElement>(null);
 // Focus the input programmatically
 inputRef.current?.focus();
 
-<TextInput ref={inputRef} label="Email" name="email" type="email" />
+<TextInput ref={inputRef} label="Email" name="email" type="email" />;
 ```
 
 ## Accessibility

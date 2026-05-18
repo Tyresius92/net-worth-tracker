@@ -47,6 +47,7 @@ The endpoint is protected by a Bearer token (`REFRESH_API_SECRET`) verified on e
 ## Consequences
 
 **Positive:**
+
 - No webhook infrastructure to maintain; no Plaid Items to reconfigure when the endpoint changes
 - Scheduling and job logic are fully decoupled — the trigger mechanism can be swapped without touching application code
 - GitHub Actions is free at this usage level and already present for CI/CD
@@ -54,6 +55,7 @@ The endpoint is protected by a Bearer token (`REFRESH_API_SECRET`) verified on e
 - Missed days degrade gracefully via carry-forward logic
 
 **Negative / Tradeoffs:**
+
 - Balances are at most ~24 hours stale. Acceptable for this use case; the first thing to revisit if the application ever moves toward a multi-user model
 - GitHub Actions cron is not guaranteed to fire at the exact configured time — minute-level delays are possible under load
 - If the application is down when the action fires, that day's refresh is skipped silently

@@ -50,6 +50,7 @@ Balances are stored as integers in the lowest denomination (dollars × 100, equi
 ## Consequences
 
 **Positive:**
+
 - Data model matches the shape of data from all sources — Plaid, manual entry, and Mint historical import
 - Carry-forward produces consistent, gap-free timelines across accounts with different update frequencies
 - Integer storage eliminates floating-point precision risk
@@ -57,6 +58,7 @@ Balances are stored as integers in the lowest denomination (dollars × 100, equi
 - Closed accounts degrade gracefully — their last known balance carries forward automatically
 
 **Negative / Tradeoffs:**
+
 - Integer storage requires conversion at every display boundary; chart rendering in particular requires careful handling
 - Carry-forward means a missed refresh day silently uses yesterday's balance — correct behavior, but requires understanding the model to avoid misreading data
 - Multiple snapshots per day with last-wins semantics is implicit rather than enforced at the database level

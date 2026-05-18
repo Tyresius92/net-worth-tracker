@@ -1,13 +1,22 @@
 import { Secret, TOTP } from "otpauth";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { data, Form, redirect, useActionData, useLoaderData } from "react-router";
+import {
+  data,
+  Form,
+  redirect,
+  useActionData,
+  useLoaderData,
+} from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
-import { generateRecoveryCodes, getRecoveryCodeCount } from "~/models/recovery-code.server";
+import {
+  generateRecoveryCodes,
+  getRecoveryCodeCount,
+} from "~/models/recovery-code.server";
 import { getSession, requireUser, sessionStorage } from "~/session.server";
 
 import styles from "./recovery-codes.module.css";
@@ -20,8 +29,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   const session = await getSession(request);
-  const newCodes: string[] | undefined = session.get("recovery-codes:new-codes");
-  const exhausted: boolean | undefined = session.get("recovery-codes:exhausted");
+  const newCodes: string[] | undefined = session.get(
+    "recovery-codes:new-codes",
+  );
+  const exhausted: boolean | undefined = session.get(
+    "recovery-codes:exhausted",
+  );
 
   session.unset("recovery-codes:new-codes");
   session.unset("recovery-codes:exhausted");
@@ -49,7 +62,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   if (!token || typeof token !== "string") {
-    return data({ errors: { token: "Verification code is required" } }, { status: 400 });
+    return data(
+      { errors: { token: "Verification code is required" } },
+      { status: 400 },
+    );
   }
 
   const userWithSecret = await prisma.user.findUnique({
@@ -73,7 +89,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       : totp.validate({ token, window: 1 });
 
   if (valid === null) {
-    return data({ errors: { token: "Invalid verification code" } }, { status: 400 });
+    return data(
+      { errors: { token: "Invalid verification code" } },
+      { status: 400 },
+    );
   }
 
   const codes = await generateRecoveryCodes(user.id);
@@ -85,7 +104,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function RecoveryCodesPage() {
-  const { newCodes, exhausted, remainingCount } = useLoaderData<typeof loader>();
+  const { newCodes, exhausted, remainingCount } =
+    useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
   if (newCodes) {
@@ -93,8 +113,9 @@ export default function RecoveryCodesPage() {
       <Box p={24}>
         <h1 className={styles.headline}>Save Your Recovery Codes</h1>
         <p className={styles.descriptor}>
-          Store these codes somewhere safe — they will not be shown again. Each code can only be
-          used once to sign in if you lose access to your authenticator app.
+          Store these codes somewhere safe — they will not be shown again. Each
+          code can only be used once to sign in if you lose access to your
+          authenticator app.
         </p>
 
         <div className={styles.codeGrid}>
@@ -118,17 +139,20 @@ export default function RecoveryCodesPage() {
 
       {exhausted ? (
         <p className={styles.warning}>
-          You have used all of your recovery codes. Generate new ones now to ensure you can still
-          access your account if you lose your authenticator app.
+          You have used all of your recovery codes. Generate new ones now to
+          ensure you can still access your account if you lose your
+          authenticator app.
         </p>
       ) : (
         <p className={styles.remainingCount}>
-          You have <strong>{remainingCount}</strong> of 10 recovery codes remaining.
+          You have <strong>{remainingCount}</strong> of 10 recovery codes
+          remaining.
         </p>
       )}
 
       <p className={styles.descriptor}>
-        Generating new codes will immediately invalidate any existing unused codes.
+        Generating new codes will immediately invalidate any existing unused
+        codes.
       </p>
 
       <Form method="post">

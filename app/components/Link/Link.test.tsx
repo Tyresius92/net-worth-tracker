@@ -13,7 +13,9 @@ describe("Link", () => {
   describe("external link", () => {
     it("renders children", () => {
       renderWithRouter(<Link href="https://example.com">Visit us</Link>);
-      expect(screen.getByRole("link", { name: "Visit us" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: "Visit us" }),
+      ).toBeInTheDocument();
     });
 
     it("renders with the correct href", () => {
@@ -37,7 +39,9 @@ describe("Link", () => {
 
     it("applies the link CSS module class", () => {
       renderWithRouter(<Link href="https://example.com">Visit us</Link>);
-      expect(screen.getByRole("link", { name: "Visit us" }).className).toMatch(/link/);
+      expect(screen.getByRole("link", { name: "Visit us" }).className).toMatch(
+        /link/,
+      );
     });
   });
 
@@ -57,7 +61,9 @@ describe("Link", () => {
 
     it("applies the link CSS module class", () => {
       renderWithRouter(<Link to="/about">About</Link>);
-      expect(screen.getByRole("link", { name: "About" }).className).toMatch(/link/);
+      expect(screen.getByRole("link", { name: "About" }).className).toMatch(
+        /link/,
+      );
     });
   });
 });

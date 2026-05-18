@@ -1,5 +1,11 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { data, Form, redirect, useActionData, useLoaderData } from "react-router";
+import {
+  data,
+  Form,
+  redirect,
+  useActionData,
+  useLoaderData,
+} from "react-router";
 import invariant from "tiny-invariant";
 
 import { Box } from "~/components/Box/Box";
@@ -24,12 +30,22 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   const target = await prisma.user.findUniqueOrThrow({
     where: { id: params.userId },
-    select: { id: true, firstName: true, lastName: true, email: true, role: true },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      role: true,
+    },
   });
 
   if (target.id === currentUser.id) {
     return data(
-      { target, error: "You cannot delete your own account from here. Use your account settings." },
+      {
+        target,
+        error:
+          "You cannot delete your own account from here. Use your account settings.",
+      },
       { status: 400 },
     );
   }
@@ -37,7 +53,10 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const adminCount = await prisma.user.count({ where: { role: "admin" } });
   if (target.role === "admin" && adminCount === 1) {
     return data(
-      { target, error: "This is the only administrator account and cannot be deleted." },
+      {
+        target,
+        error: "This is the only administrator account and cannot be deleted.",
+      },
       { status: 400 },
     );
   }
@@ -56,7 +75,10 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
   if (target.id === currentUser.id) {
     return data(
-      { error: "You cannot delete your own account from here. Use your account settings." },
+      {
+        error:
+          "You cannot delete your own account from here. Use your account settings.",
+      },
       { status: 400 },
     );
   }
@@ -64,7 +86,9 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const adminCount = await prisma.user.count({ where: { role: "admin" } });
   if (target.role === "admin" && adminCount === 1) {
     return data(
-      { error: "This is the only administrator account and cannot be deleted." },
+      {
+        error: "This is the only administrator account and cannot be deleted.",
+      },
       { status: 400 },
     );
   }
@@ -88,12 +112,17 @@ export default function AdminDeleteUserPage() {
         <span className={styles.email}>{target.email}</span>
       </p>
 
-      <p className={styles.warning}>This action is permanent and cannot be undone.</p>
+      <p className={styles.warning}>
+        This action is permanent and cannot be undone.
+      </p>
 
       <ul className={styles.consequenceList}>
         <li>The account will be immediately deleted.</li>
         <li>All of their accounts and balance history will be deleted.</li>
-        <li>All connected bank accounts via Plaid will be disconnected and deleted.</li>
+        <li>
+          All connected bank accounts via Plaid will be disconnected and
+          deleted.
+        </li>
       </ul>
 
       {displayError ? (
@@ -109,11 +138,11 @@ export default function AdminDeleteUserPage() {
         </Form>
       )}
 
-      {displayError && (
+      {displayError ? (
         <Box mt={16}>
           <Link to={`/users/${target.id}`}>← Back</Link>
         </Box>
-      )}
+      ) : null}
     </Box>
   );
 }

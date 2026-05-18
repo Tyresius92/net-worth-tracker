@@ -19,5 +19,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   await consumeEmailVerificationToken(record.id, record.user.id);
 
-  return createUserSession({ request, userId: record.user.id, remember: false, redirectTo: "/" });
+  return createUserSession({
+    request,
+    userId: record.user.id,
+    remember: false,
+    redirectTo: "/",
+  });
 };

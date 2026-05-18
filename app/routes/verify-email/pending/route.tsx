@@ -19,7 +19,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   if (userId) return redirect("/");
 
   const session = await getSession(request);
-  const pendingUserId: string | undefined = session.get("pending-verification:userId");
+  const pendingUserId: string | undefined = session.get(
+    "pending-verification:userId",
+  );
   if (!pendingUserId) return redirect("/join");
 
   const expired = new URL(request.url).searchParams.get("expired") === "1";
@@ -29,7 +31,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const session = await getSession(request);
-  const pendingUserId: string | undefined = session.get("pending-verification:userId");
+  const pendingUserId: string | undefined = session.get(
+    "pending-verification:userId",
+  );
   if (!pendingUserId) return redirect("/join");
 
   const user = await getUserById(pendingUserId);
@@ -41,7 +45,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   await sendEmail({
     to: user.email,
     subject: "Verify your email address",
-    react: <EmailVerificationEmail firstName={user.firstName} verifyUrl={verifyUrl} />,
+    react: (
+      <EmailVerificationEmail
+        firstName={user.firstName}
+        verifyUrl={verifyUrl}
+      />
+    ),
   });
 
   return data(

@@ -42,16 +42,24 @@ The application uses the `sand` scale from the Radix UI color system — a warm-
   </Table.Head>
   <Table.Body>
     <Table.Row>
-      <Table.RowHeader><code>sand-1</code></Table.RowHeader>
+      <Table.RowHeader>
+        <code>sand-1</code>
+      </Table.RowHeader>
       <Table.Cell>Page background — the default surface</Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.RowHeader><code>sand-2</code></Table.RowHeader>
+      <Table.RowHeader>
+        <code>sand-2</code>
+      </Table.RowHeader>
       <Table.Cell>Subtle background — cards, panels, chart areas</Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.RowHeader><code>sand-3</code></Table.RowHeader>
-      <Table.Cell>UI element background — callouts, hover states, selected items</Table.Cell>
+      <Table.RowHeader>
+        <code>sand-3</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        UI element background — callouts, hover states, selected items
+      </Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
@@ -65,12 +73,18 @@ The application uses the `sand` scale from the Radix UI color system — a warm-
   </Table.Head>
   <Table.Body>
     <Table.Row>
-      <Table.RowHeader><code>sand-6</code></Table.RowHeader>
+      <Table.RowHeader>
+        <code>sand-6</code>
+      </Table.RowHeader>
       <Table.Cell>Subtle borders — callouts, inactive containers</Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.RowHeader><code>sand-7</code></Table.RowHeader>
-      <Table.Cell>Standard borders — dividers, input outlines, active containers</Table.Cell>
+      <Table.RowHeader>
+        <code>sand-7</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        Standard borders — dividers, input outlines, active containers
+      </Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
@@ -84,11 +98,17 @@ The application uses the `sand` scale from the Radix UI color system — a warm-
   </Table.Head>
   <Table.Body>
     <Table.Row>
-      <Table.RowHeader><code>sand-11</code></Table.RowHeader>
-      <Table.Cell>Secondary and muted text — labels, axis ticks, supporting copy</Table.Cell>
+      <Table.RowHeader>
+        <code>sand-11</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        Secondary and muted text — labels, axis ticks, supporting copy
+      </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.RowHeader><code>sand-12</code></Table.RowHeader>
+      <Table.RowHeader>
+        <code>sand-12</code>
+      </Table.RowHeader>
       <Table.Cell>Primary text — body copy, headings, data values</Table.Cell>
     </Table.Row>
   </Table.Body>
@@ -100,7 +120,14 @@ Steps `sand-4`, `sand-5`, `sand-8`, `sand-9`, and `sand-10` are available but se
 
 The token names are the same in dark mode. `sand-12` is primary text in both light and dark; `sand-1` is page background in both. Radix redefines the underlying CSS custom properties when the `.dark` class is applied to the root — the semantic meaning of each step is preserved, only the actual color values change. A component written against these tokens requires no dark-mode-specific logic and no conditional classes; it just works.
 
-<div className="dark" style={{ background: "var(--color-sand-2)", padding: "12px", margin: "16px 0 24px" }}>
+<div
+  className="dark"
+  style={{
+    background: "var(--color-sand-2)",
+    padding: "12px",
+    margin: "16px 0 24px",
+  }}
+>
   <div style={{ display: "flex", gap: "6px" }}>
     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((n) => (
       <div key={n} style={{ flex: 1, textAlign: "center" }}>
@@ -130,4 +157,4 @@ For everything else, consult the principles in the [Introduction](?path=/docs/in
 
 ## The full palette
 
-All Radix color scales are available as tokens (e.g. `"red-9"`, `"blue-3"`). They are not removed from the token system because the cost is negligible and the flexibility is useful — but the gap between *available* and *in active use* is intentional. Having access to the full palette is not an invitation to use it.
+All Radix color scales are available as tokens (e.g. `"red-9"`, `"blue-3"`). They are not removed from the token system because the cost is negligible and the flexibility is useful — but the gap between _available_ and _in active use_ is intentional. Having access to the full palette is not an invitation to use it.
