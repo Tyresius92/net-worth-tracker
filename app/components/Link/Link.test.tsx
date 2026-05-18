@@ -12,14 +12,18 @@ const renderWithRouter = (ui: React.ReactElement) => {
 describe("Link", () => {
   describe("external link", () => {
     it("renders children", () => {
-      renderWithRouter(<Link href="https://example.com">Visit us</Link>);
+      renderWithRouter(
+        <Link href={new URL("https://example.com")}>Visit us</Link>,
+      );
       expect(
         screen.getByRole("link", { name: "Visit us" }),
       ).toBeInTheDocument();
     });
 
     it("renders with the correct href", () => {
-      renderWithRouter(<Link href="https://example.com">Visit us</Link>);
+      renderWithRouter(
+        <Link href={new URL("https://example.com")}>Visit us</Link>,
+      );
       expect(screen.getByRole("link", { name: "Visit us" })).toHaveAttribute(
         "href",
         "https://example.com",
@@ -28,7 +32,7 @@ describe("Link", () => {
 
     it("forwards target and rel props", () => {
       renderWithRouter(
-        <Link href="https://example.com" target="_blank" rel="noreferrer">
+        <Link href={new URL("https://example.com")} newTab>
           Visit us
         </Link>,
       );
@@ -38,7 +42,9 @@ describe("Link", () => {
     });
 
     it("applies the link CSS module class", () => {
-      renderWithRouter(<Link href="https://example.com">Visit us</Link>);
+      renderWithRouter(
+        <Link href={new URL("https://example.com")}>Visit us</Link>,
+      );
       expect(screen.getByRole("link", { name: "Visit us" }).className).toMatch(
         /link/,
       );
