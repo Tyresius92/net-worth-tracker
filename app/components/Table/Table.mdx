@@ -1,0 +1,67 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as TableStories from "./Table.stories";
+
+<Meta of={TableStories} />
+
+# Table
+
+Table displays tabular data — information that is meaningfully structured into rows and columns, where the relationship between a value and its row and column headers carries meaning.
+
+## When to use
+
+Use Table when the data has genuine row-and-column structure: account balances by institution, snapshots over time, or any set of records sharing the same fields.
+
+## When not to use
+
+**Page layout:** use [`Box`](?path=/docs/components-box--docs) with `display="flex"` instead. HTML tables are for data, not for arranging UI regions.
+
+**A simple list of items:** use a `<ul>` or `<ol>`. If the data has only one meaningful dimension, a list is more appropriate and easier to navigate.
+
+**Side-by-side comparison of two things with no shared row structure:** prose or a definition list is usually clearer.
+
+## Composition
+
+Table is a compound component. The full structure is:
+
+```tsx
+<Table caption="Account balances">
+  <Table.Head>
+    <Table.ColumnHeader>Account</Table.ColumnHeader>
+    <Table.ColumnHeader>Type</Table.ColumnHeader>
+    <Table.ColumnHeader>Balance</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader>Chase Checking</Table.RowHeader>
+      <Table.Cell>Checking</Table.Cell>
+      <Table.Cell>$4,200.00</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+A few things to note about the structure:
+
+- **`Table.Head` wraps its children in a `<tr>` automatically.** Place `Table.ColumnHeader` elements directly inside `Table.Head` — do not add a `Table.Row` between them.
+- **`Table.RowHeader` is not the same as `Table.ColumnHeader`.** Use `Table.ColumnHeader` inside `Table.Head` for column labels. Use `Table.RowHeader` as the first cell of a data row to identify that row — it renders as `<th scope="row">`.
+- **`caption` is required.** See the Accessibility section below.
+
+## Examples
+
+<Canvas of={TableStories.WithData} />
+
+Tables without column headers are valid when rows are self-describing:
+
+<Canvas of={TableStories.SingleColumn} />
+
+## Accessibility
+
+The `caption` prop is required and renders as a `<caption>` element inside the table. It is the primary way screen readers identify what a table contains — treat it like a heading for the table, not a footnote.
+
+`Table.ColumnHeader` renders as `<th scope="col">` and `Table.RowHeader` renders as `<th scope="row">`. The `scope` attribute tells screen readers which cells a header applies to, enabling correct row/column announcement when navigating by cell. Use `Table.RowHeader` for the identifying column in each row rather than `Table.Cell`.
+
+The table is wrapped in a scrollable container, allowing it to overflow horizontally on narrow viewports without breaking layout.
+
+## Props
+
+<Controls of={TableStories.WithData} />

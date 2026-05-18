@@ -56,6 +56,9 @@ export interface FlexProps
     | "stretch";
 }
 
+/**
+ * @deprecated use Box with `display="flex"` instead of this component
+ */
 export const Flex = ({
   children,
   // Box spacing props with the same defaults as Box

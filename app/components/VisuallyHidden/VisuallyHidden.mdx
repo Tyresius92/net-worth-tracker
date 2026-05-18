@@ -1,0 +1,44 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as VisuallyHiddenStories from "./VisuallyHidden.stories";
+
+<Meta of={VisuallyHiddenStories} />
+
+# VisuallyHidden
+
+VisuallyHidden renders content that is invisible to sighted users but fully accessible to screen readers. The content remains in the DOM — it is positioned off-screen with CSS, not hidden with `display: none` or `aria-hidden`.
+
+## When to use
+
+Use VisuallyHidden when an element's visual context makes its purpose clear to sighted users but that context is absent in the accessibility tree.
+
+The most common case is an icon-only button. A close button showing `✕` is self-evident visually, but a screen reader user hears only "button" with no indication of what it does. Wrapping the label in VisuallyHidden solves this without changing the visual design.
+
+<Canvas of={VisuallyHiddenStories.InContext} />
+
+Other uses include supplemental context that would be redundant on screen — for example, adding "for the Chase Checking account" after a figure that a sighted user understands from its position in the layout.
+
+## When not to use
+
+**Hiding content from everyone:** use `display: none` or the `hidden` attribute instead. VisuallyHidden intentionally keeps content in the accessibility tree; if the content should be hidden from screen readers too, VisuallyHidden is the wrong tool.
+
+**Replacing meaningful visible labels:** if a label can be shown visually, show it. VisuallyHidden is a fallback for situations where showing the label is genuinely not possible or desirable, not a shortcut for skipping visible labeling.
+
+## Default
+
+<Canvas of={VisuallyHiddenStories.Default} />
+
+The content is present in the DOM and announced by screen readers, but has no visual presence.
+
+## Development: Alt key reveal
+
+In non-production environments, holding `Alt` temporarily renders VisuallyHidden content visibly. This makes it possible to audit what screen reader users will hear without switching to a screen reader. The reveal is purely a development aid and has no effect in production.
+
+## Accessibility
+
+VisuallyHidden does **not** set `aria-hidden` on its content. The content is explicitly available to assistive technology — that is its entire purpose. Do not add `aria-hidden` to a VisuallyHidden element.
+
+The component renders as a `<span>`, which is an inline element. It accepts all standard HTML span attributes via prop spreading, so `aria-*` attributes can be added when needed.
+
+## Props
+
+<Controls of={VisuallyHiddenStories.Default} />

@@ -5,10 +5,9 @@ import styles from "./Link.module.css";
 
 interface InternalLinkProps extends Pick<RRLinkProps, "to" | "children"> {}
 interface ExternalLinkProps {
-  href: string;
+  href: URL;
   children: ReactNode;
-  target?: string;
-  rel?: string;
+  newTab?: boolean;
 }
 
 export type LinkProps = InternalLinkProps | ExternalLinkProps;
@@ -16,7 +15,15 @@ export type LinkProps = InternalLinkProps | ExternalLinkProps;
 export const Link = (props: LinkProps) => {
   if ("href" in props) {
     return (
-      <a {...props} className={styles.link}>
+      <a
+        {...props}
+        href={props.href.toString()}
+        {...(props.newTab && {
+          target: "_blank",
+          rel: "noopener noreferrer",
+        })}
+        className={styles.link}
+      >
         {props.children}
       </a>
     );

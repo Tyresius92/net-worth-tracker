@@ -1,0 +1,52 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as SelectStories from "./Select.stories";
+
+<Meta of={SelectStories} />
+
+# Select
+
+Select presents a fixed list of options and lets the user choose exactly one. It is an uncontrolled input: state is managed by the browser and submitted with the form via the `name` prop.
+
+## When to use
+
+Use Select when the user must choose one option from a list of three or more mutually exclusive choices.
+
+## When not to use
+
+**Two options or a binary on/off choice:** use a [`Checkbox`](?path=/docs/components-checkbox--docs) or a pair of radio buttons instead. A dropdown for two options adds friction without benefit.
+
+**Multiple selections:** Select does not support multi-select. If the user needs to choose several items from a list, a group of checkboxes is more appropriate.
+
+## States
+
+### Default
+
+<Canvas of={SelectStories.Default} />
+
+### With a default value
+
+Use `defaultValue` to pre-select an option. The value must match one of the option values exactly.
+
+<Canvas of={SelectStories.WithDefaultValue} />
+
+### With an error
+
+<Canvas of={SelectStories.WithError} />
+
+Error messages are surfaced via `errorMessage`. The select is automatically marked `aria-invalid` when an error is present, and the message is associated via `aria-describedby` — no additional wiring is needed.
+
+### Disabled
+
+<Canvas of={SelectStories.Disabled} />
+
+Prefer not to disable selects where possible — a disabled select gives no explanation for why the field is unavailable. When you must disable, ensure surrounding context makes the reason clear.
+
+## Accessibility
+
+Label association is handled automatically — a unique `id` is generated internally and bound to the `label` element. The `label` prop is always required and always connected. You do not need to manage IDs manually.
+
+The placeholder option (`--Please choose an option--`) is always present, ensuring the user must make a deliberate choice rather than silently accept a pre-selected value. Use `defaultValue` when a pre-selected value is genuinely meaningful — the field's current value in an edit form, for example — not simply to skip past the placeholder.
+
+## Props
+
+<Controls of={SelectStories.Default} />

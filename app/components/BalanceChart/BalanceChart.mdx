@@ -1,0 +1,58 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as BalanceChartStories from "./BalanceChart.stories";
+
+<Meta of={BalanceChartStories} />
+
+# BalanceChart
+
+BalanceChart renders a time-series line chart of a balance over time. It is built on Recharts and includes a zero reference line, a hover tooltip, and a hidden accessible table containing the full dataset for screen readers.
+
+## When to use
+
+Use BalanceChart when displaying how a single balance value has changed over time — net worth, an account balance, or any other scalar value tracked across dates.
+
+## When not to use
+
+**Comparing multiple series simultaneously:** BalanceChart renders a single line. If you need to compare multiple accounts or categories side by side, a different chart composition is needed.
+
+**Non-time-series data:** if the data doesn't have an inherent time dimension — totals by category, proportions of a whole — a bar chart or other representation is more appropriate.
+
+**Summarising a single value:** if you only want to show the current balance, display the number as text. A chart of one point communicates nothing.
+
+## Examples
+
+<Canvas of={BalanceChartStories.GrowingBalance} />
+
+The zero reference line becomes meaningful when a balance can go negative. The chart handles this automatically:
+
+<Canvas of={BalanceChartStories.WithZeroCrossing} />
+
+## Data format
+
+The `balances` prop accepts an array of `{ date: string, amount: number }` objects. **`amount` must be in cents as an integer** — consistent with how all monetary values are stored in this application. The component divides by 100 for display. Passing a float (e.g. `12.34` instead of `1234`) will produce incorrect chart values.
+
+```tsx
+<BalanceChart
+  title="Net worth"
+  balances={[
+    { date: "2024-01-01", amount: 1250000 },  // $12,500.00
+    { date: "2024-02-01", amount: 1384000 },  // $13,840.00
+  ]}
+/>
+```
+
+The `date` field is a string and is passed directly to the X axis as a label. Use a consistent, human-readable format across all data points.
+
+## Server-side rendering
+
+BalanceChart renders nothing on the server. It uses a `mounted` state guard to defer rendering until after hydration, because Recharts does not support SSR. If you see a blank area where the chart should be, check that the component is being rendered client-side.
+
+## Accessibility
+
+The chart is visually rich but not inherently accessible to screen readers. BalanceChart addresses this with a `VisuallyHidden` table that contains the full dataset — every date and formatted amount — rendered as a proper `<table>` with column headers. Screen reader users receive the same data as sighted users, in a navigable structure.
+
+The `title` prop serves two roles: it is set as the `aria-label` on the chart wrapper, and it is used as the `<caption>` of the hidden table.
+
+## Props
+
+<Controls of={BalanceChartStories.GrowingBalance} />

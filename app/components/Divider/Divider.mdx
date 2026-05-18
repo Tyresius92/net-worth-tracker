@@ -1,0 +1,40 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as DividerStories from "./Divider.stories";
+
+<Meta of={DividerStories} />
+
+# Divider
+
+Divider renders an `<hr>` — a visual and semantic break between two thematically distinct sections of content.
+
+## When to use
+
+Use Divider to signal a shift in topic or context within a page, where the transition benefits from a visible boundary rather than whitespace alone.
+
+## When not to use
+
+**Creating space between elements:** use Box margin instead. Divider carries semantic meaning (a thematic break) — using it purely for visual spacing misrepresents the document structure.
+
+**Substituting for heading hierarchy:** if two sections need to be clearly distinct, give them headings. A Divider without surrounding heading structure doesn't help users navigating by landmark or heading.
+
+## Variants
+
+### Default
+
+The standard divider. Use in most cases.
+
+<Canvas of={DividerStories.Default} />
+
+### Light
+
+A more subtle treatment. Use when a full-weight divider would feel too heavy — for example, between items in a list or within a compact layout.
+
+<Canvas of={DividerStories.Light} />
+
+## Accessibility
+
+Divider renders as `<hr>`, which carries an implicit ARIA role of `separator`. Screen readers announce this as a thematic break between sections. Because it has semantic weight, use it only where a genuine content boundary exists.
+
+## Props
+
+<Controls of={DividerStories.Default} />

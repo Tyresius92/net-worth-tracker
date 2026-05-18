@@ -1,19 +1,86 @@
 import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
-
 import * as BoxStories from "./Box.stories";
 
 <Meta of={BoxStories} />
 
-The Box component is the layout power house of the design system, and should be used for 100% of all layout concerns in The Ledger.
+# Box
 
-It supports margin, padding, and various border utilities, and is polymorphic, so it can render as a `div`, or as an `article`, `section`, or whatever other block element would be semantically appropriate.
+Box is the universal layout primitive for Broadsheet. All spacing (margin and padding), background color, border color, and flex layout in the application should be handled through Box props — not bespoke CSS classes or inline style objects.
 
-## Padding
+## When to use
+
+- Adding margin or padding to any element
+- Applying a background color or border from the token system
+- Creating a flex container
+
+## When not to use
+
+Box is a block layout primitive. Do not use it for inline content — `<span>`, `<a>`, `<strong>`, and similar inline elements should not be added to the `is` union and Box should not be used as a substitute for them.
+
+If you need a block element that `is` doesn't yet support, add it to the union rather than nesting a Box inside a plain HTML element.
+
+## Polymorphism
+
+Box defaults to rendering as a `<div>`, but can render as `<article>` or `<section>` via the `is` prop. Use this when the content has a meaningful document role that one of those elements expresses.
+
+```tsx
+<Box is="article" p={16}>
+  <h2>Chase Checking</h2>
+  ...
+</Box>
+```
+
+Adding further **block-level** elements to the `is` union is acceptable as the need arises. **Inline elements** (e.g. `<span>`, `<a>`) should not be added — Box is a block layout primitive and its spacing model assumes block formatting context.
+
+## Spacing
+
+Box accepts margin and padding props that map to the design token scale. Props cascade from least to most specific — a more specific prop overrides a less specific one.
+
+```
+p  ──▶  px, py
+        │    │
+        ▼    ▼
+       pl,  pt,
+       pr   pb
+```
+
+Setting `p={16}` applies `16px` to all four sides. Setting `p={16} px={8}` overrides both horizontal sides to `8px`. Setting `p={16} px={8} pl={4}` additionally overrides only the inline-start side to `4px`.
 
 <Canvas of={BoxStories.WithPadding} />
 
-## Inputs
+## Color
 
-Box has the following properties:
+Box accepts `bg`, `borderColor`, and `color` props, each taking a token name from the design system's color palette. In practice these are `sand-N` values — see the [Color](?path=/docs/color--docs) doc for guidance on which steps to use when.
+
+<Canvas of={BoxStories.WithBackground} />
+<Canvas of={BoxStories.WithBorder} />
+
+## Flex layout
+
+Setting `display="flex"` on Box enables all flexbox container and item props. This is the correct way to create flex layouts — do not reach for a CSS class or the deprecated `Flex` component.
+
+```tsx
+<Box display="flex" gap={8} alignItems="center" justifyContent="space-between">
+  <span>Left</span>
+  <span>Right</span>
+</Box>
+```
+
+Flex item props (`flexGrow`, `flexShrink`, `flexBasis`, `alignSelf`) can be applied to a child Box to control how it behaves within a flex container.
+
+```tsx
+<Box display="flex" gap={8}>
+  <Box flexGrow={1}>Fills remaining space</Box>
+  <Box flexShrink={0}>Fixed size</Box>
+</Box>
+```
+
+## Accessibility
+
+By default Box renders as a `<div>`, which carries no implicit ARIA role. Use the `is` prop to render a semantically appropriate element when the content warrants it. If the element you need isn't in the `is` union yet, add it.
+
+Box accepts an `id` prop, which can be used to associate it with ARIA attributes on other elements (e.g. `aria-labelledby`, `aria-describedby`).
+
+## Props
 
 <Controls of={BoxStories.Default} />

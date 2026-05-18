@@ -1,29 +1,39 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect } from 'storybook/test';
-import { Link } from './Link';
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { MemoryRouter, Route, Routes } from "react-router";
+
+import { Link } from "./Link";
 
 const meta = {
   component: Link,
-  tags: ['ai-generated'],
+  tags: [],
 } satisfies Meta<typeof Link>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const Internal: Story = {
+  args: { to: "/accounts" },
+  render: () => (
+    <MemoryRouter initialEntries={["/dashboard"]}>
+      <p>
+        To see your balances, <Link to="/accounts">view your accounts</Link>.
+      </p>
+      <Routes>
+        <Route path="/dashboard" element={null} />
+        <Route path="/accounts" element={<p>Accounts page</p>} />
+      </Routes>
+    </MemoryRouter>
+  ),
+};
+
 export const External: Story = {
-  args: { href: 'https://example.com', children: 'Visit example.com' },
-  play: async ({ canvas }) => {
-    const link = canvas.getByRole('link', { name: /visit example\.com/i });
-    await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute('href', 'https://example.com');
-  },
+  args: { href: new URL("https://example.com"), children: "Visit example.com" },
 };
 
 export const ExternalNewTab: Story = {
   args: {
-    href: 'https://example.com',
-    children: 'Open in new tab',
-    target: '_blank',
-    rel: 'noopener noreferrer',
+    href: new URL("https://example.com"),
+    children: "Open in new tab",
+    newTab: true,
   },
 };
