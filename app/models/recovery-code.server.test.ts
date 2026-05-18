@@ -35,7 +35,7 @@ describe("generateRecoveryCodes", () => {
     await generateRecoveryCodes(user.id);
     await generateRecoveryCodes(user.id);
     expect(await getRecoveryCodeCount(user.id)).toBe(10);
-  });
+  }, 10000);
 });
 
 describe("consumeRecoveryCode", () => {

@@ -14,11 +14,12 @@ export type LinkProps = InternalLinkProps | ExternalLinkProps;
 
 export const Link = (props: LinkProps) => {
   if ("href" in props) {
+    const { newTab, ...rest } = props;
     return (
       <a
-        {...props}
+        {...rest}
         href={props.href.toString()}
-        {...(props.newTab && {
+        {...(newTab && {
           target: "_blank",
           rel: "noopener noreferrer",
         })}
@@ -28,5 +29,6 @@ export const Link = (props: LinkProps) => {
       </a>
     );
   }
+
   return <RRLink {...props} className={styles.link} />;
 };

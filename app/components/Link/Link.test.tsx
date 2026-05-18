@@ -26,7 +26,7 @@ describe("Link", () => {
       );
       expect(screen.getByRole("link", { name: "Visit us" })).toHaveAttribute(
         "href",
-        "https://example.com",
+        "https://example.com/",
       );
     });
 
@@ -38,7 +38,7 @@ describe("Link", () => {
       );
       const link = screen.getByRole("link", { name: "Visit us" });
       expect(link).toHaveAttribute("target", "_blank");
-      expect(link).toHaveAttribute("rel", "noreferrer");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
 
     it("applies the link CSS module class", () => {
