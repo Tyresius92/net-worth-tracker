@@ -20,7 +20,7 @@ import styles from "./admin-delete-user.module.css";
 
 async function requireAdmin(request: Request) {
   const user = await requireUser(request);
-  if (user.role !== "admin") throw redirect("/", { status: 403 });
+  if (user.role !== "admin") throw redirect("/");
   return user;
 }
 

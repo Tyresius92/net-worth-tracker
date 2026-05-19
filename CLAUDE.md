@@ -12,6 +12,10 @@ Architectural decisions are documented in [`docs/adr/`](docs/adr/). Read these b
 
 ## Commands
 
+This project uses Node v22. There is a `.nvmrc` file in the root of the directory with the specific pinned version.
+
+Always run commands using Node v22.
+
 ```bash
 npm run dev           # start dev server (http://localhost:3000)
 npm run build         # production build
@@ -39,6 +43,12 @@ npx prisma migrate dev --name <name>   # create a migration
 
 React Router v7. Routes are defined in [`app/routes.ts`](app/routes.ts) using the programmatic config API (`route()`, `index()`, `layout()`). Each route lives in its own directory under `app/routes/` and exports a `loader`, `action`, and default component. Route types are auto-generated into `+types/` files — run `npm run typecheck` to regenerate them. The path alias `~/` maps to `app/`.
 
+File and folder names use snake_case.
+Routes also use snake_case - do not use kebab-case.
+Route parameters use camelCase.
+
+Example: `/plaid_items/:itemId/update/route.tsx`
+
 ### Data layer
 
 Prisma ORM over SQLite. The schema is at [`prisma/schema.prisma`](prisma/schema.prisma). All models must have `id` (cuid), `createdAt`, and `updatedAt` — copy from an existing model exactly. Model names are PascalCase; field names are camelCase; enum values are snake_case.
@@ -65,6 +75,8 @@ Color tokens: full Radix color palette, but the monochrome direction uses only g
 
 Component styles use CSS Modules (`.module.css` files colocated with the component). Global tokens are defined in [`app/components/_GlobalStyles/`](app/components/_GlobalStyles/).
 
+All styles should be in the design system. Do not place `.module.css` files in the `app/routes` directory; Use existing design system components instead. CSS Modules in that directory are legacy and should not be replicated. If something cannot be implemented with existing functionality, flag this for the user and ask for guidance on how to proceed.
+
 Charts use Recharts and must render **client-side only** — Recharts does not support SSR. Use a `clientOnly` guard or lazy import when adding chart components.
 
 ### Form validation
@@ -82,7 +94,7 @@ Resend + React Email. In non-production environments, `sendEmail` (from [`app/ut
 ## Code conventions
 
 - Named imports only: `import { x } from "..."` not `import * as X from "..."`
-- Use `Box`/`Flex` component props for all spacing — don't add one-off CSS classes
+- Use `Box` component props for all layout and spacing — don't add one-off CSS classes
 - Server-only modules use `.server.ts` suffix
 - Test files colocate with the file they test (`.test.ts` / `.test.tsx`)
 - Cypress e2e tests are in `cypress/e2e/`; use `cy.visitAndCheck()` (custom command) instead of bare `cy.visit()`
