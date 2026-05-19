@@ -111,8 +111,9 @@ describe("/users/:userId/delete — admin delete user", () => {
     cy.task("createUser", targetEmail);
     cy.loginAsAdmin({ email: adminEmail });
     cy.visitAndCheck("/users");
-    cy.findAllByRole("link", { name: /^delete$/i })
-      .first()
+    cy.findByText(targetEmail)
+      .closest("tr")
+      .findByRole("link", { name: /^delete$/i })
       .click();
     cy.findByRole("button", {
       name: /permanently delete this account/i,
