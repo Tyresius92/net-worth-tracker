@@ -19,6 +19,8 @@ export default [
   route("logout", "./routes/logout.tsx"),
   route("verify-email", "./routes/verify-email/route.tsx"),
 
+  route("goodbye", "./routes/goodbye/route.tsx"),
+
   route("contact", "./routes/contact/route.tsx"),
   route("contact/messages", "./routes/contact/messages/route.tsx"),
 
@@ -30,10 +32,13 @@ export default [
     route("recovery-codes", "./routes/settings/recovery-codes/route.tsx"),
     route("disable_mfa", "./routes/settings/disable_mfa/route.tsx"),
     route("change-password", "./routes/settings/change-password/route.tsx"),
+    route("delete-account", "./routes/settings/delete-account/route.tsx"),
   ]),
 
   route("users", "./routes/users/layout.tsx", [
     index("./routes/users/route.tsx"),
+    route(":userId", "./routes/users/$userId/route.tsx"),
+    route(":userId/delete", "./routes/users/$userId/delete/route.tsx"),
   ]),
 
   route("notes", "./routes/notes/layout.tsx", [

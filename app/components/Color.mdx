@@ -1,0 +1,160 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Table } from "./Table/Table";
+
+<Meta title="Color" />
+
+# Color
+
+## Why monochrome
+
+Early versions of The Ledger used a green palette loosely themed around money. The color was applied as decoration — scattered, without a guiding idea. A reframe of the application's core purpose changed this.
+
+This is a reporting application. It tells you what is true about your finances today. It is not exciting. It does not encourage action. That framing pointed directly to the newspaper: calm, authoritative, typography-forward, monochrome. Color that exists simply to fill space works against that character.
+
+The governing approach: **color communicates, or it doesn't appear.** The full philosophy and the principles that follow from it are in the [Introduction](?path=/docs/introduction--docs).
+
+## The sand scale
+
+The application uses the `sand` scale from the Radix UI color system — a warm-toned neutral that runs from near-white to near-black across 12 steps. In practice, you will reach for a small subset of these.
+
+<div style={{ display: "flex", gap: "6px", margin: "16px 0 24px" }}>
+  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((n) => (
+    <div key={n} style={{ flex: 1, textAlign: "center" }}>
+      <div
+        style={{
+          height: 40,
+          background: `var(--color-sand-${n})`,
+          border: "1px solid var(--color-sand-6)",
+          marginBottom: 4,
+        }}
+      />
+      <code style={{ fontSize: 10 }}>{n}</code>
+    </div>
+  ))}
+</div>
+
+### Backgrounds
+
+<Table caption="Sand scale — backgrounds">
+  <Table.Head>
+    <Table.ColumnHeader>Token</Table.ColumnHeader>
+    <Table.ColumnHeader>Use</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>sand-1</code>
+      </Table.RowHeader>
+      <Table.Cell>Page background — the default surface</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>sand-2</code>
+      </Table.RowHeader>
+      <Table.Cell>Subtle background — cards, panels, chart areas</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>sand-3</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        UI element background — callouts, hover states, selected items
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Borders and separators
+
+<Table caption="Sand scale — borders">
+  <Table.Head>
+    <Table.ColumnHeader>Token</Table.ColumnHeader>
+    <Table.ColumnHeader>Use</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>sand-6</code>
+      </Table.RowHeader>
+      <Table.Cell>Subtle borders — callouts, inactive containers</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>sand-7</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        Standard borders — dividers, input outlines, active containers
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Text
+
+<Table caption="Sand scale — text">
+  <Table.Head>
+    <Table.ColumnHeader>Token</Table.ColumnHeader>
+    <Table.ColumnHeader>Use</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>sand-11</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        Secondary and muted text — labels, axis ticks, supporting copy
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>sand-12</code>
+      </Table.RowHeader>
+      <Table.Cell>Primary text — body copy, headings, data values</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Steps `sand-4`, `sand-5`, `sand-8`, `sand-9`, and `sand-10` are available but see limited use in practice. If you find yourself reaching for them, it is worth asking whether a step closer to an established semantic (a standard border, a standard background) would serve just as well.
+
+## Dark mode
+
+The token names are the same in dark mode. `sand-12` is primary text in both light and dark; `sand-1` is page background in both. Radix redefines the underlying CSS custom properties when the `.dark` class is applied to the root — the semantic meaning of each step is preserved, only the actual color values change. A component written against these tokens requires no dark-mode-specific logic and no conditional classes; it just works.
+
+<div
+  className="dark"
+  style={{
+    background: "var(--color-sand-2)",
+    padding: "12px",
+    margin: "16px 0 24px",
+  }}
+>
+  <div style={{ display: "flex", gap: "6px" }}>
+    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((n) => (
+      <div key={n} style={{ flex: 1, textAlign: "center" }}>
+        <div
+          style={{
+            height: 40,
+            background: `var(--color-sand-${n})`,
+            border: "1px solid var(--color-sand-6)",
+            marginBottom: 4,
+          }}
+        />
+        <code style={{ fontSize: 10, color: "var(--color-sand-12)" }}>{n}</code>
+      </div>
+    ))}
+  </div>
+</div>
+
+This is one of the reasons Radix was chosen for the token system. The monochrome direction maps cleanly onto Radix's dark palette — there is no color to invert awkwardly, no brand hue to re-tune for dark backgrounds.
+
+## When non-sand color is appropriate
+
+The clearest case is **errors and destructive actions**. Use red — and commit to it. The contrast with the monochrome baseline is exactly what makes it work as a signal. A muted, barely-there warning tone defeats the purpose; if something is dangerous, the color should feel dangerous.
+
+For **chart data differentiation**, prefer sand variants before reaching for a distinct hue. Multiple data series can often be distinguished through line weight, dashing, or labeling. If a distinct color is genuinely necessary, it should still communicate something specific — not simply "this is a different line."
+
+For everything else, consult the principles in the [Introduction](?path=/docs/introduction--docs) before adding color.
+
+## The full palette
+
+All Radix color scales are available as tokens (e.g. `"red-9"`, `"blue-3"`). They are not removed from the token system because the cost is negligible and the flexibility is useful — but the gap between _available_ and _in active use_ is intentional. Having access to the full palette is not an invitation to use it.

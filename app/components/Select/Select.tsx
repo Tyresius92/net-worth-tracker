@@ -29,7 +29,9 @@ export const Select = ({
 
   return (
     <Flex flexDirection="column" gap={4} mb={20}>
-      <label htmlFor={inputId} className={styles.label}>{label}</label>
+      <label htmlFor={inputId} className={styles.label}>
+        {label}
+      </label>
 
       <select
         name={name}

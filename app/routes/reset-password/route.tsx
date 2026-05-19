@@ -1,6 +1,16 @@
 import { useRef } from "react";
-import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "react-router";
-import { data, Form, redirect, useActionData, useLoaderData } from "react-router";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "react-router";
+import {
+  data,
+  Form,
+  redirect,
+  useActionData,
+  useLoaderData,
+} from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
@@ -49,7 +59,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (password.length < 8) {
     return data(
-      { errors: { ...baseErrors, password: "Password must be at least 8 characters" } },
+      {
+        errors: {
+          ...baseErrors,
+          password: "Password must be at least 8 characters",
+        },
+      },
       { status: 400 },
     );
   }
@@ -64,7 +79,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const record = await verifyPasswordResetToken(token);
   if (!record) {
     return data(
-      { errors: { ...baseErrors, token: "This reset link has expired or already been used." } },
+      {
+        errors: {
+          ...baseErrors,
+          token: "This reset link has expired or already been used.",
+        },
+      },
       { status: 400 },
     );
   }

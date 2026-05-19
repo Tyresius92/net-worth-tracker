@@ -1,0 +1,46 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as NavLinkStories from "./NavLink.stories";
+
+<Meta of={NavLinkStories} />
+
+# NavLink
+
+NavLink is a navigation link that automatically applies an active style when the current route matches its destination. It is intended for primary navigation — tab bars, sidebars, and other persistent navigation structures.
+
+## When to use
+
+Use NavLink when the link is part of a navigation structure and the active state (indicating where the user currently is) is meaningful.
+
+## When not to use
+
+**Inline text links within content:** use [`Link`](?path=/docs/components-link--docs) instead. NavLink's active-state styling is designed for navigation contexts, not prose. A link within a sentence or paragraph should use `Link`.
+
+**Linking to external URLs:** NavLink wraps React Router's `NavLink` and only supports internal routes via the `to` prop. Use `Link` with an `href` for external destinations.
+
+## Active state
+
+When the current URL matches the `to` prop, React Router adds an `active` class to the rendered anchor. NavLink's styles use this to apply a bold weight and a bottom border, visually indicating the current location.
+
+The story below is interactive — click the links to see the active state transfer between them.
+
+<Canvas of={NavLinkStories.Navigation} />
+
+## preventScrollReset
+
+By default, navigating to a new route scrolls the page to the top. Set `preventScrollReset` to keep the scroll position when the navigation occurs. This is useful in layouts where the navigation is anchored and the main content scrolls independently.
+
+```tsx
+<NavLink to="/accounts" preventScrollReset>
+  Accounts
+</NavLink>
+```
+
+## Accessibility
+
+NavLink renders as an `<a>` element with an implicit ARIA role of `link`. Screen readers announce it as navigational, and keyboard users activate it with `Enter`.
+
+When NavLink is active, React Router also sets `aria-current="page"` on the element automatically. This tells screen readers which link corresponds to the current page — a meaningful signal for users navigating by landmark or link list.
+
+## Props
+
+<Controls of={NavLinkStories.Navigation} />

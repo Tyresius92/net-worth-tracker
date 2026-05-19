@@ -17,7 +17,7 @@ describe("recovery code login", () => {
   });
 
   it("shows a 'use a recovery code' toggle on the 2FA page", () => {
-    cy.visit("/login");
+    cy.visitAndCheck("/login");
     cy.findByLabelText(/email address/i).type(userEmail);
     cy.findByLabelText(/password/i).type(CYPRESS_TEST_PASSWORD);
     cy.findByRole("button", { name: /log in/i }).click();
@@ -27,23 +27,27 @@ describe("recovery code login", () => {
   });
 
   it("allows login with a recovery code", () => {
-    cy.task<{ codes: string[] }>("enableUserMFA", { email: userEmail }).then(({ codes }) => {
-      cy.visit("/login");
-      cy.findByLabelText(/email address/i).type(userEmail);
-      cy.findByLabelText(/password/i).type(CYPRESS_TEST_PASSWORD);
-      cy.findByRole("button", { name: /log in/i }).click();
+    cy.task<{ codes: string[] }>("enableUserMFA", { email: userEmail }).then(
+      ({ codes }) => {
+        cy.visitAndCheck("/login");
+        cy.findByLabelText(/email address/i).type(userEmail);
+        cy.findByLabelText(/password/i).type(CYPRESS_TEST_PASSWORD);
+        cy.findByRole("button", { name: /log in/i }).click();
 
-      cy.location("pathname").should("eq", "/login/2fa");
-      cy.findByRole("button", { name: /use a recovery code instead/i }).click();
-      cy.findByLabelText(/recovery code/i).type(codes[0]);
-      cy.findByRole("button", { name: /verify/i }).click();
+        cy.location("pathname").should("eq", "/login/2fa");
+        cy.findByRole("button", {
+          name: /use a recovery code instead/i,
+        }).click();
+        cy.findByLabelText(/recovery code/i).type(codes[0]);
+        cy.findByRole("button", { name: /verify/i }).click();
 
-      cy.location("pathname").should("eq", "/");
-    });
+        cy.location("pathname").should("eq", "/");
+      },
+    );
   });
 
   it("shows an error for an invalid recovery code", () => {
-    cy.visit("/login");
+    cy.visitAndCheck("/login");
     cy.findByLabelText(/email address/i).type(userEmail);
     cy.findByLabelText(/password/i).type(CYPRESS_TEST_PASSWORD);
     cy.findByRole("button", { name: /log in/i }).click();
@@ -58,30 +62,37 @@ describe("recovery code login", () => {
   });
 
   it("does not allow a recovery code to be used twice", () => {
-    cy.task<{ codes: string[] }>("enableUserMFA", { email: userEmail }).then(({ codes }) => {
-      const useCode = (code: string) => {
-        cy.visit("/login");
-        cy.findByLabelText(/email address/i).type(userEmail);
-        cy.findByLabelText(/password/i).type(CYPRESS_TEST_PASSWORD);
-        cy.findByRole("button", { name: /log in/i }).click();
+    cy.task<{ codes: string[] }>("enableUserMFA", { email: userEmail }).then(
+      ({ codes }) => {
+        const useCode = (code: string) => {
+          cy.visitAndCheck("/login");
+          cy.findByLabelText(/email address/i).type(userEmail);
+          cy.findByLabelText(/password/i).type(CYPRESS_TEST_PASSWORD);
+          cy.findByRole("button", { name: /log in/i }).click();
+          cy.location("pathname").should("eq", "/login/2fa");
+          cy.findByRole("button", {
+            name: /use a recovery code instead/i,
+          }).click();
+          cy.findByLabelText(/recovery code/i).type(code);
+          cy.findByRole("button", { name: /verify/i }).click();
+        };
+
+        useCode(codes[0]);
+        cy.location("pathname").should("eq", "/");
+        cy.findByRole("button", { name: /log out/i }).click();
+
+        useCode(codes[0]);
         cy.location("pathname").should("eq", "/login/2fa");
-        cy.findByRole("button", { name: /use a recovery code instead/i }).click();
-        cy.findByLabelText(/recovery code/i).type(code);
-        cy.findByRole("button", { name: /verify/i }).click();
-      };
-
-      useCode(codes[0]);
-      cy.location("pathname").should("eq", "/");
-      cy.visit("/logout");
-
-      useCode(codes[0]);
-      cy.location("pathname").should("eq", "/login/2fa");
-    });
+      },
+    );
   });
 
   it("redirects to /settings/recovery-codes and shows exhausted warning after the last code is used", () => {
-    cy.task<{ codes: string[] }>("enableUserMFA", { email: userEmail, codeCount: 1 }).then(({ codes }) => {
-      cy.visit("/login");
+    cy.task<{ codes: string[] }>("enableUserMFA", {
+      email: userEmail,
+      codeCount: 1,
+    }).then(({ codes }) => {
+      cy.visitAndCheck("/login");
       cy.findByLabelText(/email address/i).type(userEmail);
       cy.findByLabelText(/password/i).type(CYPRESS_TEST_PASSWORD);
       cy.findByRole("button", { name: /log in/i }).click();
@@ -104,7 +115,8 @@ describe("/settings/recovery-codes page", () => {
     userEmail = faker.internet.email({ provider: "example.com" });
     cy.then(() => ({ email: userEmail })).as("user");
     cy.task("createUser", userEmail).then((cookieValue) => {
-      if (typeof cookieValue === "string") cy.setCookie("__session", cookieValue);
+      if (typeof cookieValue === "string")
+        cy.setCookie("__session", cookieValue);
     });
     cy.task("enableUserMFA", { email: userEmail });
   });
@@ -114,13 +126,15 @@ describe("/settings/recovery-codes page", () => {
   });
 
   it("shows the remaining code count", () => {
-    cy.visit("/settings/recovery-codes");
-    cy.findByText(/10.*of 10 recovery codes remaining/i);
+    cy.visitAndCheck("/settings/recovery-codes");
+    cy.contains(/10 of 10 recovery codes remaining/i);
   });
 
   it("regenerates codes when a valid TOTP code is entered", () => {
-    cy.visit("/settings/recovery-codes");
-    cy.findByLabelText(/authenticator code/i).type("000000");
+    cy.visitAndCheck("/settings/recovery-codes");
+    cy.task<string>("generateTOTPCode", userEmail).then((code) => {
+      cy.findByLabelText(/authenticator code/i).type(code);
+    });
     cy.findByRole("button", { name: /generate new codes/i }).click();
 
     cy.location("pathname").should("eq", "/settings/recovery-codes");
@@ -128,7 +142,7 @@ describe("/settings/recovery-codes page", () => {
   });
 
   it("shows an error when an invalid TOTP code is entered", () => {
-    cy.visit("/settings/recovery-codes");
+    cy.visitAndCheck("/settings/recovery-codes");
     cy.findByLabelText(/authenticator code/i).type("999999");
     cy.findByRole("button", { name: /generate new codes/i }).click();
 
@@ -136,8 +150,10 @@ describe("/settings/recovery-codes page", () => {
   });
 
   it("shows newly generated codes exactly once", () => {
-    cy.visit("/settings/recovery-codes");
-    cy.findByLabelText(/authenticator code/i).type("000000");
+    cy.visitAndCheck("/settings/recovery-codes");
+    cy.task<string>("generateTOTPCode", userEmail).then((code) => {
+      cy.findByLabelText(/authenticator code/i).type(code);
+    });
     cy.findByRole("button", { name: /generate new codes/i }).click();
 
     cy.findByText(/save your recovery codes/i);
@@ -155,7 +171,8 @@ describe("settings page recovery code count", () => {
     userEmail = faker.internet.email({ provider: "example.com" });
     cy.then(() => ({ email: userEmail })).as("user");
     cy.task("createUser", userEmail).then((cookieValue) => {
-      if (typeof cookieValue === "string") cy.setCookie("__session", cookieValue);
+      if (typeof cookieValue === "string")
+        cy.setCookie("__session", cookieValue);
     });
     cy.task("enableUserMFA", { email: userEmail });
   });
@@ -165,12 +182,12 @@ describe("settings page recovery code count", () => {
   });
 
   it("shows the recovery code count on the settings page", () => {
-    cy.visit("/settings");
+    cy.visitAndCheck("/settings");
     cy.findByText(/10 of 10 remaining/i);
   });
 
   it("links to the recovery codes management page", () => {
-    cy.visit("/settings");
+    cy.visitAndCheck("/settings");
     cy.findByRole("link", { name: /manage/i }).click();
     cy.location("pathname").should("eq", "/settings/recovery-codes");
   });

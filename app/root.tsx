@@ -22,6 +22,7 @@ import { getUser } from "~/session.server";
 
 import type { Route } from "./+types/root";
 import lightColors from "./components/_GlobalStyles/colors.css?url";
+import fontSizeStyles from "./components/_GlobalStyles/font-size.css?url";
 import spaceStyles from "./components/_GlobalStyles/space.css?url";
 import { Button } from "./components/Button/Button";
 import { Footer } from "./components/Footer/Footer";
@@ -37,6 +38,7 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
   { rel: "stylesheet", href: lightColors },
   { rel: "stylesheet", href: spaceStyles },
+  { rel: "stylesheet", href: fontSizeStyles },
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -83,15 +85,26 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main>
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack ? (
-        <pre>
-          <code>{stack}</code>
-        </pre>
-      ) : null}
-    </main>
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <main>
+          <h1>{message}</h1>
+          <p>{details}</p>
+          {stack ? (
+            <pre>
+              <code>{stack}</code>
+            </pre>
+          ) : null}
+        </main>
+        <Scripts />
+      </body>
+    </html>
   );
 }
 

@@ -1,0 +1,60 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as ButtonStories from "./Button.stories";
+
+<Meta of={ButtonStories} />
+
+# Button
+
+Button triggers an action. It is for things the user _does_ — submitting a form, confirming a choice, initiating a process.
+
+## When to use
+
+Use Button when the interaction causes something to happen: saving data, deleting a record, submitting a form.
+
+## When not to use
+
+Do not use Button for navigation. If clicking the element takes the user somewhere, use a [`Link`](?path=/docs/components-link--docs) instead. The distinction matters for accessibility — browsers, screen readers, and keyboard users treat links and buttons differently, and using the wrong element breaks those expectations.
+
+## Variants
+
+### Primary
+
+The default variant. Use for the main action on a page or in a form — the thing the user is most likely to want to do.
+
+<Canvas of={ButtonStories.Primary} />
+
+There should typically be one primary button per context. Multiple primary buttons compete for attention and dilute the signal.
+
+### Secondary
+
+Use for supporting actions that sit alongside a primary action — cancelling, going back, or choosing an alternative path.
+
+<Canvas of={ButtonStories.Secondary} />
+
+### Danger
+
+Use for destructive or irreversible actions: deleting a record, removing an account connection, wiping data. The red treatment is intentional and should feel alarming — do not reach for the danger variant for actions that are merely consequential but reversible.
+
+<Canvas of={ButtonStories.Danger} />
+
+## Disabled state
+
+<Canvas of={ButtonStories.Disabled} />
+
+Prefer not to disable buttons where possible. A disabled button gives no explanation for why the action is unavailable. When you must disable, ensure the reason is clear from surrounding context.
+
+## Accessibility
+
+Always set the `type` prop explicitly on buttons inside forms. Without it, browsers default to `type="submit"`, which can cause unintended form submissions when a button is meant to do something else.
+
+```tsx
+<Button type="button" onClick={handleClick}>Do something</Button>
+<Button type="submit">Save</Button>
+<Button type="reset">Clear form</Button>
+```
+
+The `name` and `value` props are available for multi-submit-button forms where the server needs to know which button was pressed.
+
+## Props
+
+<Controls of={ButtonStories.Primary} />

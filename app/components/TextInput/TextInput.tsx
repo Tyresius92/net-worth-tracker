@@ -37,7 +37,9 @@ const TextInputWithForwardedRef = React.forwardRef(
 
     return (
       <Flex flexDirection="column" gap={4} mb={20}>
-        <label htmlFor={inputId} className={styles.label}>{label}</label>
+        <label htmlFor={inputId} className={styles.label}>
+          {label}
+        </label>
         <input
           id={inputId}
           ref={ref}
@@ -46,7 +48,11 @@ const TextInputWithForwardedRef = React.forwardRef(
           className={styles.input}
           {...rest}
         />
-        {hintText ? <div id={hintId} className={styles.hint}>&#9432; {hintText}</div> : null}
+        {hintText ? (
+          <div id={hintId} className={styles.hint}>
+            &#9432; {hintText}
+          </div>
+        ) : null}
         {errorMessage ? (
           <div id={errorId} className={styles.error_message}>
             &#9888; {errorMessage}

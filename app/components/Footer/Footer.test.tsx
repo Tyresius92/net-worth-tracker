@@ -37,7 +37,9 @@ describe("Footer", () => {
 
   it("always shows the Privacy policy link", () => {
     renderWithRouter(<Footer user={null} />);
-    expect(screen.getByRole("link", { name: /privacy policy/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /privacy policy/i }),
+    ).toBeInTheDocument();
   });
 
   it("always shows the Contact link", () => {

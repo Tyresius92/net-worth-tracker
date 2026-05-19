@@ -19,9 +19,9 @@ export const Footer = ({ user }: FooterProps) => {
           {!user ? (
             <>
               <Link
-                href="https://github.com/Tyresius92/net-worth-tracker"
-                target="_blank"
-                rel="noreferrer"
+                href={
+                  new URL("https://github.com/Tyresius92/net-worth-tracker")
+                }
               >
                 View source on GitHub
               </Link>

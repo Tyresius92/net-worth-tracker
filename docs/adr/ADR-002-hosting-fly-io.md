@@ -42,6 +42,7 @@ Specific factors that validated Fly.io as the right choice rather than just the 
 ## Consequences
 
 **Positive:**
+
 - Effectively free at current usage levels
 - Docker-based deploys are portable; no meaningful platform lock-in
 - SQLite persistence is well-supported via volumes
@@ -49,6 +50,7 @@ Specific factors that validated Fly.io as the right choice rather than just the 
 - Low migration cost if needed — SQLite is a single file, and the container image runs anywhere
 
 **Negative / Tradeoffs:**
+
 - No true free tier; pricing is usage-based and could change. The SQLite + Docker portability mitigates this risk significantly — self-hosting remains a viable fallback
 - Brief downtime during deployments (machine spin-down and spin-up) is expected at this tier and acceptable for a single-user application
 - Documentation is adequate but not exceptional

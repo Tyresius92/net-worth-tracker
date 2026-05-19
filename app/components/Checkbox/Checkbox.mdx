@@ -1,0 +1,49 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as CheckboxStories from "./Checkbox.stories";
+
+<Meta of={CheckboxStories} />
+
+# Checkbox
+
+Checkbox represents a binary choice — on or off, opted in or opted out. It is an uncontrolled input: state is managed by the browser and submitted with the form via the `name` prop.
+
+## When to use
+
+Use Checkbox when the user is making a single yes/no decision: agreeing to terms, opting into a feature, toggling a preference.
+
+## When not to use
+
+**Choosing between 3 or more options:** use [`Select`](?path=/docs/components-select--docs) instead. A group of checkboxes can work for multi-select scenarios, but that pattern is not currently encapsulated in this component.
+
+**Choosing exactly one option from a small set of labeled alternatives:** use radio buttons. Checkbox implies the choice is independent; radio buttons communicate mutual exclusivity.
+
+## States
+
+### Unchecked
+
+<Canvas of={CheckboxStories.Unchecked} />
+
+### Checked
+
+`defaultChecked` sets the initial checked state. Because this is an uncontrolled input, the browser manages subsequent state changes — no React state or `onChange` handler is required for form submission.
+
+<Canvas of={CheckboxStories.Checked} />
+
+### Disabled
+
+<Canvas of={CheckboxStories.Disabled} />
+
+Prefer not to disable checkboxes where possible — a disabled checkbox gives no explanation for why the option is unavailable. When you must disable, ensure surrounding context makes the reason clear. Note that a disabled checkbox does not submit its value with the form, which may affect server-side logic that expects the field to be present.
+
+## Accessibility
+
+Label association is handled automatically — a unique `id` is generated internally and bound to the `label` element, so the `label` prop is always required and always connected. You do not need to manage IDs manually.
+
+Keyboard interaction is provided by Radix UI:
+
+- `Space` — toggles the checkbox
+- `Tab` / `Shift+Tab` — moves focus to and from the checkbox
+
+## Props
+
+<Controls of={CheckboxStories.Unchecked} />

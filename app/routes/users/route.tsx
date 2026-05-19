@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
+import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
@@ -11,7 +12,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
 
   if (user.role !== "admin") {
-    return redirect("/", { status: 403 });
+    throw redirect("/", { status: 403 });
   }
 
   const users = await prisma.user.findMany();
@@ -26,22 +27,28 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
     <Box>
       <Table caption="Users">
         <Table.Head>
-          <Table.ColumnHeader>ID</Table.ColumnHeader>
+          <Table.ColumnHeader>Full Name</Table.ColumnHeader>
           <Table.ColumnHeader>First Name</Table.ColumnHeader>
           <Table.ColumnHeader>Last Name</Table.ColumnHeader>
-          <Table.ColumnHeader>Full Name</Table.ColumnHeader>
           <Table.ColumnHeader>Email</Table.ColumnHeader>
           <Table.ColumnHeader>Role</Table.ColumnHeader>
+          <Table.ColumnHeader>Actions</Table.ColumnHeader>
         </Table.Head>
         <Table.Body>
-          {loaderData.users.map((user) => (
+          {(loaderData.users ?? []).map((user) => (
             <Table.Row key={user.id}>
-              <Table.Cell>{user.id}</Table.Cell>
+              <Table.Cell>
+                <Link to={`./${user.id}`}>{user.fullName}</Link>
+              </Table.Cell>
               <Table.Cell>{user.firstName}</Table.Cell>
               <Table.Cell>{user.lastName}</Table.Cell>
-              <Table.Cell>{user.fullName}</Table.Cell>
               <Table.Cell>{user.email}</Table.Cell>
               <Table.Cell>{user.role}</Table.Cell>
+              <Table.Cell>
+                <Link to={`/users/${user.id}`}>View</Link>
+                {" · "}
+                <Link to={`/users/${user.id}/delete`}>Delete</Link>
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

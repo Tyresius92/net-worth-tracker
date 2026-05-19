@@ -6,8 +6,10 @@ import dotenv from "dotenv";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
-dotenv.config({ path: ".env.test", override: true });
-
+dotenv.config({
+  path: ".env.test",
+  override: true,
+});
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {

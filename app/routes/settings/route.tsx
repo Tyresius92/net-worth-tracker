@@ -20,7 +20,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function SettingsRoute() {
-  const { twoFactorEnabled, recoveryCodeCount } = useLoaderData<typeof loader>();
+  const { twoFactorEnabled, recoveryCodeCount } =
+    useLoaderData<typeof loader>();
 
   return (
     <div className={styles.page}>
@@ -33,9 +34,13 @@ export default function SettingsRoute() {
             <span className={styles.label}>Status</span>
             <span className={styles.value}>
               {twoFactorEnabled ? (
-                <span className={`${styles.badge} ${styles.enabled}`}>Enabled</span>
+                <span className={`${styles.badge} ${styles.enabled}`}>
+                  Enabled
+                </span>
               ) : (
-                <span className={`${styles.badge} ${styles.disabled}`}>Not enabled</span>
+                <span className={`${styles.badge} ${styles.disabled}`}>
+                  Not enabled
+                </span>
               )}
             </span>
           </div>
@@ -53,7 +58,9 @@ export default function SettingsRoute() {
               </div>
               <Divider variant="light" />
               <div className={styles.row}>
-                <span className={styles.label}>Disable two-factor authentication</span>
+                <span className={styles.label}>
+                  Disable two-factor authentication
+                </span>
                 <span className={styles.value}>
                   <Link to="/settings/disable_mfa">Disable</Link>
                 </span>
@@ -62,8 +69,8 @@ export default function SettingsRoute() {
           ) : (
             <div className={styles.row}>
               <span className={styles.label}>
-                Protect your account with an authenticator app. Required to connect bank accounts
-                via Plaid.
+                Protect your account with an authenticator app. Required to
+                connect bank accounts via Plaid.
               </span>
               <span className={styles.value}>
                 <Link to="/settings/enable_mfa">Set up</Link>
@@ -80,6 +87,20 @@ export default function SettingsRoute() {
             <span className={styles.label}>Change password</span>
             <span className={styles.value}>
               <Link to="/settings/change-password">Change</Link>
+            </span>
+          </div>
+        </Box>
+      </div>
+
+      <div className={styles.section}>
+        <p className={styles.sectionHeading}>Danger Zone</p>
+        <Box borderColor="red-7">
+          <div className={styles.row}>
+            <span className={styles.label}>
+              Permanently delete your account and all associated data
+            </span>
+            <span className={styles.value}>
+              <Link to="/settings/delete-account">Delete account</Link>
             </span>
           </div>
         </Box>

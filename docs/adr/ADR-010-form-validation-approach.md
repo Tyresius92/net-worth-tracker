@@ -16,7 +16,7 @@ Zod is the standard schema validation library in the Remix and React Router ecos
 
 `zod-prisma-types` generates Zod schemas from the Prisma schema, producing validators like `AccountSchema` and `BalanceSnapshotSchema` that mirror the database model types. This was the most appealing option — auto-generation avoids writing schemas by hand and keeps them in sync with the data model.
 
-**Not chosen.** The generated schemas validate the *stored* shape of a record — `amount` as an integer in cents, `dateTime` as a `Date` object. Form inputs from the browser are a different shape entirely: `amount` arrives as a float string like `"1234.56"`, `dateTime` as `"2024-01-15"`. The conversion logic between those shapes (parsing, scaling, date construction) is exactly the part that requires validation. The generated schemas validate the output after that conversion, not the input that needs it. The integration is most useful when an API accepts payloads that directly match Prisma model types; it does not materially help with browser form validation.
+**Not chosen.** The generated schemas validate the _stored_ shape of a record — `amount` as an integer in cents, `dateTime` as a `Date` object. Form inputs from the browser are a different shape entirely: `amount` arrives as a float string like `"1234.56"`, `dateTime` as `"2024-01-15"`. The conversion logic between those shapes (parsing, scaling, date construction) is exactly the part that requires validation. The generated schemas validate the output after that conversion, not the input that needs it. The integration is most useful when an API accepts payloads that directly match Prisma model types; it does not materially help with browser form validation.
 
 ### Zod without codegen
 
@@ -50,12 +50,14 @@ If this application were to grow significantly — many more forms, shared valid
 ## Consequences
 
 **Positive:**
+
 - No new dependency added to a scope-stable project
 - The `parseFloat` NaN bug is fixed in both balance routes; financial data is no longer at risk of silent corruption
 - Account form validation is centralized in one function, eliminating the duplication between `new` and `edit` routes
 - Type narrowing at validation boundaries is explicit and correct without a library
 
 **Negative / Tradeoffs:**
+
 - Shared validation helpers must be maintained manually; a schema library would enforce consistency more mechanically as the form count grew
 - Composing complex validation rules (nested objects, conditional fields, cross-field constraints) is more verbose with manual helpers than with Zod's combinator API — not a current concern, but a real ceiling
 - Reviewers familiar with the Remix ecosystem will expect Zod; this ADR exists to document that its absence is intentional

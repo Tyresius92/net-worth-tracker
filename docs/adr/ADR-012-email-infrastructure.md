@@ -60,6 +60,7 @@ In non-production environments, `sendEmail` logs the recipient, subject, and ren
 
 **Environment configuration:**
 Two environment variables are required in production:
+
 - `RESEND_API_KEY` — the API key issued by Resend
 - `FROM_EMAIL` — the sending address; defaults to `noreply@theledger.dev` if unset, but should be explicitly configured
 
@@ -68,6 +69,7 @@ Both are documented in `.env.example`.
 ## Consequences
 
 **Positive:**
+
 - Email templates are React components — they are type-checked, composable, and consistent with the rest of the codebase
 - Resend's delivery logs and dashboard make it straightforward to diagnose failed or missing emails
 - The free tier is more than sufficient; no cost is expected at projected volume
@@ -75,6 +77,7 @@ Both are documented in `.env.example`.
 - DNS and domain management are co-located in Cloudflare, reducing the number of external systems to maintain
 
 **Negative / Tradeoffs:**
+
 - Email delivery now depends on Resend as an external service; if Resend experiences an outage, transactional email fails
 - A verified sending domain is required — `theledger.dev` was purchased and configured specifically for this purpose, adding a small annual cost (~$10/year)
 - React email templates must use inline styles; CSS variables and external stylesheets are not supported by email clients, which means the visual design system used in the application cannot be directly shared with email templates

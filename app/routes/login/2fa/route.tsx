@@ -10,8 +10,15 @@ import { Divider } from "~/components/Divider/Divider";
 import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
-import { consumeRecoveryCode, getRecoveryCodeCount } from "~/models/recovery-code.server";
-import { createUserSession, getSession, sessionStorage } from "~/session.server";
+import {
+  consumeRecoveryCode,
+  getRecoveryCodeCount,
+} from "~/models/recovery-code.server";
+import {
+  createUserSession,
+  getSession,
+  sessionStorage,
+} from "~/session.server";
 import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
 
 import styles from "./twofa.module.css";
@@ -33,7 +40,10 @@ export async function action({ request }: { request: Request }) {
 
   const ip = getClientIp(request);
   if (isRateLimited(`2fa:${ip}:${userId ?? "unknown"}`)) {
-    return data({ error: "Too many attempts. Try again in 15 minutes." }, { status: 429 });
+    return data(
+      { error: "Too many attempts. Try again in 15 minutes." },
+      { status: 429 },
+    );
   }
 
   const user = await prisma.user.findUnique({
@@ -65,7 +75,12 @@ export async function action({ request }: { request: Request }) {
       });
     }
 
-    return createUserSession({ request, userId: user.id, remember, redirectTo: "/" });
+    return createUserSession({
+      request,
+      userId: user.id,
+      remember,
+      redirectTo: "/",
+    });
   }
 
   // TOTP mode
@@ -88,7 +103,12 @@ export async function action({ request }: { request: Request }) {
   session.unset("2fa:remember");
   session.set("userId", user.id);
 
-  return createUserSession({ request, userId: user.id, remember, redirectTo: "/" });
+  return createUserSession({
+    request,
+    userId: user.id,
+    remember,
+    redirectTo: "/",
+  });
 }
 
 export default function TwoFactorAuth() {

@@ -16,7 +16,9 @@ describe("Flex", () => {
 
   it("applies flexDirection", () => {
     render(<Flex flexDirection="column">content</Flex>);
-    expect(screen.getByText("content")).toHaveStyle({ flexDirection: "column" });
+    expect(screen.getByText("content")).toHaveStyle({
+      flexDirection: "column",
+    });
   });
 
   it("applies justifyContent", () => {
@@ -28,7 +30,7 @@ describe("Flex", () => {
 
   it("applies flexGrow", () => {
     render(<Flex flexGrow={1}>content</Flex>);
-    expect(screen.getByText("content")).toHaveStyle({ flexGrow: 1 });
+    expect(screen.getByText("content")).toHaveStyle({ flexGrow: "1" });
   });
 
   it("applies alignItems", () => {

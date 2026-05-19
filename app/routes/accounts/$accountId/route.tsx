@@ -116,7 +116,10 @@ export default function AccountDetailsRoute({
           </Box>
         </Flex>
 
-        <BalanceChart balances={loaderData.balances} title="Account balance history" />
+        <BalanceChart
+          balances={loaderData.balances}
+          title="Account balance history"
+        />
 
         <Table caption="Balances">
           <Table.Head>

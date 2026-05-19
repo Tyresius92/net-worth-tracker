@@ -19,12 +19,10 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
-  ignorePatterns: [
-    '__generated__'
-  ],
+  ignorePatterns: ["__generated__"],
 
   // Base config
-  extends: ["eslint:recommended"],
+  extends: ["eslint:recommended", "plugin:storybook/recommended"],
 
   overrides: [
     // React
@@ -161,7 +159,7 @@ module.exports = {
         "*.server.tsx",
         "*.server.test.{ts,tsx}",
         "*.server.test.tsx",
-        "app/routes/api/**/*.ts"
+        "app/routes/api/**/*.ts",
       ],
       rules: {
         "no-console": "off",

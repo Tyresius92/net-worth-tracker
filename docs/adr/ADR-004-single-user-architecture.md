@@ -37,11 +37,13 @@ The `User` model retains a `role` field (`customer` / `admin`) — a remnant of 
 ## Consequences
 
 **Positive:**
+
 - Architectural decisions throughout the stack are simpler — the database choice, auth model, refresh job, and query design all benefit from having no tenancy requirements
 - No data ownership, isolation, or breach notification obligations to third parties
 - No customer support, billing infrastructure, or feature prioritization across a user base required
 
 **Negative / Tradeoffs:**
+
 - If multi-user support were ever needed, the daily refresh job would require the most significant rethinking — Plaid rate limits would become a real constraint at scale
 - The database choice and single-connection model would need revisiting under any meaningful write concurrency
 - The `role` field is a low-level remnant of an abandoned direction

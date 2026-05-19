@@ -52,12 +52,14 @@ The TOTP shared secret is stored encrypted at rest via `prisma-field-encryption`
 ## Consequences
 
 **Positive:**
+
 - Meets Plaid's security recommendations for applications accessing financial data
 - No external service dependency — TOTP is entirely self-contained
 - Rate limiting provides baseline brute-force protection
 - Encrypted secret storage follows the same pattern applied to all sensitive fields
 
 **Negative / Tradeoffs:**
+
 - Adds a step to every login — acceptable friction for a security-sensitive application
 - If the authenticator device is lost, account recovery requires direct database access; there is no self-service recovery flow
 - The `000000` development bypass must remain strictly environment-gated; accidental exposure in production would be a serious vulnerability

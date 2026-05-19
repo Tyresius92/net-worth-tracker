@@ -36,7 +36,9 @@ describe("NavLink", () => {
   });
 
   it("does not apply aria-current when the link does not match the current route", () => {
-    renderWithRouter(<NavLink to="/accounts">Accounts</NavLink>, { route: "/" });
+    renderWithRouter(<NavLink to="/accounts">Accounts</NavLink>, {
+      route: "/",
+    });
     expect(screen.getByRole("link", { name: "Accounts" })).not.toHaveAttribute(
       "aria-current",
     );

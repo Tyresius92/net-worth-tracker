@@ -22,30 +22,61 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const newPassword = formData.get("newPassword");
   const confirmPassword = formData.get("confirmPassword");
 
-  const baseErrors = { currentPassword: null, newPassword: null, confirmPassword: null };
+  const baseErrors = {
+    currentPassword: null,
+    newPassword: null,
+    confirmPassword: null,
+  };
 
   if (typeof currentPassword !== "string" || !currentPassword) {
-    return data({ errors: { ...baseErrors, currentPassword: "Current password is required" } }, { status: 400 });
+    return data(
+      {
+        errors: {
+          ...baseErrors,
+          currentPassword: "Current password is required",
+        },
+      },
+      { status: 400 },
+    );
   }
 
   if (typeof newPassword !== "string" || newPassword.length === 0) {
-    return data({ errors: { ...baseErrors, newPassword: "New password is required" } }, { status: 400 });
+    return data(
+      { errors: { ...baseErrors, newPassword: "New password is required" } },
+      { status: 400 },
+    );
   }
 
   if (newPassword.length < 8) {
-    return data({ errors: { ...baseErrors, newPassword: "Password must be at least 8 characters" } }, { status: 400 });
+    return data(
+      {
+        errors: {
+          ...baseErrors,
+          newPassword: "Password must be at least 8 characters",
+        },
+      },
+      { status: 400 },
+    );
   }
 
   if (newPassword !== confirmPassword) {
-    return data({ errors: { ...baseErrors, confirmPassword: "Passwords do not match" } }, { status: 400 });
+    return data(
+      { errors: { ...baseErrors, confirmPassword: "Passwords do not match" } },
+      { status: 400 },
+    );
   }
 
-  const record = await prisma.password.findUnique({ where: { userId: user.id } });
+  const record = await prisma.password.findUnique({
+    where: { userId: user.id },
+  });
   if (!record) return redirect("/settings");
 
   const isValid = await bcrypt.compare(currentPassword, record.hash);
   if (!isValid) {
-    return data({ errors: { ...baseErrors, currentPassword: "Incorrect password" } }, { status: 400 });
+    return data(
+      { errors: { ...baseErrors, currentPassword: "Incorrect password" } },
+      { status: 400 },
+    );
   }
 
   await prisma.password.update({
@@ -62,7 +93,9 @@ export default function ChangePasswordPage() {
   return (
     <Box p={24} maxWidth={480}>
       <Box mb={24}>
-        <h1 style={{ fontSize: "1.25rem", fontWeight: 600 }}>Change Password</h1>
+        <h1 style={{ fontSize: "1.25rem", fontWeight: 600 }}>
+          Change Password
+        </h1>
       </Box>
 
       <Form method="post">

@@ -2,9 +2,7 @@ import React from "react";
 
 import { ColorOption, SpaceOption } from "../_GlobalStyles/types";
 
-type BoxMarginOption = SpaceOption | "auto";
-
-export interface BoxProps
+interface BaseBoxProps
   extends Pick<React.HTMLAttributes<HTMLDivElement>, "id" | "children"> {
   p?: SpaceOption;
   px?: SpaceOption;
@@ -14,47 +12,105 @@ export interface BoxProps
   pt?: SpaceOption;
   pb?: SpaceOption;
 
-  m?: BoxMarginOption;
-  mx?: BoxMarginOption;
-  my?: BoxMarginOption;
-  ml?: BoxMarginOption;
-  mr?: BoxMarginOption;
-  mt?: BoxMarginOption;
-  mb?: BoxMarginOption;
+  m?: SpaceOption;
+  mx?: SpaceOption;
+  my?: SpaceOption;
+  ml?: SpaceOption;
+  mr?: SpaceOption;
+  mt?: SpaceOption;
+  mb?: SpaceOption;
 
   bg?: ColorOption;
   borderColor?: ColorOption;
   color?: ColorOption;
-
+  /**
+   * @deprecated I am rethinking the approach to maxWidth
+   */
   maxWidth?: number;
+
+  is?: "div" | "article" | "section";
+
+  flexGrow?: number;
+  flexShrink?: number;
+  flexBasis?: string;
+  alignSelf?:
+    | "auto"
+    | "flex-start"
+    | "flex-end"
+    | "center"
+    | "baseline"
+    | "stretch";
 }
 
-export const Box = ({
-  children,
-  p,
-  px = p,
-  py = p,
-  pl = px,
-  pr = px,
-  pt = py,
-  pb = py,
+interface BlockBoxProps extends BaseBoxProps {
+  display?: "block";
+}
 
-  m,
-  mx = m,
-  my = m,
-  ml = mx,
-  mr = mx,
-  mt = my,
-  mb = my,
+interface FlexBoxProps extends BaseBoxProps {
+  display: "flex";
+  flexDirection?: "row" | "row-reverse" | "column" | "column-reverse";
+  flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
+  justifyContent?:
+    | "flex-start"
+    | "flex-end"
+    | "center"
+    | "space-between"
+    | "space-around"
+    | "space-evenly";
+  alignItems?: "stretch" | "flex-start" | "flex-end" | "center" | "baseline";
+  alignContent?:
+    | "stretch"
+    | "flex-start"
+    | "flex-end"
+    | "center"
+    | "space-between"
+    | "space-around";
+  gap?: SpaceOption;
+  rowGap?: SpaceOption;
+  columnGap?: SpaceOption;
+}
 
-  bg,
-  borderColor,
-  color,
+type BoxProps = BlockBoxProps | FlexBoxProps;
 
-  maxWidth,
-}: BoxProps) => {
+export const Box = (props: BoxProps) => {
+  const {
+    id,
+    children,
+    p,
+    px = p,
+    py = p,
+    pl = px,
+    pr = px,
+    pt = py,
+    pb = py,
+
+    m,
+    mx = m,
+    my = m,
+    ml = mx,
+    mr = mx,
+    mt = my,
+    mb = my,
+
+    bg,
+    borderColor,
+    color,
+
+    maxWidth,
+
+    is = "div",
+
+    flexGrow,
+    flexShrink,
+    flexBasis,
+    alignSelf,
+  } = props;
+
+  const Tag = is;
+
   return (
-    <div
+    <Tag
+      id={id}
       style={{
         borderRadius: "inherit",
         ...(pl && { paddingInlineStart: `var(--space-${pl})` }),
@@ -62,26 +118,43 @@ export const Box = ({
         ...(pt && { paddingBlockStart: `var(--space-${pt})` }),
         ...(pb && { paddingBlockEnd: `var(--space-${pb})` }),
 
-        ...(ml && {
-          marginInlineStart: ml === "auto" ? "auto" : `var(--space-${ml})`,
-        }),
-        ...(mr && {
-          marginInlineEnd: mr === "auto" ? "auto" : `var(--space-${mr})`,
-        }),
-        ...(mt && {
-          marginBlockStart: mt === "auto" ? "auto" : `var(--space-${mt})`,
-        }),
-        ...(mb && {
-          marginBlockEnd: mb === "auto" ? "auto" : `var(--space-${mb})`,
-        }),
+        ...(ml && { marginInlineStart: `var(--space-${ml})` }),
+        ...(mr && { marginInlineEnd: `var(--space-${mr})` }),
+        ...(mt && { marginBlockStart: `var(--space-${mt})` }),
+        ...(mb && { marginBlockEnd: `var(--space-${mb})` }),
 
         ...(bg && { backgroundColor: `var(--color-${bg})` }),
         ...(borderColor && { border: `1px solid var(--color-${borderColor})` }),
         ...(color && { color: `var(--color-${color})` }),
         ...(maxWidth && { maxWidth: `${maxWidth}px` }),
+
+        ...(flexGrow !== undefined && { flexGrow }),
+        ...(flexShrink !== undefined && { flexShrink }),
+        ...(flexBasis && { flexBasis }),
+        ...(alignSelf && { alignSelf }),
+
+        ...(props.display === "flex"
+          ? {
+              display: "flex",
+              ...(props.gap && { gap: `var(--space-${props.gap})` }),
+              ...(props.rowGap && { rowGap: `var(--space-${props.rowGap})` }),
+              ...(props.columnGap && {
+                columnGap: `var(--space-${props.columnGap})`,
+              }),
+              ...(props.flexDirection && {
+                flexDirection: props.flexDirection,
+              }),
+              ...(props.flexWrap && { flexWrap: props.flexWrap }),
+              ...(props.justifyContent && {
+                justifyContent: props.justifyContent,
+              }),
+              ...(props.alignItems && { alignItems: props.alignItems }),
+              ...(props.alignContent && { alignContent: props.alignContent }),
+            }
+          : {}),
       }}
     >
       {children}
-    </div>
+    </Tag>
   );
 };

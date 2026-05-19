@@ -16,19 +16,27 @@ describe("Masthead", () => {
 
   it("renders the site title", () => {
     renderWithRouter(<Masthead user={null}>content</Masthead>);
-    expect(screen.getByRole("heading", { name: /the ledger/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /the ledger/i }),
+    ).toBeInTheDocument();
   });
 
   it("has an accessible label on the nav element", () => {
     renderWithRouter(<Masthead user={null}>content</Masthead>);
-    expect(screen.getByRole("navigation", { name: /main/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("navigation", { name: /main/i }),
+    ).toBeInTheDocument();
   });
 
   it("shows the Log Out button when a user is logged in", () => {
     renderWithRouter(
-      <Masthead user={{ id: "user-1", twoFactorEnabled: false }}>content</Masthead>,
+      <Masthead user={{ id: "user-1", twoFactorEnabled: false }}>
+        content
+      </Masthead>,
     );
-    expect(screen.getByRole("button", { name: /log out/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /log out/i }),
+    ).toBeInTheDocument();
   });
 
   it("shows the Login link when there is no user", () => {
@@ -45,14 +53,20 @@ describe("Masthead", () => {
 
   it("shows the Plaid Items link when twoFactorEnabled is true", () => {
     renderWithRouter(
-      <Masthead user={{ id: "user-1", twoFactorEnabled: true }}>content</Masthead>,
+      <Masthead user={{ id: "user-1", twoFactorEnabled: true }}>
+        content
+      </Masthead>,
     );
-    expect(screen.getByRole("link", { name: /plaid items/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /plaid items/i }),
+    ).toBeInTheDocument();
   });
 
   it("does not show the Plaid Items link when twoFactorEnabled is false", () => {
     renderWithRouter(
-      <Masthead user={{ id: "user-1", twoFactorEnabled: false }}>content</Masthead>,
+      <Masthead user={{ id: "user-1", twoFactorEnabled: false }}>
+        content
+      </Masthead>,
     );
     expect(
       screen.queryByRole("link", { name: /plaid items/i }),

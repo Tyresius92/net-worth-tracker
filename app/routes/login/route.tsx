@@ -53,7 +53,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (isRateLimited(`${ip}:${emailKey}`)) {
     logger.warn("Login rate limit hit", { ip, email: emailKey });
     return data(
-      { errors: { email: "Too many login attempts. Try again in 15 minutes.", password: null } },
+      {
+        errors: {
+          email: "Too many login attempts. Try again in 15 minutes.",
+          password: null,
+        },
+      },
       { status: 429 },
     );
   }
@@ -94,7 +99,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     await sendEmail({
       to: user.email,
       subject: "Verify your email address",
-      react: <EmailVerificationEmail firstName={user.firstName} verifyUrl={verifyUrl} />,
+      react: (
+        <EmailVerificationEmail
+          firstName={user.firstName}
+          verifyUrl={verifyUrl}
+        />
+      ),
     });
     session.set("pending-verification:userId", user.id);
     return redirect("/verify-email/pending", {

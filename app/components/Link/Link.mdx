@@ -1,0 +1,48 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as LinkStories from "./Link.stories";
+
+<Meta of={LinkStories} />
+
+# Link
+
+Link renders a navigational anchor — either an internal route via React Router, or an external URL via a standard `<a>` tag. The correct variant is selected automatically based on which props are provided.
+
+## When to use
+
+Use Link for inline text navigation: linking to another page, another section, or an external resource within a sentence or paragraph.
+
+## When not to use
+
+**Triggering an action:** use [`Button`](?path=/docs/components-button--docs) instead. If clicking the element causes something to happen rather than taking the user somewhere, it is a button — not a link. This distinction matters for accessibility; screen readers and keyboards treat the two differently.
+
+**Primary navigation:** use [`NavLink`](?path=/docs/components-navlink--docs) instead. NavLink applies active-state styling based on the current route, which Link does not.
+
+## Internal links
+
+Pass a `to` prop to link to a route within the application. React Router handles the navigation without a full page reload.
+
+<Canvas of={LinkStories.Internal} />
+
+## External links
+
+Pass an `href` prop — typed as a `URL` object, not a string — to link to an external URL. Using a `URL` object ensures the value is a structurally valid URL at the type level.
+
+```tsx
+<Link href={new URL("https://plaid.com")}>Connect via Plaid</Link>
+```
+
+<Canvas of={LinkStories.External} />
+
+To open an external link in a new tab, pass `newTab`. The component automatically applies `target="_blank"` and `rel="noopener noreferrer"` — the latter prevents the opened page from accessing the opener via `window.opener` and avoids leaking referrer information.
+
+<Canvas of={LinkStories.ExternalNewTab} />
+
+## Accessibility
+
+Link renders as an `<a>` element in both variants, which carries the implicit ARIA role of `link`. Screen readers announce it as navigational, and keyboard users activate it with `Enter`. Do not use Link to trigger actions — if it doesn't navigate, it should be a Button.
+
+Link text should describe the destination, not the act of clicking. Prefer "View account details" over "Click here" or "Read more" — generic link text is unhelpful to users navigating by link list.
+
+## Props
+
+<Controls of={LinkStories.External} />

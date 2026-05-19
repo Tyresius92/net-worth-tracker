@@ -43,12 +43,14 @@ The Remix project also offered opinionated starter templates with batteries incl
 ## Consequences
 
 **Positive:**
+
 - Framework knowledge transfers directly to web platform knowledge; the learning compounds
 - Not coupled to any deployment platform; runs on any Node.js host
 - Loader/action data fetching model maps cleanly to HTTP request/response semantics
 - Progressive enhancement and semantic HTML are well-supported by design
 
 **Negative / Tradeoffs:**
+
 - Smaller ecosystem and community than Next.js; fewer third-party integrations are built with Remix/React Router in mind
 - The Remix → React Router 7 rename and API evolution required migration work early in the project — a cost paid upfront for being on the leading edge of the transition
 - Less overlap with what most React developers know, which would increase onboarding friction if the project ever needed a new contributor

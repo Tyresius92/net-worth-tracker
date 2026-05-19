@@ -1,6 +1,6 @@
 describe("dashboard - unauthenticated", () => {
   it("shows the hero headline", () => {
-    cy.visit("/");
+    cy.visitAndCheck("/");
     cy.findByRole("heading", {
       name: /i built the finance tool i couldn't find/i,
     }).should("exist");
@@ -14,7 +14,7 @@ describe("dashboard - unauthenticated", () => {
 describe("dashboard - authenticated, no accounts", () => {
   it("shows the net worth heading", () => {
     cy.login();
-    cy.visit("/");
+    cy.visitAndCheck("/");
     cy.findByRole("heading", { name: /your net worth is/i }).should("exist");
 
     cy.findByRole("heading", { name: /your net worth is \$0\.00/i }).should(
@@ -32,7 +32,7 @@ describe("dashboard - authenticated, with account balance", () => {
   beforeEach(() => {
     cy.login();
 
-    cy.visit("/accounts/new");
+    cy.visitAndCheck("/accounts/new");
     cy.findByLabelText(/account custom name/i).type("Dashboard Test Account");
     cy.findByLabelText(/account type/i).select("Checking");
     cy.findByRole("button", { name: /submit/i }).click();
@@ -46,7 +46,7 @@ describe("dashboard - authenticated, with account balance", () => {
     cy.findByRole("button", { name: /submit/i }).click();
     cy.location("pathname").should("match", /^\/accounts\/.+$/);
 
-    cy.visit("/");
+    cy.visitAndCheck("/");
     cy.findByRole("heading", { name: /your net worth is \$2,500\.00/i }).should(
       "exist",
     );

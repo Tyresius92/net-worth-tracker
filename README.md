@@ -109,4 +109,3 @@ Environment variables are required for:
 - Session secrets
 
 See `.env.example` for details.
-

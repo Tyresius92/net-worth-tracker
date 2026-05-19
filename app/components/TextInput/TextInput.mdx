@@ -1,0 +1,117 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import { Table } from "../Table/Table";
+import * as TextInputStories from "./TextInput.stories";
+
+<Meta of={TextInputStories} />
+
+# TextInput
+
+TextInput is a single-line text field with a built-in label, optional hint text, and optional error message. It is an uncontrolled input: state is managed by the browser and submitted with the form via the `name` prop.
+
+## When to use
+
+Use TextInput for any single-line free-text entry: names, email addresses, passwords, numbers, URLs, and dates.
+
+## When not to use
+
+**Multi-line text:** use a `<textarea>` directly. TextInput renders an `<input>` and does not support multi-line entry.
+
+**Choosing from a fixed set of options:** use [`Select`](?path=/docs/components-select--docs) or [`Checkbox`](?path=/docs/components-checkbox--docs) instead. TextInput is for open-ended input, not constrained choices.
+
+## States
+
+### Default
+
+<Canvas of={TextInputStories.Default} />
+
+### With hint text
+
+Use `hintText` to provide guidance that helps the user fill in the field correctly — format requirements, constraints, or clarifying context. Hint text is shown regardless of validation state.
+
+<Canvas of={TextInputStories.WithHint} />
+
+### With an error
+
+<Canvas of={TextInputStories.WithError} />
+
+Use `errorMessage` to surface a validation failure. The input is automatically marked `aria-invalid` and the message is associated via `aria-describedby`. If both `hintText` and `errorMessage` are present, both are announced by screen readers.
+
+### Disabled
+
+<Canvas of={TextInputStories.Disabled} />
+
+Prefer not to disable inputs where possible — a disabled field gives no explanation for why entry is unavailable. When you must disable, ensure surrounding context makes the reason clear.
+
+## Input types
+
+The `type` prop is required and constrained to a specific set of values. Each type triggers appropriate browser behaviour — virtual keyboard layout on mobile, built-in format validation, password masking, and so on.
+
+<Table caption="TextInput types">
+  <Table.Head>
+    <Table.ColumnHeader>Type</Table.ColumnHeader>
+    <Table.ColumnHeader>Use for</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>text</code>
+      </Table.RowHeader>
+      <Table.Cell>General free-text entry</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>email</code>
+      </Table.RowHeader>
+      <Table.Cell>Email addresses</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>password</code>
+      </Table.RowHeader>
+      <Table.Cell>Passwords — value is masked</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>number</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        Numeric values; use <code>step</code> to control increment
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>url</code>
+      </Table.RowHeader>
+      <Table.Cell>URLs</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>date</code>
+      </Table.RowHeader>
+      <Table.Cell>Dates — renders the browser's native date picker</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Ref forwarding
+
+TextInput forwards refs to the underlying `<input>` element. This is useful when you need programmatic focus control — for example, focusing the first invalid field after a failed form submission.
+
+```tsx
+const inputRef = useRef<HTMLInputElement>(null);
+
+// Focus the input programmatically
+inputRef.current?.focus();
+
+<TextInput ref={inputRef} label="Email" name="email" type="email" />;
+```
+
+## Accessibility
+
+Label association is handled automatically — a unique `id` is generated internally and bound to the `label` element. The `label` prop is always required and always connected. You do not need to manage IDs manually.
+
+Both `hintText` and `errorMessage` are connected to the input via `aria-describedby`, so screen readers announce both alongside the label when the field receives focus. Set `required` to add native form validation and communicate the field's required status to assistive technology.
+
+## Props
+
+<Controls of={TextInputStories.Default} />

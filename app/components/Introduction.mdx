@@ -1,0 +1,160 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Table } from "./Table/Table";
+
+<Meta title="Introduction" />
+
+# Broadsheet
+
+Broadsheet is the component library for [The Ledger](https://theledger.dev) — a personal net worth tracker. It exists to keep UI work consistent, intentional, and coherent with the application's editorial design direction.
+
+## Design philosophy
+
+### Newspaper Inspired
+
+The visual direction is **newspaper-inspired**: monochrome, typography-forward, and hierarchical. A well-designed broadsheet communicates through the weight and size of type, through placement, through whitespace — not through color.
+
+<div
+  style={{
+    background: "var(--color-sand-3)",
+    border: "1px solid var(--color-sand-6)",
+    paddingInline: "12px",
+    margin: "16px 0",
+  }}
+>
+  The newspaper concept is the north star for visual and interaction decisions
+  in this application.
+</div>
+
+### The metaphor guides UX, not just visuals
+
+A newspaper doesn't interrupt you with a modal. When a decision is ambiguous, ask whether the newspaper-faithful choice is also the usable one — they should usually agree. The delete-account flow is an example: a dedicated route is both truer to the metaphor and a better user experience than a confirmation overlay. Where the two genuinely conflict, usability wins. The metaphor is a guide, not a constraint.
+
+### Adjust layout before reaching for color
+
+When something feels visually lacking — too stark, too empty, not prominent enough — the answer is almost always in the layout: spacing, type scale, weight, a stronger headline. Color is a last resort, not a first response. Filling empty space with color is decorating; improving the hierarchy is designing.
+
+### Color earns its place by signaling what type cannot
+
+Errors and destructive states are the clearest case: make them red, make them loud. The deviation from the monochrome baseline is exactly what makes the signal work — a subtle accent defeats the purpose. The useful test: if the color were replaced with text, would meaningful information be lost? If not, the color probably shouldn't be there.
+
+### Convention is not a reason
+
+Finance apps use green for gains; banking UIs are blue. Those conventions are not, by themselves, reasons to follow them here. "It feels appropriate" and "everyone else does it" are not answers. The question is always whether a color communicates something specific in _this_ context that the surrounding layout cannot.
+
+See the [Color](?path=/docs/color--docs) doc for the full philosophy and a practical guide to which tokens to use when.
+
+## Layout primitive
+
+**`Box`** is the primary layout primitive. It handles all spacing (margin and padding), background color, border, and optionally flex layout via `display="flex"`. Use it for everything.
+
+```tsx
+// Block layout with spacing
+<Box p={16} bg="sand-2" borderColor="sand-6">
+  Content
+</Box>
+
+// Flex layout
+<Box display="flex" gap={8} alignItems="center">
+  <Icon />
+  <span>Label</span>
+</Box>
+```
+
+## Spacing tokens
+
+Spacing props (`p`, `px`, `py`, `pt`, `pb`, `pl`, `pr`, `m`, `mx`, `my`, `mt`, `mb`, `mr`, `ml`, `gap`, `rowGap`, `columnGap`) accept values from a fixed scale. These map to CSS custom properties (`--space-N`).
+
+Available values: `0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48, 56, 64, 80, 96, 112, 128 ...`
+
+Spacing props cascade from least specific to most specific. Setting `p={16}` applies `16px` to all four sides; setting `p={16} px={8}` overrides the horizontal sides to `8px`; setting `p={16} px={8} pl={4}` additionally overrides the inline-start side to `4px`.
+
+## Color tokens
+
+Color props (`bg`, `borderColor`, `color`) accept token names from the Radix color palette (e.g. `"sand-2"`, `"sand-12"`). In practice, the application uses only the `sand` scale. All other Radix scales are available for use when a color carries semantic meaning.
+
+See the [Color](?path=/docs/color--docs) doc for guidance on which steps within the scale to reach for.
+
+## Components
+
+<Table caption="Broadsheet components">
+  <Table.Head>
+    <Table.ColumnHeader>Component</Table.ColumnHeader>
+    <Table.ColumnHeader>Purpose</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>Box</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        Universal layout primitive — spacing, color, and optional flex
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>Button</code>
+      </Table.RowHeader>
+      <Table.Cell>User-initiated actions</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>Checkbox</code>
+      </Table.RowHeader>
+      <Table.Cell>Binary on/off choices in forms</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>Divider</code>
+      </Table.RowHeader>
+      <Table.Cell>Visual separator between sections</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>Link</code>
+      </Table.RowHeader>
+      <Table.Cell>Navigation — internal routes and external URLs</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>NavLink</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        Navigation links with automatic active-state styling
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>Select</code>
+      </Table.RowHeader>
+      <Table.Cell>Choosing one option from a fixed list</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>Table</code>
+      </Table.RowHeader>
+      <Table.Cell>Tabular data display</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>TextInput</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        Single-line text, email, password, number, date, and URL inputs
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>VisuallyHidden</code>
+      </Table.RowHeader>
+      <Table.Cell>
+        Content visible to screen readers but not sighted users
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>
+        <code>BalanceChart</code>
+      </Table.RowHeader>
+      <Table.Cell>Time-series balance chart using Recharts</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

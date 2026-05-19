@@ -12,32 +12,42 @@ const renderWithRouter = (ui: React.ReactElement) => {
 describe("Link", () => {
   describe("external link", () => {
     it("renders children", () => {
-      renderWithRouter(<Link href="https://example.com">Visit us</Link>);
-      expect(screen.getByRole("link", { name: "Visit us" })).toBeInTheDocument();
+      renderWithRouter(
+        <Link href={new URL("https://example.com")}>Visit us</Link>,
+      );
+      expect(
+        screen.getByRole("link", { name: "Visit us" }),
+      ).toBeInTheDocument();
     });
 
     it("renders with the correct href", () => {
-      renderWithRouter(<Link href="https://example.com">Visit us</Link>);
+      renderWithRouter(
+        <Link href={new URL("https://example.com")}>Visit us</Link>,
+      );
       expect(screen.getByRole("link", { name: "Visit us" })).toHaveAttribute(
         "href",
-        "https://example.com",
+        "https://example.com/",
       );
     });
 
     it("forwards target and rel props", () => {
       renderWithRouter(
-        <Link href="https://example.com" target="_blank" rel="noreferrer">
+        <Link href={new URL("https://example.com")} newTab>
           Visit us
         </Link>,
       );
       const link = screen.getByRole("link", { name: "Visit us" });
       expect(link).toHaveAttribute("target", "_blank");
-      expect(link).toHaveAttribute("rel", "noreferrer");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
 
     it("applies the link CSS module class", () => {
-      renderWithRouter(<Link href="https://example.com">Visit us</Link>);
-      expect(screen.getByRole("link", { name: "Visit us" }).className).toMatch(/link/);
+      renderWithRouter(
+        <Link href={new URL("https://example.com")}>Visit us</Link>,
+      );
+      expect(screen.getByRole("link", { name: "Visit us" }).className).toMatch(
+        /link/,
+      );
     });
   });
 
@@ -57,7 +67,9 @@ describe("Link", () => {
 
     it("applies the link CSS module class", () => {
       renderWithRouter(<Link to="/about">About</Link>);
-      expect(screen.getByRole("link", { name: "About" }).className).toMatch(/link/);
+      expect(screen.getByRole("link", { name: "About" }).className).toMatch(
+        /link/,
+      );
     });
   });
 });

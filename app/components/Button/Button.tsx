@@ -11,5 +11,7 @@ export interface ButtonProps
 }
 
 export const Button = ({ variant = "primary", ...props }: ButtonProps) => {
-  return <button className={`${styles.button} ${styles[variant]}`} {...props} />;
+  return (
+    <button className={`${styles.button} ${styles[variant]}`} {...props} />
+  );
 };

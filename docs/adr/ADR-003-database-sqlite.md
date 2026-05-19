@@ -46,6 +46,7 @@ The database URL includes `?connection_limit=1`, a Prisma recommendation for SQL
 ## Consequences
 
 **Positive:**
+
 - No separate database process or infrastructure to manage
 - File-based — trivial to back up, inspect, and migrate
 - Effectively zero cost
@@ -53,6 +54,7 @@ The database URL includes `?connection_limit=1`, a Prisma recommendation for SQL
 - Low migration cost to PostgreSQL if requirements change
 
 **Negative / Tradeoffs:**
+
 - SQLite in production invites more scrutiny than PostgreSQL would. The requirements support the choice clearly — which is precisely what this ADR exists to document.
 - Writes are serialized via `connection_limit=1`. Not a constraint at current usage, but a real ceiling if concurrency requirements changed.
 - Not appropriate if the system ever needs multiple users, horizontal scaling, or high write concurrency. Those requirements would warrant revisiting this decision.
