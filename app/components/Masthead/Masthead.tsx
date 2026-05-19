@@ -3,7 +3,6 @@ import { Form, Link } from "react-router";
 import { Box } from "../Box/Box";
 import { Button } from "../Button/Button";
 import { Divider } from "../Divider/Divider";
-import { Flex } from "../Flex/Flex";
 import { NavLink } from "../NavLink/NavLink";
 
 export interface MastheadProps {
@@ -26,16 +25,23 @@ export const Masthead = ({ user, children }: MastheadProps) => {
   return (
     <Box>
       <Divider />
-      <Flex justifyContent="center">
+      <Box display="flex" justifyContent="center">
         <Link to="/" className="site-title-link">
           <h1 className="site-title">The Ledger</h1>
         </Link>
-      </Flex>
+      </Box>
       <Divider />
-      <Flex justifyContent="center">{formatDate(new Date())}</Flex>
+      <Box display="flex" justifyContent="center">
+        {formatDate(new Date())}
+      </Box>
       <Divider />
       <nav aria-label="Main">
-        <Flex justifyContent="flex-end" gap={32} alignItems="center">
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          gap={32}
+          alignItems="center"
+        >
           {user ? (
             <>
               {user.twoFactorEnabled ? (
@@ -56,7 +62,7 @@ export const Masthead = ({ user, children }: MastheadProps) => {
             </>
           )}
           {children}
-        </Flex>
+        </Box>
       </nav>
     </Box>
   );

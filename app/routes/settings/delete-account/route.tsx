@@ -4,7 +4,6 @@ import { data, Form, redirect, useActionData } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
-import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
@@ -117,12 +116,12 @@ export default function DeleteAccountPage() {
           autoComplete="current-password"
           errorMessage={actionData?.errors?.password ?? undefined}
         />
-        <Flex flexDirection="column" gap={12} mt={24}>
+        <Box display="flex" flexDirection="column" gap={12} mt={24}>
           <Button type="submit" variant="danger">
             Permanently delete my account
           </Button>
           <Link to="/settings">Cancel</Link>
-        </Flex>
+        </Box>
       </Form>
     </Box>
   );

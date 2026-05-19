@@ -1,6 +1,6 @@
 import React, { useId } from "react";
 
-import { Flex } from "../Flex/Flex";
+import { Box } from "../Box/Box";
 
 import styles from "./TextInput.module.css";
 
@@ -36,7 +36,7 @@ const TextInputWithForwardedRef = React.forwardRef(
     const hintId = useId();
 
     return (
-      <Flex flexDirection="column" gap={4} mb={20}>
+      <Box display="flex" flexDirection="column" gap={4} mb={20}>
         <label htmlFor={inputId} className={styles.label}>
           {label}
         </label>
@@ -58,7 +58,7 @@ const TextInputWithForwardedRef = React.forwardRef(
             &#9888; {errorMessage}
           </div>
         ) : null}
-      </Flex>
+      </Box>
     );
   },
 );

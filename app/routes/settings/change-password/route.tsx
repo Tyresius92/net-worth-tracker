@@ -4,7 +4,6 @@ import { data, Form, redirect, useActionData } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
-import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
@@ -122,10 +121,10 @@ export default function ChangePasswordPage() {
           autoComplete="new-password"
           errorMessage={actionData?.errors?.confirmPassword ?? undefined}
         />
-        <Flex flexDirection="column" gap={12} mt={24}>
+        <Box display="flex" flexDirection="column" gap={12} mt={24}>
           <Button type="submit">Change password</Button>
           <Link to="/settings">Cancel</Link>
-        </Flex>
+        </Box>
       </Form>
     </Box>
   );

@@ -67,7 +67,7 @@ Multiple snapshots on the same day are allowed; last one written wins. The daily
 
 ### Component system
 
-A custom component library lives in [`app/components/`](app/components/). The two primary layout primitives are `Box` and `Flex` — use these for all spacing and layout instead of bespoke CSS classes. Both accept typed spacing props (`p`, `px`, `py`, `pt`, `pb`, `pl`, `pr`, `m`, `mx`, etc.) that map to CSS custom properties (`--space-N`). `Flex` additionally accepts all flexbox properties.
+A custom component library lives in [`app/components/`](app/components/). The primary layout primitive is `Box` — use it for all spacing and layout instead of bespoke CSS classes. It accepts typed spacing props (`p`, `px`, `py`, `pt`, `pb`, `pl`, `pr`, `m`, `mx`, etc.) that map to CSS custom properties (`--space-N`).
 
 Spacing tokens: `--space-{0,1,2,4,6,8,10,12,14,16,20,24,28,32,...}` (px values).
 Font size tokens: `--font-size-{12,14,16,18,20,24,30,36,48,60,72}`.

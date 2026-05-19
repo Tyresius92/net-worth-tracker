@@ -1,7 +1,7 @@
 import * as RadixCheckbox from "@radix-ui/react-checkbox";
 import { useId } from "react";
 
-import { Flex } from "../Flex/Flex";
+import { Box } from "../Box/Box";
 
 import styles from "./Checkbox.module.css";
 
@@ -23,7 +23,7 @@ export const Checkbox = ({
   const inputId = useId();
 
   return (
-    <Flex alignItems="center" gap={8} mb={20}>
+    <Box display="flex" alignItems="center" gap={8} mb={20}>
       <RadixCheckbox.Root
         id={inputId}
         name={name}
@@ -53,6 +53,6 @@ export const Checkbox = ({
       <label htmlFor={inputId} className={styles.label}>
         {label}
       </label>
-    </Flex>
+    </Box>
   );
 };
