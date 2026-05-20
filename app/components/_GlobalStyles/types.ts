@@ -51,3 +51,12 @@ export type SpaceOption =
 import { colors } from "./colors";
 
 export type ColorOption = keyof typeof colors;
+
+export const BREAKPOINTS = {
+  s: 480,
+  m: 768,
+  l: 1024,
+  xl: 1280,
+} as const;
+
+export type Breakpoint = keyof typeof BREAKPOINTS;

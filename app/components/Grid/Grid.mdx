@@ -1,0 +1,198 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as GridStories from "./Grid.stories";
+import { Table } from "../Table/Table";
+
+<Meta of={GridStories} />
+
+# Grid
+
+Grid is the structural layout primitive for multi-column page composition. It handles the relationship between regions — where something sits on the page and how much horizontal space it occupies. Spacing and visual treatment within each region are handled by [`Box`](?path=/docs/components-box--docs).
+
+## When to use
+
+- Arranging distinct content regions side by side (main content + sidebar, editorial columns)
+- Layouts that need to respond to viewport width — different column counts at different sizes
+- Any situation where items need to align to a shared column structure across rows
+
+## When not to use
+
+**Spacing within a component:** use `Box` with padding props. Grid is for structure between regions, not for internal component layout.
+
+**Simple side-by-side elements:** if two items just need to sit next to each other and don't require column alignment, `Box` with `display="flex"` is less overhead.
+
+**Named grid areas or explicit row placement:** Grid intentionally does not support these. Reach for a CSS class if a layout genuinely requires them.
+
+## The 12-column model
+
+Grid divides its container into 12 equal columns. 12 was chosen because it divides evenly by 2, 3, 4, and 6 — covering the full range of common editorial fractions without the cognitive overhead of a finer scale.
+
+<Table caption="Common column counts">
+  <Table.Head>
+    <Table.ColumnHeader>Columns</Table.ColumnHeader>
+    <Table.ColumnHeader>Fraction</Table.ColumnHeader>
+    <Table.ColumnHeader>Common use</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader>12</Table.RowHeader>
+      <Table.Cell>Full width</Table.Cell>
+      <Table.Cell>Single-column content, stacked mobile layout</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>6</Table.RowHeader>
+      <Table.Cell>1/2</Table.Cell>
+      <Table.Cell>Two equal columns</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>4</Table.RowHeader>
+      <Table.Cell>1/3</Table.Cell>
+      <Table.Cell>Three equal columns</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>3</Table.RowHeader>
+      <Table.Cell>1/4</Table.Cell>
+      <Table.Cell>Narrow sidebar or aside</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>8</Table.RowHeader>
+      <Table.Cell>2/3</Table.Cell>
+      <Table.Cell>Main content alongside a narrow aside</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>9</Table.RowHeader>
+      <Table.Cell>3/4</Table.Cell>
+      <Table.Cell>Wide main content alongside a narrow sidebar</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Breakpoints
+
+Grid uses five named breakpoints. Prop values carry upward — a value set at a smaller breakpoint applies to all larger breakpoints unless explicitly overridden.
+
+<Table caption="Breakpoint reference">
+  <Table.Head>
+    <Table.ColumnHeader>Name</Table.ColumnHeader>
+    <Table.ColumnHeader>Min width</Table.ColumnHeader>
+    <Table.ColumnHeader>Typical target</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader>xs</Table.RowHeader>
+      <Table.Cell>0px</Table.Cell>
+      <Table.Cell>Mobile (baseline)</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>s</Table.RowHeader>
+      <Table.Cell>480px</Table.Cell>
+      <Table.Cell>Large mobile / small tablet</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>m</Table.RowHeader>
+      <Table.Cell>768px</Table.Cell>
+      <Table.Cell>Tablet</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>l</Table.RowHeader>
+      <Table.Cell>1024px</Table.Cell>
+      <Table.Cell>Laptop</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>xl</Table.RowHeader>
+      <Table.Cell>1280px</Table.Cell>
+      <Table.Cell>Desktop</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+In this example, each item is full width on mobile and half-width from tablet upward. The `m={6}` on each item carries up to `l` and `xl` automatically:
+
+<Canvas of={GridStories.TwoColumns} />
+
+## Offset
+
+The `offset` props shift a `Grid.Item`'s starting column without inserting an empty DOM element. An offset of `3` means "start at column 4" — the item begins three columns in from the left edge.
+
+Offset props follow the same breakpoint naming convention as span props: `xsOffset`, `sOffset`, `mOffset`, `lOffset`, `xlOffset`. They also carry upward — `mOffset={3}` applies at medium, large, and extra-large unless overridden.
+
+Setting an offset to `0` explicitly resets it back to auto-placement, which cancels a carry-upward offset at a specific breakpoint.
+
+<Canvas of={GridStories.WithOffset} />
+
+## Wrapping
+
+When items in a row exceed 12 columns combined, the overflow wraps to a new row automatically. This is standard CSS Grid behavior — no extra configuration needed.
+
+<Canvas of={GridStories.Wrapping} />
+
+## Ordering
+
+The `order` props (`xsOrder`, `sOrder`, `mOrder`, `lOrder`, `xlOrder`) change the visual position of items within the grid without altering the DOM order. This is useful when the most important content should lead visually on mobile but occupy a secondary column position on wider screens.
+
+Order values carry upward. Setting `xsOrder={1}` on an item makes it appear first on all breakpoints unless a larger-breakpoint order prop overrides it.
+
+**Accessibility note:** `order` is visual only. It does not change tab order or the sequence in which screen readers announce content. If a different reading order is meaningful for the content, the DOM order itself should reflect it.
+
+<Canvas of={GridStories.Reordered} />
+
+## Gaps
+
+`Grid` accepts `gap` (column gap) and `rowGap` (row gap) props, both using the design token spacing scale. Column gap and row gap are independent — it is common to want tighter row gaps than column gaps, or no row gap at all.
+
+<Canvas of={GridStories.Default} />
+
+## Grid and Box together
+
+Grid handles placement; Box handles everything inside a placed region. A typical pattern wraps each `Grid.Item`'s content in a `Box` to apply padding or a background:
+
+```tsx
+<Grid gap={24} rowGap={16}>
+  <Grid.Item m={8}>
+    <Box p={16} bg="sand-2">
+      Main content
+    </Box>
+  </Grid.Item>
+  <Grid.Item m={4}>
+    <Box p={16}>
+      Sidebar
+    </Box>
+  </Grid.Item>
+</Grid>
+```
+
+## Props
+
+### Grid
+
+<Controls of={GridStories.Default} />
+
+### Grid.Item
+
+`Grid.Item` accepts a `children` prop plus three families of responsive props. Each family follows the same naming pattern: a base name for the smallest breakpoint, with the breakpoint name prepended for larger ones.
+
+<Table caption="Grid.Item prop families">
+  <Table.Head>
+    <Table.ColumnHeader>Family</Table.ColumnHeader>
+    <Table.ColumnHeader>Props</Table.ColumnHeader>
+    <Table.ColumnHeader>Values</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader>Span</Table.RowHeader>
+      <Table.Cell>xs, s, m, l, xl</Table.Cell>
+      <Table.Cell>1–12 (default: 12)</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>Offset</Table.RowHeader>
+      <Table.Cell>xsOffset, sOffset, mOffset, lOffset, xlOffset</Table.Cell>
+      <Table.Cell>0–11 (0 = no offset)</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>Order</Table.RowHeader>
+      <Table.Cell>xsOrder, sOrder, mOrder, lOrder, xlOrder</Table.Cell>
+      <Table.Cell>Any integer (default: 0)</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+All three families carry upward — a value set at a smaller breakpoint applies at all larger breakpoints until overridden.
