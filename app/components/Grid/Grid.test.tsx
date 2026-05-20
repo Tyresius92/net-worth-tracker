@@ -19,7 +19,7 @@ describe("Grid", () => {
         <span>child</span>
       </Grid>,
     );
-    const grid = screen.getByText("child").parentElement!;
+    const grid = screen.getByTestId("grid");
     expect(grid.style.getPropertyValue("--grid-gap")).toBe("var(--space-16)");
   });
 
@@ -29,7 +29,7 @@ describe("Grid", () => {
         <span>child</span>
       </Grid>,
     );
-    const grid = screen.getByText("child").parentElement!;
+    const grid = screen.getByTestId("grid");
     expect(grid.style.getPropertyValue("--grid-row-gap")).toBe(
       "var(--space-8)",
     );
@@ -41,7 +41,7 @@ describe("Grid", () => {
         <span>child</span>
       </Grid>,
     );
-    const grid = screen.getByText("child").parentElement!;
+    const grid = screen.getByTestId("grid");
     expect(grid.style.getPropertyValue("--grid-gap")).toBe("");
     expect(grid.style.getPropertyValue("--grid-row-gap")).toBe("");
   });
