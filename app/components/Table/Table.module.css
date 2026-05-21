@@ -37,10 +37,20 @@
   border-block-end: 1px solid var(--color-sand-7);
   padding-block: var(--space-8);
   padding-inline: var(--space-12);
+  text-align: start;
+}
+
+.cell-end {
+  text-align: end;
+}
+
+.cell-center {
+  text-align: center;
 }
 
 .row-header {
   font-weight: bold;
   padding-block: var(--space-8);
   padding-inline: var(--space-12);
+  text-align: start;
 }

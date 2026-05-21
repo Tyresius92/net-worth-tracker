@@ -1,0 +1,88 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as CurrencyStories from "./Currency.stories";
+
+<Meta of={CurrencyStories} />
+
+# Currency
+
+Currency formats a cents integer as a dollar amount and applies `font-variant-numeric: tabular-nums lining-nums` so that digits align across rows. It renders as an inline `<span>` and inherits all other typographic properties — font family, size, and color — from whatever surrounds it.
+
+## Currency is a modifier, not a role
+
+Unlike [`Heading`](?path=/docs/components-heading--docs) and [`Text`](?path=/docs/components-text--docs), which each carry a complete set of typographic properties, `Currency` carries exactly one: the numeric variant. It is always nested inside another typographic component, never used standalone.
+
+```tsx
+// Inside a Heading — inherits Libre Baskerville, 36px, sand-12:
+<Heading level={1}>Your net worth is <Currency value={17238800} /></Heading>
+
+// Inside body Text — inherits Source Serif 4, 16px, sand-12:
+<Text variant="body">Up <Currency value={123456} includeCents={false} /> over the last 30 days</Text>
+
+// Inside caption Text — inherits Source Serif 4, 12px, sand-11:
+<Text variant="caption">Balance <Currency value={17238800} /></Text>
+```
+
+## Default
+
+Renders the value with cents included.
+
+<Canvas of={CurrencyStories.Default} />
+
+## Without cents
+
+Use `includeCents={false}` when the exact cent amount is not meaningful — change figures, rounded summaries, and highlights.
+
+<Canvas of={CurrencyStories.WithoutCents} />
+
+## Negative values
+
+Negative cents render with a leading minus sign. No special handling is required.
+
+<Canvas of={CurrencyStories.Negative} />
+
+## In context
+
+The three stories below demonstrate how `Currency` inherits its typographic treatment from the surrounding component.
+
+### Inside a Heading
+
+<Canvas of={CurrencyStories.InHeading} />
+
+### Inside body Text
+
+<Canvas of={CurrencyStories.InBodyText} />
+
+### Inside caption Text
+
+<Canvas of={CurrencyStories.InCaption} />
+
+## Tabular alignment
+
+`tabular-nums` gives every digit the same horizontal advance width, so amounts in a column stay aligned regardless of which digits appear. Pair `Currency` with `Table.Cell align="end"` to make the alignment visible.
+
+<Canvas of={CurrencyStories.TabularAlignment} />
+
+## Currency vs formatCurrency
+
+Use the `Currency` component whenever the value is rendered as JSX content — it handles both formatting and tabular alignment in one step.
+
+Use `formatCurrency` directly when you need a plain string rather than a React element:
+
+```tsx
+// aria-label — needs a string, not a component:
+<button aria-label={`Delete ${formatCurrency(amount)} transaction`}>Delete</button>
+
+// title tooltip — same reason:
+<td title={formatCurrency(balance)}>…</td>
+
+// Page <title> or meta tag:
+export const meta = () => [{ title: `Net worth: ${formatCurrency(netWorth)}` }];
+```
+
+`formatCurrency` is also the right call in non-JSX contexts: loaders, actions, email templates, and test assertions that query the DOM by text value.
+
+The quick test: if you're writing `{...}` inside JSX and the result appears directly on screen, use `Currency`. If you're building a string to pass somewhere else, use `formatCurrency`.
+
+## Props
+
+<Controls of={CurrencyStories.Default} />
