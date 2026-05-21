@@ -1,0 +1,88 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as TextStories from "./Text.stories";
+import { Table } from "../Table/Table";
+
+<Meta of={TextStories} />
+
+# Text
+
+Text handles all non-heading typography — body copy, standfirsts, metadata, labels, and inline code. Every variant is set in Source Serif 4 except `code`, which uses the system monospace stack.
+
+## When to use
+
+Use Text for content the reader is meant to read or scan: paragraphs, captions, date straps, authorship lines. If the content names a section or page, use [`Heading`](?path=/docs/components-heading--docs) instead.
+
+## Picking a variant
+
+<Table caption="Picking a variant">
+  <Table.Head>
+    <Table.ColumnHeader>If the content is…</Table.ColumnHeader>
+    <Table.ColumnHeader>Use</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader>A full sentence the reader is meant to read</Table.RowHeader>
+      <Table.Cell>`body`</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>A single-sentence summary directly below a Heading level 1</Table.RowHeader>
+      <Table.Cell>`deck`</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>Free-floating metadata — who, when, copyright</Table.RowHeader>
+      <Table.Cell>`byline`</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>A small label paired with a value beside or below it</Table.RowHeader>
+      <Table.Cell>`caption`</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader>Inline code or a token name</Table.RowHeader>
+      <Table.Cell>`code`</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+If none of these fit, you almost certainly want a [`Heading`](?path=/docs/components-heading--docs) instead.
+
+## Deck
+
+The standfirst. One sentence that bridges the Level 1 heading and the body copy below it. Use it once per page, directly below the H1. Two sentences maximum.
+
+<Canvas of={TextStories.Deck} />
+
+## Body
+
+The workhorse. Use for paragraphs the reader actually reads — editorial copy, full-sentence error messages, long-form content.
+
+<Canvas of={TextStories.Body} />
+
+## Byline
+
+Free-floating metadata on its own line — author attribution, date straps, footer copyright. Rendered in uppercase with widened tracking.
+
+<Canvas of={TextStories.Byline} />
+
+## Caption
+
+A small label paired with a value directly beside or below it. Rendered in uppercase with tighter tracking than byline, because it is always part of a key/value pair. Defaults to a `<span>` so it sits inline with its value.
+
+<Canvas of={TextStories.Caption} />
+
+## Code
+
+Inline code, token names, shell commands. Uses the system monospace stack. Appears rarely in the application itself — its primary purpose is in design system documentation.
+
+<Canvas of={TextStories.Code} />
+
+## Overriding the element
+
+Each variant has a sensible default HTML element: `deck`, `body`, and `byline` render `<p>`; `caption` renders `<span>`; `code` renders `<code>`. Use the `as` prop when the default element does not fit the surrounding structure.
+
+<Canvas of={TextStories.AsSpan} />
+
+A common case is rendering a `body` as a `<span>` when it appears inside a flex container that cannot contain a block element, or a `caption` as a `<p>` when it stands alone rather than beside a value.
+
+## Props
+
+<Controls of={TextStories.Body} />
