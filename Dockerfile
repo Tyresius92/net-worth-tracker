@@ -40,6 +40,7 @@ ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 ARG APP_ENV
 ENV APP_ENV=$APP_ENV
 RUN npm run build
+RUN npm run build-storybook -- --output-dir build/client/storybook
 
 # Finally, build the production image with minimal footprint
 FROM base
