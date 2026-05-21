@@ -1,0 +1,21 @@
+.base {
+  color: var(--color-sand-12);
+  font-family: "Libre Baskerville";
+  font-weight: 700;
+}
+
+.level1 {
+  font-size: var(--font-size-36);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.level2 {
+  font-size: var(--font-size-24);
+  line-height: 1.2;
+}
+
+.level3 {
+  font-size: var(--font-size-18);
+  line-height: 1.3;
+}
