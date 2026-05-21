@@ -27,6 +27,7 @@ export const Negative: Story = {
 };
 
 export const InHeading: Story = {
+  args: { value: 17238800 },
   render: () => (
     <Heading level={1}>
       Your net worth is <Currency value={17238800} />
@@ -35,6 +36,7 @@ export const InHeading: Story = {
 };
 
 export const InBodyText: Story = {
+  args: { value: 123456 },
   render: () => (
     <Text variant="body">
       Up <Currency value={123456} includeCents={false} /> over the last 30 days
@@ -43,6 +45,7 @@ export const InBodyText: Story = {
 };
 
 export const InCaption: Story = {
+  args: { value: 17238800 },
   render: () => (
     <Text variant="caption">
       Balance <Currency value={17238800} />
@@ -51,6 +54,7 @@ export const InCaption: Story = {
 };
 
 export const TabularAlignment: Story = {
+  args: { value: 0 },
   render: () => (
     <Table caption="Account balances">
       <Table.Head>
