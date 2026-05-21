@@ -1,0 +1,52 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as HeadingStories from "./Heading.stories";
+
+<Meta of={HeadingStories} />
+
+# Heading
+
+Heading establishes hierarchy. It names a page, a section, or a subsection — always in Libre Baskerville, always in `--color-sand-12`. The three levels correspond directly to `<h1>`, `<h2>`, and `<h3>` in the DOM.
+
+## When to use
+
+Use Heading whenever you need to label a block of content that the reader will navigate to or scan past. Each level has a specific role:
+
+- **Level 1** — the primary fact on the page. One per page. On the dashboard: the net worth figure. On a settings screen: the screen's name.
+- **Level 2** — a section headline. Names a block of related content within the page (Highlights, Open accounts, Net worth history).
+- **Level 3** — a subsection or aside title. Used inside cards or within longer sections. The Specifications sidebar is a Level 3.
+
+## When not to use
+
+Do not use Heading to make text larger or bolder for visual effect. If you need a label paired with a value (STACK, AUTH), use [`Text role="caption"`](?path=/docs/components-text--docs) instead. If you need free-floating metadata (a date strap, an author line), use `Text role="byline"`.
+
+**Never skip heading levels.** A Level 3 must follow a Level 2; a Level 2 must follow a Level 1. If you find yourself wanting a fourth level, consider restructuring the content first — a fourth level is rarely necessary and often signals that a section should be split or that a non-heading role (`caption`, `byline`) would serve better. If the hierarchy genuinely requires a fourth level, it can be designed and added to the `Heading` component as `level={4}`.
+
+## Level 1
+
+The page's primary fact. One per page.
+
+<Canvas of={HeadingStories.Level1} />
+
+Level 1 is rendered in uppercase automatically via CSS — do not type the content in all caps. This keeps the data readable in accessible contexts and avoids double-uppercasing if the value is already uppercase.
+
+## Level 2
+
+A section headline within the page.
+
+<Canvas of={HeadingStories.Level2} />
+
+## Level 3
+
+A subsection or aside title. Used inside cards and within longer-form sections.
+
+<Canvas of={HeadingStories.Level3} />
+
+## Accessibility
+
+`Heading` renders the correct semantic element for each level — `<h1>` through `<h3>` — so the document outline is always accurate. Screen readers use heading levels to let users skip between sections; a correct heading hierarchy is what makes that navigation possible.
+
+Avoid using `level` to achieve a visual size you want on an element that is not actually a heading. If a heading-like size is needed for non-heading content, revisit the role against the typography system.
+
+## Props
+
+<Controls of={HeadingStories.Level1} />

@@ -68,6 +68,59 @@ describe("Table", () => {
     expect(screen.getByRole("cell", { name: "$1,000.00" })).toBeInTheDocument();
   });
 
+  it("aligns row header text to the start", () => {
+    render(
+      <Table caption="Accounts">
+        <Table.Body>
+          <Table.Row>
+            <Table.RowHeader>Savings</Table.RowHeader>
+          </Table.Row>
+        </Table.Body>
+      </Table>,
+    );
+    expect(screen.getByRole("rowheader").className).toMatch(/row-header/);
+  });
+
+  it("applies no alignment modifier class when Cell align is start", () => {
+    render(
+      <Table caption="Accounts">
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell align="start">$1,000.00</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>,
+    );
+    expect(screen.getByRole("cell").className).not.toMatch(/cell-end/);
+    expect(screen.getByRole("cell").className).not.toMatch(/cell-center/);
+  });
+
+  it("applies the end modifier class when Cell align is end", () => {
+    render(
+      <Table caption="Accounts">
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell align="end">$1,000.00</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>,
+    );
+    expect(screen.getByRole("cell").className).toMatch(/cell-end/);
+  });
+
+  it("applies the center modifier class when Cell align is center", () => {
+    render(
+      <Table caption="Accounts">
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell align="center">$1,000.00</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>,
+    );
+    expect(screen.getByRole("cell").className).toMatch(/cell-center/);
+  });
+
   it("renders multiple rows", () => {
     render(
       <Table caption="Accounts">
