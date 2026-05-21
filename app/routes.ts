@@ -82,6 +82,8 @@ export default [
 
   route("api/accounts/refresh", "./routes/api/accounts/refresh.ts"),
 
+  route("wp-admin/install.php", "./routes/dummy/wp_admin_install.tsx"),
+
   ...(process.env["NODE_ENV"] === "development"
     ? [
         route(

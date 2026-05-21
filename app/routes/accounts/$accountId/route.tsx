@@ -8,7 +8,6 @@ import {
 import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
-import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
@@ -97,7 +96,7 @@ export default function AccountDetailsRoute({
   return (
     <Box>
       <Box>
-        <Flex flexDirection="row" gap={8} mb={16}>
+        <Box display="flex" flexDirection="row" gap={8} mb={16}>
           <Box>
             <Link to="edit">Edit Account</Link>
           </Box>
@@ -114,7 +113,7 @@ export default function AccountDetailsRoute({
               </Button>
             </Form>
           </Box>
-        </Flex>
+        </Box>
 
         <BalanceChart
           balances={loaderData.balances}

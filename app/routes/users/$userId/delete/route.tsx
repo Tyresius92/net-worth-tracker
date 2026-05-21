@@ -10,7 +10,6 @@ import invariant from "tiny-invariant";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
-import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
 import { deleteUserById } from "~/models/user.server";
@@ -129,12 +128,12 @@ export default function AdminDeleteUserPage() {
         <p className={styles.formError}>{displayError}</p>
       ) : (
         <Form method="post">
-          <Flex flexDirection="column" gap={12} mt={24}>
+          <Box display="flex" flexDirection="column" gap={12} mt={24}>
             <Button type="submit" variant="danger">
               Permanently delete this account
             </Button>
             <Link to={`/users/${target.id}`}>Cancel</Link>
-          </Flex>
+          </Box>
         </Form>
       )}
 

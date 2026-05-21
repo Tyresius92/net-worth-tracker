@@ -3,7 +3,6 @@ import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";
 import { Divider } from "~/components/Divider/Divider";
-import { Flex } from "~/components/Flex/Flex";
 import { prisma } from "~/db.server";
 import { getLatestBalancesAsOfDate } from "~/models/user.server";
 import { getUser } from "~/session.server";
@@ -210,7 +209,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             <p className={styles.byline}>By Tyrel Clayton · Est. 2024</p>
           </div>
         )}
-        <Flex gap={32} justifyContent="space-between">
+        <Box display="flex" gap={32} justifyContent="space-between">
           <Box>
             <h2>Highlights</h2>
             <ul>
@@ -239,13 +238,13 @@ export default function Index({ loaderData }: Route.ComponentProps) {
               ) : null}
             </ul>
           </Box>
-          <Flex flexGrow={1}>
+          <Box display="flex" flexGrow={1}>
             <BalanceChart
               balances={loaderData.balances}
               title="Net worth history"
             />
-          </Flex>
-        </Flex>
+          </Box>
+        </Box>
         {!user ? (
           <>
             <Divider />

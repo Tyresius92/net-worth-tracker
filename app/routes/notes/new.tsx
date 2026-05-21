@@ -4,7 +4,6 @@ import { data, redirect, Form, useActionData } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
-import { Flex } from "~/components/Flex/Flex";
 import { createNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
 
@@ -49,7 +48,7 @@ export default function NewNotePage() {
 
   return (
     <Form method="post">
-      <Flex flexDirection="column" gap={8}>
+      <Box display="flex" flexDirection="column" gap={8}>
         <Box>
           <label>
             <span>Title: </span>
@@ -88,7 +87,7 @@ export default function NewNotePage() {
         <Box>
           <Button type="submit">Save</Button>
         </Box>
-      </Flex>
+      </Box>
     </Form>
   );
 }

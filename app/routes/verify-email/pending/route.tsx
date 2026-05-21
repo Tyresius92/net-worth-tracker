@@ -4,7 +4,6 @@ import { data, Form, redirect, useLoaderData } from "react-router";
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Divider } from "~/components/Divider/Divider";
-import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { EmailVerificationEmail } from "~/emails/EmailVerificationEmail";
 import { createEmailVerificationToken } from "~/models/email-verification.server";
@@ -71,7 +70,7 @@ export default function VerifyEmailPendingPage() {
       </Box>
 
       <Box borderColor="sand-12" p={24}>
-        <Flex flexDirection="column" alignItems="center" gap={24}>
+        <Box display="flex" flexDirection="column" alignItems="center" gap={24}>
           <p className={styles.descriptor}>
             {expired
               ? "That verification link has expired. Request a new one below."
@@ -79,12 +78,17 @@ export default function VerifyEmailPendingPage() {
           </p>
 
           <Form method="post">
-            <Flex flexDirection="column" alignItems="center" gap={12}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              gap={12}
+            >
               <Button type="submit">Resend verification email</Button>
               <Link to="/login">Back to login</Link>
-            </Flex>
+            </Box>
           </Form>
-        </Flex>
+        </Box>
       </Box>
     </>
   );

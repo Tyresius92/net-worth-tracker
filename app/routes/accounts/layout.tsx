@@ -1,7 +1,6 @@
 import { LoaderFunctionArgs, Outlet } from "react-router";
 
 import { Box } from "~/components/Box/Box";
-import { Flex } from "~/components/Flex/Flex";
 import { Link } from "~/components/Link/Link";
 import { NavLink } from "~/components/NavLink/NavLink";
 import { prisma } from "~/db.server";
@@ -50,7 +49,7 @@ export default function LinkedAccountsLayout({
   const closedAccounts = loaderData.accounts.filter((acc) => acc.closedAt);
 
   return (
-    <Flex gap={32}>
+    <Box display="flex" gap={32}>
       <nav aria-label="Accounts" className={styles.nav}>
         <div className={styles["create-links"]}>
           <Link to="new">Create Account</Link>
@@ -96,6 +95,6 @@ export default function LinkedAccountsLayout({
       <Box px={32} py={32}>
         <Outlet />
       </Box>
-    </Flex>
+    </Box>
   );
 }
