@@ -23,6 +23,7 @@ export default defineConfig((config) => ({
           org: "tyrel-clayton",
           project: "the-ledger",
           authToken: process.env.SENTRY_AUTH_TOKEN,
+          release: { name: process.env.SENTRY_RELEASE },
         },
         config,
       ),
