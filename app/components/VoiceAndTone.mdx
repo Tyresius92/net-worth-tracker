@@ -1,0 +1,286 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Table } from "./Table/Table";
+
+<Meta title="Voice & Tone" />
+
+# Voice & Tone
+
+## The metaphor
+
+The Ledger is a newspaper. Not metaphorically, as a styling choice — literally, as an editorial position. A newspaper has a voice: institutional, authoritative, and scrupulously disinterested. It reports what happened. It does not celebrate, commiserate, or editorialize. It describes the state of things.
+
+That voice governs every word in The Ledger — from section headlines to error messages. The metaphor is not decoration; it is the standard against which all copy is measured.
+
+## The governing principle
+
+A newspaper does not tell you how to feel about the news. It tells you what is true.
+
+**The Ledger describes what is. It does not editorialize about it.**
+
+Net worth went up. Net worth went down. These are facts. The application reports them without inflection — it does not congratulate when the number rises or soften the blow when it falls. It prints the number and moves on.
+
+This has practical consequences for every category of copy in the application.
+
+## Institutional voice
+
+Newspapers do not write to a single reader. They publish. The voice is institutional — it states facts without a subject, without warmth, without the assumption that the reader needs to be managed.
+
+Avoid possessive framing in data headlines and section labels. The data belongs to the reader by context; the possessive is redundant and softens the declarative register.
+
+<Table caption="Institutional vs. possessive framing">
+  <Table.Head>
+    <Table.ColumnHeader>Avoid</Table.ColumnHeader>
+    <Table.ColumnHeader>Prefer</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Your net worth is $142,400</Table.Cell>
+      <Table.Cell>Net worth: $142,400</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Your accounts</Table.Cell>
+      <Table.Cell>Accounts</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Your Plaid connections</Table.Cell>
+      <Table.Cell>Plaid connections</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Your net worth history</Table.Cell>
+      <Table.Cell>Net worth history</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Second person is not forbidden. It is appropriate in instructions, form labels, and direct address ("Enter your password," "Confirm with your authenticator code"). The rule applies to data presentation and section labels, where the institutional register is expected.
+
+## Data callouts
+
+Data callouts use a compact, headline-fragment style: direction, amount, and timeframe — no subject, no verb. This is the register of a financial table or a stock ticker: precise, scannable, and complete without being conversational.
+
+The pattern: **[direction] [amount] [timeframe].**
+
+<Table caption="Data callout patterns">
+  <Table.Head>
+    <Table.ColumnHeader>Avoid</Table.ColumnHeader>
+    <Table.ColumnHeader>Prefer</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>You're up $4,200 this month!</Table.Cell>
+      <Table.Cell>Up $4,200 over the last 30 days.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Your net worth grew by $31k since Jan</Table.Cell>
+      <Table.Cell>Up $31,000 since the beginning of this year.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Down a bit over the past year</Table.Cell>
+      <Table.Cell>Down $800 over the last year.</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Write figures in full. Abbreviations like `$31k` or `~$4K` belong in informal contexts; the newspaper prints the number. The `Currency` component handles display formatting — always pass a value in cents and let the component render it.
+
+Timeframes are written out in plain language: "over the last 30 days," "since the beginning of this year," "over the last year." Do not abbreviate to "YTD" or "30d."
+
+## Labels and navigation
+
+Labels name things. They are nouns or noun phrases — direct, unambiguous, stripped of promotional or instructional language. Do not append "here" to a label. Do not title-case every word.
+
+<Table caption="Label conventions">
+  <Table.Head>
+    <Table.ColumnHeader>Avoid</Table.ColumnHeader>
+    <Table.ColumnHeader>Prefer</Table.ColumnHeader>
+    <Table.ColumnHeader>Why</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>My Finances</Table.Cell>
+      <Table.Cell>Accounts</Table.Cell>
+      <Table.Cell>Possessive; the word "My" adds nothing</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Link a Bank Account</Table.Cell>
+      <Table.Cell>Plaid connections</Table.Cell>
+      <Table.Cell>Instructional language in a label; a noun phrase is enough</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Click Here to Manage</Table.Cell>
+      <Table.Cell>Manage</Table.Cell>
+      <Table.Cell>Never describe the mechanism; never title-case a label</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Account Balance History</Table.Cell>
+      <Table.Cell>Balance history</Table.Cell>
+      <Table.Cell>Title case is for page-level headings, not section labels</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Actions and buttons
+
+Buttons require imperative copy — a verb that names the action precisely. The verb should match the outcome, not describe the process.
+
+<Table caption="Button copy conventions">
+  <Table.Head>
+    <Table.ColumnHeader>Avoid</Table.ColumnHeader>
+    <Table.ColumnHeader>Prefer</Table.ColumnHeader>
+    <Table.ColumnHeader>Why</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Submit that bad boy</Table.Cell>
+      <Table.Cell>Save</Table.Cell>
+      <Table.Cell>Casual voice has no place in the publication</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Click here to continue</Table.Cell>
+      <Table.Cell>Continue</Table.Cell>
+      <Table.Cell>Never describe the mechanism; name the outcome</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>OK</Table.Cell>
+      <Table.Cell>Save changes</Table.Cell>
+      <Table.Cell>"OK" names nothing; the button should name the action</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Proceed with deletion</Table.Cell>
+      <Table.Cell>Delete account</Table.Cell>
+      <Table.Cell>Name the thing being acted on when disambiguation is useful</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+No exclamation points on buttons. Buttons do not celebrate.
+
+## Error messages
+
+Errors name the problem precisely and without apology. A newspaper does not apologize for printing a correction — it states what is wrong and moves on.
+
+The pattern: **[what is wrong].** Not: _[expression of regret] + [vague description] + [encouragement to try again]._
+
+If the error is recoverable, state what can be done. If it is not, state that plainly. Do not soften the message with reassurance.
+
+<Table caption="Error message conventions">
+  <Table.Head>
+    <Table.ColumnHeader>Avoid</Table.ColumnHeader>
+    <Table.ColumnHeader>Prefer</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Oops! Something went wrong. Please try again.</Table.Cell>
+      <Table.Cell>An error occurred. Try again or contact support.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Hmm, that password doesn't look right.</Table.Cell>
+      <Table.Cell>Incorrect password.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Looks like that email is already taken!</Table.Cell>
+      <Table.Cell>A user already exists with this email.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Too many tries. Take a break and come back in 15 minutes!</Table.Cell>
+      <Table.Cell>Too many attempts. Try again in 15 minutes.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Your passwords don't match, please try again.</Table.Cell>
+      <Table.Cell>Passwords do not match.</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Do not use exclamation points on errors — not even to seem friendly.
+
+## Empty states
+
+An empty state is a factual condition: no records exist. Report that without apology and without encouraging action the user has not requested.
+
+<Table caption="Empty state conventions">
+  <Table.Head>
+    <Table.ColumnHeader>Avoid</Table.ColumnHeader>
+    <Table.ColumnHeader>Prefer</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>No accounts yet! Add your first account to get started.</Table.Cell>
+      <Table.Cell>No accounts.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Nothing here. Create a note to begin.</Table.Cell>
+      <Table.Cell>No notes.</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>You haven't connected any banks yet.</Table.Cell>
+      <Table.Cell>No Plaid connections.</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+A link to create the first item may follow the empty state if useful — but the message itself does not editorialize. "No accounts." is complete. The action is separate and optional.
+
+## The unauthenticated surface
+
+The homepage and marketing copy follow the same discipline. The publication does not have a personal voice — it does not speak as an individual, and it does not use first person.
+
+First-person narrative ("I built the finance tool I couldn't find") is inconsistent with the institutional register. It positions the copy as a personal statement rather than a factual account of a product that exists.
+
+The unauthenticated surface should read as a prospectus: factual, direct, written in the third person as though describing something that exists rather than selling it.
+
+### Features vs. benefits
+
+The distinction to hold onto: describe what the user *gets*, not how it works. Implementation details ("daily syncing via Plaid," "balance carry-forward logic," "SQLite") answer engineering questions, not user questions. The copy should answer: what does this give me?
+
+"Self-hosted" is a specific failure mode here. It implies the user is running the server themselves — which is not the case. Drop it entirely. The meaningful thing underneath it is that the application is built to last without a subscription or a company's continued interest in operating it. Say that.
+
+Technical details can survive translation when they have a clear user-facing consequence. "No subscription" is a benefit, not a feature. "No ads. Data isn't sold." are both factual and user-relevant. Keep those. Cut the ones that don't answer "so what?"
+
+<Table caption="Unauthenticated surface conventions">
+  <Table.Head>
+    <Table.ColumnHeader>Avoid</Table.ColumnHeader>
+    <Table.ColumnHeader>Prefer</Table.ColumnHeader>
+    <Table.ColumnHeader>Why</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>I built the finance tool I couldn't find.</Table.Cell>
+      <Table.Cell>A net worth tracker built to last.</Table.Cell>
+      <Table.Cell>First person; positions the copy as personal narrative rather than a description of the product</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Take control of your financial future.</Table.Cell>
+      <Table.Cell>A daily picture of where things stand.</Table.Cell>
+      <Table.Cell>Promotional and vague; the benefit version describes the actual output, not the feeling</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Full data ownership. Self-hosted. Balance carry-forward logic.</Table.Cell>
+      <Table.Cell>No subscription. No ads. Data isn't sold.</Table.Cell>
+      <Table.Cell>Implementation details; the user-facing consequence of these decisions is what matters</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Have confidence in your financial picture.</Table.Cell>
+      <Table.Cell>Net worth, tracked daily. Always current.</Table.Cell>
+      <Table.Cell>Emotional/promotional register; the factual version of the same benefit fits the newspaper voice</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+The specifications box on the homepage is already close to this standard — it lists facts about the product without editorializing. The hero copy should match that register.
+
+## What to avoid
+
+These patterns are common in consumer software and wrong for The Ledger.
+
+**Enthusiasm.** No exclamation points in normal operation. Financial data moving in any direction is not an occasion for celebration in the copy. An exclamation point on a success message reads as the application congratulating itself.
+
+**Apology and hedging.** "Sorry for the inconvenience." "It looks like something may have gone wrong." "We're having trouble." The newspaper does not hedge. It states what is known.
+
+**Informal register.** "Submit that bad boy," "Hey there," "Uh oh" — none of these. Emoji used as copy falls into the same category. The Ledger is a publication, not a chat interface.
+
+**Promotional copy in the UI.** "Unlock your financial potential." "See what's possible." These belong in advertising. The UI describes what exists.
+
+**Motivation and encouragement.** "Keep it up!" "You're on track!" "Great job setting up 2FA!" The application reports facts. It does not coach.
+
+**Vagueness where specificity is possible.** "Something went wrong." Name the problem when it is known. Vague error messages are a failure of reporting.
