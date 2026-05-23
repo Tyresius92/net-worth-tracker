@@ -140,7 +140,7 @@ export default function PrivacyPolicy() {
         <p>
           We honor these rights whenever reasonably possible. You can exercise
           them by contacting us via our{" "}
-          <Link to="contact">Contact Us Page</Link>.
+          <Link to="/contact">Contact Us Page</Link>.
         </p>
       </section>
 
