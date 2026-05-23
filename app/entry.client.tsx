@@ -8,6 +8,7 @@ import {
   reactRouterTracingIntegration,
   replayIntegration,
 } from "@sentry/react-router";
+import { isbot } from "isbot";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
@@ -18,10 +19,23 @@ init({
   environment: import.meta.env.APP_ENV ?? import.meta.env.MODE,
   integrations: [reactRouterTracingIntegration(), replayIntegration()],
   enableLogs: true,
-  tracesSampleRate: 1.0,
   tracePropagationTargets: [/^\//],
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
+
+  // Drop all bot/crawler transactions; sample 10% of real user transactions
+  tracesSampler() {
+    if (isbot(navigator.userAgent)) return 0;
+    return 0.1;
+  },
+
+  // Suppress React Router 404s that fire when crawlers hit non-existent paths
+  ignoreErrors: [/No routes matched location/],
+
+  beforeSend(event) {
+    if (isbot(navigator.userAgent)) return null;
+    return event;
+  },
 });
 
 startTransition(() => {
