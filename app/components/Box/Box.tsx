@@ -31,6 +31,7 @@ interface BaseBoxProps
   is?: "div" | "article" | "section";
 
   textAlign?: "left" | "center" | "right" | "justify";
+  hyphens?: "auto" | "none" | "manual";
 
   flexGrow?: number;
   flexShrink?: number;
@@ -101,6 +102,7 @@ export const Box = (props: BoxProps) => {
     maxWidth,
 
     textAlign,
+    hyphens,
 
     is = "div",
 
@@ -132,6 +134,7 @@ export const Box = (props: BoxProps) => {
         ...(color && { color: `var(--color-${color})` }),
         ...(maxWidth && { maxWidth: `${maxWidth}px` }),
         ...(textAlign && { textAlign }),
+        ...(hyphens && { hyphens }),
 
         ...(flexGrow !== undefined && { flexGrow }),
         ...(flexShrink !== undefined && { flexShrink }),
