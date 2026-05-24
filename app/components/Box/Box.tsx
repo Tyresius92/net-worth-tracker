@@ -30,6 +30,8 @@ interface BaseBoxProps
 
   is?: "div" | "article" | "section";
 
+  textAlign?: "left" | "center" | "right" | "justify";
+
   flexGrow?: number;
   flexShrink?: number;
   flexBasis?: string;
@@ -98,6 +100,8 @@ export const Box = (props: BoxProps) => {
 
     maxWidth,
 
+    textAlign,
+
     is = "div",
 
     flexGrow,
@@ -127,6 +131,7 @@ export const Box = (props: BoxProps) => {
         ...(borderColor && { border: `1px solid var(--color-${borderColor})` }),
         ...(color && { color: `var(--color-${color})` }),
         ...(maxWidth && { maxWidth: `${maxWidth}px` }),
+        ...(textAlign && { textAlign }),
 
         ...(flexGrow !== undefined && { flexGrow }),
         ...(flexShrink !== undefined && { flexShrink }),
