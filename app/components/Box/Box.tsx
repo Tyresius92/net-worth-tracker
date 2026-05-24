@@ -21,8 +21,19 @@ interface BaseBoxProps
   mb?: SpaceOption;
 
   bg?: ColorOption;
+  /**
+   * @deprecated Use `border`, `borderX`, `borderY`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft` instead.
+   */
   borderColor?: ColorOption;
   color?: ColorOption;
+
+  border?: StrokeValue;
+  borderX?: StrokeValue;
+  borderY?: StrokeValue;
+  borderTop?: StrokeValue;
+  borderRight?: StrokeValue;
+  borderBottom?: StrokeValue;
+  borderLeft?: StrokeValue;
   /**
    * @deprecated I am rethinking the approach to maxWidth
    */
@@ -105,6 +116,14 @@ export const Box = (props: BoxProps) => {
     borderColor,
     color,
 
+    border,
+    borderX = border,
+    borderY = border,
+    borderTop = borderY,
+    borderRight = borderX,
+    borderBottom = borderY,
+    borderLeft = borderX,
+
     maxWidth,
 
     textAlign,
@@ -137,6 +156,26 @@ export const Box = (props: BoxProps) => {
 
         ...(bg && { backgroundColor: `var(--color-${bg})` }),
         ...(borderColor && { border: `1px solid var(--color-${borderColor})` }),
+        ...(borderTop && {
+          borderTopWidth: borderTop.width ?? 1,
+          borderTopStyle: borderTop.style ?? "solid",
+          borderTopColor: `var(--color-${borderTop.color})`,
+        }),
+        ...(borderRight && {
+          borderRightWidth: borderRight.width ?? 1,
+          borderRightStyle: borderRight.style ?? "solid",
+          borderRightColor: `var(--color-${borderRight.color})`,
+        }),
+        ...(borderBottom && {
+          borderBottomWidth: borderBottom.width ?? 1,
+          borderBottomStyle: borderBottom.style ?? "solid",
+          borderBottomColor: `var(--color-${borderBottom.color})`,
+        }),
+        ...(borderLeft && {
+          borderLeftWidth: borderLeft.width ?? 1,
+          borderLeftStyle: borderLeft.style ?? "solid",
+          borderLeftColor: `var(--color-${borderLeft.color})`,
+        }),
         ...(color && { color: `var(--color-${color})` }),
         ...(maxWidth && { maxWidth: `${maxWidth}px` }),
         ...(textAlign && { textAlign }),
