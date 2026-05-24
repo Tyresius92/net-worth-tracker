@@ -9,7 +9,8 @@ export type FontSizeOption =
   | 36
   | 48
   | 60
-  | 72;
+  | 72
+  | 88;
 
 export type SpaceOption =
   | 0
