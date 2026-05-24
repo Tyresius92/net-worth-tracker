@@ -32,6 +32,7 @@ interface BaseBoxProps
 
   textAlign?: "left" | "center" | "right" | "justify";
   hyphens?: "auto" | "none" | "manual";
+  columnCount?: 2 | 3;
 
   flexGrow?: number;
   flexShrink?: number;
@@ -103,6 +104,7 @@ export const Box = (props: BoxProps) => {
 
     textAlign,
     hyphens,
+    columnCount,
 
     is = "div",
 
@@ -135,6 +137,7 @@ export const Box = (props: BoxProps) => {
         ...(maxWidth && { maxWidth: `${maxWidth}px` }),
         ...(textAlign && { textAlign }),
         ...(hyphens && { hyphens }),
+        ...(columnCount && { columnCount }),
 
         ...(flexGrow !== undefined && { flexGrow }),
         ...(flexShrink !== undefined && { flexShrink }),
