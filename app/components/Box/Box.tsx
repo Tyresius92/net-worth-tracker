@@ -32,9 +32,6 @@ interface BaseBoxProps
 
   textAlign?: "left" | "center" | "right" | "justify";
   hyphens?: "auto" | "none" | "manual";
-  columnCount?: 2 | 3;
-  columnRule?: StrokeValue;
-
   flexGrow?: number;
   flexShrink?: number;
   flexBasis?: string;
@@ -49,6 +46,13 @@ interface BaseBoxProps
 
 interface BlockBoxProps extends BaseBoxProps {
   display?: "block";
+}
+
+interface ColumnBoxProps extends BaseBoxProps {
+  display?: never;
+  columnCount: 2 | 3;
+  columnGap?: SpaceOption;
+  columnRule?: StrokeValue;
 }
 
 interface FlexBoxProps extends BaseBoxProps {
@@ -75,7 +79,7 @@ interface FlexBoxProps extends BaseBoxProps {
   columnGap?: SpaceOption;
 }
 
-type BoxProps = BlockBoxProps | FlexBoxProps;
+type BoxProps = BlockBoxProps | FlexBoxProps | ColumnBoxProps;
 
 export const Box = (props: BoxProps) => {
   const {
@@ -105,8 +109,6 @@ export const Box = (props: BoxProps) => {
 
     textAlign,
     hyphens,
-    columnCount,
-    columnRule,
 
     is = "div",
 
@@ -139,12 +141,19 @@ export const Box = (props: BoxProps) => {
         ...(maxWidth && { maxWidth: `${maxWidth}px` }),
         ...(textAlign && { textAlign }),
         ...(hyphens && { hyphens }),
-        ...(columnCount && { columnCount }),
-        ...(columnRule && {
-          columnRuleWidth: columnRule.width ?? 1,
-          columnRuleStyle: columnRule.style ?? "solid",
-          columnRuleColor: `var(--color-${columnRule.color})`,
-        }),
+        ...('columnCount' in props
+          ? {
+              columnCount: props.columnCount,
+              ...(props.columnGap && {
+                columnGap: `var(--space-${props.columnGap})`,
+              }),
+              ...(props.columnRule && {
+                columnRuleWidth: props.columnRule.width ?? 1,
+                columnRuleStyle: props.columnRule.style ?? "solid",
+                columnRuleColor: `var(--color-${props.columnRule.color})`,
+              }),
+            }
+          : {}),
 
         ...(flexGrow !== undefined && { flexGrow }),
         ...(flexShrink !== undefined && { flexShrink }),
