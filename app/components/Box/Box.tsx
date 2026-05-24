@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ColorOption, SpaceOption } from "../_GlobalStyles/types";
+import { ColorOption, SpaceOption, StrokeValue } from "../_GlobalStyles/types";
 
 interface BaseBoxProps
   extends Pick<React.HTMLAttributes<HTMLDivElement>, "id" | "children"> {
@@ -33,6 +33,7 @@ interface BaseBoxProps
   textAlign?: "left" | "center" | "right" | "justify";
   hyphens?: "auto" | "none" | "manual";
   columnCount?: 2 | 3;
+  columnRule?: StrokeValue;
 
   flexGrow?: number;
   flexShrink?: number;
@@ -105,6 +106,7 @@ export const Box = (props: BoxProps) => {
     textAlign,
     hyphens,
     columnCount,
+    columnRule,
 
     is = "div",
 
@@ -138,6 +140,11 @@ export const Box = (props: BoxProps) => {
         ...(textAlign && { textAlign }),
         ...(hyphens && { hyphens }),
         ...(columnCount && { columnCount }),
+        ...(columnRule && {
+          columnRuleWidth: columnRule.width ?? 1,
+          columnRuleStyle: columnRule.style ?? "solid",
+          columnRuleColor: `var(--color-${columnRule.color})`,
+        }),
 
         ...(flexGrow !== undefined && { flexGrow }),
         ...(flexShrink !== undefined && { flexShrink }),

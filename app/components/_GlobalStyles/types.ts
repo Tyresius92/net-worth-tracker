@@ -53,6 +53,12 @@ import { colors } from "./colors";
 
 export type ColorOption = keyof typeof colors;
 
+export interface StrokeValue {
+  color: ColorOption;
+  width?: 1 | 2 | 3;
+  style?: "solid" | "dotted" | "dashed";
+}
+
 export const BREAKPOINTS = {
   s: 480,
   m: 768,
