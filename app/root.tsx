@@ -134,11 +134,10 @@ export default function App({ loaderData }: Route.ComponentProps) {
         id="root"
         className={colorMode}
         style={{
-          minHeight: "calc(100% - 24px)",
+          minHeight: "100%",
           display: "flex",
           flexDirection: "column",
           flexGrow: 1,
-          padding: "var(--space-24)",
         }}
       >
         <Masthead user={loaderData.user}>
