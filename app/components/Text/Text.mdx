@@ -75,6 +75,14 @@ Inline code, token names, shell commands. Uses the system monospace stack. Appea
 
 <Canvas of={TextStories.Code} />
 
+## Drop cap
+
+Pass `dropCap` to float the first letter as a large typographic initial — a newspaper convention for the opening paragraph of a long-form piece.
+
+<Canvas of={TextStories.DropCap} />
+
+Use only on the first paragraph of a section and only with `body` copy. Do not combine with `byline`, `caption`, or `deck` — the first-letter sizing assumes normal body line-height.
+
 ## Overriding the element
 
 Each variant has a sensible default HTML element: `deck`, `body`, and `byline` render `<p>`; `caption` renders `<span>`; `code` renders `<code>`. Use the `as` prop when the default element does not fit the surrounding structure.

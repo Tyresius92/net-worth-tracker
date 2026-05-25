@@ -41,6 +41,18 @@ A subsection or aside title. Used inside cards and within longer-form sections.
 
 <Canvas of={HeadingStories.Level3} />
 
+## Font size override
+
+In rare cases — large editorial headlines, hero text — the level's default size is too small for the visual context. Pass `fontSize` to override it with any value from the token scale.
+
+```tsx
+<Heading level={1} fontSize={88}>A Ledger of Your Own.</Heading>
+```
+
+<Canvas of={HeadingStories.FontSizeOverride} />
+
+Use this sparingly. `fontSize` changes the visual presentation without changing the semantic level — a Level 1 with `fontSize={88}` is still an `<h1>` and still counts as your one-per-page primary heading. Do not use it to make a lower-level heading look like a higher one; use the correct level and adjust the design instead.
+
 ## Accessibility
 
 `Heading` renders the correct semantic element for each level — `<h1>` through `<h3>` — so the document outline is always accurate. Screen readers use heading levels to let users skip between sections; a correct heading hierarchy is what makes that navigation possible.

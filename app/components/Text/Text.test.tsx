@@ -76,4 +76,14 @@ describe("Text", () => {
     );
     expect(screen.getByText("Label").tagName).toBe("P");
   });
+
+  it("applies the dropCap class when dropCap is true", () => {
+    render(<Text variant="body" dropCap>Paragraph</Text>);
+    expect(screen.getByText("Paragraph").className).toMatch(/dropCap/);
+  });
+
+  it("does not apply the dropCap class when dropCap is omitted", () => {
+    render(<Text variant="body">Paragraph</Text>);
+    expect(screen.getByText("Paragraph").className).not.toMatch(/dropCap/);
+  });
 });

@@ -50,10 +50,37 @@ Setting `p={16}` applies `16px` to all four sides. Setting `p={16} px={8}` overr
 
 ## Color
 
-Box accepts `bg`, `borderColor`, and `color` props, each taking a token name from the design system's color palette. In practice these are `sand-N` values — see the [Color](?path=/docs/color--docs) doc for guidance on which steps to use when.
+Box accepts `bg` and `color` props, each taking a token name from the design system's color palette. In practice these are `sand-N` values — see the [Color](?path=/docs/color--docs) doc for guidance on which steps to use when.
 
 <Canvas of={BoxStories.WithBackground} />
+
+## Borders
+
+Box accepts `border`, `borderX`, `borderY`, `borderTop`, `borderRight`, `borderBottom`, and `borderLeft` props, each taking a `StrokeValue` object with a required `color` and optional `width` (1–3) and `style` (`"solid"`, `"dotted"`, `"dashed"`).
+
+```tsx
+// All four sides
+<Box border={{ color: "sand-7" }} p={12}>…</Box>
+
+// Horizontal sides only
+<Box borderX={{ color: "sand-6" }} p={12}>…</Box>
+
+// One side, custom width
+<Box borderLeft={{ color: "sand-8", width: 3 }} pl={12}>…</Box>
+```
+
+Props cascade from least to most specific — the same pattern as padding. `border` sets all four sides; `borderX`/`borderY` override horizontally or vertically; individual side props override everything.
+
+```
+border  ──▶  borderX, borderY
+              │           │
+              ▼           ▼
+         borderLeft,  borderTop,
+         borderRight  borderBottom
+```
+
 <Canvas of={BoxStories.WithBorder} />
+<Canvas of={BoxStories.WithSideBorder} />
 
 ## Flex layout
 
@@ -74,6 +101,30 @@ Flex item props (`flexGrow`, `flexShrink`, `flexBasis`, `alignSelf`) can be appl
   <Box flexShrink={0}>Fixed size</Box>
 </Box>
 ```
+
+## Multi-column layout
+
+Setting `columnCount` on Box enables CSS multi-column layout. Use `columnGap` to control the gutter width and `columnRule` to draw a dividing line between columns. This is appropriate for flowing editorial text — do not use it for grid or card layouts (use flex for those).
+
+```tsx
+<Box columnCount={2} columnGap={24} columnRule={{ color: "sand-6" }}>
+  <p>Long-form content that flows across columns…</p>
+</Box>
+```
+
+<Canvas of={BoxStories.WithColumnLayout} />
+
+`columnCount`, `columnGap`, and `columnRule` are only available together — they are not available on flex or block Box variants. Setting `columnCount` implicitly opts out of `display="flex"`.
+
+## Typography props
+
+`textAlign` and `hyphens` are available on all Box variants and emit directly as CSS properties. Use these when the layout context requires alignment or hyphenation control that would otherwise need a wrapper element.
+
+```tsx
+<Box textAlign="justify" hyphens="auto">…</Box>
+```
+
+Prefer setting these on the innermost element that needs them rather than on a layout wrapper.
 
 ## Accessibility
 

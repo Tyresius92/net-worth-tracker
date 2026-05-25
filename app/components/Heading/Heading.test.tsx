@@ -51,4 +51,18 @@ describe("Heading", () => {
       /level3/,
     );
   });
+
+  it("applies a font-size token as an inline style when fontSize is given", () => {
+    render(<Heading level={1} fontSize={88}>Title</Heading>);
+    expect(
+      screen.getByRole("heading", { level: 1 }).getAttribute("style"),
+    ).toContain("var(--font-size-88)");
+  });
+
+  it("does not apply an inline style when fontSize is omitted", () => {
+    render(<Heading level={1}>Title</Heading>);
+    expect(
+      screen.getByRole("heading", { level: 1 }).getAttribute("style"),
+    ).toBeNull();
+  });
 });
