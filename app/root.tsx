@@ -151,7 +151,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
             </Button>
           </fetcher.Form>
         </Masthead>
-        <main>
+        <main style={{ paddingTop: 900 }}>
           <Outlet />
         </main>
         <Footer user={loaderData.user} />

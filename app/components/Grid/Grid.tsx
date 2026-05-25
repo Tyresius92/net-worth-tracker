@@ -57,6 +57,8 @@ interface GridItemProps {
   mOrder?: number;
   lOrder?: number;
   xlOrder?: number;
+
+  alignSelf?: "center";
 }
 
 const colStart = (offset: number) => (offset === 0 ? "auto" : offset + 1);
@@ -78,6 +80,7 @@ const GridItem = ({
   mOrder = sOrder,
   lOrder = mOrder,
   xlOrder = lOrder,
+  alignSelf,
 }: GridItemProps) => {
   const itemStyle: GridItemCSSProperties = {
     "--gi-span-xs": xs,
@@ -95,6 +98,7 @@ const GridItem = ({
     "--gi-order-m": mOrder,
     "--gi-order-l": lOrder,
     "--gi-order-xl": xlOrder,
+    alignSelf,
   };
 
   return (

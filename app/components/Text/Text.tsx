@@ -6,7 +6,7 @@ type TextRole = "deck" | "body" | "byline" | "caption" | "code";
 type TagElement = "p" | "span" | "code";
 
 export interface TextProps {
-  variant: TextRole;
+  variant?: TextRole;
   children: React.ReactNode;
   as?: TagElement;
   dropCap?: boolean;
@@ -20,7 +20,12 @@ const defaultElements: Record<TextRole, TagElement> = {
   code: "code",
 };
 
-export const Text = ({ variant, children, as, dropCap }: TextProps) => {
+export const Text = ({
+  variant = "body",
+  children,
+  as,
+  dropCap,
+}: TextProps) => {
   const Tag = as ?? defaultElements[variant];
   const className = dropCap
     ? `${styles[variant]} ${styles.dropCap}`
