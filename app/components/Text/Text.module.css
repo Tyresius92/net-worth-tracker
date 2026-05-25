@@ -40,3 +40,11 @@
   font-size: var(--font-size-14);
   font-weight: 400;
 }
+
+.dropCap::first-letter {
+  float: left;
+  font-size: 3.5em;
+  line-height: 0.85;
+  margin-inline-end: 0.08em;
+  padding-block-start: 0.05em;
+}

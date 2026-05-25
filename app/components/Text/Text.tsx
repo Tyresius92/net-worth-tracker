@@ -9,6 +9,7 @@ export interface TextProps {
   variant: TextRole;
   children: React.ReactNode;
   as?: TagElement;
+  dropCap?: boolean;
 }
 
 const defaultElements: Record<TextRole, TagElement> = {
@@ -19,7 +20,10 @@ const defaultElements: Record<TextRole, TagElement> = {
   code: "code",
 };
 
-export const Text = ({ variant, children, as }: TextProps) => {
+export const Text = ({ variant, children, as, dropCap }: TextProps) => {
   const Tag = as ?? defaultElements[variant];
-  return <Tag className={styles[variant]}>{children}</Tag>;
+  const className = dropCap
+    ? `${styles[variant]} ${styles.dropCap}`
+    : styles[variant];
+  return <Tag className={className}>{children}</Tag>;
 };
