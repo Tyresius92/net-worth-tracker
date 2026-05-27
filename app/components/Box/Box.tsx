@@ -2,6 +2,18 @@ import React from "react";
 
 import { ColorOption, SpaceOption, StrokeValue } from "../_GlobalStyles/types";
 
+import styles from "./Box.module.css";
+
+type ColumnCount = 1 | 2 | 3 | 4 | 5;
+
+interface BoxCSSProperties extends React.CSSProperties {
+  "--box-col-xs"?: ColumnCount;
+  "--box-col-s"?: ColumnCount;
+  "--box-col-m"?: ColumnCount;
+  "--box-col-l"?: ColumnCount;
+  "--box-col-xl"?: ColumnCount;
+}
+
 interface BaseBoxProps
   extends Pick<React.HTMLAttributes<HTMLDivElement>, "id" | "children"> {
   p?: SpaceOption;
@@ -61,7 +73,11 @@ interface BlockBoxProps extends BaseBoxProps {
 
 interface ColumnBoxProps extends BaseBoxProps {
   display?: never;
-  columnCount: 2 | 3;
+  xsColumns: ColumnCount;
+  sColumns?: ColumnCount;
+  mColumns?: ColumnCount;
+  lColumns?: ColumnCount;
+  xlColumns?: ColumnCount;
   columnGap?: SpaceOption;
   columnRule?: StrokeValue;
 }
@@ -139,86 +155,101 @@ export const Box = (props: BoxProps) => {
 
   const Tag = is;
 
+  const isColumnBox = "xsColumns" in props;
+
+  const columnStyles: BoxCSSProperties = (() => {
+    if (!("xsColumns" in props)) return {};
+    const {
+      xsColumns,
+      sColumns = xsColumns,
+      mColumns = sColumns,
+      lColumns = mColumns,
+      xlColumns = lColumns,
+      columnGap,
+      columnRule,
+    } = props;
+    return {
+      "--box-col-xs": xsColumns,
+      "--box-col-s": sColumns,
+      "--box-col-m": mColumns,
+      "--box-col-l": lColumns,
+      "--box-col-xl": xlColumns,
+      ...(columnGap && { columnGap: `var(--space-${columnGap})` }),
+      ...(columnRule && {
+        columnRuleWidth: columnRule.width ?? 1,
+        columnRuleStyle: columnRule.style ?? "solid",
+        columnRuleColor: `var(--color-${columnRule.color})`,
+      }),
+    };
+  })();
+
+  const boxStyle: BoxCSSProperties = {
+    borderRadius: "inherit",
+    ...(pl && { paddingInlineStart: `var(--space-${pl})` }),
+    ...(pr && { paddingInlineEnd: `var(--space-${pr})` }),
+    ...(pt && { paddingBlockStart: `var(--space-${pt})` }),
+    ...(pb && { paddingBlockEnd: `var(--space-${pb})` }),
+    ...(ml && { marginInlineStart: `var(--space-${ml})` }),
+    ...(mr && { marginInlineEnd: `var(--space-${mr})` }),
+    ...(mt && { marginBlockStart: `var(--space-${mt})` }),
+    ...(mb && { marginBlockEnd: `var(--space-${mb})` }),
+    ...(bg && { backgroundColor: `var(--color-${bg})` }),
+    ...(borderColor && { border: `1px solid var(--color-${borderColor})` }),
+    ...(borderTop && {
+      borderTopWidth: borderTop.width ?? 1,
+      borderTopStyle: borderTop.style ?? "solid",
+      borderTopColor: `var(--color-${borderTop.color})`,
+    }),
+    ...(borderRight && {
+      borderRightWidth: borderRight.width ?? 1,
+      borderRightStyle: borderRight.style ?? "solid",
+      borderRightColor: `var(--color-${borderRight.color})`,
+    }),
+    ...(borderBottom && {
+      borderBottomWidth: borderBottom.width ?? 1,
+      borderBottomStyle: borderBottom.style ?? "solid",
+      borderBottomColor: `var(--color-${borderBottom.color})`,
+    }),
+    ...(borderLeft && {
+      borderLeftWidth: borderLeft.width ?? 1,
+      borderLeftStyle: borderLeft.style ?? "solid",
+      borderLeftColor: `var(--color-${borderLeft.color})`,
+    }),
+    ...(color && { color: `var(--color-${color})` }),
+    ...(maxWidth && { maxWidth: `${maxWidth}px` }),
+    ...(textAlign && { textAlign }),
+    ...(hyphens && { hyphens }),
+    ...columnStyles,
+    ...(flexGrow !== undefined && { flexGrow }),
+    ...(flexShrink !== undefined && { flexShrink }),
+    ...(flexBasis && { flexBasis }),
+    ...(alignSelf && { alignSelf }),
+    ...(props.display === "flex"
+      ? {
+          display: "flex",
+          ...(props.gap && { gap: `var(--space-${props.gap})` }),
+          ...(props.rowGap && { rowGap: `var(--space-${props.rowGap})` }),
+          ...(props.columnGap && {
+            columnGap: `var(--space-${props.columnGap})`,
+          }),
+          ...(props.flexDirection && {
+            flexDirection: props.flexDirection,
+          }),
+          ...(props.flexWrap && { flexWrap: props.flexWrap }),
+          ...(props.justifyContent && {
+            justifyContent: props.justifyContent,
+          }),
+          ...(props.alignItems && { alignItems: props.alignItems }),
+          ...(props.alignContent && { alignContent: props.alignContent }),
+        }
+      : {}),
+  };
+
   return (
     <Tag
       id={id}
-      style={{
-        borderRadius: "inherit",
-        ...(pl && { paddingInlineStart: `var(--space-${pl})` }),
-        ...(pr && { paddingInlineEnd: `var(--space-${pr})` }),
-        ...(pt && { paddingBlockStart: `var(--space-${pt})` }),
-        ...(pb && { paddingBlockEnd: `var(--space-${pb})` }),
-
-        ...(ml && { marginInlineStart: `var(--space-${ml})` }),
-        ...(mr && { marginInlineEnd: `var(--space-${mr})` }),
-        ...(mt && { marginBlockStart: `var(--space-${mt})` }),
-        ...(mb && { marginBlockEnd: `var(--space-${mb})` }),
-
-        ...(bg && { backgroundColor: `var(--color-${bg})` }),
-        ...(borderColor && { border: `1px solid var(--color-${borderColor})` }),
-        ...(borderTop && {
-          borderTopWidth: borderTop.width ?? 1,
-          borderTopStyle: borderTop.style ?? "solid",
-          borderTopColor: `var(--color-${borderTop.color})`,
-        }),
-        ...(borderRight && {
-          borderRightWidth: borderRight.width ?? 1,
-          borderRightStyle: borderRight.style ?? "solid",
-          borderRightColor: `var(--color-${borderRight.color})`,
-        }),
-        ...(borderBottom && {
-          borderBottomWidth: borderBottom.width ?? 1,
-          borderBottomStyle: borderBottom.style ?? "solid",
-          borderBottomColor: `var(--color-${borderBottom.color})`,
-        }),
-        ...(borderLeft && {
-          borderLeftWidth: borderLeft.width ?? 1,
-          borderLeftStyle: borderLeft.style ?? "solid",
-          borderLeftColor: `var(--color-${borderLeft.color})`,
-        }),
-        ...(color && { color: `var(--color-${color})` }),
-        ...(maxWidth && { maxWidth: `${maxWidth}px` }),
-        ...(textAlign && { textAlign }),
-        ...(hyphens && { hyphens }),
-        ...('columnCount' in props
-          ? {
-              columnCount: props.columnCount,
-              ...(props.columnGap && {
-                columnGap: `var(--space-${props.columnGap})`,
-              }),
-              ...(props.columnRule && {
-                columnRuleWidth: props.columnRule.width ?? 1,
-                columnRuleStyle: props.columnRule.style ?? "solid",
-                columnRuleColor: `var(--color-${props.columnRule.color})`,
-              }),
-            }
-          : {}),
-
-        ...(flexGrow !== undefined && { flexGrow }),
-        ...(flexShrink !== undefined && { flexShrink }),
-        ...(flexBasis && { flexBasis }),
-        ...(alignSelf && { alignSelf }),
-
-        ...(props.display === "flex"
-          ? {
-              display: "flex",
-              ...(props.gap && { gap: `var(--space-${props.gap})` }),
-              ...(props.rowGap && { rowGap: `var(--space-${props.rowGap})` }),
-              ...(props.columnGap && {
-                columnGap: `var(--space-${props.columnGap})`,
-              }),
-              ...(props.flexDirection && {
-                flexDirection: props.flexDirection,
-              }),
-              ...(props.flexWrap && { flexWrap: props.flexWrap }),
-              ...(props.justifyContent && {
-                justifyContent: props.justifyContent,
-              }),
-              ...(props.alignItems && { alignItems: props.alignItems }),
-              ...(props.alignContent && { alignContent: props.alignContent }),
-            }
-          : {}),
-      }}
+      className={isColumnBox ? styles.columns : undefined}
+      style={boxStyle}
     >
       {children}
     </Tag>

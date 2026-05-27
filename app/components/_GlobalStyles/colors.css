@@ -1,4 +1,5 @@
-:root {
+:root,
+.light {
   --color-gray-1: #fcfcfc;
   --color-gray-2: #f9f9f9;
   --color-gray-3: #f0f0f0;

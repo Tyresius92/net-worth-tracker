@@ -89,7 +89,7 @@ export const Masthead = ({ user, children }: MastheadProps) => {
       <Divider variant="heavy" />
       <Box p={2} />
       <Divider />
-      <Box display="flex" justifyContent="center" gap={12} py={8}>
+      <Box display="flex" justifyContent="space-between" py={8}>
         <Text variant="byline">Established 2024</Text>
         <Text variant="byline">theledger.dev</Text>
       </Box>

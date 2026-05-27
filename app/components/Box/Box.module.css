@@ -1,0 +1,27 @@
+.columns {
+  column-count: var(--box-col-xs);
+}
+
+@media (min-width: 480px) {
+  .columns {
+    column-count: var(--box-col-s);
+  }
+}
+
+@media (min-width: 768px) {
+  .columns {
+    column-count: var(--box-col-m);
+  }
+}
+
+@media (min-width: 1024px) {
+  .columns {
+    column-count: var(--box-col-l);
+  }
+}
+
+@media (min-width: 1280px) {
+  .columns {
+    column-count: var(--box-col-xl);
+  }
+}

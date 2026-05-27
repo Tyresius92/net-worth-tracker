@@ -41,7 +41,8 @@ export const WithMaxWidth: Story = {
 
 export const WithColumnLayout: Story = {
   args: {
-    columnCount: 2,
+    xsColumns: 1,
+    mColumns: 2,
     columnGap: 24,
     columnRule: { color: "sand-6" },
     children:

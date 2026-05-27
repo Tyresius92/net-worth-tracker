@@ -25,14 +25,25 @@ describe("Box", () => {
   });
 
   describe("multi-column layout", () => {
-    it("applies columnCount as a style", () => {
-      render(<Box columnCount={2}>content</Box>);
-      expect(screen.getByText("content")).toHaveStyle({ columnCount: "2" });
+    it("sets column count CSS custom properties", () => {
+      render(<Box xsColumns={2}>content</Box>);
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("--box-col-xs: 2");
+    });
+
+    it("cascades column count up through breakpoints by default", () => {
+      render(<Box xsColumns={1} mColumns={2}>content</Box>);
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("--box-col-xs: 1");
+      expect(style).toContain("--box-col-s: 1");
+      expect(style).toContain("--box-col-m: 2");
+      expect(style).toContain("--box-col-l: 2");
+      expect(style).toContain("--box-col-xl: 2");
     });
 
     it("applies columnRule color as a CSS variable", () => {
       render(
-        <Box columnCount={2} columnRule={{ color: "sand-7" }}>
+        <Box xsColumns={2} columnRule={{ color: "sand-7" }}>
           content
         </Box>,
       );
@@ -43,7 +54,7 @@ describe("Box", () => {
 
     it("applies columnRule defaults for width and style", () => {
       render(
-        <Box columnCount={2} columnRule={{ color: "sand-7" }}>
+        <Box xsColumns={2} columnRule={{ color: "sand-7" }}>
           content
         </Box>,
       );

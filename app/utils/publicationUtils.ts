@@ -26,11 +26,11 @@ function toRoman(n: number): string {
   return result;
 }
 
-const EPOCH_DATE = Temporal.PlainDate.from("2025-10-14");
+const EPOCH_MS = new Date("2025-10-14").getTime();
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
 export function getDaysSinceEpoch(): number {
-  const today = Temporal.Now.plainDateISO();
-  return EPOCH_DATE.until(today).total({ unit: "days" });
+  return Math.floor((Date.now() - EPOCH_MS) / MS_PER_DAY);
 }
 
 export function getPublicationLabel(input: number): string {
