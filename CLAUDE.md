@@ -99,3 +99,24 @@ Resend + React Email. In non-production environments, `sendEmail` (from [`app/ut
 - Test files colocate with the file they test (`.test.ts` / `.test.tsx`)
 - Cypress e2e tests are in `cypress/e2e/`; use `cy.visitAndCheck()` (custom command) instead of bare `cy.visit()`
   - Exception: if a redirect is expected (e.g. on a protected route), use `cy.visit()` and assert on the new expected URL separately.
+
+## User-facing terminology
+
+This application uses a closed vocabulary for all user-visible text. The terms extend the newspaper/publication metaphor (see [ADR-013](docs/adr/ADR-013-editorial-terminology.md)) — do not substitute generic fintech language.
+
+| Term | Maps to | Do not write |
+|---|---|---|
+| **Press credentials** | Login — email, password, authentication | "login", "sign in", "account credentials" |
+| **The record** | The user's data: history, chart, accumulated figures | "account", "your data", "your file" |
+| **Sources** | Individual financial accounts (Chase Checking, mortgage, savings bond) | "account", "accounts" |
+| **Figures** | Balance snapshots — the number a source reports on a given day | "balance", "balances", "snapshot" |
+| **Wire services** | Plaid-linked institutions — external sources that file figures automatically | "Plaid account", "institution", "linked account", "Plaid item" |
+| **Staff-reported** | Manual accounts — figures the user enters themselves | "manual", "manual account" |
+
+**Applies to:** headings, labels, button text, error messages, link text, empty states, email copy — any string the user sees.
+
+**Does not apply to:**
+- Prisma model names, database fields, and code variable names — keep using `account`, `balanceSnapshot`, `plaidItem`, etc.
+- The privacy policy — a legal document that references Plaid Inc. by name; editorial vocabulary would create ambiguity where precision is required
+- Form field type labels: `Email address` and `Password` describe the type of data being entered, not the authentication concept
+- Validation messages that describe field constraints: `Password is too short`, `Email is invalid`

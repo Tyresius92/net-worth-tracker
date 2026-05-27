@@ -21,6 +21,45 @@ Net worth went up. Net worth went down. These are facts. The application reports
 
 This has practical consequences for every category of copy in the application.
 
+## Editorial vocabulary
+
+The Ledger uses a fixed set of terms for its core concepts. These extend the newspaper metaphor into language — not as branding, but as editorial consistency. They apply to all user-facing text.
+
+<Table caption="Editorial vocabulary">
+  <Table.Head>
+    <Table.ColumnHeader>Term</Table.ColumnHeader>
+    <Table.ColumnHeader>Maps to</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Press credentials</Table.Cell>
+      <Table.Cell>Login — email, password, authentication</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>The record</Table.Cell>
+      <Table.Cell>The user's data: history, chart, accumulated figures</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Sources</Table.Cell>
+      <Table.Cell>Individual financial accounts (checking, mortgage, savings bond)</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Figures</Table.Cell>
+      <Table.Cell>Balance snapshots — the number a source reports on a given day</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Wire services</Table.Cell>
+      <Table.Cell>Plaid-linked institutions — external sources that file figures automatically</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Staff-reported</Table.Cell>
+      <Table.Cell>Manual accounts — figures the user enters themselves</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Do not substitute generic fintech language for these terms in user-facing text. See [ADR-013](../../docs/adr/ADR-013-editorial-terminology.md) for the full rationale and boundary conditions (Prisma models, the privacy policy, field type labels, and validation messages are exempt).
+
 ## Institutional voice
 
 Newspapers do not write to a single reader. They publish. The voice is institutional — it states facts without a subject, without warmth, without the assumption that the reader needs to be managed.
@@ -38,12 +77,12 @@ Avoid possessive framing in data headlines and section labels. The data belongs 
       <Table.Cell>Net worth: $142,400</Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>Your accounts</Table.Cell>
-      <Table.Cell>Accounts</Table.Cell>
+      <Table.Cell>Your sources</Table.Cell>
+      <Table.Cell>Sources</Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>Your Plaid connections</Table.Cell>
-      <Table.Cell>Plaid connections</Table.Cell>
+      <Table.Cell>Your wire services</Table.Cell>
+      <Table.Cell>Wire services</Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>Your net worth history</Table.Cell>
@@ -98,12 +137,12 @@ Labels name things. They are nouns or noun phrases — direct, unambiguous, stri
   <Table.Body>
     <Table.Row>
       <Table.Cell>My Finances</Table.Cell>
-      <Table.Cell>Accounts</Table.Cell>
+      <Table.Cell>Sources</Table.Cell>
       <Table.Cell>Possessive; the word "My" adds nothing</Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>Link a Bank Account</Table.Cell>
-      <Table.Cell>Plaid connections</Table.Cell>
+      <Table.Cell>Wire services</Table.Cell>
       <Table.Cell>
         Instructional language in a label; a noun phrase is enough
       </Table.Cell>
@@ -117,7 +156,7 @@ Labels name things. They are nouns or noun phrases — direct, unambiguous, stri
     </Table.Row>
     <Table.Row>
       <Table.Cell>Account Balance History</Table.Cell>
-      <Table.Cell>Balance history</Table.Cell>
+      <Table.Cell>Figure history</Table.Cell>
       <Table.Cell>
         Title case is for page-level headings, not section labels
       </Table.Cell>
@@ -155,7 +194,7 @@ Buttons require imperative copy — a verb that names the action precisely. The 
     </Table.Row>
     <Table.Row>
       <Table.Cell>Proceed with deletion</Table.Cell>
-      <Table.Cell>Delete account</Table.Cell>
+      <Table.Cell>Close your record</Table.Cell>
       <Table.Cell>
         Name the thing being acted on when disambiguation is useful
       </Table.Cell>
@@ -218,9 +257,9 @@ An empty state is a factual condition: no records exist. Report that without apo
   <Table.Body>
     <Table.Row>
       <Table.Cell>
-        No accounts yet! Add your first account to get started.
+        No sources yet! Add your first source to get started.
       </Table.Cell>
-      <Table.Cell>No accounts.</Table.Cell>
+      <Table.Cell>No sources.</Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>Nothing here. Create a note to begin.</Table.Cell>
@@ -228,7 +267,7 @@ An empty state is a factual condition: no records exist. Report that without apo
     </Table.Row>
     <Table.Row>
       <Table.Cell>You haven't connected any banks yet.</Table.Cell>
-      <Table.Cell>No Plaid connections.</Table.Cell>
+      <Table.Cell>No wire services.</Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>

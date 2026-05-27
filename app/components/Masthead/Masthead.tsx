@@ -32,15 +32,10 @@ export const Masthead = ({ user, children }: MastheadProps) => {
     <Box xsPx={56} xsPt={12}>
       <nav aria-label="Main">
         <Grid>
-          <Grid.Item xs={12} m={4} alignSelf="center">
+          <Grid.Item xs={12} m={2} alignSelf="center">
             <Text variant="byline">{getPublicationLabel(1234)}</Text>
           </Grid.Item>
-          <Grid.Item xs={12} m={4} alignSelf="center">
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <Text variant="byline">{formatDate(new Date())}</Text>
-            </Box>
-          </Grid.Item>
-          <Grid.Item xs={12} m={4} alignSelf="center">
+          <Grid.Item xs={12} m={10} alignSelf="center">
             <Box
               display="flex"
               justifyContent="flex-end"
@@ -91,6 +86,9 @@ export const Masthead = ({ user, children }: MastheadProps) => {
       <Divider />
       <Box display="flex" justifyContent="space-between" xsPy={8}>
         <Text variant="byline">Established 2024</Text>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Text variant="byline">{formatDate(new Date())}</Text>
+        </Box>
         <Text variant="byline">theledger.dev</Text>
       </Box>
       <Divider variant="heavy" />
