@@ -21,7 +21,6 @@ import { getUserNetWorth } from "~/utils/netWorthUtils.server";
 import type { Route as RootRoute } from "../+types/root";
 
 import type { Route } from "./+types/_index";
-import styles from "./_index.module.css";
 
 export const meta: MetaFunction = () => [{ title: "The Ledger" }];
 
@@ -308,111 +307,121 @@ export default function Index({ loaderData }: Route.ComponentProps) {
           </Box>
         )}
       </Box>
-      <div className={rootLoaderData?.colorMode === "dark" ? "light" : "dark"}>
-        <Box xsPx={56} xsPy={32} bg="sand-3">
-          <Box display="flex" justifyContent="space-between" xsPb={16}>
-            <Text variant="byline">Section A · Our Principles</Text>
-            <Text variant="byline">Five Rules, Settled on the first day</Text>
+      {user ? (
+        <></>
+      ) : (
+        <div
+          className={rootLoaderData?.colorMode === "dark" ? "light" : "dark"}
+        >
+          <Box xsPx={56} xsPy={32} bg="sand-3">
+            <Box display="flex" justifyContent="space-between" xsPb={16}>
+              <Text variant="byline">Section A · Our Principles</Text>
+              <Text variant="byline">Five Rules, Settled on the first day</Text>
+            </Box>
+            <Divider variant="heavy" />
+            <Box
+              xsColumns={1}
+              lColumns={5}
+              columnRule={{ color: "sand-7" }}
+              xsMt={24}
+            >
+              <Box xsPx={16}>
+                <Heading level={3} fontSize={60}>
+                  01
+                </Heading>
+                <Heading level={3} fontSize={20}>
+                  No advertising
+                </Heading>
+                <Text>
+                  There is no advertising business in The Ledger. Nothing in the
+                  page is sold.
+                </Text>
+              </Box>
+              <Box xsPx={16}>
+                <Heading level={3} fontSize={60}>
+                  02
+                </Heading>
+                <Heading level={3} fontSize={20}>
+                  No upsells
+                </Heading>
+                <Text>
+                  There is one tier. It is the free one. It will remain the free
+                  one.
+                </Text>
+              </Box>
+              <Box xsPx={16}>
+                <Heading level={3} fontSize={60}>
+                  03
+                </Heading>
+                <Heading level={3} fontSize={20}>
+                  No coaching
+                </Heading>
+                <Text>
+                  The Ledger does not congratulate, commiserate, or compare you
+                  against a peer cohort.
+                </Text>
+              </Box>
+              <Box xsPx={16}>
+                <Heading level={3} fontSize={60}>
+                  04
+                </Heading>
+                <Heading level={3} fontSize={20}>
+                  No nudges
+                </Heading>
+                <Text>
+                  No push notifications. No emails. No surfaced offers. No
+                  streaks.
+                </Text>
+              </Box>
+              <Box xsPx={16}>
+                <Heading level={3} fontSize={60}>
+                  05
+                </Heading>
+                <Heading level={3} fontSize={20}>
+                  Yours to delete
+                </Heading>
+                <Text>
+                  Your data exports as a single file. It deletes from a single
+                  button. Permanently.
+                </Text>
+              </Box>
+            </Box>
           </Box>
-          <Divider variant="heavy" />
-          <Box
-            xsColumns={1}
-            lColumns={5}
-            columnRule={{ color: "sand-7" }}
-            xsMt={24}
-          >
-            <Box xsPx={16}>
-              <Heading level={3} fontSize={60}>
-                01
-              </Heading>
-              <Heading level={3} fontSize={20}>
-                No advertising
-              </Heading>
-              <Text>
-                There is no advertising business in The Ledger. Nothing in the
-                page is sold.
-              </Text>
-            </Box>
-            <Box xsPx={16}>
-              <Heading level={3} fontSize={60}>
-                02
-              </Heading>
-              <Heading level={3} fontSize={20}>
-                No upsells
-              </Heading>
-              <Text>
-                There is one tier. It is the free one. It will remain the free
-                one.
-              </Text>
-            </Box>
-            <Box xsPx={16}>
-              <Heading level={3} fontSize={60}>
-                03
-              </Heading>
-              <Heading level={3} fontSize={20}>
-                No coaching
-              </Heading>
-              <Text>
-                The Ledger does not congratulate, commiserate, or compare you
-                against a peer cohort.
-              </Text>
-            </Box>
-            <Box xsPx={16}>
-              <Heading level={3} fontSize={60}>
-                04
-              </Heading>
-              <Heading level={3} fontSize={20}>
-                No nudges
-              </Heading>
-              <Text>
-                No push notifications. No emails. No surfaced offers. No
-                streaks.
-              </Text>
-            </Box>
-            <Box xsPx={16}>
-              <Heading level={3} fontSize={60}>
-                05
-              </Heading>
-              <Heading level={3} fontSize={20}>
-                Yours to delete
-              </Heading>
-              <Text>
-                Your data exports as a single file. It deletes from a single
-                button. Permanently.
-              </Text>
-            </Box>
-          </Box>
-        </Box>
-      </div>
+        </div>
+      )}
       <Box display="flex" xsGap={32} justifyContent="space-between">
-        <Box>
-          <h2>Highlights</h2>
-          <ul>
-            {thirtyDayChange !== 0 ? (
-              <li>
-                {thirtyDayChange > 0 ? "Up" : "Down"}{" "}
-                {formatCurrency(thirtyDayChange, { includeCents: false })} over
-                the last 30 days
-              </li>
-            ) : null}
+        {user ? (
+          <Box>
+            <h2>Highlights</h2>
+            <ul>
+              {thirtyDayChange !== 0 ? (
+                <li>
+                  {thirtyDayChange > 0 ? "Up" : "Down"}{" "}
+                  {formatCurrency(thirtyDayChange, { includeCents: false })}{" "}
+                  over the last 30 days
+                </li>
+              ) : null}
 
-            {thisYearChange !== 0 ? (
-              <li>
-                {thisYearChange > 0 ? "Up" : "Down"}{" "}
-                {formatCurrency(thisYearChange, { includeCents: false })} since
-                the beginning of this year
-              </li>
-            ) : null}
+              {thisYearChange !== 0 ? (
+                <li>
+                  {thisYearChange > 0 ? "Up" : "Down"}{" "}
+                  {formatCurrency(thisYearChange, { includeCents: false })}{" "}
+                  since the beginning of this year
+                </li>
+              ) : null}
 
-            {oneYearChange !== 0 ? (
-              <li>
-                {oneYearChange > 0 ? "Up" : "Down"}{" "}
-                {formatCurrency(oneYearChange, { includeCents: false })} over
-                the last year
-              </li>
-            ) : null}
-          </ul>
-        </Box>
+              {oneYearChange !== 0 ? (
+                <li>
+                  {oneYearChange > 0 ? "Up" : "Down"}{" "}
+                  {formatCurrency(oneYearChange, { includeCents: false })} over
+                  the last year
+                </li>
+              ) : null}
+            </ul>
+          </Box>
+        ) : (
+          <></>
+        )}
         <Box display="flex" flexGrow={1}>
           <BalanceChart
             balances={loaderData.balances}
@@ -420,61 +429,6 @@ export default function Index({ loaderData }: Route.ComponentProps) {
           />
         </Box>
       </Box>
-      {!user ? (
-        <>
-          <Divider />
-          <div className={styles.editorial}>
-            <div className={styles.story}>
-              <p>
-                I lost years of financial history when Mint - Intuit&apos;s
-                personal finance app - shut down in early 2024. Rather than
-                migrate to another product with no guarantee of longevity, I
-                built a replacement I fully control.
-              </p>
-              <p>
-                Every decision in this project reflects a single priority:
-                durability. SQLite instead of Postgres - because a single file
-                is simpler to back up and reason about. Daily pulls instead of
-                webhooks - because they&apos;re free, predictable, and degrade
-                gracefully when they miss a day. Cookie sessions instead of
-                OAuth - because they&apos;re easy to audit and require no third
-                party.
-              </p>
-              <p>
-                The result has been running reliably in production since January
-                2026. It syncs automatically each day via a scheduled GitHub
-                Actions job, requires almost no ongoing maintenance, and has
-                cost almost nothing to operate since launch.
-              </p>
-            </div>
-            <aside className={styles.specsBox}>
-              <h3 className={styles.specsTitle}>Specifications</h3>
-              <dl className={styles.specsList}>
-                <div className={styles.specsItem}>
-                  <dt className={styles.specsLabel}>Stack</dt>
-                  <dd>React Router 7 · SQLite · Prisma · Plaid · Fly.io</dd>
-                </div>
-                <div className={styles.specsItem}>
-                  <dt className={styles.specsLabel}>Auth</dt>
-                  <dd>Cookie sessions · TOTP two-factor authentication</dd>
-                </div>
-                <div className={styles.specsItem}>
-                  <dt className={styles.specsLabel}>Data model</dt>
-                  <dd>Daily balance snapshots with carry-forward logic</dd>
-                </div>
-                <div className={styles.specsItem}>
-                  <dt className={styles.specsLabel}>Background jobs</dt>
-                  <dd>Scheduled GitHub Actions cron trigger</dd>
-                </div>
-                <div className={styles.specsItem}>
-                  <dt className={styles.specsLabel}>Testing</dt>
-                  <dd>Vitest · Cypress</dd>
-                </div>
-              </dl>
-            </aside>
-          </div>
-        </>
-      ) : null}
     </div>
   );
 }
