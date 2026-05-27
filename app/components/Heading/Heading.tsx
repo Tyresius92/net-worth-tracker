@@ -22,7 +22,9 @@ export const Heading = ({ level, children, fontSize }: HeadingProps) => {
   return (
     <Tag
       className={`${styles.base} ${levelClass[level]}`}
-      style={fontSize ? { fontSize: `var(--font-size-${fontSize})` } : undefined}
+      style={
+        fontSize ? { fontSize: `var(--font-size-${fontSize})` } : undefined
+      }
     >
       {children}
     </Tag>

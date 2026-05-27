@@ -103,7 +103,7 @@ export default function AdminDeleteUserPage() {
   const displayError = actionData?.error ?? error;
 
   return (
-    <Box p={24} maxWidth={480}>
+    <Box xsP={24} maxWidth={480}>
       <h1 className={styles.heading}>Delete Account</h1>
 
       <p className={styles.target}>
@@ -128,7 +128,7 @@ export default function AdminDeleteUserPage() {
         <p className={styles.formError}>{displayError}</p>
       ) : (
         <Form method="post">
-          <Box display="flex" flexDirection="column" gap={12} mt={24}>
+          <Box display="flex" flexDirection="column" xsGap={12} xsMt={24}>
             <Button type="submit" variant="danger">
               Permanently delete this account
             </Button>
@@ -138,7 +138,7 @@ export default function AdminDeleteUserPage() {
       )}
 
       {displayError ? (
-        <Box mt={16}>
+        <Box xsMt={16}>
           <Link to={`/users/${target.id}`}>← Back</Link>
         </Box>
       ) : null}

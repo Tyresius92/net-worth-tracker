@@ -96,7 +96,7 @@ export default function AccountDetailsRoute({
   return (
     <Box>
       <Box>
-        <Box display="flex" flexDirection="row" gap={8} mb={16}>
+        <Box display="flex" flexDirection="row" xsGap={8} xsMb={16}>
           <Box>
             <Link to="edit">Edit Account</Link>
           </Box>

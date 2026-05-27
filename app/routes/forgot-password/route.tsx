@@ -75,7 +75,7 @@ export default function ForgotPasswordPage() {
           <Divider variant="light" />
         </div>
 
-        <Box borderColor="sand-12" p={24}>
+        <Box borderColor="sand-12" xsP={24}>
           <p className={styles.confirmation}>
             If that email address is registered, you&apos;ll receive a password
             reset link shortly. The link expires in one hour.
@@ -100,7 +100,7 @@ export default function ForgotPasswordPage() {
         </p>
       </div>
 
-      <Box borderColor="sand-12" p={24}>
+      <Box borderColor="sand-12" xsP={24}>
         <Form method="post">
           <TextInput
             type="email"

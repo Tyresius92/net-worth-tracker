@@ -78,7 +78,11 @@ describe("Text", () => {
   });
 
   it("applies the dropCap class when dropCap is true", () => {
-    render(<Text variant="body" dropCap>Paragraph</Text>);
+    render(
+      <Text variant="body" dropCap>
+        Paragraph
+      </Text>,
+    );
     expect(screen.getByText("Paragraph").className).toMatch(/dropCap/);
   });
 

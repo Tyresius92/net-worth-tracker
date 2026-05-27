@@ -24,7 +24,7 @@ const config: StorybookConfig = {
     },
   },
   viteFinal(config) {
-    config.base = '/storybook/';
+    config.base = "/storybook/";
     config.plugins = [
       ...(config.plugins ?? []),
       {

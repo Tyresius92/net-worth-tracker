@@ -68,7 +68,7 @@ export default function NewAccountForm({
           name="customName"
           errorMessage={actionData?.errors.customName}
         />
-        <Box my={16}>
+        <Box xsMy={16}>
           <Select
             label="Account Type"
             name="type"

@@ -23,7 +23,7 @@ export const Checkbox = ({
   const inputId = useId();
 
   return (
-    <Box display="flex" alignItems="center" gap={8} mb={20}>
+    <Box display="flex" alignItems="center" xsGap={8} xsMb={20}>
       <RadixCheckbox.Root
         id={inputId}
         name={name}

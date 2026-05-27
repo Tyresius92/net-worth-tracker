@@ -49,7 +49,7 @@ export default function LinkedAccountsLayout({
   const closedAccounts = loaderData.accounts.filter((acc) => acc.closedAt);
 
   return (
-    <Box display="flex" gap={32}>
+    <Box display="flex" xsGap={32}>
       <nav aria-label="Accounts" className={styles.nav}>
         <div className={styles["create-links"]}>
           <Link to="new">Create Account</Link>
@@ -92,7 +92,7 @@ export default function LinkedAccountsLayout({
           </div>
         ) : null}
       </nav>
-      <Box px={32} py={32}>
+      <Box xsPx={32} xsPy={32}>
         <Outlet />
       </Box>
     </Box>

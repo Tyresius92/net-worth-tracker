@@ -121,7 +121,9 @@ Setting `columnCount` on Box enables CSS multi-column layout. Use `columnGap` to
 `textAlign` and `hyphens` are available on all Box variants and emit directly as CSS properties. Use these when the layout context requires alignment or hyphenation control that would otherwise need a wrapper element.
 
 ```tsx
-<Box textAlign="justify" hyphens="auto">…</Box>
+<Box textAlign="justify" hyphens="auto">
+  …
+</Box>
 ```
 
 Prefer setting these on the innermost element that needs them rather than on a layout wrapper.

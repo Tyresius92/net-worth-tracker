@@ -154,7 +154,7 @@ export default function LoginPage() {
         <p className={styles.tagline}>Track your net worth, issue by issue.</p>
       </div>
 
-      <Box borderColor="sand-12" p={24}>
+      <Box borderColor="sand-12" xsP={24}>
         <Form method="post">
           <TextInput
             ref={emailRef}

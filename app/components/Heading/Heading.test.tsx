@@ -53,7 +53,11 @@ describe("Heading", () => {
   });
 
   it("applies a font-size token as an inline style when fontSize is given", () => {
-    render(<Heading level={1} fontSize={88}>Title</Heading>);
+    render(
+      <Heading level={1} fontSize={88}>
+        Title
+      </Heading>,
+    );
     expect(
       screen.getByRole("heading", { level: 1 }).getAttribute("style"),
     ).toContain("var(--font-size-88)");

@@ -34,7 +34,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export default function AccountIdLayout({ loaderData }: Route.ComponentProps) {
   return (
     <Box>
-      <Box mb={32}>
+      <Box xsMb={32}>
         <h2>
           {loaderData.account.closedAt ? "CLOSED: " : ""}Account ID:{" "}
           {loaderData.account.id}

@@ -29,7 +29,7 @@ export const Masthead = ({ user, children }: MastheadProps) => {
   };
 
   return (
-    <Box px={56} pt={12}>
+    <Box xsPx={56} xsPt={12}>
       <nav aria-label="Main">
         <Grid>
           <Grid.Item xs={12} m={4} alignSelf="center">
@@ -44,7 +44,7 @@ export const Masthead = ({ user, children }: MastheadProps) => {
             <Box
               display="flex"
               justifyContent="flex-end"
-              gap={32}
+              xsGap={32}
               alignItems="center"
             >
               {user ? (
@@ -54,7 +54,7 @@ export const Masthead = ({ user, children }: MastheadProps) => {
                   ) : null}
                   <NavLink to="/accounts">Accounts</NavLink>
                   <NavLink to="/settings">Settings</NavLink>
-                  <Box p={12}>
+                  <Box xsP={12}>
                     <Form method="post" action="logout">
                       <Button type="submit">Log Out</Button>
                     </Form>
@@ -75,8 +75,8 @@ export const Masthead = ({ user, children }: MastheadProps) => {
       <Box
         display="flex"
         alignItems="center"
-        py={16}
-        gap={12}
+        xsPy={16}
+        xsGap={12}
         flexDirection="column"
       >
         <Link to="/" className={styles["site-title-link"]}>
@@ -87,9 +87,9 @@ export const Masthead = ({ user, children }: MastheadProps) => {
         </Text>
       </Box>
       <Divider variant="heavy" />
-      <Box p={2} />
+      <Box xsP={2} />
       <Divider />
-      <Box display="flex" justifyContent="space-between" py={8}>
+      <Box display="flex" justifyContent="space-between" xsPy={8}>
         <Text variant="byline">Established 2024</Text>
         <Text variant="byline">theledger.dev</Text>
       </Box>

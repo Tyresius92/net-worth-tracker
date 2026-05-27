@@ -128,7 +128,7 @@ export default function TwoFactorAuth() {
         </p>
       </div>
 
-      <Box borderColor="sand-12" p={24}>
+      <Box borderColor="sand-12" xsP={24}>
         <Form method="post">
           <input type="hidden" name="mode" value={mode} />
           {mode === "totp" ? (

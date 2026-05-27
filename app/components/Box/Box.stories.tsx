@@ -15,15 +15,15 @@ export const Default: Story = {
 };
 
 export const WithPadding: Story = {
-  args: { children: "Padded content", p: 16, m: 32 },
+  args: { children: "Padded content", xsP: 16, xsM: 32 },
 };
 
 export const WithBackground: Story = {
-  args: { children: "Colored background", bg: "sand-3", p: 12 },
+  args: { children: "Colored background", bg: "sand-3", xsP: 12 },
 };
 
 export const WithBorder: Story = {
-  args: { children: "Bordered box", border: { color: "sand-7" }, p: 12 },
+  args: { children: "Bordered box", border: { color: "sand-7" }, xsP: 12 },
 };
 
 export const WithSideBorder: Story = {
@@ -31,19 +31,19 @@ export const WithSideBorder: Story = {
   args: {
     children: "Left-ruled box",
     borderLeft: { color: "sand-8", width: 3 },
-    pl: 12,
+    xsPl: 12,
   },
 };
 
 export const WithMaxWidth: Story = {
-  args: { children: "Max width box", maxWidth: 400, p: 12, bg: "sand-2" },
+  args: { children: "Max width box", maxWidth: 400, xsP: 12, bg: "sand-2" },
 };
 
 export const WithColumnLayout: Story = {
   args: {
     xsColumns: 1,
     mColumns: 2,
-    columnGap: 24,
+    xsColumnGap: 24,
     columnRule: { color: "sand-6" },
     children:
       "Every decision in this project reflects a single priority: durability. SQLite instead of Postgres — because a single file is simpler to back up and reason about. React Router instead of Next.js — because the file conventions fit the mental model. No ORM magic — because raw Prisma is already close enough to SQL that another abstraction layer adds confusion without removing complexity.",

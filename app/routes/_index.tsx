@@ -203,21 +203,21 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         minHeight: "100%",
       }}
     >
-      <Box px={56}>
+      <Box xsPx={56}>
         {user ? (
           <h1 style={{ textTransform: "uppercase" }}>
             Your net worth is {formatCurrency(netWorth)}
           </h1>
         ) : (
-          <Box py={32}>
+          <Box xsPy={32}>
             <Box
               display="flex"
               flexDirection="column"
               justifyContent="center"
               alignItems="center"
               textAlign="center"
-              pt={32}
-              gap={16}
+              xsPt={32}
+              xsGap={16}
             >
               <Heading level={1} fontSize={88}>
                 A Ledger
@@ -236,7 +236,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                 By the Editors · Reported from your kitchen table
               </Text>
             </Box>
-            <Box pt={16}>
+            <Box xsPt={16}>
               <Grid>
                 <Grid.Item xs={12} m={3}></Grid.Item>
                 <Grid.Item xs={12} m={6}>
@@ -246,9 +246,9 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                     columnRule={{
                       color: "sand-7",
                     }}
-                    columnGap={56}
+                    xsColumnGap={56}
                   >
-                    <Box mb={16}>
+                    <Box xsMb={16}>
                       <Text dropCap>
                         The Ledger is a personal net worth tracker. It collects,
                         in one place, what you own and what you owe across every
@@ -259,7 +259,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                         is.
                       </Text>
                     </Box>
-                    <Box mb={16}>
+                    <Box xsMb={16}>
                       <Text>
                         To use it, you sign up for a free subscription, add the
                         accounts you want it to know about, and from then on the
@@ -268,7 +268,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                         at you.
                       </Text>
                     </Box>
-                    <Box mb={16}>
+                    <Box xsMb={16}>
                       <Text>
                         Accounts can be added two ways. The first is by hand,
                         which works for the parts of American finance that no
@@ -280,12 +280,12 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                         and silently into your file.
                       </Text>
                     </Box>
-                    <Box mb={16}>
+                    <Box xsMb={16}>
                       <Text>
                         Both methods coexist. You are not asked to pick.
                       </Text>
                     </Box>
-                    <Box mb={16}>
+                    <Box xsMb={16}>
                       <Text>
                         The Ledger is free. It will remain free. If, after some
                         weeks of using it, you find it useful, there is a tip
@@ -294,7 +294,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                         is the only place money changes hands.
                       </Text>
                     </Box>
-                    <Box mb={16}>
+                    <Box xsMb={16}>
                       <Text>
                         To begin, sign up. It takes a minute and asks for very
                         little.
@@ -309,8 +309,8 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         )}
       </Box>
       <div className={rootLoaderData?.colorMode === "dark" ? "light" : "dark"}>
-        <Box px={56} py={32} bg="sand-3">
-          <Box display="flex" justifyContent="space-between" pb={16}>
+        <Box xsPx={56} xsPy={32} bg="sand-3">
+          <Box display="flex" justifyContent="space-between" xsPb={16}>
             <Text variant="byline">Section A · Our Principles</Text>
             <Text variant="byline">Five Rules, Settled on the first day</Text>
           </Box>
@@ -319,9 +319,9 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             xsColumns={1}
             lColumns={5}
             columnRule={{ color: "sand-7" }}
-            mt={24}
+            xsMt={24}
           >
-            <Box px={16}>
+            <Box xsPx={16}>
               <Heading level={3} fontSize={60}>
                 01
               </Heading>
@@ -333,7 +333,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                 page is sold.
               </Text>
             </Box>
-            <Box px={16}>
+            <Box xsPx={16}>
               <Heading level={3} fontSize={60}>
                 02
               </Heading>
@@ -345,7 +345,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                 one.
               </Text>
             </Box>
-            <Box px={16}>
+            <Box xsPx={16}>
               <Heading level={3} fontSize={60}>
                 03
               </Heading>
@@ -357,7 +357,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                 against a peer cohort.
               </Text>
             </Box>
-            <Box px={16}>
+            <Box xsPx={16}>
               <Heading level={3} fontSize={60}>
                 04
               </Heading>
@@ -369,7 +369,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                 streaks.
               </Text>
             </Box>
-            <Box px={16}>
+            <Box xsPx={16}>
               <Heading level={3} fontSize={60}>
                 05
               </Heading>
@@ -384,7 +384,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
           </Box>
         </Box>
       </div>
-      <Box display="flex" gap={32} justifyContent="space-between">
+      <Box display="flex" xsGap={32} justifyContent="space-between">
         <Box>
           <h2>Highlights</h2>
           <ul>

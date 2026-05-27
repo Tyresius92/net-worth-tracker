@@ -48,7 +48,7 @@ export default function NewNotePage() {
 
   return (
     <Form method="post">
-      <Box display="flex" flexDirection="column" gap={8}>
+      <Box display="flex" flexDirection="column" xsGap={8}>
         <Box>
           <label>
             <span>Title: </span>

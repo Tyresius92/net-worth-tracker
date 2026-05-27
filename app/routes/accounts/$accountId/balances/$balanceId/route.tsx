@@ -74,7 +74,7 @@ export default function BalanceDetailRoute({
       <Box>
         <h5>Actions</h5>
         <Link to="edit">Edit</Link>
-        <Box pt={20}>
+        <Box xsPt={20}>
           <Form method="post">
             <Button type="submit" name="intent" value="delete">
               Delete

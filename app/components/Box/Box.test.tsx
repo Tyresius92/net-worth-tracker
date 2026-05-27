@@ -24,6 +24,92 @@ describe("Box", () => {
     expect(screen.getByText("content")).toHaveStyle({ hyphens: "auto" });
   });
 
+  describe("responsive spacing", () => {
+    it("sets a padding custom property from xsPb", () => {
+      render(<Box xsPb={16}>content</Box>);
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("--box-pb-xs: var(--space-16)");
+    });
+
+    it("xsP shorthand sets all four sides", () => {
+      render(<Box xsP={12}>content</Box>);
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("--box-pt-xs: var(--space-12)");
+      expect(style).toContain("--box-pb-xs: var(--space-12)");
+      expect(style).toContain("--box-pl-xs: var(--space-12)");
+      expect(style).toContain("--box-pr-xs: var(--space-12)");
+    });
+
+    it("xsPx shorthand sets left and right only", () => {
+      render(<Box xsPx={8}>content</Box>);
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("--box-pl-xs: var(--space-8)");
+      expect(style).toContain("--box-pr-xs: var(--space-8)");
+      expect(style).not.toContain("--box-pt-xs");
+      expect(style).not.toContain("--box-pb-xs");
+    });
+
+    it("a specific side overrides xsPx", () => {
+      render(
+        <Box xsPx={8} xsPl={24}>
+          content
+        </Box>,
+      );
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("--box-pl-xs: var(--space-24)");
+      expect(style).toContain("--box-pr-xs: var(--space-8)");
+    });
+
+    it("sets a breakpoint-specific padding property from mPb", () => {
+      render(
+        <Box xsPb={8} mPb={32}>
+          content
+        </Box>,
+      );
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("--box-pb-xs: var(--space-8)");
+      expect(style).toContain("--box-pb-m: var(--space-32)");
+    });
+
+    it("sets margin custom properties from xsMb", () => {
+      render(<Box xsMb={16}>content</Box>);
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("--box-mb-xs: var(--space-16)");
+    });
+
+    it("xsGap shorthand sets both row-gap and col-gap", () => {
+      render(
+        <Box display="flex" xsGap={8}>
+          content
+        </Box>,
+      );
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("--box-row-gap-xs: var(--space-8)");
+      expect(style).toContain("--box-col-gap-xs: var(--space-8)");
+    });
+
+    it("xsRowGap overrides xsGap for row-gap only", () => {
+      render(
+        <Box display="flex" xsGap={8} xsRowGap={16}>
+          content
+        </Box>,
+      );
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("--box-row-gap-xs: var(--space-16)");
+      expect(style).toContain("--box-col-gap-xs: var(--space-8)");
+    });
+
+    it("applies the .box class when spacing props are provided", () => {
+      render(<Box xsPb={8}>content</Box>);
+      expect(screen.getByText("content").className).toContain("box");
+    });
+
+    it("does not apply the .box class when no spacing props are provided", () => {
+      render(<Box bg="sand-3">content</Box>);
+      expect(screen.getByText("content").className).not.toContain("box");
+    });
+  });
+
   describe("multi-column layout", () => {
     it("sets column count CSS custom properties", () => {
       render(<Box xsColumns={2}>content</Box>);
@@ -32,7 +118,11 @@ describe("Box", () => {
     });
 
     it("cascades column count up through breakpoints by default", () => {
-      render(<Box xsColumns={1} mColumns={2}>content</Box>);
+      render(
+        <Box xsColumns={1} mColumns={2}>
+          content
+        </Box>,
+      );
       const style = screen.getByText("content").getAttribute("style") ?? "";
       expect(style).toContain("--box-col-xs: 1");
       expect(style).toContain("--box-col-s: 1");
@@ -67,7 +157,6 @@ describe("Box", () => {
     it("applies a border prop to all four sides", () => {
       render(<Box border={{ color: "sand-7" }}>content</Box>);
       const style = screen.getByText("content").getAttribute("style") ?? "";
-      // jsdom collapses identical four-side values into shorthand
       expect(style).toContain("var(--color-sand-7)");
     });
 
@@ -78,7 +167,6 @@ describe("Box", () => {
         </Box>,
       );
       const style = screen.getByText("content").getAttribute("style") ?? "";
-      // jsdom collapses to 2-value shorthand: "top/bottom right/left"
       expect(style).toContain(
         "border-color: var(--color-sand-3) var(--color-sand-7)",
       );
@@ -95,7 +183,6 @@ describe("Box", () => {
         </Box>,
       );
       const style = screen.getByText("content").getAttribute("style") ?? "";
-      // jsdom collapses to 3-value shorthand: "top right/left bottom"
       expect(style).toContain(
         "border-color: var(--color-sand-1) var(--color-sand-7) var(--color-sand-3)",
       );
@@ -104,7 +191,6 @@ describe("Box", () => {
     it("applies border width and style defaults", () => {
       render(<Box border={{ color: "sand-7" }}>content</Box>);
       const style = screen.getByText("content").getAttribute("style") ?? "";
-      // jsdom collapses identical four-side values into shorthand
       expect(style).toContain("border-width: 1px");
       expect(style).toContain("border-style: solid");
     });
