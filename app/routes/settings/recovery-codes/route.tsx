@@ -110,7 +110,7 @@ export default function RecoveryCodesPage() {
 
   if (newCodes) {
     return (
-      <Box p={24}>
+      <Box xsP={24}>
         <h1 className={styles.headline}>Save Your Recovery Codes</h1>
         <p className={styles.descriptor}>
           Store these codes somewhere safe — they will not be shown again. Each
@@ -134,7 +134,7 @@ export default function RecoveryCodesPage() {
   }
 
   return (
-    <Box p={24}>
+    <Box xsP={24}>
       <h1 className={styles.headline}>Recovery Codes</h1>
 
       {exhausted ? (

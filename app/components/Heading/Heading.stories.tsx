@@ -21,3 +21,8 @@ export const Level2: Story = {
 export const Level3: Story = {
   args: { level: 3, children: "Specifications" },
 };
+
+export const FontSizeOverride: Story = {
+  name: "fontSize override",
+  args: { level: 1, children: "A Ledger of Your Own.", fontSize: 88 },
+};

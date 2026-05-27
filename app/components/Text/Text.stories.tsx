@@ -55,3 +55,12 @@ export const AsSpan: Story = {
     children: "Rendered as an inline span instead of a paragraph.",
   },
 };
+
+export const DropCap: Story = {
+  args: {
+    variant: "body",
+    dropCap: true,
+    children:
+      "Every decision in this project reflects a single priority: durability. SQLite instead of Postgres — because a single file is simpler to back up and reason about. React Router instead of Next.js — because the file conventions fit the mental model.",
+  },
+};

@@ -1,9 +1,8 @@
-.divider {
+.default {
   background-color: var(--color-sand-12);
   border: none;
   flex-shrink: 0;
   height: 1px;
-  margin-block: var(--space-12);
   opacity: 70%;
 }
 
@@ -12,4 +11,13 @@
   border: none;
   height: 1px;
   margin: 0;
+}
+
+.heavy {
+  background-color: var(--color-sand-12);
+  border: none;
+  flex-shrink: 0;
+  height: 3px;
+  margin: 0;
+  opacity: 100%;
 }

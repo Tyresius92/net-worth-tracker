@@ -1,18 +1,28 @@
-import type { LoaderFunctionArgs, MetaFunction } from "react-router";
+import {
+  useRouteLoaderData,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from "react-router";
 
 import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";
 import { Divider } from "~/components/Divider/Divider";
+import { Grid } from "~/components/Grid/Grid";
+import { Heading } from "~/components/Heading/Heading";
+import { Link } from "~/components/Link/Link";
+import { Table } from "~/components/Table/Table";
+import { Text } from "~/components/Text/Text";
 import { prisma } from "~/db.server";
 import { getLatestBalancesAsOfDate } from "~/models/user.server";
 import { getUser } from "~/session.server";
 import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
-import { getDateNDaysAgo } from "~/utils/dateUtils";
+import { formatDate, getDateNDaysAgo } from "~/utils/dateUtils";
 import { getUserNetWorth } from "~/utils/netWorthUtils.server";
 
+import type { Route as RootRoute } from "../+types/root";
+
 import type { Route } from "./+types/_index";
-import styles from "./_index.module.css";
 
 export const meta: MetaFunction = () => [{ title: "The Ledger" }];
 
@@ -21,7 +31,9 @@ function generateDemoBalances() {
   today.setHours(0, 0, 0, 0);
 
   const startDate = new Date(today);
-  startDate.setMonth(startDate.getMonth() - 24);
+  const monthsBack = 20 + Math.floor(Math.random() * 9); // 20–28 months
+  startDate.setMonth(startDate.getMonth() - monthsBack);
+  startDate.setDate(1 + Math.floor(Math.random() * 28)); // random day 1–28
 
   const totalMs = today.getTime() - startDate.getTime();
   const balances: { date: string; amount: number }[] = [];
@@ -45,7 +57,7 @@ function generateDemoBalances() {
     current.setDate(current.getDate() + 7);
   }
 
-  return balances;
+  return { balances, startDate, today };
 }
 
 function findDemoAmountAtDate(
@@ -64,7 +76,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await getUser(request);
 
   if (!user) {
-    const demoBalances = generateDemoBalances();
+    const {
+      balances: demoBalances,
+      startDate: demoStartDate,
+      today: demoToday,
+    } = generateDemoBalances();
     const demoNetWorth = demoBalances[demoBalances.length - 1]?.amount ?? 0;
 
     const thirtyDaysAgo = new Date();
@@ -83,6 +99,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       netWorthFromStartOfYear: findDemoAmountAtDate(demoBalances, startOfYear),
       netWorthFromOneYearAgo: findDemoAmountAtDate(demoBalances, oneYearAgo),
       balances: demoBalances,
+      startDate: demoStartDate.toISOString(),
+      today: demoToday.toISOString(),
     };
   }
 
@@ -169,16 +187,33 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     ),
     netWorthFromOneYearAgo: getUserNetWorth(dataFromOneYearAgo.accounts),
     balances: balanceDays,
+    today: new Date().toISOString(),
+    startDate: userData.accounts
+      .reduce((acc, curr) => {
+        const snapDate = curr.balanceSnapshots[0]?.dateTime ?? undefined;
+
+        if (snapDate && snapDate < acc) {
+          return snapDate;
+        }
+
+        return acc;
+      }, new Date())
+      .toISOString(),
   };
 };
 
 export default function Index({ loaderData }: Route.ComponentProps) {
+  const rootLoaderData =
+    useRouteLoaderData<RootRoute.ComponentProps["loaderData"]>("root");
+
   const {
     user,
     netWorth,
     netWorthFromThirtyDaysAgo,
     netWorthFromOneYearAgo,
     netWorthFromStartOfYear,
+    startDate,
+    today,
   } = loaderData;
 
   const thirtyDayChange = netWorth - netWorthFromThirtyDaysAgo;
@@ -191,25 +226,310 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         minHeight: "100%",
       }}
     >
-      <Box>
+      <Box xsPx={56}>
         {user ? (
           <h1 style={{ textTransform: "uppercase" }}>
             Your net worth is {formatCurrency(netWorth)}
           </h1>
         ) : (
-          <div className={styles.hero}>
-            <h2 className={styles.headline}>
-              I built the finance tool I couldn&apos;t find.
-            </h2>
-            <p className={styles.deck}>
-              A self-hosted net worth tracker with automatic daily syncing,
-              historical snapshots, and full data ownership - designed to run
-              forever at near-zero cost.
-            </p>
-            <p className={styles.byline}>By Tyrel Clayton · Est. 2024</p>
-          </div>
+          <Box xsPy={32}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              textAlign="center"
+              xsPt={32}
+              xsGap={16}
+            >
+              <Heading level={1} fontSize={88}>
+                A Ledger
+                <br />
+                of Your Own
+              </Heading>
+              <Text variant="deck">
+                A privacy-first net worth tracker for anyone in the United
+                States with accounts worth keeping track of.
+              </Text>
+              <Text>
+                Manual where it must be. Automatic where it can be. Nothing in
+                between trying to sell you something.
+              </Text>
+              <Text variant="byline">
+                By the Editors · Reported from your kitchen table
+              </Text>
+            </Box>
+            <Box xsPt={16}>
+              <Grid>
+                <Grid.Item xs={12} m={3}></Grid.Item>
+                <Grid.Item xs={12} m={6}>
+                  <Box
+                    xsColumns={1}
+                    lColumns={2}
+                    columnRule={{
+                      color: "sand-7",
+                    }}
+                    xsColumnGap={56}
+                  >
+                    <Box xsMb={16}>
+                      <Text dropCap>
+                        The Ledger is a personal net worth tracker. It collects,
+                        in one place, what you own and what you owe across every
+                        account you choose to add. It does not sell advertising.
+                        It does not surface offers. It does not measure your
+                        savings rate against a peer cohort, nor does it
+                        congratulate you for any of it. The Ledger reports what
+                        is.
+                      </Text>
+                    </Box>
+                    <Box xsMb={16}>
+                      <Text>
+                        To use it, you sign up for a free subscription, add the
+                        accounts you want it to know about, and from then on the
+                        page shows you, day after day, where things stand.
+                        Balances flow in. The chart updates. Nothing is shouted
+                        at you.
+                      </Text>
+                    </Box>
+                    <Box xsMb={16}>
+                      <Text>
+                        Accounts can be added two ways. The first is by hand,
+                        which works for the parts of American finance that no
+                        API has caught up with (your mortgage servicer, a CD at
+                        a credit union, the cash under your mattress, the
+                        savings bond your grandmother bought in 1994). The
+                        second is through Plaid, the same connection layer your
+                        bank already uses, which pulls balances automatically
+                        and silently into your file.
+                      </Text>
+                    </Box>
+                    <Box xsMb={16}>
+                      <Text>
+                        Both methods coexist. You are not asked to pick.
+                      </Text>
+                    </Box>
+                    <Box xsMb={16}>
+                      <Text>
+                        The Ledger is free. It will remain free. If, after some
+                        weeks of using it, you find it useful, there is a tip
+                        jar. The tip jar is on a separate page. It is not
+                        connected to any data you see in the application, and it
+                        is the only place money changes hands.
+                      </Text>
+                    </Box>
+                    <Box xsMb={16}>
+                      <Text>
+                        To begin, sign up. It takes a minute and asks for very
+                        little.
+                      </Text>
+                    </Box>
+                  </Box>
+                </Grid.Item>
+                <Grid.Item xs={12} m={3}></Grid.Item>
+              </Grid>
+            </Box>
+          </Box>
         )}
-        <Box display="flex" gap={32} justifyContent="space-between">
+      </Box>
+      {user ? (
+        <></>
+      ) : (
+        <div
+          className={rootLoaderData?.colorMode === "dark" ? "light" : "dark"}
+        >
+          <Box xsPx={56} xsPy={32} bg="sand-3">
+            <Box display="flex" justifyContent="space-between" xsPb={16}>
+              <Text variant="byline">Section A · Our Principles</Text>
+              <Text variant="byline">Five Rules, Settled on the first day</Text>
+            </Box>
+            <Divider variant="heavy" />
+            <Box
+              xsColumns={1}
+              lColumns={5}
+              columnRule={{ color: "sand-7" }}
+              xsMt={24}
+            >
+              <Box xsPx={16}>
+                <Heading level={3} fontSize={60}>
+                  01
+                </Heading>
+                <Heading level={3} fontSize={20}>
+                  No advertising
+                </Heading>
+                <Text>
+                  There is no advertising business in The Ledger. Nothing in the
+                  page is sold.
+                </Text>
+              </Box>
+              <Box xsPx={16}>
+                <Heading level={3} fontSize={60}>
+                  02
+                </Heading>
+                <Heading level={3} fontSize={20}>
+                  No upsells
+                </Heading>
+                <Text>
+                  There is one tier. It is the free one. It will remain the free
+                  one.
+                </Text>
+              </Box>
+              <Box xsPx={16}>
+                <Heading level={3} fontSize={60}>
+                  03
+                </Heading>
+                <Heading level={3} fontSize={20}>
+                  No coaching
+                </Heading>
+                <Text>
+                  The Ledger does not congratulate, commiserate, or compare you
+                  against a peer cohort.
+                </Text>
+              </Box>
+              <Box xsPx={16}>
+                <Heading level={3} fontSize={60}>
+                  04
+                </Heading>
+                <Heading level={3} fontSize={20}>
+                  No nudges
+                </Heading>
+                <Text>
+                  No push notifications. No emails. No surfaced offers. No
+                  streaks.
+                </Text>
+              </Box>
+              <Box xsPx={16}>
+                <Heading level={3} fontSize={60}>
+                  05
+                </Heading>
+                <Heading level={3} fontSize={20}>
+                  Yours to delete
+                </Heading>
+                <Text>
+                  Your data exports as a single file. It deletes from a single
+                  button. Permanently.
+                </Text>
+              </Box>
+            </Box>
+          </Box>
+        </div>
+      )}
+      {user ? null : (
+        <Box xsPx={56} xsPy={32}>
+          <Box display="flex" justifyContent="space-between" xsPb={16}>
+            <Text variant="byline">Section B · Figures of Record</Text>
+            <Text variant="byline">From a sample subscriber</Text>
+          </Box>
+          <Divider variant="heavy" />
+          <Grid gap={32} rowGap={32}>
+            <Grid.Item xs={12} l={4}>
+              <Box xsPt={16} display="flex" flexDirection="column" xsGap={12}>
+                <Text variant="byline">Table 1 · Accounts of Record</Text>
+                <Heading level={3}>The Ledger, as of yesterday evening</Heading>
+                <Divider />
+                <Table caption="Accounts of Record">
+                  <Table.Head>
+                    <Table.ColumnHeader>Institution</Table.ColumnHeader>
+                    <Table.ColumnHeader>Account</Table.ColumnHeader>
+                    <Table.ColumnHeader>Balance</Table.ColumnHeader>
+                  </Table.Head>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>Fidelity</Table.Cell>
+                      <Table.Cell>Brokerage · 4421</Table.Cell>
+                      <Table.Cell align="end">$48,210.92</Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>Vanguard</Table.Cell>
+                      <Table.Cell>Roth IRA · 0019</Table.Cell>
+                      <Table.Cell align="end">$71,488.04</Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>Chase</Table.Cell>
+                      <Table.Cell>Checking · 8810</Table.Cell>
+                      <Table.Cell align="end">$8,742.18</Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>Ally</Table.Cell>
+                      <Table.Cell>Savings · 2207</Table.Cell>
+                      <Table.Cell align="end">$14,002.00</Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>Chase</Table.Cell>
+                      <Table.Cell>Mortgage · 7733</Table.Cell>
+                      <Table.Cell align="end">
+                        {formatCurrency(-2999420)}
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>Robin Hood</Table.Cell>
+                      <Table.Cell>Brokerage · 0410</Table.Cell>
+                      <Table.Cell align="end">$36,001.36</Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.RowHeader>Total</Table.RowHeader>
+                      <Table.Cell>&nbsp;</Table.Cell>
+                      <Table.Cell align="end">$148,450.30</Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+              </Box>
+            </Grid.Item>
+            <Grid.Item xs={12} l={8}>
+              <Box xsPt={16}>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="flex-start"
+                >
+                  <Heading level={2}>Fig. 1 · Net worth, by month</Heading>
+                  <Text variant="byline">
+                    {formatDate(new Date(startDate))} through{" "}
+                    {formatDate(new Date(today))}
+                  </Text>
+                </Box>
+                <BalanceChart
+                  balances={loaderData.balances}
+                  title="Net worth history"
+                />
+                <Divider />
+                <Box
+                  xsColumns={1}
+                  lColumns={4}
+                  columnRule={{ color: "sand-7" }}
+                  xsPt={16}
+                >
+                  <Box>
+                    <Text variant="byline">Today</Text>
+                    <Heading level={3} fontSize={36}>
+                      {formatCurrency(netWorth, { includeCents: false })}
+                    </Heading>
+                  </Box>
+                  <Box>
+                    <Text variant="byline">Last 30 days</Text>
+                    <Heading level={3} fontSize={36}>
+                      {formatCurrency(thirtyDayChange, { includeCents: false })}
+                    </Heading>
+                  </Box>
+                  <Box>
+                    <Text variant="byline">Year to date</Text>
+                    <Heading level={3} fontSize={36}>
+                      {formatCurrency(thisYearChange, { includeCents: false })}
+                    </Heading>
+                  </Box>
+                  <Box>
+                    <Text variant="byline">Since Jan &apos;25</Text>
+                    <Heading level={3} fontSize={36}>
+                      {formatCurrency(oneYearChange, { includeCents: false })}
+                    </Heading>
+                  </Box>
+                </Box>
+              </Box>
+            </Grid.Item>
+          </Grid>
+        </Box>
+      )}
+      {user ? (
+        <Box display="flex" xsGap={32} justifyContent="space-between">
           <Box>
             <h2>Highlights</h2>
             <ul>
@@ -245,62 +565,90 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             />
           </Box>
         </Box>
-        {!user ? (
-          <>
-            <Divider />
-            <div className={styles.editorial}>
-              <div className={styles.story}>
-                <p>
-                  I lost years of financial history when Mint - Intuit&apos;s
-                  personal finance app - shut down in early 2024. Rather than
-                  migrate to another product with no guarantee of longevity, I
-                  built a replacement I fully control.
-                </p>
-                <p>
-                  Every decision in this project reflects a single priority:
-                  durability. SQLite instead of Postgres - because a single file
-                  is simpler to back up and reason about. Daily pulls instead of
-                  webhooks - because they&apos;re free, predictable, and degrade
-                  gracefully when they miss a day. Cookie sessions instead of
-                  OAuth - because they&apos;re easy to audit and require no
-                  third party.
-                </p>
-                <p>
-                  The result has been running reliably in production since
-                  January 2026. It syncs automatically each day via a scheduled
-                  GitHub Actions job, requires almost no ongoing maintenance,
-                  and has cost almost nothing to operate since launch.
-                </p>
+      ) : (
+        <Box xsPx={56} xsPy={32}>
+          <Grid gap={56} rowGap={32}>
+            <Grid.Item xs={12} l={7}>
+              <Box display="flex" flexDirection="column" xsGap={12}>
+                <Text variant="byline">From the Editor · C.1</Text>
+                <Heading level={2}>The page reports what is.</Heading>
+                <Text>
+                  Most personal-finance software is, at its core, an advertising
+                  surface. It must be, because the underlying business is
+                  showing you the next credit card. The Ledger has no underlying
+                  business of that kind. It will not nudge you toward a balance
+                  transfer. It will not tell you that you spend too much on
+                  coffee.
+                </Text>
+                <Text>
+                  The page is monochrome on purpose. Numbers that go up are not
+                  green; numbers that go down are not red. They are figures. The
+                  figure for last month, set next to the figure for this month,
+                  will tell you what you need to know without any help from us.
+                </Text>
+                <Text>
+                  Your data is yours. You can export it any time. You can delete
+                  it any time. We have nothing to sell that depends on you doing
+                  either.
+                </Text>
+                <Divider />
+                <Text variant="byline">The Editors</Text>
+              </Box>
+            </Grid.Item>
+            <Grid.Item xs={12} l={5}>
+              <div
+                className={
+                  rootLoaderData?.colorMode === "dark" ? "light" : "dark"
+                }
+              >
+                <Box bg="sand-3" xsP={32}>
+                  <Text variant="byline">Pulled from the Lede</Text>
+                  <Heading level={2} fontSize={36}>
+                    &ldquo;The chart is monochrome on purpose. Numbers that go
+                    up are not green; numbers that go down are not red. They are
+                    figures.&rdquo;
+                  </Heading>
+                  <Text variant="byline">The Editors · Page A1</Text>
+                </Box>
               </div>
-              <aside className={styles.specsBox}>
-                <h3 className={styles.specsTitle}>Specifications</h3>
-                <dl className={styles.specsList}>
-                  <div className={styles.specsItem}>
-                    <dt className={styles.specsLabel}>Stack</dt>
-                    <dd>React Router 7 · SQLite · Prisma · Plaid · Fly.io</dd>
-                  </div>
-                  <div className={styles.specsItem}>
-                    <dt className={styles.specsLabel}>Auth</dt>
-                    <dd>Cookie sessions · TOTP two-factor authentication</dd>
-                  </div>
-                  <div className={styles.specsItem}>
-                    <dt className={styles.specsLabel}>Data model</dt>
-                    <dd>Daily balance snapshots with carry-forward logic</dd>
-                  </div>
-                  <div className={styles.specsItem}>
-                    <dt className={styles.specsLabel}>Background jobs</dt>
-                    <dd>Scheduled GitHub Actions cron trigger</dd>
-                  </div>
-                  <div className={styles.specsItem}>
-                    <dt className={styles.specsLabel}>Testing</dt>
-                    <dd>Vitest · Cypress</dd>
-                  </div>
-                </dl>
-              </aside>
-            </div>
-          </>
-        ) : null}
-      </Box>
+            </Grid.Item>
+          </Grid>
+        </Box>
+      )}
+      {user ? null : (
+        <Box xsPx={56} xsPy={32}>
+          <Box display="flex" justifyContent="space-between" xsPb={16}>
+            <Text variant="byline">Section C.3 · How to Subscribe</Text>
+            <Text variant="byline">The Shortest Article in This Edition</Text>
+          </Box>
+          <Divider variant="heavy" />
+          <Box
+            border={{ color: "sand-12", width: 3 }}
+            xsMt={16}
+            xsP={32}
+            textAlign="center"
+          >
+            <Heading level={1} fontSize={72}>
+              An Email. A Password. Two Minutes.
+            </Heading>
+            <Text variant="deck">
+              A subscription is the only way to use The Ledger. It is free. It
+              opens you a file you can write to, and a daily chart that begins
+              the morning after.
+            </Text>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              xsGap={16}
+              xsMt={16}
+            >
+              <Link to="/join">Sign up ›</Link>
+              <Link to="/login">Log in to an existing edition</Link>
+            </Box>
+          </Box>
+        </Box>
+      )}
     </div>
   );
 }

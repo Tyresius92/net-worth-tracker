@@ -21,19 +21,27 @@ Use Text for content the reader is meant to read or scan: paragraphs, captions, 
   </Table.Head>
   <Table.Body>
     <Table.Row>
-      <Table.RowHeader>A full sentence the reader is meant to read</Table.RowHeader>
+      <Table.RowHeader>
+        A full sentence the reader is meant to read
+      </Table.RowHeader>
       <Table.Cell>`body`</Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.RowHeader>A single-sentence summary directly below a Heading level 1</Table.RowHeader>
+      <Table.RowHeader>
+        A single-sentence summary directly below a Heading level 1
+      </Table.RowHeader>
       <Table.Cell>`deck`</Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.RowHeader>Free-floating metadata — who, when, copyright</Table.RowHeader>
+      <Table.RowHeader>
+        Free-floating metadata — who, when, copyright
+      </Table.RowHeader>
       <Table.Cell>`byline`</Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.RowHeader>A small label paired with a value beside or below it</Table.RowHeader>
+      <Table.RowHeader>
+        A small label paired with a value beside or below it
+      </Table.RowHeader>
       <Table.Cell>`caption`</Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -74,6 +82,14 @@ A small label paired with a value directly beside or below it. Rendered in upper
 Inline code, token names, shell commands. Uses the system monospace stack. Appears rarely in the application itself — its primary purpose is in design system documentation.
 
 <Canvas of={TextStories.Code} />
+
+## Drop cap
+
+Pass `dropCap` to float the first letter as a large typographic initial — a newspaper convention for the opening paragraph of a long-form piece.
+
+<Canvas of={TextStories.DropCap} />
+
+Use only on the first paragraph of a section and only with `body` copy. Do not combine with `byline`, `caption`, or `deck` — the first-letter sizing assumes normal body line-height.
 
 ## Overriding the element
 

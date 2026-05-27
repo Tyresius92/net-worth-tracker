@@ -31,6 +31,12 @@ A more subtle treatment. Use when a full-weight divider would feel too heavy —
 
 <Canvas of={DividerStories.Light} />
 
+### Heavy
+
+A 3px, full-opacity rule with no margin. Use at section boundaries that demand a strong visual anchor — newspaper-style section breaks, the top edge of a masthead, or the boundary between a dark slab and the page below it.
+
+<Canvas of={DividerStories.Heavy} />
+
 ## Accessibility
 
 Divider renders as `<hr>`, which carries an implicit ARIA role of `separator`. Screen readers announce this as a thematic break between sections. Because it has semantic weight, use it only where a genuine content boundary exists.

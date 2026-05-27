@@ -90,8 +90,8 @@ export default function ChangePasswordPage() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <Box p={24} maxWidth={480}>
-      <Box mb={24}>
+    <Box xsP={24} maxWidth={480}>
+      <Box xsMb={24}>
         <h1 style={{ fontSize: "1.25rem", fontWeight: 600 }}>
           Change Password
         </h1>
@@ -121,7 +121,7 @@ export default function ChangePasswordPage() {
           autoComplete="new-password"
           errorMessage={actionData?.errors?.confirmPassword ?? undefined}
         />
-        <Box display="flex" flexDirection="column" gap={12} mt={24}>
+        <Box display="flex" flexDirection="column" xsGap={12} xsMt={24}>
           <Button type="submit">Change password</Button>
           <Link to="/settings">Cancel</Link>
         </Box>

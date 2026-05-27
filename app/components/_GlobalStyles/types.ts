@@ -9,7 +9,8 @@ export type FontSizeOption =
   | 36
   | 48
   | 60
-  | 72;
+  | 72
+  | 88;
 
 export type SpaceOption =
   | 0
@@ -51,6 +52,12 @@ export type SpaceOption =
 import { colors } from "./colors";
 
 export type ColorOption = keyof typeof colors;
+
+export interface StrokeValue {
+  color: ColorOption;
+  width?: 1 | 2 | 3;
+  style?: "solid" | "dotted" | "dashed";
+}
 
 export const BREAKPOINTS = {
   s: 480,

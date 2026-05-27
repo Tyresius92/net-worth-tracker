@@ -79,7 +79,7 @@ export default function DeleteAccountPage() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <Box p={24} maxWidth={480}>
+    <Box xsP={24} maxWidth={480}>
       <h1 className={styles.heading}>Delete Account</h1>
 
       <p className={styles.warning}>
@@ -116,7 +116,7 @@ export default function DeleteAccountPage() {
           autoComplete="current-password"
           errorMessage={actionData?.errors?.password ?? undefined}
         />
-        <Box display="flex" flexDirection="column" gap={12} mt={24}>
+        <Box display="flex" flexDirection="column" xsGap={12} xsMt={24}>
           <Button type="submit" variant="danger">
             Permanently delete my account
           </Button>

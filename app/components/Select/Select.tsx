@@ -28,7 +28,7 @@ export const Select = ({
   const errorId = useId();
 
   return (
-    <Box display="flex" flexDirection="column" gap={4} mb={20}>
+    <Box display="flex" flexDirection="column" xsGap={4} xsMb={20}>
       <label htmlFor={inputId} className={styles.label}>
         {label}
       </label>

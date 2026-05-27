@@ -63,14 +63,19 @@ export default function VerifyEmailPendingPage() {
 
   return (
     <>
-      <Box mb={24}>
+      <Box xsMb={24}>
         <Divider variant="light" />
         <h2 className={styles.headline}>Check Your Inbox</h2>
         <Divider variant="light" />
       </Box>
 
-      <Box borderColor="sand-12" p={24}>
-        <Box display="flex" flexDirection="column" alignItems="center" gap={24}>
+      <Box borderColor="sand-12" xsP={24}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          xsGap={24}
+        >
           <p className={styles.descriptor}>
             {expired
               ? "That verification link has expired. Request a new one below."
@@ -82,7 +87,7 @@ export default function VerifyEmailPendingPage() {
               display="flex"
               flexDirection="column"
               alignItems="center"
-              gap={12}
+              xsGap={12}
             >
               <Button type="submit">Resend verification email</Button>
               <Link to="/login">Back to login</Link>

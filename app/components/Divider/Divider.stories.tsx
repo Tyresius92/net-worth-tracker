@@ -15,3 +15,7 @@ export const Default: Story = {};
 export const Light: Story = {
   args: { variant: "light" },
 };
+
+export const Heavy: Story = {
+  args: { variant: "heavy" },
+};

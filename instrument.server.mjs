@@ -11,8 +11,7 @@ Sentry.init({
 
   // Drop all bot/crawler transactions; sample 10% of real user transactions
   tracesSampler(samplingContext) {
-    const ua =
-      samplingContext.normalizedRequest?.headers?.["user-agent"] ?? "";
+    const ua = samplingContext.normalizedRequest?.headers?.["user-agent"] ?? "";
     if (ua && isbot(ua)) return 0;
     return 0.1;
   },
