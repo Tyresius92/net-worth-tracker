@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
 import { Box } from "./Box";
+import styles from "./Box.module.css";
 
 describe("Box", () => {
   it("renders its children", () => {
@@ -101,12 +102,12 @@ describe("Box", () => {
 
     it("applies the .box class when spacing props are provided", () => {
       render(<Box xsPb={8}>content</Box>);
-      expect(screen.getByText("content").className).toContain("box");
+      expect(screen.getByText("content")).toHaveClass(styles.box);
     });
 
     it("does not apply the .box class when no spacing props are provided", () => {
       render(<Box bg="sand-3">content</Box>);
-      expect(screen.getByText("content").className).not.toContain("box");
+      expect(screen.getByText("content")).not.toHaveClass(styles.box);
     });
   });
 
@@ -137,9 +138,8 @@ describe("Box", () => {
           content
         </Box>,
       );
-      expect(screen.getByText("content").getAttribute("style")).toContain(
-        "var(--color-sand-7)",
-      );
+      const style = screen.getByText("content").getAttribute("style") ?? "";
+      expect(style).toContain("var(--color-sand-7)");
     });
 
     it("applies columnRule defaults for width and style", () => {
