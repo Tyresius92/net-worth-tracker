@@ -63,14 +63,14 @@ export default function NewAccountForm({
     <Box>
       <Form method="post">
         <TextInput
-          label="Account Custom Name"
+          label="Source name"
           type="text"
           name="customName"
           errorMessage={actionData?.errors.customName}
         />
         <Box xsMy={16}>
           <Select
-            label="Account Type"
+            label="Source type"
             name="type"
             options={loaderData.accountTypeOptions}
             errorMessage={actionData?.errors.type}

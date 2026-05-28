@@ -98,18 +98,18 @@ export default function AccountDetailsRoute({
       <Box>
         <Box display="flex" flexDirection="row" xsGap={8} xsMb={16}>
           <Box>
-            <Link to="edit">Edit Account</Link>
+            <Link to="edit">Edit source</Link>
           </Box>
           <Box>
-            <Link to="balances/new">New Balance</Link>
+            <Link to="balances/new">Record a figure</Link>
           </Box>
           <Box>
-            <Link to="balances/import">Import balances via CSV</Link>
+            <Link to="balances/import">Import figures via CSV</Link>
           </Box>
           <Box>
             <Form method="post">
               <Button name="intent" value="close_account" type="submit">
-                Mark account as closed
+                Mark source as closed
               </Button>
             </Form>
           </Box>
@@ -117,10 +117,10 @@ export default function AccountDetailsRoute({
 
         <BalanceChart
           balances={loaderData.balances}
-          title="Account balance history"
+          title="Figure history"
         />
 
-        <Table caption="Balances">
+        <Table caption="Figures">
           <Table.Head>
             <Table.ColumnHeader>ID</Table.ColumnHeader>
             <Table.ColumnHeader>Date</Table.ColumnHeader>

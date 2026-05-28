@@ -14,7 +14,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function LinkedAccountsIndex(_props: Route.ComponentProps) {
   return (
     <Box>
-      <p>Choose an account from the nav at left to see account details.</p>
+      <p>Choose a source from the nav at left.</p>
     </Box>
   );
 }

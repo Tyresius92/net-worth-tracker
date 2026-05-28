@@ -94,10 +94,10 @@ export default function EditAccountForm({
 }: Route.ComponentProps) {
   return (
     <Box>
-      <h2>Edit Account</h2>
+      <h2>Edit source</h2>
       <Form method="post">
         <TextInput
-          label="Account Custom Name"
+          label="Source name"
           type="text"
           name="customName"
           defaultValue={loaderData.account.customName ?? undefined}
@@ -105,7 +105,7 @@ export default function EditAccountForm({
         />
         <Box xsMy={16}>
           <Select
-            label="Account Type"
+            label="Source type"
             name="type"
             options={loaderData.accountTypeOptions}
             defaultValue={loaderData.account.type}

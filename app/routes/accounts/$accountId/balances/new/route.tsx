@@ -101,14 +101,14 @@ export default function NewBalanceRoute(_routeProps: Route.ComponentProps) {
     <Box>
       <Form method="post">
         <TextInput
-          label="Snapshot Amount"
+          label="Figure amount"
           type="number"
           name="amount"
           step={0.01}
           errorMessage={undefined}
         />
         <TextInput
-          label="Snapshot Date"
+          label="Figure date"
           type="date"
           name="dateTime"
           errorMessage={undefined}
