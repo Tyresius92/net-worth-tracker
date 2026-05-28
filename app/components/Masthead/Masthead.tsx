@@ -45,9 +45,9 @@ export const Masthead = ({ user, children }: MastheadProps) => {
               {user ? (
                 <>
                   {user.twoFactorEnabled ? (
-                    <NavLink to="/plaid_items">Plaid Items</NavLink>
+                    <NavLink to="/plaid_items">Wire services</NavLink>
                   ) : null}
-                  <NavLink to="/accounts">Accounts</NavLink>
+                  <NavLink to="/accounts">Sources</NavLink>
                   <NavLink to="/settings">Settings</NavLink>
                   <Box xsP={12}>
                     <Form method="post" action="logout">
@@ -57,8 +57,8 @@ export const Masthead = ({ user, children }: MastheadProps) => {
                 </>
               ) : (
                 <>
-                  <NavLink to="/join">Sign Up</NavLink>
-                  <NavLink to="/login">Login</NavLink>
+                  <NavLink to="/join">Apply for credentials</NavLink>
+                  <NavLink to="/login">Present credentials</NavLink>
                 </>
               )}
               {children}
