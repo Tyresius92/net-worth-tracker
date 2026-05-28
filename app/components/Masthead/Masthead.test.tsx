@@ -39,9 +39,9 @@ describe("Masthead", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows the Login link when there is no user", () => {
+  it("shows the Present credentials link when there is no user", () => {
     renderWithRouter(<Masthead user={null}>content</Masthead>);
-    expect(screen.getByRole("link", { name: /login/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /present credentials/i })).toBeInTheDocument();
   });
 
   it("does not show the Log Out button when there is no user", () => {
@@ -51,25 +51,25 @@ describe("Masthead", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("shows the Plaid Items link when twoFactorEnabled is true", () => {
+  it("shows the Wire services link when twoFactorEnabled is true", () => {
     renderWithRouter(
       <Masthead user={{ id: "user-1", twoFactorEnabled: true }}>
         content
       </Masthead>,
     );
     expect(
-      screen.getByRole("link", { name: /plaid items/i }),
+      screen.getByRole("link", { name: /wire services/i }),
     ).toBeInTheDocument();
   });
 
-  it("does not show the Plaid Items link when twoFactorEnabled is false", () => {
+  it("does not show the Wire services link when twoFactorEnabled is false", () => {
     renderWithRouter(
       <Masthead user={{ id: "user-1", twoFactorEnabled: false }}>
         content
       </Masthead>,
     );
     expect(
-      screen.queryByRole("link", { name: /plaid items/i }),
+      screen.queryByRole("link", { name: /wire services/i }),
     ).not.toBeInTheDocument();
   });
 
