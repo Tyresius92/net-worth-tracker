@@ -50,15 +50,15 @@ export default function LinkedAccountsLayout({
 
   return (
     <Box display="flex" xsGap={32}>
-      <nav aria-label="Accounts" className={styles.nav}>
+      <nav aria-label="Sources" className={styles.nav}>
         <div className={styles["create-links"]}>
-          <Link to="new">Create Account</Link>
+          <Link to="new">Add a source</Link>
           {loaderData.user.twoFactorEnabled ? (
-            <Link to="new/plaid">Create Account using Plaid</Link>
+            <Link to="new/plaid">Add a wire service</Link>
           ) : null}
         </div>
         <div>
-          <h2 className={styles["section-heading"]}>Open Accounts</h2>
+          <h2 className={styles["section-heading"]}>Open sources</h2>
           <ul className={styles["account-list"]}>
             {openAccounts.map((account) => (
               <li key={account.id} className={styles["account-item"]}>
@@ -66,7 +66,7 @@ export default function LinkedAccountsLayout({
                   {getAccountDisplayName(account)}
                   <div className={styles["account-meta"]}>
                     {toPrettyAccountType(account.type)} ·{" "}
-                    {account.plaidAccount ? "Linked with Plaid" : "Manual"}
+                    {account.plaidAccount ? "Wire service" : "Staff-reported"}
                   </div>
                 </NavLink>
               </li>
@@ -75,7 +75,7 @@ export default function LinkedAccountsLayout({
         </div>
         {closedAccounts.length ? (
           <div>
-            <h2 className={styles["section-heading"]}>Closed Accounts</h2>
+            <h2 className={styles["section-heading"]}>Closed sources</h2>
             <ul className={styles["account-list"]}>
               {closedAccounts.map((account) => (
                 <li key={account.id} className={styles["account-item"]}>
@@ -84,7 +84,7 @@ export default function LinkedAccountsLayout({
                   </NavLink>
                   <div className={styles["account-meta"]}>
                     {toPrettyAccountType(account.type)} ·{" "}
-                    {account.plaidAccount ? "Plaid" : "Manual"}
+                    {account.plaidAccount ? "Wire service" : "Staff-reported"}
                   </div>
                 </li>
               ))}
