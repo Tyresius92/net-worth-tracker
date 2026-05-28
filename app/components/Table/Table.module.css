@@ -6,6 +6,7 @@
   border-block-end: 2px solid var(--color-sand-12);
   border-block-start: 2px solid var(--color-sand-12);
   border-collapse: collapse;
+  color: var(--color-sand-12);
   min-width: 100%;
   width: fit-content;
 }
