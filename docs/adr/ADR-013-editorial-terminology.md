@@ -16,14 +16,14 @@ If the application is a newspaper, its language should reflect that. A newspaper
 
 Adopt a closed vocabulary of six terms for all user-facing text. These terms are not arbitrary renaming; they extend the publication metaphor from visuals into language.
 
-| Term | Maps to | Usage examples |
-|---|---|---|
-| **Press credentials** | Login — email, password, authentication | *Apply for credentials · Present credentials · Credentials not recognized · Credentials last updated May 14, 2026* |
-| **The record** | The user's data: their history, chart, and accumulated figures | *It opens a record, and a daily chart that begins the morning after · Record created · No record found* |
-| **Sources** | Individual accounts — Chase Checking, a savings bond, the mortgage | *Add a source · No sources added · Sources · Chase Checking ••4821* |
-| **Figures** | Balance snapshots — the number reported by a source on a given day | *Figure as of May 27 · Latest figure · Last figure reported May 14* |
-| **Wire services** | Plaid-linked institutions — external sources that file figures automatically | *Wire services · Chase · Wire service interrupted — repair connection · Figures arrive daily from this wire service* |
-| **Staff-reported** | Manual accounts — figures the user enters themselves | *Staff-reported · This source has not been updated in 30 days · Last reported: May 14, 2026* |
+| Term                  | Maps to                                                                      | Usage examples                                                                                                       |
+| --------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Press credentials** | Login — email, password, authentication                                      | _Apply for credentials · Present credentials · Credentials not recognized · Credentials last updated May 14, 2026_   |
+| **The record**        | The user's data: their history, chart, and accumulated figures               | _It opens a record, and a daily chart that begins the morning after · Record created · No record found_              |
+| **Sources**           | Individual accounts — Chase Checking, a savings bond, the mortgage           | _Add a source · No sources added · Sources · Chase Checking ••4821_                                                  |
+| **Figures**           | Balance snapshots — the number reported by a source on a given day           | _Figure as of May 27 · Latest figure · Last figure reported May 14_                                                  |
+| **Wire services**     | Plaid-linked institutions — external sources that file figures automatically | _Wire services · Chase · Wire service interrupted — repair connection · Figures arrive daily from this wire service_ |
+| **Staff-reported**    | Manual accounts — figures the user enters themselves                         | _Staff-reported · This source has not been updated in 30 days · Last reported: May 14, 2026_                         |
 
 **Where this applies:**
 All user-visible strings — headings, labels, button text, error messages, link text, empty states, email copy.
@@ -38,12 +38,12 @@ All user-visible strings — headings, labels, button text, error messages, link
 **Why the specific terms:**
 Each term was chosen for its resonance with the publication metaphor:
 
-- *Press credentials* — journalist accreditation. A subscriber earns access through registration, not simply by existing.
-- *The record* — both the newspaper morgue file and the financial history: a document of what has been true over time.
-- *Sources* — a journalist's sources file figures; the application's sources do the same.
-- *Figures* — a number in print: factual, reported, not editorialized.
-- *Wire services* — news agencies that file reports automatically on a schedule (AP, Reuters). Plaid-linked institutions do the same: they file figures daily without human intervention.
-- *Staff-reported* — a byline for figures entered by the subscriber directly, distinguishing them from wire-sourced data.
+- _Press credentials_ — journalist accreditation. A subscriber earns access through registration, not simply by existing.
+- _The record_ — both the newspaper morgue file and the financial history: a document of what has been true over time.
+- _Sources_ — a journalist's sources file figures; the application's sources do the same.
+- _Figures_ — a number in print: factual, reported, not editorialized.
+- _Wire services_ — news agencies that file reports automatically on a schedule (AP, Reuters). Plaid-linked institutions do the same: they file figures daily without human intervention.
+- _Staff-reported_ — a byline for figures entered by the subscriber directly, distinguishing them from wire-sourced data.
 
 **Relationship to ADR-009:**
 This decision extends ADR-009's visual direction into language. ADR-009 established the principle that design decisions should all build toward a single central concept. Language is a design decision.

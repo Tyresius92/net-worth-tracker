@@ -115,10 +115,7 @@ export default function AccountDetailsRoute({
           </Box>
         </Box>
 
-        <BalanceChart
-          balances={loaderData.balances}
-          title="Figure history"
-        />
+        <BalanceChart balances={loaderData.balances} title="Figure history" />
 
         <Table caption="Figures">
           <Table.Head>

@@ -154,9 +154,7 @@ export default function Join() {
         <Divider variant="light" />
         <h2 className={styles.headline}>Apply for credentials</h2>
         <Divider variant="light" />
-        <p className={styles.tagline}>
-          Your finances. Your data. No charge.
-        </p>
+        <p className={styles.tagline}>Your finances. Your data. No charge.</p>
       </div>
 
       <Box borderColor="sand-12" xsP={24}>

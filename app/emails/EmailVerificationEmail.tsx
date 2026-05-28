@@ -41,7 +41,8 @@ export function EmailVerificationEmail({
       <Hr style={styles.divider} />
 
       <Text style={styles.disclaimer}>
-        If you didn&apos;t apply for credentials, you can safely ignore this email.
+        If you didn&apos;t apply for credentials, you can safely ignore this
+        email.
       </Text>
     </BaseLayout>
   );

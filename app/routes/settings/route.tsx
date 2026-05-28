@@ -69,8 +69,8 @@ export default function SettingsRoute() {
           ) : (
             <div className={styles.row}>
               <span className={styles.label}>
-                Protect your account with an authenticator app. Required to
-                add wire services.
+                Protect your account with an authenticator app. Required to add
+                wire services.
               </span>
               <span className={styles.value}>
                 <Link to="/settings/enable_mfa">Set up</Link>

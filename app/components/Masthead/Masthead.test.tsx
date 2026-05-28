@@ -41,7 +41,9 @@ describe("Masthead", () => {
 
   it("shows the Present credentials link when there is no user", () => {
     renderWithRouter(<Masthead user={null}>content</Masthead>);
-    expect(screen.getByRole("link", { name: /present credentials/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /present credentials/i }),
+    ).toBeInTheDocument();
   });
 
   it("does not show the Log Out button when there is no user", () => {

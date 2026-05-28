@@ -89,9 +89,7 @@ export default function DeleteAccountPage() {
       <ul className={styles.consequenceList}>
         <li>Your record will be immediately closed.</li>
         <li>All of your sources and figure history will be deleted.</li>
-        <li>
-          All connected wire services will be disconnected and deleted.
-        </li>
+        <li>All connected wire services will be disconnected and deleted.</li>
         <li>There is no recovery mechanism.</li>
       </ul>
 
