@@ -22,9 +22,9 @@ export function PasswordResetEmail({
       <Heading style={styles.heading}>Reset your password</Heading>
 
       <Text style={styles.body}>
-        Hi {firstName}, a password reset was requested for your account. Click
-        the button below to choose a new password. This link expires in one
-        hour.
+        Hi {firstName}, a credentials reset was requested for your subscription.
+        Click the button below to choose a new password. This link expires in
+        one hour.
       </Text>
 
       <Section style={styles.buttonContainer}>

@@ -76,7 +76,7 @@ export default function DisableMFAPage() {
       <ul className={styles.consequenceList}>
         <li>Your account will be protected by password alone.</li>
         <li>All of your recovery codes will be permanently deleted.</li>
-        <li>Plaid account syncing will pause until 2FA is re-enabled.</li>
+        <li>Wire service figures will pause until 2FA is re-enabled.</li>
       </ul>
 
       <Form method="post">

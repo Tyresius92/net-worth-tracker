@@ -275,7 +275,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                       <Text dropCap>
                         The Ledger is a personal net worth tracker. It collects,
                         in one place, what you own and what you owe across every
-                        account you choose to add. It does not sell advertising.
+                        source you choose to add. It does not sell advertising.
                         It does not surface offers. It does not measure your
                         savings rate against a peer cohort, nor does it
                         congratulate you for any of it. The Ledger reports what
@@ -284,23 +284,24 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                     </Box>
                     <Box xsMb={16}>
                       <Text>
-                        To use it, you sign up for a free subscription, add the
-                        accounts you want it to know about, and from then on the
-                        page shows you, day after day, where things stand.
-                        Balances flow in. The chart updates. Nothing is shouted
-                        at you.
+                        To use it, you sign up for press credentials (issued in
+                        two minutes), add the sources you want it to know about,
+                        and from then on the page shows you, day after day,
+                        where things stand. Balances flow in. The chart updates.
+                        Nothing is shouted at you.
                       </Text>
                     </Box>
                     <Box xsMb={16}>
                       <Text>
-                        Accounts can be added two ways. The first is by hand,
+                        Sources can be added two ways. The first is by hand,
                         which works for the parts of American finance that no
                         API has caught up with (your mortgage servicer, a CD at
                         a credit union, the cash under your mattress, the
                         savings bond your grandmother bought in 1994). The
-                        second is through Plaid, the same connection layer your
-                        bank already uses, which pulls balances automatically
-                        and silently into your file.
+                        second is through wire services powered by Plaid, the
+                        same connection layer your bank already uses, which
+                        files figures automatically and silently into your
+                        record.
                       </Text>
                     </Box>
                     <Box xsMb={16}>
@@ -423,14 +424,14 @@ export default function Index({ loaderData }: Route.ComponentProps) {
           <Grid gap={32} rowGap={32}>
             <Grid.Item xs={12} l={4}>
               <Box xsPt={16} display="flex" flexDirection="column" xsGap={12}>
-                <Text variant="byline">Table 1 · Accounts of Record</Text>
+                <Text variant="byline">Table 1 · Sources of Record</Text>
                 <Heading level={3}>The Ledger, as of yesterday evening</Heading>
                 <Divider />
-                <Table caption="Accounts of Record">
+                <Table caption="Sources of Record">
                   <Table.Head>
-                    <Table.ColumnHeader>Institution</Table.ColumnHeader>
-                    <Table.ColumnHeader>Account</Table.ColumnHeader>
-                    <Table.ColumnHeader>Balance</Table.ColumnHeader>
+                    <Table.ColumnHeader>Wire service</Table.ColumnHeader>
+                    <Table.ColumnHeader>Source</Table.ColumnHeader>
+                    <Table.ColumnHeader>Figure</Table.ColumnHeader>
                   </Table.Head>
                   <Table.Body>
                     <Table.Row>
@@ -632,9 +633,9 @@ export default function Index({ loaderData }: Route.ComponentProps) {
               An Email. A Password. Two Minutes.
             </Heading>
             <Text variant="deck">
-              A subscription is the only way to use The Ledger. It is free. It
-              opens you a file you can write to, and a daily chart that begins
-              the morning after.
+              Press credentials are the only way to use The Ledger. They are
+              free. They are issued in two minutes. They open a record: a daily
+              chart of all the figures recorded by your sources.
             </Text>
             <Box
               display="flex"
@@ -643,8 +644,8 @@ export default function Index({ loaderData }: Route.ComponentProps) {
               xsGap={16}
               xsMt={16}
             >
-              <Link to="/join">Sign up ›</Link>
-              <Link to="/login">Log in to an existing edition</Link>
+              <Link to="/join">Apply for credentials</Link>
+              <Link to="/login">Present credentials</Link>
             </Box>
           </Box>
         </Box>

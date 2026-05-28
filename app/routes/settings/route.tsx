@@ -70,7 +70,7 @@ export default function SettingsRoute() {
             <div className={styles.row}>
               <span className={styles.label}>
                 Protect your account with an authenticator app. Required to
-                connect bank accounts via Plaid.
+                add wire services.
               </span>
               <span className={styles.value}>
                 <Link to="/settings/enable_mfa">Set up</Link>
@@ -97,10 +97,10 @@ export default function SettingsRoute() {
         <Box borderColor="red-7">
           <div className={styles.row}>
             <span className={styles.label}>
-              Permanently delete your account and all associated data
+              Permanently close your record and delete all associated data
             </span>
             <span className={styles.value}>
-              <Link to="/settings/delete-account">Delete account</Link>
+              <Link to="/settings/delete-account">Close your record</Link>
             </span>
           </div>
         </Box>

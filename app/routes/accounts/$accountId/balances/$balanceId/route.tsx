@@ -69,7 +69,7 @@ export default function BalanceDetailRoute({
 }: Route.ComponentProps) {
   return (
     <Box>
-      <h4>Balance Snapshot from {loaderData.balance.date}</h4>
+      <h4>Figure from {loaderData.balance.date}</h4>
       <p>Amount: {formatCurrency(loaderData.balance.amount)}</p>
       <Box>
         <h5>Actions</h5>

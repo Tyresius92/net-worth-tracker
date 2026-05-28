@@ -30,7 +30,7 @@ export default function PlaidItemIndexRoute({
 }: Route.ComponentProps) {
   return (
     <Box>
-      <Box>Plaid Items</Box>
+      <Box>Wire services</Box>
       <Box>
         {loaderData.plaidItems.map((item) => (
           <Box key={item.id}>

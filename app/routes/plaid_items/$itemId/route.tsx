@@ -5,7 +5,7 @@ import { Box } from "~/components/Box/Box";
 export default function PlaidItemDetailsRoute() {
   return (
     <Box>
-      <Link to="./update">Fix the connection</Link>
+      <Link to="./update">Repair connection</Link>
     </Box>
   );
 }

@@ -88,7 +88,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (!user) {
     return data(
-      { errors: { email: "Invalid email or password", password: null } },
+      { errors: { email: "Credentials not recognized", password: null } },
       { status: 400 },
     );
   }
@@ -180,7 +180,7 @@ export default function LoginPage() {
             <Checkbox name="remember" label="Remember me" />
             <Button type="submit">Log in</Button>
             <Link to="/forgot-password">Forgot password?</Link>
-            <Link to="/join">Don&apos;t have an account? Sign up</Link>
+            <Link to="/join">Not yet a subscriber? Apply for credentials</Link>
           </div>
         </Form>
       </Box>

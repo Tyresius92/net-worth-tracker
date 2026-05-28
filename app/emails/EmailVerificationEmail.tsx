@@ -23,7 +23,7 @@ export function EmailVerificationEmail({
 
       <Text style={styles.body}>
         Hi {firstName}, thanks for signing up. Click the button below to verify
-        your email address and access your account. This link expires in 24
+        your email address and access your record. This link expires in 24
         hours.
       </Text>
 
@@ -41,7 +41,7 @@ export function EmailVerificationEmail({
       <Hr style={styles.divider} />
 
       <Text style={styles.disclaimer}>
-        If you didn&apos;t create an account, you can safely ignore this email.
+        If you didn&apos;t apply for credentials, you can safely ignore this email.
       </Text>
     </BaseLayout>
   );

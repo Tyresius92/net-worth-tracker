@@ -152,10 +152,10 @@ export default function Join() {
     <>
       <div className={styles.headlineArea}>
         <Divider variant="light" />
-        <h2 className={styles.headline}>Join The Ledger</h2>
+        <h2 className={styles.headline}>Apply for credentials</h2>
         <Divider variant="light" />
         <p className={styles.tagline}>
-          Your finances. Your data. No subscription required.
+          Your finances. Your data. No charge.
         </p>
       </div>
 
@@ -197,9 +197,9 @@ export default function Join() {
             errorMessage={actionData?.errors?.password ?? undefined}
           />
           <div className={styles.actions}>
-            <Button type="submit">Create Account</Button>
+            <Button type="submit">Apply</Button>
             <Link to={{ pathname: "/login", search: searchParams.toString() }}>
-              Already have an account? Log in
+              Already a subscriber? Log in
             </Link>
           </div>
         </Form>

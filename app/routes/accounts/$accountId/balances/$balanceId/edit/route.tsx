@@ -111,7 +111,7 @@ export default function BalanceEditRoute({ loaderData }: Route.ComponentProps) {
     <Box>
       <Form method="post">
         <TextInput
-          label="Snapshot Amount"
+          label="Figure amount"
           type="number"
           name="amount"
           step={0.01}
@@ -119,7 +119,7 @@ export default function BalanceEditRoute({ loaderData }: Route.ComponentProps) {
           defaultValue={loaderData.balance.amount / 100}
         />
         <TextInput
-          label="Snapshot Date"
+          label="Figure date"
           type="date"
           name="dateTime"
           errorMessage={undefined}

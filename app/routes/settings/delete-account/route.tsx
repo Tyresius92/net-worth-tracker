@@ -63,7 +63,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       {
         errors: {
           ...baseErrors,
-          form: "You are the only administrator. Transfer admin rights to another user before deleting your account.",
+          form: "You are the only administrator. Transfer admin rights to another user before closing your record.",
         },
       },
       { status: 400 },
@@ -80,18 +80,17 @@ export default function DeleteAccountPage() {
 
   return (
     <Box xsP={24} maxWidth={480}>
-      <h1 className={styles.heading}>Delete Account</h1>
+      <h1 className={styles.heading}>Close your record</h1>
 
       <p className={styles.warning}>
         This action is permanent and cannot be undone.
       </p>
 
       <ul className={styles.consequenceList}>
-        <li>Your account will be immediately deleted.</li>
-        <li>All of your accounts and balance history will be deleted.</li>
+        <li>Your record will be immediately closed.</li>
+        <li>All of your sources and figure history will be deleted.</li>
         <li>
-          All connected bank accounts via Plaid will be disconnected and
-          deleted.
+          All connected wire services will be disconnected and deleted.
         </li>
         <li>There is no recovery mechanism.</li>
       </ul>
@@ -118,7 +117,7 @@ export default function DeleteAccountPage() {
         />
         <Box display="flex" flexDirection="column" xsGap={12} xsMt={24}>
           <Button type="submit" variant="danger">
-            Permanently delete my account
+            Close my record permanently
           </Button>
           <Link to="/settings">Cancel</Link>
         </Box>
