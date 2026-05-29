@@ -10,6 +10,12 @@ The application is open to public registration. Every query is scoped to the aut
 
 Architectural decisions are documented in [`docs/adr/`](docs/adr/). Read these before making significant structural choices — many "obvious" alternatives (Tailwind, Zod, PostgreSQL, Next.js) were considered and explicitly rejected with documented reasoning.
 
+## How we work
+
+**Ask before assuming.** When there is any ambiguity about what is wanted — in scope, design, behavior, or implementation — ask rather than guess. Do not make assumptions and proceed. This applies even if clarification takes many rounds of back-and-forth. A wrong implementation that must be undone costs more than the time spent clarifying.
+
+**One logical unit at a time.** Break all work into discrete steps. Complete one step, report what was done, and wait for explicit approval before beginning the next.
+
 ## Commands
 
 This project uses Node v22. There is a `.nvmrc` file in the root of the directory with the specific pinned version.
@@ -67,6 +73,8 @@ Multiple snapshots on the same day are allowed; last one written wins. The daily
 
 ### Component system
 
+Before beginning any task that involves routes, components, or anything user-facing, read all `.mdx` files in `app/components/`. These are the authoritative documentation for each component's supported behaviors, props, and intended use.
+
 A custom component library lives in [`app/components/`](app/components/). The primary layout primitive is `Box` — use it for all spacing and layout instead of bespoke CSS classes. It accepts typed spacing props (`p`, `px`, `py`, `pt`, `pb`, `pl`, `pr`, `m`, `mx`, etc.) that map to CSS custom properties (`--space-N`).
 
 Spacing tokens: `--space-{0,1,2,4,6,8,10,12,14,16,20,24,28,32,...}` (px values).
@@ -75,7 +83,22 @@ Color tokens: full Radix color palette, but the monochrome direction uses only g
 
 Component styles use CSS Modules (`.module.css` files colocated with the component). Global tokens are defined in [`app/components/_GlobalStyles/`](app/components/_GlobalStyles/).
 
-All styles should be in the design system. Do not place `.module.css` files in the `app/routes` directory; Use existing design system components instead. CSS Modules in that directory are legacy and should not be replicated. If something cannot be implemented with existing functionality, flag this for the user and ask for guidance on how to proceed.
+All styles should be in the design system. Do not place `.module.css` files in the `app/routes` directory; Use existing design system components instead. CSS Modules in that directory are legacy and should not be replicated.
+
+**Extending and creating components.** The design system exists to serve the application. When a component does not support a required behavior, or no suitable component exists, extend or create one — do not work around the gap with one-off CSS classes, bespoke wrappers, or higher-level abstractions.
+
+- **Extending an existing component:** Propose the change first — describe the prop name, what it does, and a usage example — and wait for approval before writing any code.
+- **Creating a net-new component:** Propose a full API design — component name, props, variants, when/when-not-to-use, and a usage example — and wait for approval before writing any code.
+
+**The three-step flow for component changes** (applies when adding a new prop or meaningful behavior):
+
+1. **Add the prop / behavior** — the code change
+2. **Write tests** — unit tests covering the new behavior
+3. **Update documentation** — add or update the `.mdx` file and Storybook story
+
+Stop and wait for explicit approval between each step.
+
+When a new prop is added, it needs a Storybook story. When a minor visual change adds a new value to an existing prop already covered by a Storybook control (e.g. a new Button variant surfaced by the existing `variant` arg), a dedicated story is probably not needed — use judgment and flag it if unclear.
 
 Charts use Recharts and must render **client-side only** — Recharts does not support SSR. Use a `clientOnly` guard or lazy import when adding chart components.
 
