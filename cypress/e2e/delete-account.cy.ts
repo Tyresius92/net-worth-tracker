@@ -22,13 +22,13 @@ describe("/settings/delete-account", () => {
 
   it("is linked from the settings page", () => {
     cy.visitAndCheck("/settings");
-    cy.findByRole("link", { name: /delete account/i }).click();
+    cy.findByRole("link", { name: /close your record/i }).click();
     cy.location("pathname").should("eq", "/settings/delete-account");
   });
 
   it("lists the consequences of deleting", () => {
     cy.visitAndCheck("/settings/delete-account");
-    cy.findByText(/all of your accounts and balance history will be deleted/i);
+    cy.findByText(/all of your sources and figure history will be deleted/i);
     cy.findByText(/there is no recovery mechanism/i);
   });
 
@@ -36,7 +36,7 @@ describe("/settings/delete-account", () => {
     cy.visitAndCheck("/settings/delete-account");
     cy.findByLabelText(/type delete to confirm/i).type("delete");
     cy.findByLabelText(/current password/i).type(CYPRESS_TEST_PASSWORD);
-    cy.findByRole("button", { name: /permanently delete/i }).click();
+    cy.findByRole("button", { name: /close my record permanently/i }).click();
     cy.findByText(/please type delete to confirm/i);
     cy.location("pathname").should("eq", "/settings/delete-account");
   });
@@ -45,7 +45,7 @@ describe("/settings/delete-account", () => {
     cy.visitAndCheck("/settings/delete-account");
     cy.findByLabelText(/type delete to confirm/i).type("DELETE");
     cy.findByLabelText(/current password/i).type("wrong-password");
-    cy.findByRole("button", { name: /permanently delete/i }).click();
+    cy.findByRole("button", { name: /close my record permanently/i }).click();
     cy.findByText(/incorrect password/i);
     cy.location("pathname").should("eq", "/settings/delete-account");
   });
@@ -54,7 +54,7 @@ describe("/settings/delete-account", () => {
     cy.visitAndCheck("/settings/delete-account");
     cy.findByLabelText(/type delete to confirm/i).type("DELETE");
     cy.findByLabelText(/current password/i).type(CYPRESS_TEST_PASSWORD);
-    cy.findByRole("button", { name: /permanently delete/i }).click();
+    cy.findByRole("button", { name: /close my record permanently/i }).click();
     cy.location("pathname").should("eq", "/goodbye");
     cy.getCookie("__session").should("be.null");
   });
@@ -76,7 +76,7 @@ describe("/settings/delete-account — last admin guardrail", () => {
     cy.visitAndCheck("/settings/delete-account");
     cy.findByLabelText(/type delete to confirm/i).type("DELETE");
     cy.findByLabelText(/current password/i).type(CYPRESS_TEST_PASSWORD);
-    cy.findByRole("button", { name: /permanently delete/i }).click();
+    cy.findByRole("button", { name: /close my record permanently/i }).click();
     cy.findByText(/only administrator/i);
     cy.location("pathname").should("eq", "/settings/delete-account");
   });

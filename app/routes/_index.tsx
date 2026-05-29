@@ -244,7 +244,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             >
               <Heading level={1} fontSize={88}>
                 A Ledger
-                <br />
+                <br />{' '}
                 of Your Own
               </Heading>
               <Text variant="deck">

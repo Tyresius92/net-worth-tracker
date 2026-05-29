@@ -2,9 +2,9 @@ describe("dashboard - unauthenticated", () => {
   it("shows the hero headline", () => {
     cy.visitAndCheck("/");
     cy.findByRole("heading", {
-      name: /i built the finance tool i couldn't find/i,
+      name: /a ledger of your own/i,
     }).should("exist");
-    cy.findByText(/i lost years of financial history/i).should("exist");
+    cy.findByText(/privacy-first net worth tracker/i).should("exist");
     cy.findByRole("heading", { name: /your net worth is/i }).should(
       "not.exist",
     );
@@ -22,7 +22,7 @@ describe("dashboard - authenticated, no accounts", () => {
     );
 
     cy.findByRole("heading", {
-      name: /i built the finance tool i couldn't find/i,
+      name: /a ledger of your own/i,
     }).should("not.exist");
     cy.cleanupUser();
   });
@@ -33,14 +33,14 @@ describe("dashboard - authenticated, with account balance", () => {
     cy.login();
 
     cy.visitAndCheck("/accounts/new");
-    cy.findByLabelText(/account custom name/i).type("Dashboard Test Account");
-    cy.findByLabelText(/account type/i).select("Checking");
+    cy.findByLabelText(/source name/i).type("Dashboard Test Account");
+    cy.findByLabelText(/source type/i).select("Checking");
     cy.findByRole("button", { name: /submit/i }).click();
     cy.location("pathname").should("match", /^\/accounts\/.+$/);
 
-    cy.findByRole("link", { name: /new balance/i }).click();
-    cy.findByLabelText(/snapshot amount/i).type("2500.00");
-    cy.findByLabelText(/snapshot date/i).type(
+    cy.findByRole("link", { name: /record a figure/i }).click();
+    cy.findByLabelText(/figure amount/i).type("2500.00");
+    cy.findByLabelText(/figure date/i).type(
       new Date().toISOString().split("T")[0],
     );
     cy.findByRole("button", { name: /submit/i }).click();
