@@ -6,7 +6,10 @@ describe("/settings/disable_mfa", () => {
   beforeEach(() => {
     userEmail = faker.internet.email({ provider: "example.com" });
     cy.then(() => ({ email: userEmail })).as("user");
-    cy.task("createUser", userEmail);
+    cy.task("createUser", userEmail).then((cookieValue) => {
+      if (typeof cookieValue === "string")
+        cy.setCookie("__session", cookieValue);
+    });
     cy.task("enableUserMFA", { email: userEmail });
   });
 
