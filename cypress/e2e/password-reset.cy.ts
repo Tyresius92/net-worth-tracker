@@ -144,7 +144,7 @@ describe("reset-password route", () => {
         cy.findByLabelText(/email address/i).type(userEmail);
         cy.findByLabelText(/password/i).type(CYPRESS_TEST_PASSWORD);
         cy.findByRole("button", { name: /log in/i }).click();
-        cy.findByText(/invalid email or password/i);
+        cy.findByText(/credentials not recognized/i);
       });
     });
 

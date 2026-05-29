@@ -25,7 +25,7 @@ describe("login route", () => {
     cy.findByLabelText(/email address/i).type("nobody@example.com");
     cy.findByLabelText(/password/i).type("wrongpassword");
     cy.findByRole("button", { name: /log in/i }).click();
-    cy.findByText(/invalid email or password/i);
+    cy.findByText(/credentials not recognized/i);
   });
 
   describe("with a registered user", () => {

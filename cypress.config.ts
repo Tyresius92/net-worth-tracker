@@ -11,7 +11,7 @@ import { createCookieSessionStorage } from "react-router";
 
 import { CYPRESS_TEST_PASSWORD } from "./cypress/support/constants";
 
-dotenv.config();
+dotenv.config({ path: ".env.test" });
 
 const prismaClient = new PrismaClient();
 const USER_SESSION_KEY = "userId";
