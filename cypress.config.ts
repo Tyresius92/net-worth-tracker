@@ -166,7 +166,7 @@ export default defineConfig({
         }: {
           email: string;
           name?: string;
-          snapshots?: Array<{ amountCents: number; date: string }>;
+          snapshots?: { amountCents: number; date: string }[];
         }): Promise<{ accountId: string; accountName: string }> {
           const user = await prismaClient.user.findUniqueOrThrow({
             where: { email },
