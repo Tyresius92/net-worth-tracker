@@ -4,7 +4,7 @@ import { Box } from "~/components/Box/Box";
 
 export default function AuthenticatedLayout() {
   return (
-    <Box xsPx={24}>
+    <Box xsPx={56}>
       <Outlet />
     </Box>
   );

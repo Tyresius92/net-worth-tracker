@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  CartesianGrid,
   ComposedChart,
   Line,
   ReferenceLine,
@@ -67,6 +68,11 @@ export const BalanceChart = ({ balances, title }: BalanceChartProps) => {
               fontWeight: "bold",
             }}
             stroke="var(--color-sand-11)"
+          />
+          <CartesianGrid
+            horizontal
+            vertical={false}
+            color="var(--color-sand-5)"
           />
           <Tooltip
             formatter={(val) => {

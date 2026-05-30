@@ -1,0 +1,287 @@
+import { LoaderFunctionArgs } from "react-router";
+
+import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
+import { Box } from "~/components/Box/Box";
+import { Divider } from "~/components/Divider/Divider";
+import { Grid } from "~/components/Grid/Grid";
+import { Heading } from "~/components/Heading/Heading";
+import { Table } from "~/components/Table/Table";
+import { Text } from "~/components/Text/Text";
+import { prisma } from "~/db.server";
+import { getLatestBalancesAsOfDate } from "~/models/user.server";
+import { requireUser } from "~/session.server";
+import { getAccountDisplayName } from "~/utils/accountUtils";
+import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
+import { formatCurrency } from "~/utils/currencyUtils";
+import { formatDate, getDateNDaysAgo } from "~/utils/dateUtils";
+import { getUserNetWorth } from "~/utils/netWorthUtils.server";
+
+import type { Route } from "./+types/route";
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const user = await requireUser(request);
+
+  const userData = await prisma.user.findFirstOrThrow({
+    where: {
+      id: user.id,
+    },
+    include: {
+      accounts: {
+        where: {
+          closedAt: null,
+        },
+        include: {
+          balanceSnapshots: {
+            take: 1,
+            orderBy: {
+              dateTime: "desc",
+            },
+          },
+          plaidAccount: {
+            select: {
+              id: true,
+              name: true,
+              officialName: true,
+              mask: true,
+              plaidItem: {
+                select: {
+                  id: true,
+                  institutionName: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  const dataFromThirtyDaysAgo = await getLatestBalancesAsOfDate(
+    user.id,
+    getDateNDaysAgo(30),
+  );
+
+  const dataFromFirstDayOfTheYear = await getLatestBalancesAsOfDate(
+    user.id,
+    new Date(new Date().getFullYear(), 0, 1),
+  );
+
+  const dataFromOneYearAgo = await getLatestBalancesAsOfDate(
+    user.id,
+    getDateNDaysAgo(365),
+  );
+
+  const accounts = await prisma.account.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      balanceSnapshots: {
+        select: {
+          id: true,
+          amount: true,
+          date: true,
+        },
+        orderBy: {
+          dateTime: "asc",
+        },
+      },
+    },
+  });
+
+  const snapshots = accounts.flatMap((account) =>
+    fillDailyBalanceDayData(account.balanceSnapshots),
+  );
+
+  const dailyAmounts = snapshots.reduce<Record<string, number>>((acc, curr) => {
+    if (typeof acc[curr.date] !== "number") {
+      acc[curr.date] = 0;
+    }
+
+    acc[curr.date] += curr.amount;
+
+    return acc;
+  }, {});
+
+  const balanceDays = Object.entries(dailyAmounts)
+    .map(([date, amount]) => ({
+      date,
+      amount,
+    }))
+    .sort((a, b) => (a.date < b.date ? -1 : 1));
+
+  return {
+    user,
+    accounts: userData.accounts.map((account) => ({
+      id: account.id,
+      name: getAccountDisplayName(account),
+      balance: account.balanceSnapshots?.[0]?.amount,
+      lastSynced: account.balanceSnapshots?.[0]?.dateTime,
+      institution:
+        account.plaidAccount?.plaidItem?.institutionName ?? "Staff-reported",
+      last4: account.plaidAccount?.mask,
+      isStale: account.balanceSnapshots?.[0]?.dateTime
+        ? Date.now() -
+            new Date(account.balanceSnapshots[0].dateTime).getTime() >
+          60 * 24 * 60 * 60 * 1000
+        : false,
+    })),
+    netWorth: getUserNetWorth(userData.accounts),
+    netWorthFromThirtyDaysAgo: getUserNetWorth(dataFromThirtyDaysAgo.accounts),
+    netWorthFromStartOfYear: getUserNetWorth(
+      dataFromFirstDayOfTheYear.accounts,
+    ),
+    netWorthFromOneYearAgo: getUserNetWorth(dataFromOneYearAgo.accounts),
+    balances: balanceDays,
+    today: new Date().toISOString(),
+    startDate: userData.accounts
+      .reduce((acc, curr) => {
+        const snapDate = curr.balanceSnapshots[0]?.dateTime ?? undefined;
+
+        if (snapDate && snapDate < acc) {
+          return snapDate;
+        }
+
+        return acc;
+      }, new Date())
+      .toISOString(),
+  };
+};
+
+export default function AuthenticatedUserFrontPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const {
+    netWorth,
+    netWorthFromThirtyDaysAgo,
+    netWorthFromOneYearAgo,
+    netWorthFromStartOfYear,
+  } = loaderData;
+
+  const thirtyDayChange = netWorth - netWorthFromThirtyDaysAgo;
+  const thisYearChange = netWorth - netWorthFromStartOfYear;
+  const oneYearChange = netWorth - netWorthFromOneYearAgo;
+
+  return (
+    <Box>
+      <Box display="flex" justifyContent="space-between" xsPt={16} xsPb={8}>
+        <Text variant="byline">Section A · Net worth record</Text>
+        <Text variant="byline">Reported from the record</Text>
+      </Box>
+      <Divider />
+      <Box display="flex" justifyContent="center" xsPy={32}>
+        <Heading level={1} fontSize={72}>
+          Net worth: {formatCurrency(loaderData.netWorth)}
+        </Heading>
+      </Box>
+      <Divider />
+      <Box
+        xsColumns={1}
+        lColumns={3}
+        columnRule={{ color: "sand-7" }}
+        xsPy={24}
+      >
+        <Box xsPx={16}>
+          <Heading level={2}>
+            {thirtyDayChange < 0 ? "Down" : "Up"}{" "}
+            {formatCurrency(thirtyDayChange)}
+          </Heading>
+          <Text>over the last 30 days</Text>
+        </Box>
+        <Box xsPx={16}>
+          <Heading level={2}>
+            {thisYearChange < 0 ? "Down" : "Up"}{" "}
+            {formatCurrency(thisYearChange)}
+          </Heading>
+          <Text>since the beginning of this year</Text>
+        </Box>
+        <Box xsPx={16}>
+          <Heading level={2}>
+            {oneYearChange < 0 ? "Down" : "Up"} {formatCurrency(oneYearChange)}
+          </Heading>
+          <Text>over the last year</Text>
+        </Box>
+      </Box>
+      <Divider />
+      <Box xsPy={32}>
+        <Grid gap={32}>
+          <Grid.Item l={7}>
+            <Box>
+              <Box>
+                <Heading level={3} fontSize={20}>
+                  Fig. 1 · Net worth
+                </Heading>
+              </Box>
+              <BalanceChart
+                balances={loaderData.balances}
+                title="Net worth history"
+              />
+            </Box>
+          </Grid.Item>
+          <Grid.Item l={5}>
+            <Box>
+              <Table caption="Sources of record">
+                <Table.Body>
+                  {loaderData.accounts.map((account) => (
+                    <Table.Row key={account.id}>
+                      <Table.Cell>
+                        <Text>{account.name}</Text>
+                        <Text>
+                          {account.institution}
+                          {account.last4 ? ` · ${account.last4}` : ""}
+                        </Text>
+                      </Table.Cell>
+                      <Table.Cell align="end">
+                        <Text>{formatCurrency(account.balance)}</Text>
+                        <Text variant="caption">
+                          {formatDate(new Date(account.lastSynced))}
+                        </Text>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </Box>
+          </Grid.Item>
+        </Grid>
+      </Box>
+
+      <Box display="flex" xsGap={32} justifyContent="space-between">
+        <Box>
+          <h2>Highlights</h2>
+          <ul>
+            {thirtyDayChange !== 0 ? (
+              <li>
+                {thirtyDayChange > 0 ? "Up" : "Down"}{" "}
+                {formatCurrency(thirtyDayChange, { includeCents: false })} over
+                the last 30 days
+              </li>
+            ) : null}
+
+            {thisYearChange !== 0 ? (
+              <li>
+                {thisYearChange > 0 ? "Up" : "Down"}{" "}
+                {formatCurrency(thisYearChange, { includeCents: false })} since
+                the beginning of this year
+              </li>
+            ) : null}
+
+            {oneYearChange !== 0 ? (
+              <li>
+                {oneYearChange > 0 ? "Up" : "Down"}{" "}
+                {formatCurrency(oneYearChange, { includeCents: false })} over
+                the last year
+              </li>
+            ) : null}
+          </ul>
+        </Box>
+        <Box display="flex" flexGrow={1}>
+          <BalanceChart
+            balances={loaderData.balances}
+            title="Net worth history"
+          />
+        </Box>
+      </Box>
+      <pre>{JSON.stringify(loaderData, undefined, 2)}</pre>
+    </Box>
+  );
+}

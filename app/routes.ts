@@ -8,6 +8,7 @@ import {
 export default [
   index("./routes/_index.tsx"),
   route("healthcheck", "./routes/healthcheck.tsx"),
+
   layout("./routes/login/layout.tsx", [
     route("login", "./routes/login/route.tsx"),
     route("login/2fa", "./routes/login/2fa/route.tsx"),
@@ -25,6 +26,8 @@ export default [
   route("contact/messages", "./routes/contact/messages/route.tsx"),
 
   layout("./routes/authenticated_layout.tsx", [
+    route("dashboard", "./routes/dashboard/route.tsx"),
+
     route("settings", "./routes/settings/layout.tsx", [
       index("./routes/settings/route.tsx"),
       route("enable_mfa", "./routes/settings/enable_mfa/route.tsx"),
