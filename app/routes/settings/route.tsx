@@ -93,6 +93,22 @@ export default function SettingsRoute() {
       </div>
 
       <div className={styles.section}>
+        <p className={styles.sectionHeading}>The record</p>
+        <Box borderColor="sand-7">
+          <div className={styles.row}>
+            <span className={styles.label}>
+              Download all figures as a spreadsheet
+            </span>
+            <span className={styles.value}>
+              <Link to="/settings/export_data" reloadDocument>
+                Download
+              </Link>
+            </span>
+          </div>
+        </Box>
+      </div>
+
+      <div className={styles.section}>
         <p className={styles.sectionHeading}>Danger Zone</p>
         <Box borderColor="red-7">
           <div className={styles.row}>

@@ -32,6 +32,7 @@ export default [
       route("disable_mfa", "./routes/settings/disable_mfa/route.tsx"),
       route("change-password", "./routes/settings/change-password/route.tsx"),
       route("delete-account", "./routes/settings/delete-account/route.tsx"),
+      route("export_data", "./routes/settings/export_data/route.tsx"),
     ]),
 
     route("users", "./routes/users/layout.tsx", [

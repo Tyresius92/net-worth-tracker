@@ -71,5 +71,30 @@ describe("Link", () => {
         /link/,
       );
     });
+
+    describe("reloadDocument", () => {
+      it("renders a link with the correct href", () => {
+        renderWithRouter(
+          <Link to="/settings/export_data" reloadDocument>
+            Download
+          </Link>,
+        );
+        expect(screen.getByRole("link", { name: "Download" })).toHaveAttribute(
+          "href",
+          "/settings/export_data",
+        );
+      });
+
+      it("applies the link CSS module class", () => {
+        renderWithRouter(
+          <Link to="/settings/export_data" reloadDocument>
+            Download
+          </Link>,
+        );
+        expect(
+          screen.getByRole("link", { name: "Download" }).className,
+        ).toMatch(/link/);
+      });
+    });
   });
 });

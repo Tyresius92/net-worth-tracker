@@ -3,7 +3,8 @@ import { Link as RRLink, LinkProps as RRLinkProps } from "react-router";
 
 import styles from "./Link.module.css";
 
-interface InternalLinkProps extends Pick<RRLinkProps, "to" | "children"> {}
+interface InternalLinkProps
+  extends Pick<RRLinkProps, "to" | "children" | "reloadDocument"> {}
 interface ExternalLinkProps {
   href: URL;
   children: ReactNode;

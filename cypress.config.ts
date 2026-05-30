@@ -159,6 +159,34 @@ export default defineConfig({
           return totp.generate();
         },
 
+        async createAccount({
+          email,
+          name,
+          snapshots = [],
+        }: {
+          email: string;
+          name?: string;
+          snapshots?: Array<{ amountCents: number; date: string }>;
+        }): Promise<{ accountId: string; accountName: string }> {
+          const user = await prismaClient.user.findUniqueOrThrow({
+            where: { email },
+          });
+          const accountName = name ?? faker.lorem.words(2);
+          const account = await prismaClient.account.create({
+            data: { customName: accountName, type: "checking", userId: user.id },
+          });
+          for (const snapshot of snapshots) {
+            await prismaClient.balanceSnapshot.create({
+              data: {
+                accountId: account.id,
+                amount: snapshot.amountCents,
+                dateTime: new Date(`${snapshot.date}T12:00:00.000Z`),
+              },
+            });
+          }
+          return { accountId: account.id, accountName };
+        },
+
         async deleteUser(email: string): Promise<null> {
           try {
             await prismaClient.user.delete({ where: { email } });
