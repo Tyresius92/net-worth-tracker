@@ -56,3 +56,12 @@
   padding-inline: var(--space-12);
   text-align: start;
 }
+
+.foot {
+  border-block-start: 2px solid var(--color-sand-12);
+  font-weight: bold;
+}
+
+.foot .cell {
+  border-block-end: none;
+}

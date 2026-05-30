@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
 import { Table } from "./Table";
@@ -138,5 +138,119 @@ describe("Table", () => {
       </Table>,
     );
     expect(screen.getAllByRole("row")).toHaveLength(3); // 1 header + 2 data rows
+  });
+});
+
+describe("Table.Foot", () => {
+  it("renders as a rowgroup alongside the table body", () => {
+    render(
+      <Table caption="Accounts">
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>$1,000.00</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+        <Table.Foot>
+          <Table.Cell>Total</Table.Cell>
+        </Table.Foot>
+      </Table>,
+    );
+    // tbody and tfoot both carry the rowgroup role
+    expect(screen.getAllByRole("rowgroup")).toHaveLength(2);
+  });
+
+  it("auto-wraps children in a tr", () => {
+    render(
+      <Table caption="Accounts">
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>$1,000.00</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+        <Table.Foot>
+          <Table.Cell>Total</Table.Cell>
+        </Table.Foot>
+      </Table>,
+    );
+    const rowgroups = screen.getAllByRole("rowgroup");
+    const foot = rowgroups[rowgroups.length - 1];
+    expect(within(foot).getByRole("row")).toBeInTheDocument();
+  });
+
+  it("applies the foot class", () => {
+    render(
+      <Table caption="Accounts">
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>$1,000.00</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+        <Table.Foot>
+          <Table.Cell>Total</Table.Cell>
+        </Table.Foot>
+      </Table>,
+    );
+    const rowgroups = screen.getAllByRole("rowgroup");
+    const foot = rowgroups[rowgroups.length - 1];
+    expect(foot.className).toMatch(/foot/);
+  });
+
+  it("renders with Table.Cell children only, no Table.RowHeader required", () => {
+    render(
+      <Table caption="Accounts">
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>$1,000.00</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+        <Table.Foot>
+          <Table.Cell>Total</Table.Cell>
+          <Table.Cell align="end">$148,450.30</Table.Cell>
+        </Table.Foot>
+      </Table>,
+    );
+    const rowgroups = screen.getAllByRole("rowgroup");
+    const foot = rowgroups[rowgroups.length - 1];
+    expect(within(foot).getByRole("cell", { name: "Total" })).toBeInTheDocument();
+    expect(within(foot).getByRole("cell", { name: "$148,450.30" })).toBeInTheDocument();
+  });
+
+  it("renders Table.RowHeader inside the footer with scope='row'", () => {
+    render(
+      <Table caption="Accounts">
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>$1,000.00</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+        <Table.Foot>
+          <Table.RowHeader>Total</Table.RowHeader>
+          <Table.Cell align="end">$148,450.30</Table.Cell>
+        </Table.Foot>
+      </Table>,
+    );
+    const rowgroups = screen.getAllByRole("rowgroup");
+    const foot = rowgroups[rowgroups.length - 1];
+    const rowheader = within(foot).getByRole("rowheader");
+    expect(rowheader).toHaveAttribute("scope", "row");
+    expect(rowheader).toHaveTextContent("Total");
+  });
+
+  it("respects Cell align prop inside the footer", () => {
+    render(
+      <Table caption="Accounts">
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>$1,000.00</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+        <Table.Foot>
+          <Table.Cell align="end">$148,450.30</Table.Cell>
+        </Table.Foot>
+      </Table>,
+    );
+    const rowgroups = screen.getAllByRole("rowgroup");
+    const foot = rowgroups[rowgroups.length - 1];
+    expect(within(foot).getByRole("cell").className).toMatch(/cell-end/);
   });
 });

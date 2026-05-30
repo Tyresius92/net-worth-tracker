@@ -466,12 +466,12 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                       <Table.Cell>Brokerage · 0410</Table.Cell>
                       <Table.Cell align="end">$36,001.36</Table.Cell>
                     </Table.Row>
-                    <Table.Row>
-                      <Table.RowHeader>Total</Table.RowHeader>
-                      <Table.Cell>&nbsp;</Table.Cell>
-                      <Table.Cell align="end">$148,450.30</Table.Cell>
-                    </Table.Row>
                   </Table.Body>
+                  <Table.Foot>
+                    <Table.RowHeader>Total</Table.RowHeader>
+                    <Table.Cell />
+                    <Table.Cell align="end">$148,450.30</Table.Cell>
+                  </Table.Foot>
                 </Table>
               </Box>
             </Grid.Item>

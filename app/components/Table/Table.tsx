@@ -1,6 +1,7 @@
 import { TableBody } from "./Body";
 import { TableCell } from "./Cell";
 import { TableColumnHeader } from "./ColumnHeader";
+import { TableFoot } from "./Foot";
 import { TableHead } from "./Head";
 import { TableRow } from "./Row";
 import { TableRowHeader } from "./RowHeader";
@@ -29,3 +30,5 @@ Table.RowHeader = TableRowHeader;
 Table.Body = TableBody;
 Table.Row = TableRow;
 Table.Cell = TableCell;
+
+Table.Foot = TableFoot;

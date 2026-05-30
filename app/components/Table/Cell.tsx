@@ -8,7 +8,7 @@ const alignClass: Partial<Record<CellAlign, string>> = {
 };
 
 export interface TableCellProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   align?: CellAlign;
 }
 

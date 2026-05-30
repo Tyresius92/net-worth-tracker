@@ -34,15 +34,21 @@ Table is a compound component. The full structure is:
     <Table.Row>
       <Table.RowHeader>Chase Checking</Table.RowHeader>
       <Table.Cell>Checking</Table.Cell>
-      <Table.Cell>$4,200.00</Table.Cell>
+      <Table.Cell align="end">$4,200.00</Table.Cell>
     </Table.Row>
   </Table.Body>
+  <Table.Foot>
+    <Table.RowHeader>Total</Table.RowHeader>
+    <Table.Cell />
+    <Table.Cell align="end">$4,200.00</Table.Cell>
+  </Table.Foot>
 </Table>
 ```
 
 A few things to note about the structure:
 
 - **`Table.Head` wraps its children in a `<tr>` automatically.** Place `Table.ColumnHeader` elements directly inside `Table.Head` — do not add a `Table.Row` between them.
+- **`Table.Foot` wraps its children in a `<tr>` automatically.** Place `Table.Cell` or `Table.RowHeader` elements directly inside `Table.Foot` — do not add a `Table.Row` between them. `Table.Foot` renders a `<tfoot>` with a thicker top border and bold text weight, making it suitable for totals or summary rows.
 - **`Table.RowHeader` is not the same as `Table.ColumnHeader`.** Use `Table.ColumnHeader` inside `Table.Head` for column labels. Use `Table.RowHeader` as the first cell of a data row to identify that row — it renders as `<th scope="row">`.
 - **`caption` is required.** See the Accessibility section below.
 
@@ -53,6 +59,10 @@ A few things to note about the structure:
 Tables without column headers are valid when rows are self-describing:
 
 <Canvas of={TableStories.SingleColumn} />
+
+Use `Table.Foot` for a summary or total row:
+
+<Canvas of={TableStories.WithFooter} />
 
 ## Accessibility
 
