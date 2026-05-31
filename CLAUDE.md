@@ -49,11 +49,20 @@ npx prisma migrate dev --name <name>   # create a migration
 
 React Router v7. Routes are defined in [`app/routes.ts`](app/routes.ts) using the programmatic config API (`route()`, `index()`, `layout()`). Each route lives in its own directory under `app/routes/` and exports a `loader`, `action`, and default component. Route types are auto-generated into `+types/` files — run `npm run typecheck` to regenerate them. The path alias `~/` maps to `app/`.
 
-File and folder names use snake_case.
-Routes also use snake_case - do not use kebab-case.
-Route parameters use camelCase.
+**Naming conventions — these apply everywhere: route paths, file names, folder names, and Cypress test file names:**
 
-Example: `/plaid_items/:itemId/update/route.tsx`
+| Segment type | Convention | Example |
+|---|---|---|
+| Static route segments | `snake_case` | `forgot_password`, `recovery_codes` |
+| Dynamic route parameters | `camelCase` | `:itemId`, `:accountId` |
+| File and folder names | `snake_case` | `forgot_password/route.tsx` |
+
+**Never use kebab-case** — not in route paths, not in file names, not in folder names. This includes settings sub-routes, auth routes, and Cypress test filenames.
+
+Example route path: `/plaid_items/:itemId/update`
+Example file path: `app/routes/plaid_items/$itemId/update/route.tsx`
+
+This convention also applies to all URL strings in code: `redirect("/forgot_password")`, `<Link to="/settings/recovery_codes">`, and URL constructions like `` `${origin}/verify_email?token=${token}` ``.
 
 ### Data layer
 

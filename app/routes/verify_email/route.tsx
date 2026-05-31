@@ -15,7 +15,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   if (!token) return redirect("/join");
 
   const record = await verifyEmailVerificationToken(token);
-  if (!record) return redirect("/verify-email/pending?expired=1");
+  if (!record) return redirect("/verify_email/pending?expired=1");
 
   await consumeEmailVerificationToken(record.id, record.user.id);
 

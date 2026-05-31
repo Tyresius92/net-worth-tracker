@@ -95,7 +95,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (!user.emailVerifiedAt) {
     const token = await createEmailVerificationToken(user.id);
-    const verifyUrl = `${new URL(request.url).origin}/verify-email?token=${token}`;
+    const verifyUrl = `${new URL(request.url).origin}/verify_email?token=${token}`;
     await sendEmail({
       to: user.email,
       subject: "Verify your email address",
@@ -107,7 +107,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       ),
     });
     session.set("pending-verification:userId", user.id);
-    return redirect("/verify-email/pending", {
+    return redirect("/verify_email/pending", {
       headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
     });
   }
@@ -179,7 +179,7 @@ export default function LoginPage() {
           <div className={styles.actions}>
             <Checkbox name="remember" label="Remember me" />
             <Button type="submit">Log in</Button>
-            <Link to="/forgot-password">Forgot password?</Link>
+            <Link to="/forgot_password">Forgot password?</Link>
             <Link to="/join">Not yet a subscriber? Apply for credentials</Link>
           </div>
         </Form>

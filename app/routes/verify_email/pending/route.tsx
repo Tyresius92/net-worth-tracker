@@ -39,7 +39,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (!user) return redirect("/join");
 
   const token = await createEmailVerificationToken(user.id);
-  const verifyUrl = `${new URL(request.url).origin}/verify-email?token=${token}`;
+  const verifyUrl = `${new URL(request.url).origin}/verify_email?token=${token}`;
 
   await sendEmail({
     to: user.email,

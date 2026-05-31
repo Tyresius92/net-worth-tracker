@@ -98,7 +98,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const codes = await generateRecoveryCodes(user.id);
   session.set("recovery-codes:new-codes", codes);
 
-  return redirect("/settings/recovery-codes", {
+  return redirect("/settings/recovery_codes", {
     headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
   });
 };

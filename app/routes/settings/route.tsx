@@ -53,7 +53,7 @@ export default function SettingsRoute() {
                 <span className={styles.label}>Recovery codes</span>
                 <span className={styles.value}>
                   {recoveryCodeCount} of 10 remaining &middot;{" "}
-                  <Link to="/settings/recovery-codes">Manage</Link>
+                  <Link to="/settings/recovery_codes">Manage</Link>
                 </span>
               </div>
               <Divider variant="light" />
@@ -86,7 +86,7 @@ export default function SettingsRoute() {
           <div className={styles.row}>
             <span className={styles.label}>Change password</span>
             <span className={styles.value}>
-              <Link to="/settings/change-password">Change</Link>
+              <Link to="/settings/change_password">Change</Link>
             </span>
           </div>
         </Box>
@@ -116,7 +116,7 @@ export default function SettingsRoute() {
               Permanently close your record and delete all associated data
             </span>
             <span className={styles.value}>
-              <Link to="/settings/delete-account">Close your record</Link>
+              <Link to="/settings/delete_account">Close your record</Link>
             </span>
           </div>
         </Box>

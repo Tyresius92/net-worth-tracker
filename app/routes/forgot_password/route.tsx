@@ -18,7 +18,7 @@ import { validateEmail } from "~/utils";
 import { sendEmail } from "~/utils/email.server";
 import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
 
-import styles from "./forgot-password.module.css";
+import styles from "./forgot_password.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
@@ -47,7 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (user) {
     const token = await createPasswordResetToken(user.id);
     const { origin } = new URL(request.url);
-    const resetUrl = `${origin}/reset-password?token=${token}`;
+    const resetUrl = `${origin}/reset_password?token=${token}`;
 
     await sendEmail({
       to: user.email,

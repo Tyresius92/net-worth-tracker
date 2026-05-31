@@ -111,7 +111,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const user = await createUser({ email, password, firstName, lastName });
 
   const token = await createEmailVerificationToken(user.id);
-  const verifyUrl = `${new URL(request.url).origin}/verify-email?token=${token}`;
+  const verifyUrl = `${new URL(request.url).origin}/verify_email?token=${token}`;
 
   await sendEmail({
     to: user.email,
@@ -127,7 +127,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const session = await getSession(request);
   session.set("pending-verification:userId", user.id);
 
-  return redirect("/verify-email/pending", {
+  return redirect("/verify_email/pending", {
     headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
   });
 };

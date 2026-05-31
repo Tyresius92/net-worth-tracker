@@ -23,14 +23,14 @@ import {
 } from "~/models/password-reset.server";
 import { getUserId } from "~/session.server";
 
-import styles from "./reset-password.module.css";
+import styles from "./reset_password.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
 
   const token = new URL(request.url).searchParams.get("token");
-  if (!token) return redirect("/forgot-password");
+  if (!token) return redirect("/forgot_password");
 
   const record = await verifyPasswordResetToken(token);
   if (!record) return data({ valid: false, token: null });
@@ -47,7 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const baseErrors = { token: null, password: null, confirmPassword: null };
 
   if (typeof token !== "string" || !token) {
-    return redirect("/forgot-password");
+    return redirect("/forgot_password");
   }
 
   if (typeof password !== "string" || password.length === 0) {
@@ -115,7 +115,7 @@ export default function ResetPasswordPage() {
         </div>
 
         <div className={styles.actions}>
-          <Link to="/forgot-password">Request a new link</Link>
+          <Link to="/forgot_password">Request a new link</Link>
         </div>
       </>
     );

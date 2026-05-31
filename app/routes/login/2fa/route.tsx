@@ -70,7 +70,7 @@ export async function action({ request }: { request: Request }) {
 
     if (remaining === 0) {
       session.set("recovery-codes:exhausted", true);
-      return redirect("/settings/recovery-codes", {
+      return redirect("/settings/recovery_codes", {
         headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
       });
     }

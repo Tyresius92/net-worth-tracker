@@ -87,7 +87,7 @@ describe("recovery code login", () => {
     );
   });
 
-  it("redirects to /settings/recovery-codes and shows exhausted warning after the last code is used", () => {
+  it("redirects to /settings/recovery_codes and shows exhausted warning after the last code is used", () => {
     cy.task<{ codes: string[] }>("enableUserMFA", {
       email: userEmail,
       codeCount: 1,
@@ -102,13 +102,13 @@ describe("recovery code login", () => {
       cy.findByLabelText(/recovery code/i).type(codes[0]);
       cy.findByRole("button", { name: /verify/i }).click();
 
-      cy.location("pathname").should("eq", "/settings/recovery-codes");
+      cy.location("pathname").should("eq", "/settings/recovery_codes");
       cy.findByText(/used all of your recovery codes/i);
     });
   });
 });
 
-describe("/settings/recovery-codes page", () => {
+describe("/settings/recovery_codes page", () => {
   let userEmail: string;
 
   beforeEach(() => {
@@ -126,23 +126,23 @@ describe("/settings/recovery-codes page", () => {
   });
 
   it("shows the remaining code count", () => {
-    cy.visitAndCheck("/settings/recovery-codes");
+    cy.visitAndCheck("/settings/recovery_codes");
     cy.contains(/10 of 10 recovery codes remaining/i);
   });
 
   it("regenerates codes when a valid TOTP code is entered", () => {
-    cy.visitAndCheck("/settings/recovery-codes");
+    cy.visitAndCheck("/settings/recovery_codes");
     cy.task<string>("generateTOTPCode", userEmail).then((code) => {
       cy.findByLabelText(/authenticator code/i).type(code);
     });
     cy.findByRole("button", { name: /generate new codes/i }).click();
 
-    cy.location("pathname").should("eq", "/settings/recovery-codes");
+    cy.location("pathname").should("eq", "/settings/recovery_codes");
     cy.findByText(/save your recovery codes/i);
   });
 
   it("shows an error when an invalid TOTP code is entered", () => {
-    cy.visitAndCheck("/settings/recovery-codes");
+    cy.visitAndCheck("/settings/recovery_codes");
     cy.findByLabelText(/authenticator code/i).type("999999");
     cy.findByRole("button", { name: /generate new codes/i }).click();
 
@@ -150,7 +150,7 @@ describe("/settings/recovery-codes page", () => {
   });
 
   it("shows newly generated codes exactly once", () => {
-    cy.visitAndCheck("/settings/recovery-codes");
+    cy.visitAndCheck("/settings/recovery_codes");
     cy.task<string>("generateTOTPCode", userEmail).then((code) => {
       cy.findByLabelText(/authenticator code/i).type(code);
     });
@@ -189,6 +189,6 @@ describe("settings page recovery code count", () => {
   it("links to the recovery codes management page", () => {
     cy.visitAndCheck("/settings");
     cy.findByRole("link", { name: /manage/i }).click();
-    cy.location("pathname").should("eq", "/settings/recovery-codes");
+    cy.location("pathname").should("eq", "/settings/recovery_codes");
   });
 });

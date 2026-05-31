@@ -53,7 +53,7 @@ describe("/settings/disable_mfa", () => {
       cy.findByLabelText(/authenticator code/i).type(code);
       cy.findByRole("button", { name: /disable two-factor/i }).click();
 
-      cy.visit("/settings/recovery-codes");
+      cy.visit("/settings/recovery_codes");
       cy.location("pathname").should("eq", "/settings");
     });
   });

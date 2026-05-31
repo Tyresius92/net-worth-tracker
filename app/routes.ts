@@ -12,11 +12,11 @@ export default [
   layout("./routes/login/layout.tsx", [
     route("login", "./routes/login/route.tsx"),
     route("login/2fa", "./routes/login/2fa/route.tsx"),
-    route("forgot-password", "./routes/forgot-password/route.tsx"),
-    route("reset-password", "./routes/reset-password/route.tsx"),
+    route("forgot_password", "./routes/forgot_password/route.tsx"),
+    route("reset_password", "./routes/reset_password/route.tsx"),
     route("join", "./routes/join.tsx"),
-    route("verify-email", "./routes/verify-email/route.tsx"),
-    route("verify-email/pending", "./routes/verify-email/pending/route.tsx"),
+    route("verify_email", "./routes/verify_email/route.tsx"),
+    route("verify_email/pending", "./routes/verify_email/pending/route.tsx"),
   ]),
 
   route("logout", "./routes/logout.tsx"),
@@ -31,10 +31,10 @@ export default [
     route("settings", "./routes/settings/layout.tsx", [
       index("./routes/settings/route.tsx"),
       route("enable_mfa", "./routes/settings/enable_mfa/route.tsx"),
-      route("recovery-codes", "./routes/settings/recovery-codes/route.tsx"),
+      route("recovery_codes", "./routes/settings/recovery_codes/route.tsx"),
       route("disable_mfa", "./routes/settings/disable_mfa/route.tsx"),
-      route("change-password", "./routes/settings/change-password/route.tsx"),
-      route("delete-account", "./routes/settings/delete-account/route.tsx"),
+      route("change_password", "./routes/settings/change_password/route.tsx"),
+      route("delete_account", "./routes/settings/delete_account/route.tsx"),
       route("export_data", "./routes/settings/export_data/route.tsx"),
     ]),
 

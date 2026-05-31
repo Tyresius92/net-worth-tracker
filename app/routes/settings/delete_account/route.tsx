@@ -10,7 +10,7 @@ import { prisma } from "~/db.server";
 import { deleteUserById } from "~/models/user.server";
 import { logout, requireUser } from "~/session.server";
 
-import styles from "./delete-account.module.css";
+import styles from "./delete_account.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await requireUser(request);

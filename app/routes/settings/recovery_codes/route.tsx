@@ -19,7 +19,7 @@ import {
 } from "~/models/recovery-code.server";
 import { getSession, requireUser, sessionStorage } from "~/session.server";
 
-import styles from "./recovery-codes.module.css";
+import styles from "./recovery_codes.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
@@ -98,7 +98,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const codes = await generateRecoveryCodes(user.id);
   session.set("recovery-codes:new-codes", codes);
 
-  return redirect("/settings/recovery-codes", {
+  return redirect("/settings/recovery_codes", {
     headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
   });
 };
