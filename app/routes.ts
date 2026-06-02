@@ -36,6 +36,7 @@ export default [
       route("change_password", "./routes/settings/change_password/route.tsx"),
       route("delete_account", "./routes/settings/delete_account/route.tsx"),
       route("export_data", "./routes/settings/export_data/route.tsx"),
+      route("import_data", "./routes/settings/import_data/route.tsx"),
     ]),
 
     route("users", "./routes/users/layout.tsx", [

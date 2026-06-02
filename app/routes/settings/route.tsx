@@ -105,6 +105,15 @@ export default function SettingsRoute() {
               </Link>
             </span>
           </div>
+          <Divider variant="light" />
+          <div className={styles.row}>
+            <span className={styles.label}>
+              Upload a spreadsheet to import figures in bulk
+            </span>
+            <span className={styles.value}>
+              <Link to="/settings/import_data">Import</Link>
+            </span>
+          </div>
         </Box>
       </div>
 
