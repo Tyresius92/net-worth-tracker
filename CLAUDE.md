@@ -131,6 +131,8 @@ Resend + React Email. In non-production environments, `sendEmail` (from [`app/ut
 - Test files colocate with the file they test (`.test.ts` / `.test.tsx`)
 - Cypress e2e tests are in `cypress/e2e/`; use `cy.visitAndCheck()` (custom command) instead of bare `cy.visit()`
   - Exception: if a redirect is expected (e.g. on a protected route), use `cy.visit()` and assert on the new expected URL separately.
+- Prefer `const` arrow functions over `function` declarations everywhere except route module default exports. React Router 7 requires a default export from each route file; use `export default function RouteComponent()` there and `const` arrow functions for everything else (helpers, utilities, loaders, actions outside of route files).
+- Prefer array methods (`map`, `filter`, `reduce`, `flatMap`, `forEach`) over `for` and `while` loops.
 
 ## User-facing terminology
 
