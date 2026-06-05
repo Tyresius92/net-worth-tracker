@@ -18,3 +18,7 @@ node_modules
 
 *storybook.log
 storybook-static
+
+/tests/.auth
+/playwright-report
+/test-results
