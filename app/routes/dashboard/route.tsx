@@ -5,20 +5,21 @@ import { Box } from "~/components/Box/Box";
 import { Divider } from "~/components/Divider/Divider";
 import { Grid } from "~/components/Grid/Grid";
 import { Heading } from "~/components/Heading/Heading";
+import { NavLink } from "~/components/NavLink/NavLink";
 import { Table } from "~/components/Table/Table";
 import { Text } from "~/components/Text/Text";
 import { prisma } from "~/db.server";
 import { getLatestBalancesAsOfDate } from "~/models/user.server";
 import { requireUser } from "~/session.server";
 import { getAccountDisplayName } from "~/utils/accountUtils";
-import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
+import { fillDailyBalanceDayData, formatDate as toISODate } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 import { formatDate, getDateNDaysAgo } from "~/utils/dateUtils";
 import { getUserNetWorth } from "~/utils/netWorthUtils.server";
 
 import type { Route } from "./+types/route";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
 
   const userData = await prisma.user.findFirstOrThrow({
@@ -109,6 +110,19 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     }))
     .sort((a, b) => (a.date < b.date ? -1 : 1));
 
+  const getCutoffDate = (rangeSlug: string | undefined): string | null => {
+    if (rangeSlug === "thirty_days") return toISODate(getDateNDaysAgo(30));
+    if (rangeSlug === "this_year")
+      return toISODate(new Date(new Date().getFullYear(), 0, 1));
+    if (rangeSlug === "twelve_months") return toISODate(getDateNDaysAgo(365));
+    return null;
+  };
+
+  const cutoff = getCutoffDate(params.rangeSlug);
+  const filteredBalanceDays = cutoff
+    ? balanceDays.filter((b) => b.date >= cutoff)
+    : balanceDays;
+
   return {
     user,
     accounts: userData.accounts.map((account) => ({
@@ -131,7 +145,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       dataFromFirstDayOfTheYear.accounts,
     ),
     netWorthFromOneYearAgo: getUserNetWorth(dataFromOneYearAgo.accounts),
-    balances: balanceDays,
+    balances: filteredBalanceDays,
     today: new Date().toISOString(),
     startDate: userData.accounts
       .reduce((acc, curr) => {
@@ -206,10 +220,28 @@ export default function AuthenticatedUserFrontPage({
         <Grid gap={32}>
           <Grid.Item l={7}>
             <Box>
-              <Box>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
                 <Heading level={3} fontSize={20}>
                   Fig. 1 · Net worth
                 </Heading>
+                <Box display="flex">
+                  <NavLink to="/dashboard/thirty_days" preventScrollReset>
+                    30 days
+                  </NavLink>
+                  <NavLink to="/dashboard/this_year" preventScrollReset>
+                    This year
+                  </NavLink>
+                  <NavLink to="/dashboard/twelve_months" preventScrollReset>
+                    12 months
+                  </NavLink>
+                  <NavLink to="/dashboard" preventScrollReset end>
+                    Full record
+                  </NavLink>
+                </Box>
               </Box>
               <BalanceChart
                 balances={loaderData.balances}

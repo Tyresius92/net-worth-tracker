@@ -26,7 +26,7 @@ export default [
   route("contact/messages", "./routes/contact/messages/route.tsx"),
 
   layout("./routes/authenticated_layout.tsx", [
-    route("dashboard", "./routes/dashboard/route.tsx"),
+    route("dashboard/:rangeSlug?", "./routes/dashboard/route.tsx"),
 
     route("settings", "./routes/settings/layout.tsx", [
       index("./routes/settings/route.tsx"),
