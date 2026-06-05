@@ -13,6 +13,7 @@ dotenv.config({
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {
+    include: ["app/**/*.{test,spec}.{ts,tsx}"],
     globals: true,
     environment: "happy-dom",
     globalSetup: ["./test/global-setup.ts"],
