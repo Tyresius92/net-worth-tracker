@@ -1,0 +1,104 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import { Table } from "../Table/Table";
+import * as FileUploadStories from "./FileUpload.stories";
+
+<Meta of={FileUploadStories} />
+
+# FileUpload
+
+FileUpload is a styled native file input with a built-in label, optional hint text, and optional error message. It uses `::file-selector-button` to bring the browser's native file picker on-brand without hiding the input or overriding the button text.
+
+## When to use
+
+Use FileUpload whenever the user needs to select a file from their device — uploading a CSV of figures, attaching a document, and so on.
+
+## When not to use
+
+There are no current exclusions for this component.
+
+## States
+
+### Default
+
+<Canvas of={FileUploadStories.Default} />
+
+### With hint text
+
+Use `hintText` to communicate format requirements or constraints — accepted file types, size limits, and so on. Hint text is shown regardless of validation state.
+
+<Canvas of={FileUploadStories.WithHint} />
+
+### With an error
+
+<Canvas of={FileUploadStories.WithError} />
+
+Use `errorMessage` to surface a validation failure. The input is automatically marked `aria-invalid` and the message is associated via `aria-describedby`. If both `hintText` and `errorMessage` are present, both are shown.
+
+### Disabled
+
+<Canvas of={FileUploadStories.Disabled} />
+
+Prefer not to disable file inputs where possible — a disabled input gives no explanation for why selection is unavailable. When you must disable, ensure surrounding context makes the reason clear.
+
+### Multiple files
+
+<Canvas of={FileUploadStories.Multiple} />
+
+Set `multiple` to allow the user to select more than one file at once. The browser updates the filename area to reflect the selection count.
+
+## Accepted file types
+
+Pass an array of canonical type names to `accept`. Each name maps internally to one or more file extensions passed to the browser's file picker.
+
+<Table caption="Accepted file types">
+  <Table.Head>
+    <Table.ColumnHeader>Value</Table.ColumnHeader>
+    <Table.ColumnHeader>Extensions accepted</Table.ColumnHeader>
+  </Table.Head>
+  <Table.Body>
+    <Table.Row>
+      <Table.RowHeader><code>csv</code></Table.RowHeader>
+      <Table.Cell><code>.csv</code></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader><code>pdf</code></Table.RowHeader>
+      <Table.Cell><code>.pdf</code></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader><code>png</code></Table.RowHeader>
+      <Table.Cell><code>.png</code></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader><code>jpg</code></Table.RowHeader>
+      <Table.Cell><code>.jpg</code>, <code>.jpeg</code></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader><code>svg</code></Table.RowHeader>
+      <Table.Cell><code>.svg</code></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader><code>xlsx</code></Table.RowHeader>
+      <Table.Cell><code>.xlsx</code></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader><code>txt</code></Table.RowHeader>
+      <Table.Cell><code>.txt</code></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.RowHeader><code>json</code></Table.RowHeader>
+      <Table.Cell><code>.json</code></Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Omit `accept` to allow any file type.
+
+## Accessibility
+
+Label association is handled automatically — a unique `id` is generated internally and bound to the `label` element. The `label` prop is always required and always connected. You do not need to manage IDs manually.
+
+Both `hintText` and `errorMessage` are connected to the input via `aria-describedby`, so screen readers announce both alongside the label when the field receives focus.
+
+## Props
+
+<Controls of={FileUploadStories.Default} />

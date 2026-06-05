@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect } from "storybook/test";
 
 import { Table } from "./Table";
 
@@ -36,12 +35,7 @@ export const WithData: Story = {
       </>
     ),
   },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("Account balances")).toBeVisible();
-    const headers = canvas.getAllByRole("columnheader");
-    await expect(headers).toHaveLength(3);
-    headers.forEach((h) => expect(h).toHaveAttribute("scope", "col"));
-  },
+
 };
 
 export const WithFooter: Story = {

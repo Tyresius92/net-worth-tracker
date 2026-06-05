@@ -1,7 +1,11 @@
+import { parse } from "csv-parse/sync";
 import { ActionFunctionArgs, Form, redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
+import { FileUpload } from "~/components/FileUpload/FileUpload";
+import { Heading } from "~/components/Heading/Heading";
+import { Text } from "~/components/Text/Text";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
 
@@ -11,25 +15,26 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const accountId = params.accountId;
 
   if (!accountId) {
-    throw new Error("Sucks to suck");
+    throw new Response("Account ID is required", { status: 400 });
   }
 
   const formData = await request.formData();
-
   const csvFile = formData.get("import_file");
 
   if (csvFile instanceof File) {
     const text = await csvFile.text();
 
-    const [_headers, ...rest] = text.split("\r\n");
-
-    const data = rest.map((row) => row.split(","));
+    const records = parse<{ Date: string; Amount: string }>(text, {
+      columns: true,
+      skip_empty_lines: true,
+      trim: true,
+    });
 
     await prisma.balanceSnapshot.createMany({
-      data: data.map(([dateStr, balanceStr]) => ({
+      data: records.map((record) => ({
         accountId,
-        amount: parseFloat(balanceStr) * 100,
-        dateTime: new Date(dateStr),
+        amount: Math.round(parseFloat(record.Amount) * 100),
+        dateTime: new Date(record.Date),
       })),
     });
 
@@ -42,32 +47,28 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 export default function ImportRoute() {
   return (
     <Box>
-      <Box>
-        <p>Please upload a .csv file with the following structure.</p>
-        <p>Dates do NOT need to be sorted, or sequential</p>
-        <p>Be sure that your balances do not contain commas!</p>
-        <div
-          style={{
-            backgroundColor: "var(--color-slate-3)",
-            padding: 20,
-            marginBlock: 20,
-          }}
-        >
-          <pre>
-            Date,Balance
-            <br />
-            2025-05-15,100.00
-            <br />
-            2025-05-16,115.33
-            <br />
-            2025-05-17,93.44
-            <br />
-          </pre>
-        </div>
+      <Heading level={3}>Import figures</Heading>
+      <Text variant="deck">
+        Accepted format: a CSV file with two columns — date and amount.
+      </Text>
+      <Box border={{ color: "sand-7" }} xsP={20} xsMt={20} xsMb={20}>
+        <pre>
+          Date,Amount{"\n"}
+          2025-05-15,100.00{"\n"}
+          2025-05-16,115.33{"\n"}
+          2025-05-17,93.44
+        </pre>
       </Box>
+      <Text variant="body">
+        Dates need not be sequential. Amounts must not include commas.
+      </Text>
       <Form method="post" encType="multipart/form-data">
-        <input type="file" accept=".csv" name="import_file" />
-        <Button type="submit">Submit that bad boy</Button>
+        <Box xsMt={16}>
+          <FileUpload label="CSV file" name="import_file" accept={["csv"]} />
+        </Box>
+        <Box xsMt={12}>
+          <Button type="submit">Import figures</Button>
+        </Box>
       </Form>
     </Box>
   );

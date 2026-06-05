@@ -3,6 +3,7 @@ import { data, Form, useActionData } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
+import { FileUpload } from "~/components/FileUpload/FileUpload";
 import { Heading } from "~/components/Heading/Heading";
 import { Text } from "~/components/Text/Text";
 import { requireUser } from "~/session.server";
@@ -20,7 +21,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const csvFile = formData.get("import_file");
 
   if (!(csvFile instanceof File) || csvFile.size === 0) {
-    return data({ status: "error" as const, message: "Please select a CSV file." }, { status: 400 });
+    return data(
+      { status: "error" as const, message: "Please select a CSV file." },
+      { status: 400 },
+    );
   }
 
   try {
@@ -30,7 +34,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return data({ status: "success" as const, result });
   } catch {
     return data(
-      { status: "error" as const, message: "The import failed. No figures were saved." },
+      {
+        status: "error" as const,
+        message: "The import failed. No figures were saved.",
+      },
       { status: 500 },
     );
   }
@@ -55,7 +62,7 @@ export default function ImportDataRoute() {
 
       <Form method="post" encType="multipart/form-data">
         <Box xsMb={16}>
-          <input type="file" accept=".csv" name="import_file" />
+          <FileUpload accept={["csv"]} name="import_file" label="CSV file" />
         </Box>
         <Button type="submit">Import</Button>
       </Form>
@@ -80,6 +87,8 @@ const ImportSummary = ({ result }: { result: ImportResult }) => (
     </Box>
     <Text variant="body">Sources created: {result.sourcesCreated}</Text>
     <Text variant="body">Figures added: {result.figuresAdded}</Text>
-    <Text variant="body">Figures skipped (exact duplicates): {result.figuresSkipped}</Text>
+    <Text variant="body">
+      Figures skipped (exact duplicates): {result.figuresSkipped}
+    </Text>
   </Box>
 );

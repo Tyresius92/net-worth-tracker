@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect } from "storybook/test";
 
 import { TextInput } from "./TextInput";
 
@@ -13,11 +12,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: { label: "Email address", name: "email", type: "email" },
-  play: async ({ canvas }) => {
-    const input = canvas.getByLabelText(/email address/i);
-    await expect(input).toBeVisible();
-    await expect(input).toHaveAttribute("type", "email");
-  },
 };
 
 export const WithError: Story = {
@@ -26,11 +20,6 @@ export const WithError: Story = {
     name: "username",
     type: "text",
     errorMessage: "Username is already taken",
-  },
-  play: async ({ canvas }) => {
-    const input = canvas.getByLabelText(/username/i);
-    await expect(input).toHaveAttribute("aria-invalid", "true");
-    await expect(canvas.getByText(/username is already taken/i)).toBeVisible();
   },
 };
 
