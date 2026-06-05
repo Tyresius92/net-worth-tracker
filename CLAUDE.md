@@ -33,8 +33,8 @@ npm run format        # prettier --write
 npm test                     # vitest (watch mode)
 npm test -- --run            # vitest (single run)
 npm test -- --run path/to/file.test.ts   # run a single test file
-npm run test:e2e:dev         # open Cypress in dev mode
-npm run test:e2e:run         # run Cypress headless (Firefox)
+npm run test:e2e:dev         # open Playwright in UI mode
+npm run test:e2e:run         # run Playwright headless
 
 # Database
 npm run setup                          # generate + migrate + seed
@@ -49,7 +49,7 @@ npx prisma migrate dev --name <name>   # create a migration
 
 React Router v7. Routes are defined in [`app/routes.ts`](app/routes.ts) using the programmatic config API (`route()`, `index()`, `layout()`). Each route lives in its own directory under `app/routes/` and exports a `loader`, `action`, and default component. Route types are auto-generated into `+types/` files — run `npm run typecheck` to regenerate them. The path alias `~/` maps to `app/`.
 
-**Naming conventions — these apply everywhere: route paths, file names, folder names, and Cypress test file names:**
+**Naming conventions — these apply everywhere: route paths, file names, folder names, and Playwright test file names:**
 
 | Segment type             | Convention   | Example                             |
 | ------------------------ | ------------ | ----------------------------------- |
@@ -57,7 +57,7 @@ React Router v7. Routes are defined in [`app/routes.ts`](app/routes.ts) using th
 | Dynamic route parameters | `camelCase`  | `:itemId`, `:accountId`             |
 | File and folder names    | `snake_case` | `forgot_password/route.tsx`         |
 
-**Never use kebab-case** — not in route paths, not in file names, not in folder names. This includes settings sub-routes, auth routes, and Cypress test filenames.
+**Never use kebab-case** — not in route paths, not in file names, not in folder names. This includes settings sub-routes, auth routes, and Playwright test filenames.
 
 Example route path: `/plaid_items/:itemId/update`
 Example file path: `app/routes/plaid_items/$itemId/update/route.tsx`
@@ -129,8 +129,7 @@ Resend + React Email. In non-production environments, `sendEmail` (from [`app/ut
 - Use `Box` component props for all layout and spacing — don't add one-off CSS classes
 - Server-only modules use `.server.ts` suffix
 - Test files colocate with the file they test (`.test.ts` / `.test.tsx`)
-- Cypress e2e tests are in `cypress/e2e/`; use `cy.visitAndCheck()` (custom command) instead of bare `cy.visit()`
-  - Exception: if a redirect is expected (e.g. on a protected route), use `cy.visit()` and assert on the new expected URL separately.
+- Playwright e2e tests are in `playwright/`
 - Prefer `const` arrow functions over `function` declarations everywhere except route module default exports. React Router 7 requires a default export from each route file; use `export default function RouteComponent()` there and `const` arrow functions for everything else (helpers, utilities, loaders, actions outside of route files).
 - Prefer array methods (`map`, `filter`, `reduce`, `flatMap`, `forEach`) over `for` and `while` loops.
 
