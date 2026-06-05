@@ -96,41 +96,6 @@ jobs:
       - name: ⚡ Run vitest
         run: npm run test -- --coverage
 
-  cypress:
-    name: ⚫️ Cypress
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v4
-
-      - name: 🏄 Copy test env vars
-        run: cp .env.test .env
-
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v4
-        with:
-          cache: npm
-          cache-dependency-path: ./package.json
-          node-version: 22
-
-      - name: 📥 Install deps
-        run: npm install
-
-      - name: 🛠 Setup Database
-        run: npx prisma migrate reset --force --skip-seed
-
-      - name: ⚙️ Build
-        run: npm run build
-
-      - name: 🌳 Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          start: npm run start:mocks
-          wait-on: http://localhost:8811
-          browser: firefox
-        env:
-          PORT: 8811
-
   playwright:
     name: 🎭 Playwright
     runs-on: ubuntu-latest
