@@ -1,7 +1,12 @@
 import { expect, test as setup } from "@playwright/test";
 import { Secret, TOTP } from "otpauth";
 
-import { createAdminUser, deleteUser, enableMfa, saveStorageState } from "../helpers";
+import {
+  createAdminUser,
+  deleteUser,
+  enableMfa,
+  saveStorageState,
+} from "../helpers";
 import { TEST_USERS } from "../test_users";
 
 const MFA_SECRET = "JBSWY3DPEHPK3PXP";

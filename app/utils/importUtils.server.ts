@@ -79,14 +79,45 @@ export const runBulkImport = async (
     // 2. Resolve or create an account for each column, sequentially
     const { resolvedAccountIds, sourcesCreated } = await parsed.columns.reduce<
       Promise<{ resolvedAccountIds: string[]; sourcesCreated: number }>
-    >(async (accP, col) => {
-      const { resolvedAccountIds, sourcesCreated } = await accP;
+    >(
+      async (accP, col) => {
+        const { resolvedAccountIds, sourcesCreated } = await accP;
 
-      if (col.kind === "name_and_id") {
-        const existing = accountsById.get(col.accountId);
-        if (existing) {
-          return { resolvedAccountIds: [...resolvedAccountIds, existing.id], sourcesCreated };
+        if (col.kind === "name_and_id") {
+          const existing = accountsById.get(col.accountId);
+          if (existing) {
+            return {
+              resolvedAccountIds: [...resolvedAccountIds, existing.id],
+              sourcesCreated,
+            };
+          }
+          const created = await tx.account.create({
+            data: { customName: col.displayName, type: "other", userId },
+          });
+          return {
+            resolvedAccountIds: [...resolvedAccountIds, created.id],
+            sourcesCreated: sourcesCreated + 1,
+          };
         }
+
+        if (col.kind === "id_only") {
+          const existing = accountsById.get(col.accountId);
+          if (existing) {
+            return {
+              resolvedAccountIds: [...resolvedAccountIds, existing.id],
+              sourcesCreated,
+            };
+          }
+          const created = await tx.account.create({
+            data: { customName: null, type: "other", userId },
+          });
+          return {
+            resolvedAccountIds: [...resolvedAccountIds, created.id],
+            sourcesCreated: sourcesCreated + 1,
+          };
+        }
+
+        // name_only: always create a new account
         const created = await tx.account.create({
           data: { customName: col.displayName, type: "other", userId },
         });
@@ -94,31 +125,9 @@ export const runBulkImport = async (
           resolvedAccountIds: [...resolvedAccountIds, created.id],
           sourcesCreated: sourcesCreated + 1,
         };
-      }
-
-      if (col.kind === "id_only") {
-        const existing = accountsById.get(col.accountId);
-        if (existing) {
-          return { resolvedAccountIds: [...resolvedAccountIds, existing.id], sourcesCreated };
-        }
-        const created = await tx.account.create({
-          data: { customName: null, type: "other", userId },
-        });
-        return {
-          resolvedAccountIds: [...resolvedAccountIds, created.id],
-          sourcesCreated: sourcesCreated + 1,
-        };
-      }
-
-      // name_only: always create a new account
-      const created = await tx.account.create({
-        data: { customName: col.displayName, type: "other", userId },
-      });
-      return {
-        resolvedAccountIds: [...resolvedAccountIds, created.id],
-        sourcesCreated: sourcesCreated + 1,
-      };
-    }, Promise.resolve({ resolvedAccountIds: [], sourcesCreated: 0 }));
+      },
+      Promise.resolve({ resolvedAccountIds: [], sourcesCreated: 0 }),
+    );
 
     // 3. Load all existing snapshots for the involved accounts
     const existingSnapshots = await tx.balanceSnapshot.findMany({
@@ -136,7 +145,8 @@ export const runBulkImport = async (
     // 4. Collect new snapshots, skipping exact duplicates
     let figuresAdded = 0;
     let figuresSkipped = 0;
-    const toCreate: { accountId: string; amount: number; dateTime: Date }[] = [];
+    const toCreate: { accountId: string; amount: number; dateTime: Date }[] =
+      [];
 
     parsed.rows
       .flatMap((row) =>

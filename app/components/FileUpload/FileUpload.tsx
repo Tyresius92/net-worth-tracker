@@ -4,15 +4,7 @@ import { Box } from "../Box/Box";
 
 import styles from "./FileUpload.module.css";
 
-type FileType =
-  | "csv"
-  | "pdf"
-  | "png"
-  | "jpg"
-  | "svg"
-  | "xlsx"
-  | "txt"
-  | "json";
+type FileType = "csv" | "pdf" | "png" | "jpg" | "svg" | "xlsx" | "txt" | "json";
 
 const FILE_TYPE_EXTENSIONS: Record<FileType, string[]> = {
   csv: [".csv"],

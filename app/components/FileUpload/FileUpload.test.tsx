@@ -59,16 +59,12 @@ describe("FileUpload", () => {
   });
 
   it("sets the multiple attribute when multiple is true", () => {
-    render(
-      <FileUpload label="Upload figures" name="import_file" multiple />,
-    );
+    render(<FileUpload label="Upload figures" name="import_file" multiple />);
     expect(screen.getByLabelText("Upload figures")).toHaveAttribute("multiple");
   });
 
   it("is disabled when the disabled prop is set", () => {
-    render(
-      <FileUpload label="Upload figures" name="import_file" disabled />,
-    );
+    render(<FileUpload label="Upload figures" name="import_file" disabled />);
     expect(screen.getByLabelText("Upload figures")).toBeDisabled();
   });
 

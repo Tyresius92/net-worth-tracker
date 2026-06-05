@@ -44,7 +44,10 @@ describe("parseImportCSV", () => {
         accountId: CUID_V1,
       });
       expect(result.rows).toHaveLength(1);
-      expect(result.rows[0]).toEqual({ date: "2025-01-15", amounts: [1234.56] });
+      expect(result.rows[0]).toEqual({
+        date: "2025-01-15",
+        amounts: [1234.56],
+      });
     });
   });
 
@@ -112,12 +115,18 @@ describe("parseImportCSV", () => {
 
     it("detects a bare cuid v1 as id_only", () => {
       const result = parseImportCSV(`date,${CUID_V1}\n2025-01-15,100.00`);
-      expect(result.columns[0]).toEqual({ kind: "id_only", accountId: CUID_V1 });
+      expect(result.columns[0]).toEqual({
+        kind: "id_only",
+        accountId: CUID_V1,
+      });
     });
 
     it("detects a bare cuid v2 as id_only", () => {
       const result = parseImportCSV(`date,${CUID_V2}\n2025-01-15,100.00`);
-      expect(result.columns[0]).toEqual({ kind: "id_only", accountId: CUID_V2 });
+      expect(result.columns[0]).toEqual({
+        kind: "id_only",
+        accountId: CUID_V2,
+      });
     });
 
     it("treats a plain name with no cuid as name_only", () => {
@@ -159,7 +168,11 @@ describe("runBulkImport", () => {
     const csv = `date,My Source (${account.id})\n2025-01-15,1234.56`;
     const result = await runBulkImport(parseImportCSV(csv), user.id);
 
-    expect(result).toEqual({ sourcesCreated: 0, figuresAdded: 1, figuresSkipped: 0 });
+    expect(result).toEqual({
+      sourcesCreated: 0,
+      figuresAdded: 1,
+      figuresSkipped: 0,
+    });
 
     const snapshots = await prisma.balanceSnapshot.findMany({
       where: { accountId: account.id },

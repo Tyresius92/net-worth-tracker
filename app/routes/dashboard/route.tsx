@@ -12,7 +12,10 @@ import { prisma } from "~/db.server";
 import { getLatestBalancesAsOfDate } from "~/models/user.server";
 import { requireUser } from "~/session.server";
 import { getAccountDisplayName } from "~/utils/accountUtils";
-import { fillDailyBalanceDayData, formatDate as toISODate } from "~/utils/balanceUtils";
+import {
+  fillDailyBalanceDayData,
+  formatDate as toISODate,
+} from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 import { formatDate, getDateNDaysAgo } from "~/utils/dateUtils";
 import { getUserNetWorth } from "~/utils/netWorthUtils.server";

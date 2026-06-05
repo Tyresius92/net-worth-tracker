@@ -51,11 +51,11 @@ React Router v7. Routes are defined in [`app/routes.ts`](app/routes.ts) using th
 
 **Naming conventions — these apply everywhere: route paths, file names, folder names, and Cypress test file names:**
 
-| Segment type | Convention | Example |
-|---|---|---|
-| Static route segments | `snake_case` | `forgot_password`, `recovery_codes` |
-| Dynamic route parameters | `camelCase` | `:itemId`, `:accountId` |
-| File and folder names | `snake_case` | `forgot_password/route.tsx` |
+| Segment type             | Convention   | Example                             |
+| ------------------------ | ------------ | ----------------------------------- |
+| Static route segments    | `snake_case` | `forgot_password`, `recovery_codes` |
+| Dynamic route parameters | `camelCase`  | `:itemId`, `:accountId`             |
+| File and folder names    | `snake_case` | `forgot_password/route.tsx`         |
 
 **Never use kebab-case** — not in route paths, not in file names, not in folder names. This includes settings sub-routes, auth routes, and Cypress test filenames.
 

@@ -11,9 +11,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: process.env.CI
-    ? [["dot"], ["html", { open: "never" }]]
-    : "html",
+  reporter: process.env.CI ? [["dot"], ["html", { open: "never" }]] : "html",
   globalSetup: "./tests/global_setup.ts",
   use: {
     baseURL: `http://localhost:${PORT}`,

@@ -173,7 +173,11 @@ export default defineConfig({
           });
           const accountName = name ?? faker.lorem.words(2);
           const account = await prismaClient.account.create({
-            data: { customName: accountName, type: "checking", userId: user.id },
+            data: {
+              customName: accountName,
+              type: "checking",
+              userId: user.id,
+            },
           });
           for (const snapshot of snapshots) {
             await prismaClient.balanceSnapshot.create({

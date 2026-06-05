@@ -20,7 +20,9 @@ describe("buildCSV", () => {
 
   describe("account with no snapshots", () => {
     it("includes the account column in the header but no data rows", () => {
-      const result = buildCSV([account({ id: "acc1", customName: "Checking" })]);
+      const result = buildCSV([
+        account({ id: "acc1", customName: "Checking" }),
+      ]);
       expect(result).toBe("date,Checking (acc1)");
     });
   });
@@ -46,8 +48,7 @@ describe("buildCSV", () => {
       const header = buildCSV([
         account({ id: "acc1", customName: "Checking" }),
         account({ id: "acc2", customName: "Savings" }),
-      ])
-        .split("\n")[0];
+      ]).split("\n")[0];
 
       expect(header).toBe("date,Checking (acc1),Savings (acc2)");
     });

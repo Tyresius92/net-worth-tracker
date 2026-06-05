@@ -35,7 +35,6 @@ export const WithData: Story = {
       </>
     ),
   },
-
 };
 
 export const WithFooter: Story = {

@@ -211,8 +211,12 @@ describe("Table.Foot", () => {
     );
     const rowgroups = screen.getAllByRole("rowgroup");
     const foot = rowgroups[rowgroups.length - 1];
-    expect(within(foot).getByRole("cell", { name: "Total" })).toBeInTheDocument();
-    expect(within(foot).getByRole("cell", { name: "$148,450.30" })).toBeInTheDocument();
+    expect(
+      within(foot).getByRole("cell", { name: "Total" }),
+    ).toBeInTheDocument();
+    expect(
+      within(foot).getByRole("cell", { name: "$148,450.30" }),
+    ).toBeInTheDocument();
   });
 
   it("renders Table.RowHeader inside the footer with scope='row'", () => {

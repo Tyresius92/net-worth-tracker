@@ -18,7 +18,9 @@ describe("settings import", () => {
     cy.login();
     cy.visitAndCheck("/settings/import_data");
 
-    cy.get('input[type="file"]').selectFile("cypress/fixtures/import_valid.csv");
+    cy.get('input[type="file"]').selectFile(
+      "cypress/fixtures/import_valid.csv",
+    );
     cy.findByRole("button", { name: /^import$/i }).click();
 
     cy.findByText(/import complete/i).should("exist");
