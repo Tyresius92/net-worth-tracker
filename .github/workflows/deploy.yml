@@ -175,4 +175,6 @@ jobs:
           token: ${{ secrets.GH_WORKFLOW_PAT }}
 
       - name: ⬆️ Fast-forward main to dev
-        run: git push origin HEAD:refs/heads/main
+        run: |
+          git fetch origin main
+          git push origin HEAD:refs/heads/main
