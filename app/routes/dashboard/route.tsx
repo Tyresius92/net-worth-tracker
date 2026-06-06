@@ -127,7 +127,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     : balanceDays;
 
   return {
-    user,
     accounts: userData.accounts.map((account) => ({
       id: account.id,
       name: getAccountDisplayName(account),
@@ -149,18 +148,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     ),
     netWorthFromOneYearAgo: getUserNetWorth(dataFromOneYearAgo.accounts),
     balances: filteredBalanceDays,
-    today: new Date().toISOString(),
-    startDate: userData.accounts
-      .reduce((acc, curr) => {
-        const snapDate = curr.balanceSnapshots[0]?.dateTime ?? undefined;
-
-        if (snapDate && snapDate < acc) {
-          return snapDate;
-        }
-
-        return acc;
-      }, new Date())
-      .toISOString(),
   };
 };
 
@@ -172,6 +159,8 @@ export default function AuthenticatedUserFrontPage({
     netWorthFromThirtyDaysAgo,
     netWorthFromOneYearAgo,
     netWorthFromStartOfYear,
+    balances,
+    accounts,
   } = loaderData;
 
   const thirtyDayChange = netWorth - netWorthFromThirtyDaysAgo;
@@ -187,7 +176,7 @@ export default function AuthenticatedUserFrontPage({
       <Divider />
       <Box display="flex" justifyContent="center" xsPy={32}>
         <Heading level={1} fontSize={72}>
-          Net worth: {formatCurrency(loaderData.netWorth)}
+          Net worth: {formatCurrency(netWorth)}
         </Heading>
       </Box>
       <Divider />
@@ -246,17 +235,14 @@ export default function AuthenticatedUserFrontPage({
                   </NavLink>
                 </Box>
               </Box>
-              <BalanceChart
-                balances={loaderData.balances}
-                title="Net worth history"
-              />
+              <BalanceChart balances={balances} title="Net worth history" />
             </Box>
           </Grid.Item>
           <Grid.Item l={5}>
             <Box>
               <Table caption="Sources of record">
                 <Table.Body>
-                  {loaderData.accounts.map((account) => (
+                  {accounts.map((account) => (
                     <Table.Row key={account.id}>
                       <Table.Cell>
                         <Text>{account.name}</Text>
@@ -279,44 +265,6 @@ export default function AuthenticatedUserFrontPage({
           </Grid.Item>
         </Grid>
       </Box>
-
-      <Box display="flex" xsGap={32} justifyContent="space-between">
-        <Box>
-          <h2>Highlights</h2>
-          <ul>
-            {thirtyDayChange !== 0 ? (
-              <li>
-                {thirtyDayChange > 0 ? "Up" : "Down"}{" "}
-                {formatCurrency(thirtyDayChange, { includeCents: false })} over
-                the last 30 days
-              </li>
-            ) : null}
-
-            {thisYearChange !== 0 ? (
-              <li>
-                {thisYearChange > 0 ? "Up" : "Down"}{" "}
-                {formatCurrency(thisYearChange, { includeCents: false })} since
-                the beginning of this year
-              </li>
-            ) : null}
-
-            {oneYearChange !== 0 ? (
-              <li>
-                {oneYearChange > 0 ? "Up" : "Down"}{" "}
-                {formatCurrency(oneYearChange, { includeCents: false })} over
-                the last year
-              </li>
-            ) : null}
-          </ul>
-        </Box>
-        <Box display="flex" flexGrow={1}>
-          <BalanceChart
-            balances={loaderData.balances}
-            title="Net worth history"
-          />
-        </Box>
-      </Box>
-      <pre>{JSON.stringify(loaderData, undefined, 2)}</pre>
     </Box>
   );
 }
