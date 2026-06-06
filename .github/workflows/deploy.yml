@@ -173,8 +173,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_WORKFLOW_PAT }}
+          fetch-depth: 0
 
       - name: ⬆️ Fast-forward main to dev
-        run: |
-          git fetch origin main
-          git push origin HEAD:refs/heads/main
+        run: git push origin HEAD:refs/heads/main
