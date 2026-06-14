@@ -18,6 +18,16 @@ Architectural decisions are documented in [`docs/adr/`](docs/adr/). Read these b
 
 **Verify before declaring done.** After completing any coding task, run the full verification suite (`/verify`) before reporting the task as complete. If a check fails, fix it and re-run. Only declare done when all checks are green.
 
+**Tests are part of the task, not a follow-up.** Every implementation task that writes or modifies production code must include tests. Before writing any code, the plan must identify:
+
+- Which Vitest unit tests to write (colocated with source: `app/path/to/file.test.ts`)
+- Which Playwright e2e tests to write (in `tests/as_user/`, `tests/as_admin/`, etc.), if the change has a user-visible behavior
+- Or a specific reason why tests are not applicable for this change (e.g. pure config change, CSS-only, types-only)
+
+Use Vitest for: utility functions, server-side logic, data transformations, model functions, React components that don't require a full React Router server (design system components, standalone reusable components, custom hooks — a MemoryRouter is fine).
+Use Playwright for: page flows, form submissions, auth behavior, UI interactions the user would perform.
+Both may be needed for a single feature.
+
 ## Commands
 
 This project uses Node v22. There is a `.nvmrc` file in the root of the directory with the specific pinned version.

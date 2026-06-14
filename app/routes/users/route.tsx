@@ -5,6 +5,7 @@ import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
+import { formatDate } from "~/utils/dateUtils";
 
 import type { Route } from "./+types/route";
 
@@ -58,6 +59,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
           <Table.ColumnHeader>First Name</Table.ColumnHeader>
           <Table.ColumnHeader>Last Name</Table.ColumnHeader>
           <Table.ColumnHeader>Email</Table.ColumnHeader>
+          <Table.ColumnHeader>Verified At</Table.ColumnHeader>
           <Table.ColumnHeader>Role</Table.ColumnHeader>
           <Table.ColumnHeader>2FA</Table.ColumnHeader>
           <Table.ColumnHeader>Sources</Table.ColumnHeader>
@@ -79,6 +81,11 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
                 <Table.Cell>{user.firstName}</Table.Cell>
                 <Table.Cell>{user.lastName}</Table.Cell>
                 <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>
+                  {user.emailVerifiedAt
+                    ? formatDate(user.emailVerifiedAt)
+                    : "N/A"}
+                </Table.Cell>
                 <Table.Cell>{user.role}</Table.Cell>
                 <Table.Cell>
                   {user.twoFactorEnabled ? "Enabled" : "Disabled"}

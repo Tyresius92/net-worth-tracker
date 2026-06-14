@@ -7,6 +7,7 @@ import { Divider } from "~/components/Divider/Divider";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
+import { formatDate } from "~/utils/dateUtils";
 
 import styles from "./user-detail.module.css";
 
@@ -74,19 +75,20 @@ export default function AdminUserDetailPage() {
           <Divider variant="light" />
           <div className={styles.row}>
             <span className={styles.label}>Member since</span>
-            <span className={styles.value}>
-              {new Date(user.createdAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
+            <span className={styles.value}>{formatDate(user.createdAt)}</span>
           </div>
           <Divider variant="light" />
           <div className={styles.row}>
             <span className={styles.label}>Two-factor authentication</span>
             <span className={styles.value}>
               {user.twoFactorEnabled ? "Enabled" : "Not enabled"}
+            </span>
+          </div>
+          <Divider variant="light" />
+          <div className={styles.row}>
+            <span className={styles.label}>Email verified</span>
+            <span className={styles.value}>
+              {user.emailVerifiedAt ? formatDate(user.emailVerifiedAt) : "N/A"}
             </span>
           </div>
         </Box>
