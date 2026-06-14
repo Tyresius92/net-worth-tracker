@@ -30,7 +30,9 @@ describe("Masthead", () => {
 
   it("shows the Log Out button when a user is logged in", () => {
     renderWithRouter(
-      <Masthead user={{ id: "user-1", twoFactorEnabled: false, role: "customer" }}>
+      <Masthead
+        user={{ id: "user-1", twoFactorEnabled: false, role: "customer" }}
+      >
         content
       </Masthead>,
     );
@@ -55,7 +57,9 @@ describe("Masthead", () => {
 
   it("shows the Wire services link when twoFactorEnabled is true", () => {
     renderWithRouter(
-      <Masthead user={{ id: "user-1", twoFactorEnabled: true, role: "customer" }}>
+      <Masthead
+        user={{ id: "user-1", twoFactorEnabled: true, role: "customer" }}
+      >
         content
       </Masthead>,
     );
@@ -66,7 +70,9 @@ describe("Masthead", () => {
 
   it("does not show the Wire services link when twoFactorEnabled is false", () => {
     renderWithRouter(
-      <Masthead user={{ id: "user-1", twoFactorEnabled: false, role: "customer" }}>
+      <Masthead
+        user={{ id: "user-1", twoFactorEnabled: false, role: "customer" }}
+      >
         content
       </Masthead>,
     );
@@ -101,7 +107,9 @@ describe("Masthead", () => {
 
   it("does not show the admin bar when the user's role is customer", () => {
     renderWithRouter(
-      <Masthead user={{ id: "user-1", twoFactorEnabled: false, role: "customer" }}>
+      <Masthead
+        user={{ id: "user-1", twoFactorEnabled: false, role: "customer" }}
+      >
         content
       </Masthead>,
     );
