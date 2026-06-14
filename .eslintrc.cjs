@@ -48,10 +48,6 @@ module.exports = {
       },
       rules: {
         "no-console": "error",
-        "react/jsx-no-leaked-render": [
-          "warn",
-          { validStrategies: ["ternary"] },
-        ],
       },
     },
 
@@ -98,6 +94,7 @@ module.exports = {
             assertionStyle: "never",
           },
         ],
+        "curly": ["error"],
         "import/order": [
           "error",
           {

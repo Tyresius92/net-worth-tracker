@@ -34,7 +34,7 @@ export const Masthead = ({ user, children }: MastheadProps) => {
 
   return (
     <>
-      {user?.role === "admin" && (
+      {user?.role === "admin" ? (
         <Box bg="amber-4" xsPx={56} xsPy={8}>
           <nav aria-label="Admin">
             <Box
@@ -50,7 +50,7 @@ export const Masthead = ({ user, children }: MastheadProps) => {
             </Box>
           </nav>
         </Box>
-      )}
+      ) : null}
       <Box xsPx={56} xsPt={12}>
         <nav aria-label="Main">
           <Grid>

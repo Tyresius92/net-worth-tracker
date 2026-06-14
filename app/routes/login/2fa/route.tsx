@@ -26,7 +26,7 @@ import styles from "./twofa.module.css";
 export async function loader({ request }: { request: Request }) {
   const session = await getSession(request);
   const userId = session.get("2fa:user-id");
-  if (!userId) return redirect("/login");
+  if (!userId) {return redirect("/login");}
   return {};
 }
 
@@ -51,7 +51,7 @@ export async function action({ request }: { request: Request }) {
     select: { id: true, email: true, twoFactorSecret: true },
   });
 
-  if (!user) throw new Response("User not found", { status: 404 });
+  if (!user) {throw new Response("User not found", { status: 404 });}
   if (!code || typeof code !== "string") {
     return data({ error: "Code is required" }, { status: 400 });
   }

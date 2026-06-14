@@ -430,7 +430,8 @@
   --color-white-a12: rgba(255, 255, 255, 0.95);
 }
 
-.dark {
+.dark,
+html.dark {
   --color-gray-1: #111111;
   --color-gray-2: #191919;
   --color-gray-3: #222222;

@@ -22,7 +22,7 @@ import styles from "./forgot_password.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (userId) return redirect("/");
+  if (userId) {return redirect("/");}
   return {};
 };
 

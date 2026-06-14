@@ -9,10 +9,10 @@ import { requireUser } from "~/session.server";
 import type { Route } from "./+types/route";
 
 export const computeSourceCounts = (
-  accounts: Array<{
+  accounts: {
     closedAt: Date | null;
     plaidAccount: { id: string } | null;
-  }>,
+  }[],
 ) => {
   const active = accounts.filter((a) => !a.closedAt);
   const wireSources = active.filter((a) => a.plaidAccount !== null).length;

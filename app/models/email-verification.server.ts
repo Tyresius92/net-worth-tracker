@@ -38,7 +38,7 @@ export async function verifyEmailVerificationToken(token: string) {
   if (record.usedAt) {
     return null;
   }
-  if (record.expiresAt < new Date()) return null;
+  if (record.expiresAt < new Date()) {return null;}
 
   return record;
 }

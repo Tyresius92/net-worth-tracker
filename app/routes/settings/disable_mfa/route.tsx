@@ -13,14 +13,14 @@ import styles from "./disable-mfa.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUser(request);
-  if (!user.twoFactorEnabled) return redirect("/settings");
+  if (!user.twoFactorEnabled) {return redirect("/settings");}
   return {};
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const user = await requireUser(request);
 
-  if (!user.twoFactorEnabled) return redirect("/settings");
+  if (!user.twoFactorEnabled) {return redirect("/settings");}
 
   const formData = await request.formData();
   const token = formData.get("token");
@@ -34,7 +34,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     select: { twoFactorSecret: true },
   });
 
-  if (!userWithSecret?.twoFactorSecret) return redirect("/settings");
+  if (!userWithSecret?.twoFactorSecret) {return redirect("/settings");}
 
   const totp = new TOTP({
     issuer: "The Ledger",

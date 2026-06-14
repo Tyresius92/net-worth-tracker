@@ -114,10 +114,10 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     .sort((a, b) => (a.date < b.date ? -1 : 1));
 
   const getCutoffDate = (rangeSlug: string | undefined): string | null => {
-    if (rangeSlug === "thirty_days") return toISODate(getDateNDaysAgo(30));
+    if (rangeSlug === "thirty_days") {return toISODate(getDateNDaysAgo(30));}
     if (rangeSlug === "this_year")
-      return toISODate(new Date(new Date().getFullYear(), 0, 1));
-    if (rangeSlug === "twelve_months") return toISODate(getDateNDaysAgo(365));
+      {return toISODate(new Date(new Date().getFullYear(), 0, 1));}
+    if (rangeSlug === "twelve_months") {return toISODate(getDateNDaysAgo(365));}
     return null;
   };
 

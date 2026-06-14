@@ -43,7 +43,7 @@ export const startOfToday = (): Date => {
  * Fills sparse daily BalanceDay data by carrying the last known value forward.
  */
 export const fillDailyBalanceDayData = (data: BalanceDay[]): BalanceDay[] => {
-  if (data.length === 0) return [];
+  if (data.length === 0) {return [];}
 
   // Collapse duplicates (last one wins)
   const byDate = data.reduce<Map<string, BalanceDay>>((map, item) => {

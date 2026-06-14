@@ -47,7 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const record = await prisma.password.findUnique({
     where: { userId: user.id },
   });
-  if (!record) return redirect("/settings");
+  if (!record) {return redirect("/settings");}
 
   const isValid = await bcrypt.compare(password, record.hash);
   if (!isValid) {

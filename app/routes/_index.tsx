@@ -64,7 +64,7 @@ function findDemoAmountAtDate(
   const targetStr = target.toISOString().split("T")[0];
   let closest = balances[0];
   for (const b of balances) {
-    if (b.date <= targetStr) closest = b;
+    if (b.date <= targetStr) {closest = b;}
   }
   return closest?.amount ?? 0;
 }

@@ -59,7 +59,7 @@ export const parseImportCSV = (csvText: string): ParsedImport => {
     date: row[0],
     amounts: columnHeaders.map((_, i) => {
       const cell = row[i + 1] ?? "";
-      if (cell === "") return null;
+      if (cell === "") {return null;}
       return parseFloat(cell);
     }),
   }));

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type {
   ActionFunctionArgs,
   LinksFunction,
@@ -113,26 +113,73 @@ export default function App({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher();
   let { colorMode } = useLoaderData<typeof loader>();
 
+  // Tracks the system preference for use when no cookie is set.
+  // Initialized to null to avoid a hydration mismatch (server can't read system pref).
+  const [systemColorMode, setSystemColorMode] = useState<
+    "dark" | "light" | null
+  >(null);
+
+  // Favicon always follows system preference regardless of the cookie.
+  // Initialized to the light favicon so server and client agree on the initial render.
+  const [faviconHref, setFaviconHref] = useState("/favicon-light.ico");
+
   useEffect(() => {
     logger.setUser(loaderData.user ? { id: loaderData.user.id } : null);
   }, [loaderData.user]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+    // Sync initial state on hydration
+    setFaviconHref(media.matches ? "/favicon-dark.ico" : "/favicon-light.ico");
+    if (!colorMode) {
+      setSystemColorMode(media.matches ? "dark" : "light");
+    }
+
+    const listener = (e: MediaQueryListEvent) => {
+      // Favicon always follows system preference
+      setFaviconHref(e.matches ? "/favicon-dark.ico" : "/favicon-light.ico");
+      // Theme only follows system preference when no explicit cookie is set
+      if (!colorMode) {
+        const html = document.documentElement;
+        html.classList.toggle("dark", e.matches);
+        html.classList.toggle("light", !e.matches);
+        setSystemColorMode(e.matches ? "dark" : "light");
+      }
+    };
+
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [colorMode]);
 
   // use optimistic UI to immediately change the UI state
   if (fetcher.formData?.has("colorMode")) {
     colorMode = fetcher.formData.get("colorMode") === "dark" ? "dark" : "light";
   }
 
+  // Cookie (or optimistic value) wins over detected system preference
+  const effectiveColorMode = colorMode ?? systemColorMode;
+
   return (
     <html lang="en" style={{ height: "100%" }}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="icon" href={faviconHref} type="image/x-icon" />
+        {colorMode ? null : (
+          <script
+            nonce={nonce}
+            dangerouslySetInnerHTML={{
+              __html: `(function(){var d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.add(d?'dark':'light');})()`,
+            }}
+          />
+        )}
         <Meta />
         <Links />
       </head>
       <body
         id="root"
-        className={colorMode}
+        className={effectiveColorMode ?? undefined}
         style={{
           minHeight: "100%",
           display: "flex",
@@ -145,9 +192,9 @@ export default function App({ loaderData }: Route.ComponentProps) {
             <Button
               type="submit"
               name="colorMode"
-              value={colorMode === "dark" ? "light" : "dark"}
+              value={effectiveColorMode === "dark" ? "light" : "dark"}
             >
-              {colorMode === "dark" ? "Light Mode" : "Dark Mode"}
+              {effectiveColorMode === "dark" ? "Light Mode" : "Dark Mode"}
             </Button>
           </fetcher.Form>
         </Masthead>

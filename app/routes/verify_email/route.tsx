@@ -9,13 +9,13 @@ import { createUserSession, getUserId } from "~/session.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (userId) return redirect("/");
+  if (userId) {return redirect("/");}
 
   const token = new URL(request.url).searchParams.get("token");
-  if (!token) return redirect("/join");
+  if (!token) {return redirect("/join");}
 
   const record = await verifyEmailVerificationToken(token);
-  if (!record) return redirect("/verify_email/pending?expired=1");
+  if (!record) {return redirect("/verify_email/pending?expired=1");}
 
   await consumeEmailVerificationToken(record.id, record.user.id);
 
