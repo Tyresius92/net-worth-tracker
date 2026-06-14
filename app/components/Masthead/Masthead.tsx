@@ -12,7 +12,7 @@ import { Text } from "../Text/Text";
 import styles from "./Masthead.module.css";
 
 export interface MastheadProps {
-  user: { id: string; twoFactorEnabled: boolean } | null;
+  user: { id: string; twoFactorEnabled: boolean; role: "admin" | "customer" } | null;
   children: React.ReactNode;
 }
 
@@ -29,6 +29,20 @@ export const Masthead = ({ user, children }: MastheadProps) => {
   };
 
   return (
+    <>
+    {user?.role === "admin" && (
+      <Box bg="amber-4" xsPx={56} xsPy={8}>
+        <nav aria-label="Admin">
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Text variant="byline">Admin</Text>
+            <Box display="flex" alignItems="center" xsGap={24}>
+              <NavLink to="/users">Users</NavLink>
+              <NavLink to="/contact/messages">Contact messages</NavLink>
+            </Box>
+          </Box>
+        </nav>
+      </Box>
+    )}
     <Box xsPx={56} xsPt={12}>
       <nav aria-label="Main">
         <Grid>
@@ -93,5 +107,6 @@ export const Masthead = ({ user, children }: MastheadProps) => {
       </Box>
       <Divider variant="heavy" />
     </Box>
+    </>
   );
 };
