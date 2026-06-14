@@ -27,13 +27,19 @@ import styles from "./reset_password.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (userId) {return redirect("/");}
+  if (userId) {
+    return redirect("/");
+  }
 
   const token = new URL(request.url).searchParams.get("token");
-  if (!token) {return redirect("/forgot_password");}
+  if (!token) {
+    return redirect("/forgot_password");
+  }
 
   const record = await verifyPasswordResetToken(token);
-  if (!record) {return data({ valid: false, token: null });}
+  if (!record) {
+    return data({ valid: false, token: null });
+  }
 
   return data({ valid: true, token });
 };

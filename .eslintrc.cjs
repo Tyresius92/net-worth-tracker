@@ -94,7 +94,7 @@ module.exports = {
             assertionStyle: "never",
           },
         ],
-        "curly": ["error"],
+        curly: ["error"],
         "import/order": [
           "error",
           {

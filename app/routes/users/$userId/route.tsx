@@ -12,7 +12,9 @@ import styles from "./user-detail.module.css";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const currentUser = await requireUser(request);
-  if (currentUser.role !== "admin") {throw redirect("/");}
+  if (currentUser.role !== "admin") {
+    throw redirect("/");
+  }
 
   invariant(params.userId, "userId is required");
 

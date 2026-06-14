@@ -34,9 +34,15 @@ export async function verifyPasswordResetToken(token: string) {
     include: { user: { select: { id: true, email: true } } },
   });
 
-  if (!record) {return null;}
-  if (record.usedAt) {return null;}
-  if (record.expiresAt < new Date()) {return null;}
+  if (!record) {
+    return null;
+  }
+  if (record.usedAt) {
+    return null;
+  }
+  if (record.expiresAt < new Date()) {
+    return null;
+  }
 
   return record;
 }

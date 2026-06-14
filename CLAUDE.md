@@ -16,6 +16,8 @@ Architectural decisions are documented in [`docs/adr/`](docs/adr/). Read these b
 
 **One logical unit at a time.** Break all work into discrete steps. Complete one step, report what was done, and wait for explicit approval before beginning the next.
 
+**Verify before declaring done.** After completing any coding task, run the full verification suite (`/verify`) before reporting the task as complete. If a check fails, fix it and re-run. Only declare done when all checks are green.
+
 ## Commands
 
 This project uses Node v22. There is a `.nvmrc` file in the root of the directory with the specific pinned version.

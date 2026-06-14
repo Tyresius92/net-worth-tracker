@@ -332,7 +332,9 @@ export const Box = (props: BoxProps) => {
   const isColumnBox = "xsColumns" in props;
 
   const columnStyles: BoxCSSProperties = (() => {
-    if (!("xsColumns" in props)) {return {};}
+    if (!("xsColumns" in props)) {
+      return {};
+    }
     const {
       xsColumns,
       sColumns = xsColumns,

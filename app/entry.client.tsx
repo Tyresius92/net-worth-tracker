@@ -25,7 +25,9 @@ init({
 
   // Drop all bot/crawler transactions; sample 10% of real user transactions
   tracesSampler() {
-    if (isbot(navigator.userAgent)) {return 0;}
+    if (isbot(navigator.userAgent)) {
+      return 0;
+    }
     return 0.1;
   },
 
@@ -33,7 +35,9 @@ init({
   ignoreErrors: [/No routes matched location/],
 
   beforeSend(event) {
-    if (isbot(navigator.userAgent)) {return null;}
+    if (isbot(navigator.userAgent)) {
+      return null;
+    }
     return event;
   },
 });

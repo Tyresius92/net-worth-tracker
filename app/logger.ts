@@ -13,7 +13,9 @@ export const logger: LoggerInterface = {
   error(errorOrMessage, context) {
     if (errorOrMessage instanceof Error) {
       Sentry.withScope((scope) => {
-        if (context) {scope.setExtras(context);}
+        if (context) {
+          scope.setExtras(context);
+        }
         Sentry.captureException(errorOrMessage);
       });
     } else {

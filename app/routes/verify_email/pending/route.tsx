@@ -15,13 +15,17 @@ import styles from "./pending.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (userId) {return redirect("/");}
+  if (userId) {
+    return redirect("/");
+  }
 
   const session = await getSession(request);
   const pendingUserId: string | undefined = session.get(
     "pending-verification:userId",
   );
-  if (!pendingUserId) {return redirect("/join");}
+  if (!pendingUserId) {
+    return redirect("/join");
+  }
 
   const expired = new URL(request.url).searchParams.get("expired") === "1";
 
@@ -33,10 +37,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const pendingUserId: string | undefined = session.get(
     "pending-verification:userId",
   );
-  if (!pendingUserId) {return redirect("/join");}
+  if (!pendingUserId) {
+    return redirect("/join");
+  }
 
   const user = await getUserById(pendingUserId);
-  if (!user) {return redirect("/join");}
+  if (!user) {
+    return redirect("/join");
+  }
 
   const token = await createEmailVerificationToken(user.id);
   const verifyUrl = `${new URL(request.url).origin}/verify_email?token=${token}`;
