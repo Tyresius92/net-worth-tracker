@@ -1,7 +1,7 @@
 import { CountryCode } from "plaid";
 import { useEffect } from "react";
 import { usePlaidLink } from "react-plaid-link";
-import { LoaderFunctionArgs, redirect, useFetcher } from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useFetcher } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
@@ -40,7 +40,14 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   };
 };
 
-export const action = async () => {
+export const action = async ({ params, request }: ActionFunctionArgs) => {
+  const userId = await requireUserId(request);
+
+  await prisma.plaidItem.updateMany({
+    where: { id: params.itemId, userId },
+    data: { status: "healthy" },
+  });
+
   return redirect("..");
 };
 
