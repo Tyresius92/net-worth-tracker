@@ -1,6 +1,6 @@
 # ADR: Daily Scheduled Balance Refresh via GitHub Actions
 
-**Status:** Accepted
+**Status:** Superseded by [ADR-014](ADR-014-plaid-webhook-refresh.md)
 
 ---
 
