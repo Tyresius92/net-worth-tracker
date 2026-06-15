@@ -1,8 +1,11 @@
 import type { PlaidAccount } from "@prisma/client";
+import type { JWK } from "jose";
 import { http, HttpResponse } from "msw";
 import { ItemUpdateTypeEnum } from "plaid";
 
 const basePlaidUrl = "https://sandbox.plaid.com";
+
+const verificationKeyConfigs = new Map<string, JWK>();
 
 interface PlaidApiAccountBalance {
   available: number | null;
@@ -46,6 +49,18 @@ function extractAccessToken(body: unknown): string {
     return body.access_token;
   }
   throw new Error("[plaidMock] Invalid request body: missing access_token");
+}
+
+function extractKeyId(body: unknown): string {
+  if (
+    typeof body === "object" &&
+    body !== null &&
+    "key_id" in body &&
+    typeof body.key_id === "string"
+  ) {
+    return body.key_id;
+  }
+  throw new Error("[plaidMock] Invalid request body: missing key_id");
 }
 
 export function buildPlaidApiAccount(
@@ -103,10 +118,33 @@ export const plaidMock = {
       },
     });
   },
-  reset: () => tokenConfigs.clear(),
+  forVerificationKey: (kid: string, jwk: JWK) => {
+    verificationKeyConfigs.set(kid, jwk);
+  },
+  reset: () => {
+    tokenConfigs.clear();
+    verificationKeyConfigs.clear();
+  },
 };
 
 export const plaidHandlers = [
+  http.post(`${basePlaidUrl}/webhook_verification_key/get`, async ({ request }) => {
+    const kid = extractKeyId(await request.json());
+    const jwk = verificationKeyConfigs.get(kid);
+
+    if (!jwk) {
+      throw new Error(
+        `[plaidMock] No mock configured for key_id "${kid}". ` +
+          `Call plaidMock.forVerificationKey() in your test.`,
+      );
+    }
+
+    return HttpResponse.json({
+      key: { ...jwk, alg: "ES256", key_id: kid },
+      request_id: "req-test-verification",
+    });
+  }),
+
   http.post(`${basePlaidUrl}/accounts/get`, async ({ request }) => {
     const accessToken = extractAccessToken(await request.json());
     const config = tokenConfigs.get(accessToken);

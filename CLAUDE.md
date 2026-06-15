@@ -144,6 +144,7 @@ Resend + React Email. In non-production environments, `sendEmail` (from [`app/ut
 - Playwright e2e tests are in `playwright/`
 - Prefer `const` arrow functions over `function` declarations everywhere except route module default exports. React Router 7 requires a default export from each route file; use `export default function RouteComponent()` there and `const` arrow functions for everything else (helpers, utilities, loaders, actions outside of route files).
 - Prefer array methods (`map`, `filter`, `reduce`, `flatMap`, `forEach`) over `for` and `while` loops.
+- Narrow `unknown` values with type guard functions rather than direct annotations or `as` assertions: `const isFoo = (value: unknown): value is Foo => ...`
 
 ## User-facing terminology
 
