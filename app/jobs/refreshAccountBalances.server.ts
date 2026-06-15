@@ -2,7 +2,9 @@ import { prisma } from "~/db.server";
 import { logger } from "~/logger";
 import { plaidClient } from "~/plaid";
 
-export const refreshAccountBalances = async () => {
+export const refreshAccountBalances = async (options?: {
+  plaidItemId?: string;
+}) => {
   const plaidItems = await prisma.plaidItem.findMany({
     select: {
       id: true,
@@ -22,6 +24,7 @@ export const refreshAccountBalances = async () => {
     where: {
       status: "healthy",
       user: { twoFactorEnabled: true },
+      ...(options?.plaidItemId ? { plaidItemId: options.plaidItemId } : {}),
     },
   });
 

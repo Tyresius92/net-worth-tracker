@@ -284,6 +284,64 @@ describe("refreshAccountBalances", () => {
     });
   });
 
+  describe("single-item mode", () => {
+    it("refreshes only the item matching the given plaidItemId", async () => {
+      const user = await UserFactory.createForConnect();
+      const account1 = await AccountFactory.createForConnect({
+        user: { connect: user },
+      });
+      const account2 = await AccountFactory.createForConnect({
+        user: { connect: user },
+      });
+      const item1 = await PlaidItemFactory.create({ user: { connect: user } });
+      const item2 = await PlaidItemFactory.create({ user: { connect: user } });
+      const token1 = await getAccessToken(item1.id);
+      const token2 = await getAccessToken(item2.id);
+      const pa1 = await PlaidAccountFactory.create({
+        plaidItem: { connect: { id: item1.id } },
+        account: { connect: account1 },
+      });
+      await PlaidAccountFactory.create({
+        plaidItem: { connect: { id: item2.id } },
+        account: { connect: account2 },
+      });
+
+      plaidMock.forToken(token1, [buildPlaidApiAccount(pa1, { current: 100 })]);
+      plaidMock.forToken(token2, []);
+
+      await refreshAccountBalances({ plaidItemId: item1.plaidItemId });
+
+      const snapshots1 = await prisma.balanceSnapshot.findMany({
+        where: { accountId: account1.id },
+      });
+      const snapshots2 = await prisma.balanceSnapshot.findMany({
+        where: { accountId: account2.id },
+      });
+      expect(snapshots1).toHaveLength(1);
+      expect(snapshots1[0].amount).toBe(10000);
+      expect(snapshots2).toHaveLength(0);
+    });
+
+    it("refreshes no items when the given plaidItemId matches nothing", async () => {
+      const user = await UserFactory.createForConnect();
+      const account = await AccountFactory.createForConnect({
+        user: { connect: user },
+      });
+      const item = await PlaidItemFactory.create({ user: { connect: user } });
+      await PlaidAccountFactory.create({
+        plaidItem: { connect: { id: item.id } },
+        account: { connect: account },
+      });
+
+      await refreshAccountBalances({ plaidItemId: "nonexistent-plaid-item-id" });
+
+      const snapshots = await prisma.balanceSnapshot.findMany({
+        where: { accountId: account.id },
+      });
+      expect(snapshots).toHaveLength(0);
+    });
+  });
+
   describe("error handling", () => {
     it("continues processing other items when one Plaid API call fails", async () => {
       const user = await UserFactory.createForConnect();
