@@ -32,6 +32,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     access_token: plaidItem.accessToken,
     language: "en",
     country_codes: [CountryCode.Us],
+    webhook: `${process.env.APP_URL}/api/subscriptions/plaid`,
   });
 
   return {

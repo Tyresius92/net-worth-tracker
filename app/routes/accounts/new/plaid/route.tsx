@@ -28,6 +28,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     products: [Products.Transactions],
     language: "en",
     country_codes: [CountryCode.Us],
+    webhook: `${process.env.APP_URL}/api/subscriptions/plaid`,
   });
 
   return {
