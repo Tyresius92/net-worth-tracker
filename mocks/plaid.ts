@@ -128,22 +128,25 @@ export const plaidMock = {
 };
 
 export const plaidHandlers = [
-  http.post(`${basePlaidUrl}/webhook_verification_key/get`, async ({ request }) => {
-    const kid = extractKeyId(await request.json());
-    const jwk = verificationKeyConfigs.get(kid);
+  http.post(
+    `${basePlaidUrl}/webhook_verification_key/get`,
+    async ({ request }) => {
+      const kid = extractKeyId(await request.json());
+      const jwk = verificationKeyConfigs.get(kid);
 
-    if (!jwk) {
-      throw new Error(
-        `[plaidMock] No mock configured for key_id "${kid}". ` +
-          `Call plaidMock.forVerificationKey() in your test.`,
-      );
-    }
+      if (!jwk) {
+        throw new Error(
+          `[plaidMock] No mock configured for key_id "${kid}". ` +
+            `Call plaidMock.forVerificationKey() in your test.`,
+        );
+      }
 
-    return HttpResponse.json({
-      key: { ...jwk, alg: "ES256", key_id: kid },
-      request_id: "req-test-verification",
-    });
-  }),
+      return HttpResponse.json({
+        key: { ...jwk, alg: "ES256", key_id: kid },
+        request_id: "req-test-verification",
+      });
+    },
+  ),
 
   http.post(`${basePlaidUrl}/accounts/get`, async ({ request }) => {
     const accessToken = extractAccessToken(await request.json());

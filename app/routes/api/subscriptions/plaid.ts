@@ -43,9 +43,15 @@ export const action: ActionFunction = async ({ request }) => {
 
   const { webhook_type, webhook_code, item_id } = body;
 
-  if (webhook_type === "TRANSACTIONS" && webhook_code === "SYNC_UPDATES_AVAILABLE") {
+  if (
+    webhook_type === "TRANSACTIONS" &&
+    webhook_code === "SYNC_UPDATES_AVAILABLE"
+  ) {
     await refreshAccountBalances({ plaidItemId: item_id });
-  } else if (webhook_type === "ITEM" && UNHEALTHY_ITEM_CODES.includes(webhook_code)) {
+  } else if (
+    webhook_type === "ITEM" &&
+    UNHEALTHY_ITEM_CODES.includes(webhook_code)
+  ) {
     await prisma.plaidItem.updateMany({
       where: { plaidItemId: item_id },
       data: { status: "unhealthy" },

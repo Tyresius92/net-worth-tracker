@@ -109,30 +109,29 @@ describe("POST /api/subscriptions/plaid", () => {
   });
 
   describe("ITEM error codes", () => {
-    it.each([
-      ["ERROR"],
-      ["PENDING_EXPIRATION"],
-      ["USER_PERMISSION_REVOKED"],
-    ])("marks the PlaidItem unhealthy for webhook_code %s", async (code) => {
-      const user = await UserFactory.createForConnect();
-      const plaidItem = await PlaidItemFactory.create({
-        user: { connect: user },
-        status: "healthy",
-      });
+    it.each([["ERROR"], ["PENDING_EXPIRATION"], ["USER_PERMISSION_REVOKED"]])(
+      "marks the PlaidItem unhealthy for webhook_code %s",
+      async (code) => {
+        const user = await UserFactory.createForConnect();
+        const plaidItem = await PlaidItemFactory.create({
+          user: { connect: user },
+          status: "healthy",
+        });
 
-      const response = await callAction({
-        webhook_type: "ITEM",
-        webhook_code: code,
-        item_id: plaidItem.plaidItemId,
-      });
+        const response = await callAction({
+          webhook_type: "ITEM",
+          webhook_code: code,
+          item_id: plaidItem.plaidItemId,
+        });
 
-      expect(response.status).toBe(200);
+        expect(response.status).toBe(200);
 
-      const { status } = await prisma.plaidItem.findUniqueOrThrow({
-        where: { id: plaidItem.id },
-        select: { status: true },
-      });
-      expect(status).toBe("unhealthy");
-    });
+        const { status } = await prisma.plaidItem.findUniqueOrThrow({
+          where: { id: plaidItem.id },
+          select: { status: true },
+        });
+        expect(status).toBe("unhealthy");
+      },
+    );
   });
 });

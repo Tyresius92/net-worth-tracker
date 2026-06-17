@@ -45,12 +45,12 @@ Replace the GitHub Actions cron with a Plaid webhook endpoint at `POST /api/subs
 
 **Webhook handling:**
 
-| `webhook_type` | `webhook_code` | Action |
-|---|---|---|
-| `TRANSACTIONS` | `SYNC_UPDATES_AVAILABLE` | Call `refreshAccountBalances({ plaidItemId })` for the affected item |
-| `ITEM` | `ERROR` | Mark the `PlaidItem` as `unhealthy` |
-| `ITEM` | `PENDING_EXPIRATION` | Mark the `PlaidItem` as `unhealthy` |
-| `ITEM` | `USER_PERMISSION_REVOKED` | Mark the `PlaidItem` as `unhealthy` |
+| `webhook_type` | `webhook_code`            | Action                                                               |
+| -------------- | ------------------------- | -------------------------------------------------------------------- |
+| `TRANSACTIONS` | `SYNC_UPDATES_AVAILABLE`  | Call `refreshAccountBalances({ plaidItemId })` for the affected item |
+| `ITEM`         | `ERROR`                   | Mark the `PlaidItem` as `unhealthy`                                  |
+| `ITEM`         | `PENDING_EXPIRATION`      | Mark the `PlaidItem` as `unhealthy`                                  |
+| `ITEM`         | `USER_PERMISSION_REVOKED` | Mark the `PlaidItem` as `unhealthy`                                  |
 
 The `SYNC_UPDATES_AVAILABLE` payload contains `item_id` (Plaid's identifier), matched to `PlaidItem.plaidItemId` via prisma-field-encryption's transparent query.
 

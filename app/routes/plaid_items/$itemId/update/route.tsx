@@ -1,7 +1,12 @@
 import { CountryCode } from "plaid";
 import { useEffect } from "react";
 import { usePlaidLink } from "react-plaid-link";
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useFetcher } from "react-router";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+  useFetcher,
+} from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";

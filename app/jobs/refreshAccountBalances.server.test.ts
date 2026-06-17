@@ -333,7 +333,9 @@ describe("refreshAccountBalances", () => {
         account: { connect: account },
       });
 
-      await refreshAccountBalances({ plaidItemId: "nonexistent-plaid-item-id" });
+      await refreshAccountBalances({
+        plaidItemId: "nonexistent-plaid-item-id",
+      });
 
       const snapshots = await prisma.balanceSnapshot.findMany({
         where: { accountId: account.id },
