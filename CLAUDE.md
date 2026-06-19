@@ -96,7 +96,7 @@ Multiple snapshots on the same day are allowed; last one written wins. The daily
 
 Before beginning any task that involves routes, components, or anything user-facing, read all `.mdx` files in `app/components/`. These are the authoritative documentation for each component's supported behaviors, props, and intended use.
 
-A custom component library lives in [`app/components/`](app/components/). The primary layout primitive is `Box` — use it for all spacing and layout instead of bespoke CSS classes. It accepts typed spacing props (`p`, `px`, `py`, `pt`, `pb`, `pl`, `pr`, `m`, `mx`, etc.) that map to CSS custom properties (`--space-N`).
+A custom component library lives in [`app/components/`](app/components/). The primary layout primitive is `Box` — use it for all spacing and layout instead of bespoke CSS classes. It accepts responsive spacing props prefixed by breakpoint (`xsP`, `xsPx`, `xsMt`, `lMb`, etc.) that map to CSS custom properties (`--space-N`). The `xs` breakpoint is the mobile base; each larger breakpoint cascades upward unless overridden.
 
 Spacing tokens: `--space-{0,1,2,4,6,8,10,12,14,16,20,24,28,32,...}` (px values).
 Font size tokens: `--font-size-{12,14,16,18,20,24,30,36,48,60,72}`.

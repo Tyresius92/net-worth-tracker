@@ -24,7 +24,10 @@ type BoxCSSProperties = React.CSSProperties &
   Partial<Record<SpacingVar, string>>;
 
 interface BaseBoxProps
-  extends Pick<React.HTMLAttributes<HTMLDivElement>, "id" | "children"> {
+  extends Pick<
+    React.HTMLAttributes<HTMLDivElement>,
+    "id" | "children" | "role"
+  > {
   // Padding — xs is the mobile base; each breakpoint cascades upward unless overridden
   xsP?: SpaceOption;
   xsPx?: SpaceOption;
@@ -320,6 +323,7 @@ export const Box = (props: BoxProps) => {
     hyphens,
 
     is = "div",
+    role,
 
     flexGrow,
     flexShrink,
@@ -471,7 +475,7 @@ export const Box = (props: BoxProps) => {
       .join(" ") || undefined;
 
   return (
-    <Tag id={id} className={className} style={boxStyle}>
+    <Tag id={id} className={className} style={boxStyle} role={role}>
       {children}
     </Tag>
   );

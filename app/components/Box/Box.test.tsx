@@ -153,6 +153,18 @@ describe("Box", () => {
     });
   });
 
+  describe("role prop", () => {
+    it("passes role attribute to the rendered element", () => {
+      render(<Box role="alert">error message</Box>);
+      expect(screen.getByRole("alert")).toHaveTextContent("error message");
+    });
+
+    it("does not render a role attribute when not provided", () => {
+      render(<Box>content</Box>);
+      expect(screen.getByText("content")).not.toHaveAttribute("role");
+    });
+  });
+
   describe("border props", () => {
     it("applies a border prop to all four sides", () => {
       render(<Box border={{ color: "sand-7" }}>content</Box>);

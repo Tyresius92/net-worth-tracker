@@ -1,15 +1,54 @@
-import type { LoaderFunctionArgs } from "react-router";
-import { redirect, useLoaderData } from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import { data, Form, redirect, useNavigation } from "react-router";
 import invariant from "tiny-invariant";
 
 import { Box } from "~/components/Box/Box";
+import { Button } from "~/components/Button/Button";
 import { Divider } from "~/components/Divider/Divider";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
 import { formatDate } from "~/utils/dateUtils";
 
+import type { Route } from "./+types/route";
 import styles from "./user-detail.module.css";
+
+const VALID_ROLES = ["admin", "customer"] as const;
+
+const isValidRole = (value: unknown): value is "admin" | "customer" =>
+  typeof value === "string" &&
+  VALID_ROLES.includes(value as (typeof VALID_ROLES)[number]);
+
+export const validateRoleChange = ({
+  currentUserId,
+  targetUserId,
+  targetCurrentRole,
+  newRole,
+  adminCount,
+}: {
+  currentUserId: string;
+  targetUserId: string;
+  targetCurrentRole: string;
+  newRole: string;
+  adminCount: number;
+}): { valid: true } | { valid: false; error: string } => {
+  if (!isValidRole(newRole)) {
+    return { valid: false, error: "Invalid role." };
+  }
+
+  if (currentUserId === targetUserId) {
+    return { valid: false, error: "You cannot change your own role." };
+  }
+
+  if (targetCurrentRole === "admin" && newRole === "customer" && adminCount === 1) {
+    return {
+      valid: false,
+      error: "This is the only administrator and cannot be demoted.",
+    };
+  }
+
+  return { valid: true };
+};
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const currentUser = await requireUser(request);
@@ -45,11 +84,69 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   });
 
-  return { user };
+  const isLastAdmin =
+    user.role === "admin"
+      ? (await prisma.user.count({ where: { role: "admin" } })) === 1
+      : false;
+
+  return { user, currentUserId: currentUser.id, isLastAdmin };
 };
 
-export default function AdminUserDetailPage() {
-  const { user } = useLoaderData<typeof loader>();
+export const action = async ({ request, params }: ActionFunctionArgs) => {
+  const currentUser = await requireUser(request);
+  if (currentUser.role !== "admin") {
+    throw redirect("/");
+  }
+
+  invariant(params.userId, "userId is required");
+
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  if (intent !== "update_role") {
+    return data({ error: "Invalid intent." }, { status: 400 });
+  }
+
+  const newRole = formData.get("newRole");
+  if (!isValidRole(newRole)) {
+    return data({ error: "Invalid role." }, { status: 400 });
+  }
+
+  const target = await prisma.user.findUniqueOrThrow({
+    where: { id: params.userId },
+    select: { id: true, role: true },
+  });
+
+  const adminCount = await prisma.user.count({ where: { role: "admin" } });
+
+  const result = validateRoleChange({
+    currentUserId: currentUser.id,
+    targetUserId: target.id,
+    targetCurrentRole: target.role,
+    newRole,
+    adminCount,
+  });
+
+  if (!result.valid) {
+    return data({ error: result.error }, { status: 400 });
+  }
+
+  await prisma.user.update({
+    where: { id: params.userId },
+    data: { role: newRole },
+  });
+
+  return data({ error: null });
+};
+
+export default function AdminUserDetailPage({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
+  const { user, currentUserId, isLastAdmin } = loaderData;
+  const navigation = useNavigation();
+  const isSelf = user.id === currentUserId;
+  const canChangeRole = !isSelf && !(user.role === "admin" && isLastAdmin);
 
   return (
     <div className={styles.page}>
@@ -70,7 +167,38 @@ export default function AdminUserDetailPage() {
           <Divider variant="light" />
           <div className={styles.row}>
             <span className={styles.label}>Role</span>
-            <span className={styles.value}>{user.role}</span>
+            <span className={styles.value}>
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="flex-end"
+                xsGap={8}
+              >
+                <span>{user.role}</span>
+                <Form method="post">
+                  <input type="hidden" name="intent" value="update_role" />
+                  <input
+                    type="hidden"
+                    name="newRole"
+                    value={user.role === "admin" ? "customer" : "admin"}
+                  />
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    disabled={!canChangeRole || navigation.state !== "idle"}
+                  >
+                    {user.role === "admin"
+                      ? "Revoke admin"
+                      : "Promote to admin"}
+                  </Button>
+                </Form>
+                {actionData?.error ? (
+                  <Box color="red-9" role="alert">
+                    {actionData.error}
+                  </Box>
+                ) : null}
+              </Box>
+            </span>
           </div>
           <Divider variant="light" />
           <div className={styles.row}>

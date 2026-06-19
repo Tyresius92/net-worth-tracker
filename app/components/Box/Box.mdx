@@ -134,6 +134,14 @@ By default Box renders as a `<div>`, which carries no implicit ARIA role. Use th
 
 Box accepts an `id` prop, which can be used to associate it with ARIA attributes on other elements (e.g. `aria-labelledby`, `aria-describedby`).
 
+Box accepts a `role` prop for cases where the ARIA role differs from the rendered element's implicit role. Use this for dynamic content like error messages that need to be announced by screen readers.
+
+```tsx
+<Box color="red-9" xsMt={8} role="alert">
+  Something went wrong.
+</Box>
+```
+
 ## Props
 
 <Controls of={BoxStories.Default} />
