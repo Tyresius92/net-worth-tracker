@@ -3,8 +3,8 @@ import { isbot } from "isbot";
 import * as Sentry from "@sentry/react-router";
 
 Sentry.init({
-  dsn: "https://6e947b5e11dca72072823b8789a39032@o4511327942475776.ingest.us.sentry.io/4511327945490432",
-  enabled: process.env.NODE_ENV === "production",
+  dsn: "https://e0392dd2f70d02d9425eb626235f59db@o4511593609297920.ingest.us.sentry.io/4511593609560064",
+  enabled: true, // process.env.NODE_ENV === "production",
   environment: process.env.APP_ENV ?? process.env.NODE_ENV,
 
   enableLogs: true,
