@@ -41,6 +41,8 @@ const callAction = async (body: object): Promise<Response> => {
     request: makeRequest(body),
     params: {},
     context: {},
+    url: new URL("https://app.test/api/subscriptions/plaid"),
+    pattern: "/api/subscriptions/plaid",
   });
   assert(result instanceof Response, "action must return a Response");
   return result;
