@@ -167,7 +167,7 @@ export default function PrivacyPolicy() {
         <p>
           If you have questions about this Privacy Policy or would like to
           exercise your privacy rights, please contact us via our{" "}
-          <Link to="contact">Contact Us Page</Link>.
+          <Link to="/contact">Contact Us Page</Link>.
         </p>
       </section>
     </article>
