@@ -73,14 +73,88 @@ describe("POST /api/subscriptions/plaid", () => {
     });
   });
 
-  describe("TRANSACTIONS.SYNC_UPDATES_AVAILABLE", () => {
-    it("refreshes balances for the identified item", async () => {
+  describe("TRANSACTIONS refresh trigger codes", () => {
+    it.each([
+      ["SYNC_UPDATES_AVAILABLE"],
+      ["DEFAULT_UPDATE"],
+      ["INITIAL_UPDATE"],
+      ["HISTORICAL_UPDATE"],
+    ])(
+      "refreshes balances for the identified item on webhook_code %s",
+      async (code) => {
+        const user = await UserFactory.createForConnect();
+        const account = await AccountFactory.createForConnect({
+          user: { connect: user },
+        });
+        const plaidItem = await PlaidItemFactory.create({
+          user: { connect: user },
+        });
+        const accessToken = await getAccessToken(plaidItem.id);
+        const plaidAccount = await PlaidAccountFactory.create({
+          plaidItem: { connect: { id: plaidItem.id } },
+          account: { connect: account },
+        });
+
+        plaidMock.forToken(accessToken, [
+          buildPlaidApiAccount(plaidAccount, { current: 1000 }),
+        ]);
+
+        const response = await callAction({
+          webhook_type: "TRANSACTIONS",
+          webhook_code: code,
+          item_id: plaidItem.plaidItemId,
+        });
+
+        expect(response.status).toBe(200);
+
+        const snapshots = await prisma.balanceSnapshot.findMany({
+          where: { accountId: account.id },
+        });
+        expect(snapshots).toHaveLength(1);
+        expect(snapshots[0].amount).toBe(100000);
+      },
+    );
+  });
+
+  describe("ITEM error codes", () => {
+    it.each([
+      ["ERROR"],
+      ["PENDING_EXPIRATION"],
+      ["PENDING_DISCONNECT"],
+      ["USER_PERMISSION_REVOKED"],
+      ["USER_ACCOUNT_REVOKED"],
+    ])("marks the PlaidItem unhealthy for webhook_code %s", async (code) => {
+      const user = await UserFactory.createForConnect();
+      const plaidItem = await PlaidItemFactory.create({
+        user: { connect: user },
+        status: "healthy",
+      });
+
+      const response = await callAction({
+        webhook_type: "ITEM",
+        webhook_code: code,
+        item_id: plaidItem.plaidItemId,
+      });
+
+      expect(response.status).toBe(200);
+
+      const { status } = await prisma.plaidItem.findUniqueOrThrow({
+        where: { id: plaidItem.id },
+        select: { status: true },
+      });
+      expect(status).toBe("unhealthy");
+    });
+  });
+
+  describe("ITEM.LOGIN_REPAIRED", () => {
+    it("marks the PlaidItem healthy and refreshes balances", async () => {
       const user = await UserFactory.createForConnect();
       const account = await AccountFactory.createForConnect({
         user: { connect: user },
       });
       const plaidItem = await PlaidItemFactory.create({
         user: { connect: user },
+        status: "unhealthy",
       });
       const accessToken = await getAccessToken(plaidItem.id);
       const plaidAccount = await PlaidAccountFactory.create({
@@ -89,49 +163,52 @@ describe("POST /api/subscriptions/plaid", () => {
       });
 
       plaidMock.forToken(accessToken, [
-        buildPlaidApiAccount(plaidAccount, { current: 1000 }),
+        buildPlaidApiAccount(plaidAccount, { current: 500 }),
       ]);
 
       const response = await callAction({
-        webhook_type: "TRANSACTIONS",
-        webhook_code: "SYNC_UPDATES_AVAILABLE",
+        webhook_type: "ITEM",
+        webhook_code: "LOGIN_REPAIRED",
         item_id: plaidItem.plaidItemId,
       });
 
       expect(response.status).toBe(200);
 
+      const { status } = await prisma.plaidItem.findUniqueOrThrow({
+        where: { id: plaidItem.id },
+        select: { status: true },
+      });
+      expect(status).toBe("healthy");
+
       const snapshots = await prisma.balanceSnapshot.findMany({
         where: { accountId: account.id },
       });
       expect(snapshots).toHaveLength(1);
-      expect(snapshots[0].amount).toBe(100000);
+      expect(snapshots[0].amount).toBe(50000);
     });
   });
 
-  describe("ITEM error codes", () => {
-    it.each([["ERROR"], ["PENDING_EXPIRATION"], ["USER_PERMISSION_REVOKED"]])(
-      "marks the PlaidItem unhealthy for webhook_code %s",
-      async (code) => {
-        const user = await UserFactory.createForConnect();
-        const plaidItem = await PlaidItemFactory.create({
-          user: { connect: user },
-          status: "healthy",
-        });
+  describe("unknown codes", () => {
+    it("returns 200 and makes no DB changes for an unrecognized webhook", async () => {
+      const user = await UserFactory.createForConnect();
+      const plaidItem = await PlaidItemFactory.create({
+        user: { connect: user },
+        status: "healthy",
+      });
 
-        const response = await callAction({
-          webhook_type: "ITEM",
-          webhook_code: code,
-          item_id: plaidItem.plaidItemId,
-        });
+      const response = await callAction({
+        webhook_type: "TRANSACTIONS",
+        webhook_code: "UNKNOWN_FUTURE_CODE",
+        item_id: plaidItem.plaidItemId,
+      });
 
-        expect(response.status).toBe(200);
+      expect(response.status).toBe(200);
 
-        const { status } = await prisma.plaidItem.findUniqueOrThrow({
-          where: { id: plaidItem.id },
-          select: { status: true },
-        });
-        expect(status).toBe("unhealthy");
-      },
-    );
+      const { status } = await prisma.plaidItem.findUniqueOrThrow({
+        where: { id: plaidItem.id },
+        select: { status: true },
+      });
+      expect(status).toBe("healthy");
+    });
   });
 });

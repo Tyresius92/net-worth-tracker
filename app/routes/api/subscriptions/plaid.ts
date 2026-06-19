@@ -20,10 +20,19 @@ const isWebhookPayload = (value: unknown): value is WebhookPayload =>
   "item_id" in value &&
   typeof value.item_id === "string";
 
+const REFRESH_TRIGGER_CODES = [
+  "SYNC_UPDATES_AVAILABLE",
+  "DEFAULT_UPDATE",
+  "INITIAL_UPDATE",
+  "HISTORICAL_UPDATE",
+];
+
 const UNHEALTHY_ITEM_CODES = [
   "ERROR",
   "PENDING_EXPIRATION",
+  "PENDING_DISCONNECT",
   "USER_PERMISSION_REVOKED",
+  "USER_ACCOUNT_REVOKED",
 ];
 
 export const action: ActionFunction = async ({ request }) => {
@@ -45,7 +54,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   if (
     webhook_type === "TRANSACTIONS" &&
-    webhook_code === "SYNC_UPDATES_AVAILABLE"
+    REFRESH_TRIGGER_CODES.includes(webhook_code)
   ) {
     await refreshAccountBalances({ plaidItemId: item_id });
   } else if (
@@ -56,6 +65,12 @@ export const action: ActionFunction = async ({ request }) => {
       where: { plaidItemId: item_id },
       data: { status: "unhealthy" },
     });
+  } else if (webhook_type === "ITEM" && webhook_code === "LOGIN_REPAIRED") {
+    await prisma.plaidItem.updateMany({
+      where: { plaidItemId: item_id },
+      data: { status: "healthy" },
+    });
+    await refreshAccountBalances({ plaidItemId: item_id });
   }
 
   return Response.json({ ok: true });

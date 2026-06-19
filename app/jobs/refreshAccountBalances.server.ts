@@ -49,6 +49,14 @@ export const refreshAccountBalances = async (options?: {
                   responseAcc.account_id) === dbAccount.plaidAccountId,
             );
 
+            const today = new Date(new Date().setUTCHours(0, 0, 0, 0));
+            const existing = await prisma.balanceSnapshot.findFirst({
+              where: { accountId: dbAccount.account.id, dateTime: today },
+            });
+            if (existing) {
+              return existing;
+            }
+
             const currentBalance = accountDict?.balances.current ?? 0;
             const accountType = accountDict?.type ?? "other";
             const normalizedBalance = ["credit", "loan"].includes(accountType)
@@ -58,7 +66,7 @@ export const refreshAccountBalances = async (options?: {
             const balance = await prisma.balanceSnapshot.create({
               data: {
                 accountId: dbAccount.account.id,
-                dateTime: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+                dateTime: today,
                 amount: normalizedBalance * 100,
               },
             });

@@ -344,6 +344,86 @@ describe("refreshAccountBalances", () => {
     });
   });
 
+  describe("idempotency", () => {
+    it("skips creating a snapshot when one already exists for today", async () => {
+      const user = await UserFactory.createForConnect();
+      const account = await AccountFactory.createForConnect({
+        user: { connect: user },
+      });
+      const plaidItem = await PlaidItemFactory.create({
+        user: { connect: user },
+      });
+      const accessToken = await getAccessToken(plaidItem.id);
+      const plaidAccount = await PlaidAccountFactory.create({
+        plaidItem: { connect: { id: plaidItem.id } },
+        account: { connect: account },
+      });
+
+      plaidMock.forToken(accessToken, [
+        buildPlaidApiAccount(plaidAccount, { current: 1000 }),
+      ]);
+
+      await refreshAccountBalances();
+
+      plaidMock.forToken(accessToken, [
+        buildPlaidApiAccount(plaidAccount, { current: 9999 }),
+      ]);
+
+      await refreshAccountBalances();
+
+      const snapshots = await prisma.balanceSnapshot.findMany({
+        where: { accountId: account.id },
+      });
+      expect(snapshots).toHaveLength(1);
+      expect(snapshots[0].amount).toBe(100000);
+    });
+
+    it("creates a snapshot for an account that has no snapshot today even when another account already has one", async () => {
+      const user = await UserFactory.createForConnect();
+      const account1 = await AccountFactory.createForConnect({
+        user: { connect: user },
+      });
+      const account2 = await AccountFactory.createForConnect({
+        user: { connect: user },
+      });
+      const plaidItem = await PlaidItemFactory.create({
+        user: { connect: user },
+      });
+      const accessToken = await getAccessToken(plaidItem.id);
+      const pa1 = await PlaidAccountFactory.create({
+        plaidItem: { connect: { id: plaidItem.id } },
+        account: { connect: account1 },
+      });
+      const pa2 = await PlaidAccountFactory.create({
+        plaidItem: { connect: { id: plaidItem.id } },
+        account: { connect: account2 },
+      });
+
+      const today = new Date(new Date().setUTCHours(0, 0, 0, 0));
+      await prisma.balanceSnapshot.create({
+        data: { accountId: account1.id, dateTime: today, amount: 50000 },
+      });
+
+      plaidMock.forToken(accessToken, [
+        buildPlaidApiAccount(pa1, { current: 999 }),
+        buildPlaidApiAccount(pa2, { current: 200 }),
+      ]);
+
+      await refreshAccountBalances();
+
+      const snapshots1 = await prisma.balanceSnapshot.findMany({
+        where: { accountId: account1.id },
+      });
+      const snapshots2 = await prisma.balanceSnapshot.findMany({
+        where: { accountId: account2.id },
+      });
+      expect(snapshots1).toHaveLength(1);
+      expect(snapshots1[0].amount).toBe(50000);
+      expect(snapshots2).toHaveLength(1);
+      expect(snapshots2[0].amount).toBe(20000);
+    });
+  });
+
   describe("error handling", () => {
     it("continues processing other items when one Plaid API call fails", async () => {
       const user = await UserFactory.createForConnect();
