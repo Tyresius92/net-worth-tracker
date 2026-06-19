@@ -20,7 +20,6 @@
     "dev:db:reset": "node --env-file=.env ./node_modules/.bin/prisma migrate reset --force --skip-seed",
     "test:db:reset": "node --env-file=.env.test ./node_modules/.bin/prisma migrate reset --force --skip-seed",
     "typecheck": "react-router typegen && tsc",
-    "validate": "npm-run-all --parallel \"test -- --run\" lint typecheck test:e2e:run",
     "storybook": "BROWSER=firefox storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -102,7 +101,6 @@
     "mockdate": "^3.0.5",
     "msw": "^2.6.6",
     "msw-storybook-addon": "^2.0.7",
-    "npm-run-all2": "^7.0.1",
     "playwright": "^1.60.0",
     "postcss": "^8.4.49",
     "prettier": "3.3.3",
