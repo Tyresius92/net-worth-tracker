@@ -23,11 +23,10 @@ type BoxCSSProperties = React.CSSProperties &
   Partial<Record<`--box-col-${"xs" | "s" | "m" | "l" | "xl"}`, ColumnCount>> &
   Partial<Record<SpacingVar, string>>;
 
-interface BaseBoxProps
-  extends Pick<
-    React.HTMLAttributes<HTMLDivElement>,
-    "id" | "children" | "role"
-  > {
+interface BaseBoxProps extends Pick<
+  React.HTMLAttributes<HTMLDivElement>,
+  "id" | "children" | "role"
+> {
   // Padding — xs is the mobile base; each breakpoint cascades upward unless overridden
   xsP?: SpaceOption;
   xsPx?: SpaceOption;

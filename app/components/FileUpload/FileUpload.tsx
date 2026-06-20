@@ -17,11 +17,10 @@ const FILE_TYPE_EXTENSIONS: Record<FileType, string[]> = {
   json: [".json"],
 };
 
-interface FileUploadProps
-  extends Pick<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    "required" | "autoFocus"
-  > {
+interface FileUploadProps extends Pick<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "required" | "autoFocus"
+> {
   label: string;
   name: string;
   accept?: FileType[];

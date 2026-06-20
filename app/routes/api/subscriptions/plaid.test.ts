@@ -14,9 +14,8 @@ vi.mock("~/utils/plaidWebhookVerification.server", () => ({
   verifyPlaidWebhook: vi.fn().mockResolvedValue(true),
 }));
 
-const { verifyPlaidWebhook } = await import(
-  "~/utils/plaidWebhookVerification.server"
-);
+const { verifyPlaidWebhook } =
+  await import("~/utils/plaidWebhookVerification.server");
 
 async function getAccessToken(plaidItemId: string): Promise<string> {
   const { accessToken } = await prisma.plaidItem.findUniqueOrThrow({
