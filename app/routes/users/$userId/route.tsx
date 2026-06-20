@@ -16,8 +16,7 @@ import styles from "./user-detail.module.css";
 const VALID_ROLES = ["admin", "customer"] as const;
 
 const isValidRole = (value: unknown): value is "admin" | "customer" =>
-  typeof value === "string" &&
-  VALID_ROLES.includes(value as (typeof VALID_ROLES)[number]);
+  typeof value === "string" && VALID_ROLES.some((role) => role === value);
 
 export const validateRoleChange = ({
   currentUserId,
@@ -40,7 +39,11 @@ export const validateRoleChange = ({
     return { valid: false, error: "You cannot change your own role." };
   }
 
-  if (targetCurrentRole === "admin" && newRole === "customer" && adminCount === 1) {
+  if (
+    targetCurrentRole === "admin" &&
+    newRole === "customer" &&
+    adminCount === 1
+  ) {
     return {
       valid: false,
       error: "This is the only administrator and cannot be demoted.",
