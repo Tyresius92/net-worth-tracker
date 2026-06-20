@@ -1,0 +1,17 @@
+User-agent: *
+Disallow: /api/
+Disallow: /settings/
+Disallow: /dashboard/
+Disallow: /accounts/
+Disallow: /plaid_items/
+Disallow: /notes/
+Disallow: /users/
+Disallow: /login/
+Disallow: /forgot_password
+Disallow: /reset_password
+Disallow: /verify_email
+Disallow: /logout
+Disallow: /goodbye
+Disallow: /healthcheck
+Disallow: /wp-admin/
+Disallow: /wp-login.php
