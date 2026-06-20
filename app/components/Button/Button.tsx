@@ -2,11 +2,10 @@ import React from "react";
 
 import styles from "./Button.module.css";
 
-export interface ButtonProps
-  extends Pick<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    "children" | "onClick" | "type" | "name" | "value" | "disabled"
-  > {
+export interface ButtonProps extends Pick<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  "children" | "onClick" | "type" | "name" | "value" | "disabled"
+> {
   variant?: "primary" | "secondary" | "danger";
 }
 
