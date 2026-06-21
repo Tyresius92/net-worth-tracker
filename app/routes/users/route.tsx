@@ -1,3 +1,4 @@
+import { decryptString, parseCloakedString } from "@47ng/cloak";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -86,6 +87,40 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return Response.json({ updated: results.length - failed, failed });
   }
 
+  if (intent === "decrypt_plaid_item_ids") {
+    const encryptionKey = process.env["PRISMA_FIELD_ENCRYPTION_KEY"];
+    if (!encryptionKey) {
+      return Response.json(
+        { error: "PRISMA_FIELD_ENCRYPTION_KEY is not set" },
+        { status: 500 },
+      );
+    }
+
+    const rows = await prisma.$queryRaw<{ id: string; plaidItemId: string }[]>`
+      SELECT id, plaidItemId FROM PlaidItem
+    `;
+
+    let decrypted = 0;
+    let skipped = 0;
+
+    await Promise.all(
+      rows.map(async (row) => {
+        if (!parseCloakedString(row.plaidItemId)) {
+          skipped++;
+          return;
+        }
+
+        const plainText = await decryptString(row.plaidItemId, encryptionKey);
+        await prisma.$executeRaw`
+          UPDATE PlaidItem SET plaidItemId = ${plainText} WHERE id = ${row.id}
+        `;
+        decrypted++;
+      }),
+    );
+
+    return Response.json({ decrypted, skipped });
+  }
+
   return Response.json({ ok: true });
 };
 
@@ -102,18 +137,40 @@ const isBackfillResult = (value: unknown): value is BackfillResult =>
   "failed" in value &&
   typeof value.failed === "number";
 
+interface DecryptResult {
+  decrypted: number;
+  skipped: number;
+}
+
+const isDecryptResult = (value: unknown): value is DecryptResult =>
+  typeof value === "object" &&
+  value !== null &&
+  "decrypted" in value &&
+  typeof value.decrypted === "number" &&
+  "skipped" in value &&
+  typeof value.skipped === "number";
+
 export default function Layout({ loaderData }: Route.ComponentProps) {
-  const fetcher = useFetcher();
-  const backfillResult = isBackfillResult(fetcher.data) ? fetcher.data : null;
+  const backfillFetcher = useFetcher();
+  const decryptFetcher = useFetcher();
+  const backfillResult = isBackfillResult(backfillFetcher.data)
+    ? backfillFetcher.data
+    : null;
+  const decryptResult = isDecryptResult(decryptFetcher.data)
+    ? decryptFetcher.data
+    : null;
 
   return (
     <Box>
-      <Box xsPb={8}>
-        <fetcher.Form method="post">
+      <Box xsPb={8} display="flex" xsGap={8}>
+        <backfillFetcher.Form method="post">
           <input type="hidden" name="intent" value="backfill_webhooks" />
           <Box display="flex" xsGap={4} alignItems="center">
-            <Button type="submit" disabled={fetcher.state !== "idle"}>
-              {fetcher.state !== "idle"
+            <Button
+              type="submit"
+              disabled={backfillFetcher.state !== "idle"}
+            >
+              {backfillFetcher.state !== "idle"
                 ? "Registering…"
                 : "Register Plaid Webhooks"}
             </Button>
@@ -124,7 +181,26 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
               </span>
             )}
           </Box>
-        </fetcher.Form>
+        </backfillFetcher.Form>
+        <decryptFetcher.Form method="post">
+          <input type="hidden" name="intent" value="decrypt_plaid_item_ids" />
+          <Box display="flex" xsGap={4} alignItems="center">
+            <Button
+              type="submit"
+              disabled={decryptFetcher.state !== "idle"}
+            >
+              {decryptFetcher.state !== "idle"
+                ? "Decrypting…"
+                : "Decrypt Plaid Item IDs"}
+            </Button>
+            {decryptResult && (
+              <span>
+                Decrypted: {decryptResult.decrypted}, Skipped:{" "}
+                {decryptResult.skipped}
+              </span>
+            )}
+          </Box>
+        </decryptFetcher.Form>
       </Box>
       <Table caption="Users">
         <Table.Head>

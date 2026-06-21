@@ -120,7 +120,7 @@ model PlaidItem {
 
   status PlaidItemHealthStatus
 
-  plaidItemId String /// @encrypted
+  plaidItemId String
   accessToken String /// @encrypted
 
   institutionId   String /// @encrypted
