@@ -166,10 +166,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
         <backfillFetcher.Form method="post">
           <input type="hidden" name="intent" value="backfill_webhooks" />
           <Box display="flex" xsGap={4} alignItems="center">
-            <Button
-              type="submit"
-              disabled={backfillFetcher.state !== "idle"}
-            >
+            <Button type="submit" disabled={backfillFetcher.state !== "idle"}>
               {backfillFetcher.state !== "idle"
                 ? "Registering…"
                 : "Register Plaid Webhooks"}
@@ -185,10 +182,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
         <decryptFetcher.Form method="post">
           <input type="hidden" name="intent" value="decrypt_plaid_item_ids" />
           <Box display="flex" xsGap={4} alignItems="center">
-            <Button
-              type="submit"
-              disabled={decryptFetcher.state !== "idle"}
-            >
+            <Button type="submit" disabled={decryptFetcher.state !== "idle"}>
               {decryptFetcher.state !== "idle"
                 ? "Decrypting…"
                 : "Decrypt Plaid Item IDs"}
