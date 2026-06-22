@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: weekly
     target-branch: dev
+    groups:
+      react-router:
+        patterns:
+          - "react-router"
+          - "@react-router/*"
     ignore:
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
