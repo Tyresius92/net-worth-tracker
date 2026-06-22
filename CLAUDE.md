@@ -24,9 +24,13 @@ Architectural decisions are documented in [`docs/adr/`](docs/adr/). Read these b
 - Which Playwright e2e tests to write (in `tests/as_user/`, `tests/as_admin/`, etc.), if the change has a user-visible behavior
 - Or a specific reason why tests are not applicable for this change (e.g. pure config change, CSS-only, types-only)
 
+Do not exit plan mode without a Testing section that lists specific Vitest and/or Playwright test files to create or modify, or a specific reason why no tests apply.
+
 Use Vitest for: utility functions, server-side logic, data transformations, model functions, React components that don't require a full React Router server (design system components, standalone reusable components, custom hooks — a MemoryRouter is fine).
 Use Playwright for: page flows, form submissions, auth behavior, UI interactions the user would perform.
 Both may be needed for a single feature.
+
+**Do not import route `action` or `loader` functions directly in Vitest tests.** Playwright is always the right tool for testing route actions because it exercises the full request cycle through the UI. The sole exception is headless API endpoints with no UI (e.g., webhook receivers). If you believe a direct action import is necessary, ask before proceeding.
 
 ## Commands
 
@@ -90,7 +94,7 @@ Balances are stored as **integers in cents** (e.g., $12.34 → `1234`). Plaid fl
 
 Each `BalanceSnapshot` has a `dateTime` field (when the balance was true) distinct from `createdAt`/`updatedAt` (when the record was written). `fillDailyBalanceDayData` in [`app/utils/balanceUtils.ts`](app/utils/balanceUtils.ts) carries the last known balance forward through any gaps — charts always show a complete daily timeline.
 
-Multiple snapshots on the same day are allowed; last one written wins. The daily refresh job (triggered via GitHub Actions → `POST /api/accounts/refresh` with a Bearer token) creates a new snapshot each run rather than upserting.
+Multiple snapshots on the same day are allowed; last one written wins. Balance refreshes are triggered by Plaid webhooks (`POST /api/subscriptions/plaid`) in response to `TRANSACTIONS` events and `LOGIN_REPAIRED` signals. Each webhook creates a new snapshot rather than upserting.
 
 ### Component system
 
@@ -141,10 +145,11 @@ Resend + React Email. In non-production environments, `sendEmail` (from [`app/ut
 - Use `Box` component props for all layout and spacing — don't add one-off CSS classes
 - Server-only modules use `.server.ts` suffix
 - Test files colocate with the file they test (`.test.ts` / `.test.tsx`)
-- Playwright e2e tests are in `playwright/`
+- Playwright e2e tests are in `tests/`
 - Prefer `const` arrow functions over `function` declarations everywhere except route module default exports. React Router 7 requires a default export from each route file; use `export default function RouteComponent()` there and `const` arrow functions for everything else (helpers, utilities, loaders, actions outside of route files).
 - Prefer array methods (`map`, `filter`, `reduce`, `flatMap`, `forEach`) over `for` and `while` loops.
 - Narrow `unknown` values with type guard functions rather than direct annotations or `as` assertions: `const isFoo = (value: unknown): value is Foo => ...`
+- Do not use `useFetcher`. Use `Form` for all form submissions. If you believe a situation requires `useFetcher`, stop and ask before using it.
 
 ## User-facing terminology
 
