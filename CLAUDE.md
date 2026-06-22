@@ -34,9 +34,9 @@ Both may be needed for a single feature.
 
 ## Commands
 
-This project uses Node v22. There is a `.nvmrc` file in the root of the directory with the specific pinned version.
+This project uses Node v24. There is a `.nvmrc` file in the root of the directory with the specific pinned version.
 
-Always run commands using Node v22.
+Always run commands using Node v24.
 
 ```bash
 npm run dev           # start dev server (http://localhost:3000)
