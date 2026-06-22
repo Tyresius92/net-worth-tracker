@@ -55,6 +55,13 @@ Always set the `type` prop explicitly on buttons inside forms. Without it, brows
 
 The `name` and `value` props are available for multi-submit-button forms where the server needs to know which button was pressed.
 
+When a button is disabled and the reason is not obvious from context, use `aria-describedby` to connect the button to a visible explanation. The referenced element must have a matching `id` attribute.
+
+```tsx
+<Button disabled aria-describedby="refresh-hint">Check the wire</Button>
+<p id="refresh-hint">Today's figures have already been filed.</p>
+```
+
 ## Props
 
 <Controls of={ButtonStories.Primary} />

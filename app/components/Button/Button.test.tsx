@@ -42,4 +42,12 @@ describe("Button", () => {
     render(<Button type="submit">Submit</Button>);
     expect(screen.getByRole("button")).toHaveAttribute("type", "submit");
   });
+
+  it("forwards the aria-describedby prop", () => {
+    render(<Button aria-describedby="hint-id">Submit</Button>);
+    expect(screen.getByRole("button")).toHaveAttribute(
+      "aria-describedby",
+      "hint-id",
+    );
+  });
 });

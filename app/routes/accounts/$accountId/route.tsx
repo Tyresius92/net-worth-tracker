@@ -3,6 +3,7 @@ import {
   Form,
   LoaderFunctionArgs,
   redirect,
+  useNavigation,
 } from "react-router";
 
 import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
@@ -11,6 +12,7 @@ import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
+import { refreshAccountBalances } from "~/jobs/refreshAccountBalances.server";
 import { requireUserId } from "~/session.server";
 import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
@@ -48,10 +50,16 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     return redirect("./..");
   }
 
+  const today = new Date(new Date().setUTCHours(0, 0, 0, 0));
+  const hasSnapshotForToday = account.balanceSnapshots.some(
+    (s) => s.dateTime.getTime() === today.getTime(),
+  );
+
   return {
     userId,
     account,
     balances: fillDailyBalanceDayData([...account.balanceSnapshots].reverse()),
+    hasSnapshotForToday,
   };
 };
 
@@ -87,12 +95,47 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     });
   }
 
+  if (intent === "check_wire") {
+    const account = await prisma.account.findFirst({
+      where: { id: accountId, userId },
+      select: {
+        plaidAccount: {
+          select: {
+            plaidItem: {
+              select: {
+                plaidItemId: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!account?.plaidAccount) {
+      return Response.json(
+        { error: "Source is not wire-linked" },
+        { status: 400 },
+      );
+    }
+
+    await refreshAccountBalances({
+      plaidItemId: account.plaidAccount.plaidItem.plaidItemId,
+    });
+  }
+
   return {};
 };
 
 export default function AccountDetailsRoute({
   loaderData,
 }: Route.ComponentProps) {
+  const navigation = useNavigation();
+  const isRefreshing =
+    navigation.state !== "idle" &&
+    navigation.formData?.get("intent") === "check_wire";
+  const isPlaidLinked = loaderData.account.plaidAccount !== null;
+  const isCheckWireDisabled = isRefreshing || loaderData.hasSnapshotForToday;
+
   return (
     <Box>
       <Box>
@@ -113,6 +156,30 @@ export default function AccountDetailsRoute({
               </Button>
             </Form>
           </Box>
+          {isPlaidLinked && (
+            <Box>
+              <Form method="post">
+                <Button
+                  name="intent"
+                  value="check_wire"
+                  type="submit"
+                  disabled={isCheckWireDisabled}
+                  aria-describedby={
+                    loaderData.hasSnapshotForToday
+                      ? "check-wire-hint"
+                      : undefined
+                  }
+                >
+                  {isRefreshing ? "Checking..." : "Check the wire"}
+                </Button>
+              </Form>
+              {loaderData.hasSnapshotForToday && (
+                <p id="check-wire-hint">
+                  Today&apos;s figures have already been filed.
+                </p>
+              )}
+            </Box>
+          )}
         </Box>
 
         <BalanceChart balances={loaderData.balances} title="Figure history" />

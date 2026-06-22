@@ -4,7 +4,13 @@ import styles from "./Button.module.css";
 
 export interface ButtonProps extends Pick<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
-  "children" | "onClick" | "type" | "name" | "value" | "disabled"
+  | "children"
+  | "onClick"
+  | "type"
+  | "name"
+  | "value"
+  | "disabled"
+  | "aria-describedby"
 > {
   variant?: "primary" | "secondary" | "danger";
 }
