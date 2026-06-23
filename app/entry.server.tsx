@@ -11,7 +11,7 @@ import * as Sentry from "@sentry/react-router";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import { ServerRouter } from "react-router";
-import type { EntryContext } from "react-router";
+import type { EntryContext, RouterContextProvider } from "react-router";
 
 import { NonceContext } from "./nonce";
 
@@ -57,6 +57,7 @@ async function handleRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   reactRouterContext: EntryContext,
+  loadContext: RouterContextProvider,
 ) {
   return isbot(request.headers.get("user-agent"))
     ? handleBotRequest(
@@ -64,12 +65,14 @@ async function handleRequest(
         responseStatusCode,
         responseHeaders,
         reactRouterContext,
+        loadContext,
       )
     : handleBrowserRequest(
         request,
         responseStatusCode,
         responseHeaders,
         reactRouterContext,
+        loadContext,
       );
 }
 
@@ -78,6 +81,7 @@ function handleBotRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   reactRouterContext: EntryContext,
+  _loadContext: RouterContextProvider,
 ) {
   return new Promise((resolve, reject) => {
     const nonce = generateNonce();
@@ -127,6 +131,7 @@ function handleBrowserRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   reactRouterContext: EntryContext,
+  _loadContext: RouterContextProvider,
 ) {
   return new Promise((resolve, reject) => {
     const nonce = generateNonce();

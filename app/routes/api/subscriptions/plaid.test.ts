@@ -1,3 +1,4 @@
+import { RouterContextProvider } from "react-router";
 import { assert, describe, expect, it, vi } from "vitest";
 
 import { prisma } from "~/db.server";
@@ -39,7 +40,7 @@ const callAction = async (body: object): Promise<Response> => {
   const result = await action({
     request: makeRequest(body),
     params: {},
-    context: {},
+    context: new RouterContextProvider(),
     url: new URL("https://app.test/api/subscriptions/plaid"),
     pattern: "/api/subscriptions/plaid",
   });
