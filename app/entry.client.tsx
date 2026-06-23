@@ -7,6 +7,7 @@ import {
   init,
   reactRouterTracingIntegration,
   replayIntegration,
+  sentryOnError,
 } from "@sentry/react-router";
 import { isbot } from "isbot";
 import { startTransition, StrictMode } from "react";
@@ -46,7 +47,7 @@ startTransition(() => {
   hydrateRoot(
     document,
     <StrictMode>
-      <HydratedRouter />
+      <HydratedRouter onError={sentryOnError} />
     </StrictMode>,
   );
 });
