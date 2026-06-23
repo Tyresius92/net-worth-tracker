@@ -48,7 +48,8 @@ export async function getUser(request: Request) {
 
 export async function requireUserId(
   request: Request,
-  redirectTo: string = new URL(request.url).pathname,
+  url: URL,
+  redirectTo: string = url.pathname,
 ) {
   const userId = await getUserId(request);
   if (!userId) {
@@ -58,8 +59,8 @@ export async function requireUserId(
   return userId;
 }
 
-export async function requireUser(request: Request) {
-  const userId = await requireUserId(request);
+export async function requireUser(request: Request, url: URL) {
+  const userId = await requireUserId(request, url);
 
   const user = await getUserById(userId);
   if (user) {

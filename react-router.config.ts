@@ -5,6 +5,7 @@ export default {
   ssr: true,
 
   future: {
+    v8_passThroughRequests: true,
     v8_trailingSlashAwareDataRequests: true,
     v8_viteEnvironmentApi: true,
     v8_splitRouteModules: true,

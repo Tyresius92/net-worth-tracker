@@ -17,16 +17,16 @@ import { requireUser } from "~/session.server";
 
 import styles from "./admin-delete-user.module.css";
 
-async function requireAdmin(request: Request) {
-  const user = await requireUser(request);
+async function requireAdmin(request: Request, url: URL) {
+  const user = await requireUser(request, url);
   if (user.role !== "admin") {
     throw redirect("/");
   }
   return user;
 }
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const currentUser = await requireAdmin(request);
+export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
+  const currentUser = await requireAdmin(request, url);
   invariant(params.userId, "userId is required");
 
   const target = await prisma.user.findUniqueOrThrow({
@@ -65,8 +65,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return { target, error: null };
 };
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
-  const currentUser = await requireAdmin(request);
+export const action = async ({ request, url, params }: ActionFunctionArgs) => {
+  const currentUser = await requireAdmin(request, url);
   invariant(params.userId, "userId is required");
 
   const target = await prisma.user.findUniqueOrThrow({

@@ -22,8 +22,8 @@ import { getUserNetWorth } from "~/utils/netWorthUtils.server";
 
 import type { Route } from "./+types/route";
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const user = await requireUser(request);
+export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
+  const user = await requireUser(request, url);
 
   const userData = await prisma.user.findFirstOrThrow({
     where: {

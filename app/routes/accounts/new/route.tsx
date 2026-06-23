@@ -19,8 +19,8 @@ import {
 
 import type { Route } from "./+types/route";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await requireUserId(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  await requireUserId(request, url);
 
   const accountTypeOptions = accountTypesList.map((type) => ({
     value: type,
@@ -32,8 +32,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const action = async ({ request, url }: ActionFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   const formData = await request.formData();
 

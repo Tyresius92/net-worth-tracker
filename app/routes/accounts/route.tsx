@@ -5,8 +5,8 @@ import { requireUser } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await requireUser(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  await requireUser(request, url);
 
   return {};
 };

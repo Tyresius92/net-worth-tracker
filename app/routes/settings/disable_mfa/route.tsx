@@ -11,16 +11,16 @@ import { requireUser } from "~/session.server";
 
 import styles from "./disable-mfa.module.css";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUser(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  const user = await requireUser(request, url);
   if (!user.twoFactorEnabled) {
     return redirect("/settings");
   }
   return {};
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const user = await requireUser(request);
+export const action = async ({ request, url }: ActionFunctionArgs) => {
+  const user = await requireUser(request, url);
 
   if (!user.twoFactorEnabled) {
     return redirect("/settings");

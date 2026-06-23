@@ -17,8 +17,8 @@ import { getAccountType } from "~/utils/accountUtils.server";
 
 import type { Route } from "./+types/route";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   const linkTokenResponse = await plaidClient.linkTokenCreate({
     user: {
@@ -36,8 +36,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const action = async ({ request, url }: ActionFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   const formData = await request.formData();
   const token = formData.get("public_token");

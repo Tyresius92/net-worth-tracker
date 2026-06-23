@@ -7,8 +7,8 @@ import { requireUserId } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   const plaidItems = await prisma.plaidItem.findMany({
     where: {

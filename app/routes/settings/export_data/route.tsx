@@ -4,8 +4,8 @@ import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
 import { buildCSV } from "~/utils/exportUtils.server";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUser(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  const user = await requireUser(request, url);
 
   const accounts = await prisma.account.findMany({
     where: { userId: user.id },

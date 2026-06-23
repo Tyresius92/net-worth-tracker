@@ -13,8 +13,8 @@ import { requireUserId } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   const accountId = params.accountId;
   if (!accountId) {
@@ -38,8 +38,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return {};
 };
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const action = async ({ request, url, params }: ActionFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   const accountId = params.accountId;
   if (!accountId) {

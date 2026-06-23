@@ -19,8 +19,8 @@ import { formatCurrency } from "~/utils/currencyUtils";
 
 import type { Route } from "./+types/route";
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const loader = async ({ params, request, url }: LoaderFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   const accountId = params.accountId;
   if (!accountId) {
@@ -63,8 +63,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   };
 };
 
-export const action = async ({ params, request }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const action = async ({ params, request, url }: ActionFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   const accountId = params.accountId;
   if (!accountId) {

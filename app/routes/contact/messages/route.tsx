@@ -7,8 +7,8 @@ import { requireUser } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUser(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  const user = await requireUser(request, url);
 
   if (user.role !== "admin") {
     return redirect("/", { status: 403 });

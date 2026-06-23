@@ -13,8 +13,8 @@ import {
 import type { Route } from "./+types/layout";
 import styles from "./layout.module.css";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUser(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  const user = await requireUser(request, url);
 
   const accounts = await prisma.account.findMany({
     where: {

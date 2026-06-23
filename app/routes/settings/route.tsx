@@ -9,8 +9,8 @@ import { requireUser } from "~/session.server";
 
 import styles from "./settings.module.css";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUser(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  const user = await requireUser(request, url);
 
   const recoveryCodeCount = user.twoFactorEnabled
     ? await getRecoveryCodeCount(user.id)

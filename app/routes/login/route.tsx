@@ -42,7 +42,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return {};
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, url }: ActionFunctionArgs) => {
   const session = await getSession(request);
   const formData = await request.formData();
   const email = formData.get("email");
@@ -97,7 +97,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (!user.emailVerifiedAt) {
     const token = await createEmailVerificationToken(user.id);
-    const verifyUrl = `${new URL(request.url).origin}/verify_email?token=${token}`;
+    const verifyUrl = `${url.origin}/verify_email?token=${token}`;
     await sendEmail({
       to: user.email,
       subject: "Verify your email address",

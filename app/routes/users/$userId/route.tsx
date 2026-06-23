@@ -53,8 +53,8 @@ export const validateRoleChange = ({
   return { valid: true };
 };
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const currentUser = await requireUser(request);
+export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
+  const currentUser = await requireUser(request, url);
   if (currentUser.role !== "admin") {
     throw redirect("/");
   }
@@ -95,8 +95,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return { user, currentUserId: currentUser.id, isLastAdmin };
 };
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
-  const currentUser = await requireUser(request);
+export const action = async ({ request, url, params }: ActionFunctionArgs) => {
+  const currentUser = await requireUser(request, url);
   if (currentUser.role !== "admin") {
     throw redirect("/");
   }

@@ -13,7 +13,7 @@ import { sendEmail } from "~/utils/email.server";
 
 import styles from "./pending.module.css";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
   if (userId) {
     return redirect("/");
@@ -27,12 +27,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     return redirect("/join");
   }
 
-  const expired = new URL(request.url).searchParams.get("expired") === "1";
+  const expired = url.searchParams.get("expired") === "1";
 
   return data({ expired });
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, url }: ActionFunctionArgs) => {
   const session = await getSession(request);
   const pendingUserId: string | undefined = session.get(
     "pending-verification:userId",
@@ -47,7 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   const token = await createEmailVerificationToken(user.id);
-  const verifyUrl = `${new URL(request.url).origin}/verify_email?token=${token}`;
+  const verifyUrl = `${url.origin}/verify_email?token=${token}`;
 
   await sendEmail({
     to: user.email,

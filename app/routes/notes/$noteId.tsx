@@ -13,8 +13,8 @@ import { Button } from "~/components/Button/Button";
 import { deleteNote, getNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const loader = async ({ params, request, url }: LoaderFunctionArgs) => {
+  const userId = await requireUserId(request, url);
   invariant(params.noteId, "noteId not found");
 
   const note = await getNote({ id: params.noteId, userId });
@@ -24,8 +24,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return { note };
 };
 
-export const action = async ({ params, request }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const action = async ({ params, request, url }: ActionFunctionArgs) => {
+  const userId = await requireUserId(request, url);
   invariant(params.noteId, "noteId not found");
 
   await deleteNote({ id: params.noteId, userId });

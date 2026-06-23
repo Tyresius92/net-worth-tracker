@@ -28,7 +28,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return {};
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, url }: ActionFunctionArgs) => {
   const ip = getClientIp(request);
   if (isRateLimited(`forgot-password:${ip}`)) {
     return data({ submitted: true, errors: { email: null } });
@@ -48,8 +48,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (user) {
     const token = await createPasswordResetToken(user.id);
-    const { origin } = new URL(request.url);
-    const resetUrl = `${origin}/reset_password?token=${token}`;
+    const resetUrl = `${url.origin}/reset_password?token=${token}`;
 
     await sendEmail({
       to: user.email,

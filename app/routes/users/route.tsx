@@ -24,8 +24,8 @@ export const computeSourceCounts = (
   };
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUser(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  const user = await requireUser(request, url);
 
   if (user.role !== "admin") {
     throw redirect("/", { status: 403 });

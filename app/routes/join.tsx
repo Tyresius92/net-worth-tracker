@@ -35,7 +35,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return {};
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, url }: ActionFunctionArgs) => {
   const ip = getClientIp(request);
   if (isRateLimited(`join:${ip}`)) {
     return data(
@@ -113,7 +113,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const user = await createUser({ email, password, firstName, lastName });
 
   const token = await createEmailVerificationToken(user.id);
-  const verifyUrl = `${new URL(request.url).origin}/verify_email?token=${token}`;
+  const verifyUrl = `${url.origin}/verify_email?token=${token}`;
 
   await sendEmail({
     to: user.email,

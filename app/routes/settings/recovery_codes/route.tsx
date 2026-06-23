@@ -21,8 +21,8 @@ import { getSession, requireUser, sessionStorage } from "~/session.server";
 
 import styles from "./recovery_codes.module.css";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUser(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  const user = await requireUser(request, url);
 
   if (!user.twoFactorEnabled) {
     return redirect("/settings");
@@ -51,8 +51,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   );
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const user = await requireUser(request);
+export const action = async ({ request, url }: ActionFunctionArgs) => {
+  const user = await requireUser(request, url);
   const session = await getSession(request);
   const formData = await request.formData();
   const token = formData.get("token");

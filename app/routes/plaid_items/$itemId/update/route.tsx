@@ -16,8 +16,8 @@ import { requireUserId } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   const plaidItem = await prisma.plaidItem.findFirstOrThrow({
     where: {
@@ -45,8 +45,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   };
 };
 
-export const action = async ({ params, request }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const action = async ({ params, request, url }: ActionFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   await prisma.plaidItem.updateMany({
     where: { id: params.itemId, userId },

@@ -6,8 +6,8 @@ import { requireUserId } from "~/session.server";
 
 import type { Route } from "./+types/layout";
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request);
+export const loader = async ({ params, request, url }: LoaderFunctionArgs) => {
+  const userId = await requireUserId(request, url);
 
   const accountId = params.accountId;
   if (!accountId) {

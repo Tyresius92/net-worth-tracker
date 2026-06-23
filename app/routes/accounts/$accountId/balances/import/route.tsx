@@ -9,8 +9,8 @@ import { Text } from "~/components/Text/Text";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
-  await requireUser(request);
+export const action = async ({ request, url, params }: ActionFunctionArgs) => {
+  await requireUser(request, url);
 
   const accountId = params.accountId;
 

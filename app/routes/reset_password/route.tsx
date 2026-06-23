@@ -25,13 +25,13 @@ import { getUserId } from "~/session.server";
 
 import styles from "./reset_password.module.css";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
   if (userId) {
     return redirect("/");
   }
 
-  const token = new URL(request.url).searchParams.get("token");
+  const token = url.searchParams.get("token");
   if (!token) {
     return redirect("/forgot_password");
   }

@@ -12,13 +12,13 @@ import { logout, requireUser } from "~/session.server";
 
 import styles from "./delete_account.module.css";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await requireUser(request);
+export const loader = async ({ request, url }: LoaderFunctionArgs) => {
+  await requireUser(request, url);
   return {};
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const user = await requireUser(request);
+export const action = async ({ request, url }: ActionFunctionArgs) => {
+  const user = await requireUser(request, url);
   const formData = await request.formData();
   const confirmation = formData.get("confirmation");
   const password = formData.get("password");
