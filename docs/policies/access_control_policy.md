@@ -32,10 +32,6 @@ Email verification tokens are 32-byte random hex strings, SHA256-hashed before s
 
 Incoming Plaid webhooks are verified by checking the JWT signature against Plaid's public keys (fetched and cached by key ID). The token's `iat` claim must be within 5 minutes of the current time, and a SHA256 hash of the request body is compared against the `request_body_sha256` claim in the token payload.
 
-### Balance Refresh API
-
-The daily balance refresh endpoint (`POST /api/accounts/refresh`) authenticates via a Bearer token (`REFRESH_API_SECRET`) compared against the value stored in the deployment environment. This endpoint is called by a GitHub Actions workflow on a schedule.
-
 ### TLS
 
 Production session cookies are flagged `Secure`, enforcing HTTPS. TLS certificates are managed by Fly.io.

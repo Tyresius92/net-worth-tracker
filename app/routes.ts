@@ -86,8 +86,6 @@ export default [
   ]),
 
   route("api/subscriptions/plaid", "./routes/api/subscriptions/plaid.ts"),
-  route("api/accounts/refresh", "./routes/api/accounts/refresh.ts"),
-
   route("wp-admin/install.php", "./routes/dummy/wp_admin_install.tsx"),
   route("wp-login.php", "./routes/dummy/wp_login.tsx"),
 
