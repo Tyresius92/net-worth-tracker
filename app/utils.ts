@@ -42,7 +42,7 @@ export function useMatchesData(
     [matchingRoutes, id],
   );
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  return route?.data as Record<string, unknown>;
+  return route?.loaderData as Record<string, unknown>;
 }
 
 function isUser(user: unknown): user is User {

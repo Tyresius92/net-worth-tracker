@@ -4,9 +4,7 @@ export interface TableColumnHeaderProps {
   children: React.ReactNode;
 }
 
-export const TableRowHeader = ({
-  children,
-}: TableColumnHeaderProps) => {
+export const TableRowHeader = ({ children }: TableColumnHeaderProps) => {
   return (
     <th scope="row" className={styles["row-header"]}>
       {children}

@@ -39,7 +39,7 @@ Rather than repeat that cycle, I built a small app that:
 
 ### Frontend / App Architecture
 
-- React Router 7 (Remix successor)
+- React Router 8 (Remix successor)
 - Loader/action–driven data fetching
 - Server-rendered pages with minimal client-side state
 - Client-side chart rendering using Recharts (SSR not currently supported)

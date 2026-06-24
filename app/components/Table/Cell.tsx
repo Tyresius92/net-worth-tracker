@@ -12,10 +12,7 @@ export interface TableCellProps {
   align?: CellAlign;
 }
 
-export const TableCell = ({
-  children,
-  align = "start",
-}: TableCellProps) => {
+export const TableCell = ({ children, align = "start" }: TableCellProps) => {
   const modifier = alignClass[align];
   return (
     <td className={modifier ? `${styles.cell} ${modifier}` : styles.cell}>

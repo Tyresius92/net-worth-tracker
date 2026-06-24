@@ -4,19 +4,18 @@ import { Box } from "../Box/Box";
 
 import styles from "./TextInput.module.css";
 
-interface TextInputProps
-  extends Pick<
-    InputHTMLAttributes<HTMLInputElement>,
-    | "required"
-    | "autoFocus"
-    | "autoComplete"
-    | "placeholder"
-    | "pattern"
-    | "defaultValue"
-    | "disabled"
-    | "step"
-    | "minLength"
-  > {
+interface TextInputProps extends Pick<
+  InputHTMLAttributes<HTMLInputElement>,
+  | "required"
+  | "autoFocus"
+  | "autoComplete"
+  | "placeholder"
+  | "pattern"
+  | "defaultValue"
+  | "disabled"
+  | "step"
+  | "minLength"
+> {
   label: string;
   name: string;
   type: "text" | "email" | "password" | "number" | "url" | "date";
