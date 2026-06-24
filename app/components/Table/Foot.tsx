@@ -4,7 +4,7 @@ export interface TableFootProps {
   children: React.ReactNode;
 }
 
-export const TableFoot = ({ children }: TableFootProps): JSX.Element => {
+export const TableFoot = ({ children }: TableFootProps) => {
   return (
     <tfoot className={styles.foot}>
       <tr>{children}</tr>

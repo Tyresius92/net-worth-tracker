@@ -4,7 +4,7 @@ export interface TableHeadProps {
   children: React.ReactNode;
 }
 
-export const TableHead = ({ children }: TableHeadProps): JSX.Element => {
+export const TableHead = ({ children }: TableHeadProps) => {
   return (
     <thead className={styles.head}>
       <tr>{children}</tr>

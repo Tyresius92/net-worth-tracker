@@ -12,7 +12,7 @@ export interface TableProps {
   caption: string;
 }
 
-export const Table = ({ children, caption }: TableProps): JSX.Element => {
+export const Table = ({ children, caption }: TableProps) => {
   return (
     <div className={styles["scroll-wrapper"]}>
       <table className={styles.table}>

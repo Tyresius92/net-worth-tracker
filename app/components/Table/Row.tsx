@@ -4,6 +4,6 @@ export interface TableRowProps {
   children: React.ReactNode;
 }
 
-export const TableRow = ({ children }: TableRowProps): JSX.Element => (
+export const TableRow = ({ children }: TableRowProps) => (
   <tr className={styles.row}>{children}</tr>
 );

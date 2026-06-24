@@ -15,7 +15,7 @@ export interface TableCellProps {
 export const TableCell = ({
   children,
   align = "start",
-}: TableCellProps): JSX.Element => {
+}: TableCellProps) => {
   const modifier = alignClass[align];
   return (
     <td className={modifier ? `${styles.cell} ${modifier}` : styles.cell}>

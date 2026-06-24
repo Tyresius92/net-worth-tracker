@@ -6,7 +6,7 @@ export interface TableColumnHeaderProps {
 
 export const TableColumnHeader = ({
   children,
-}: TableColumnHeaderProps): JSX.Element => {
+}: TableColumnHeaderProps) => {
   return (
     <th scope="col" className={styles["column-header"]}>
       {children}
