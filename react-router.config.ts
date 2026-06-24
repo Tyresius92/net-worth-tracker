@@ -4,14 +4,6 @@ import { sentryOnBuildEnd } from "@sentry/react-router";
 export default {
   ssr: true,
 
-  future: {
-    v8_passThroughRequests: true,
-    v8_trailingSlashAwareDataRequests: true,
-    v8_viteEnvironmentApi: true,
-    v8_splitRouteModules: true,
-    v8_middleware: true,
-  },
-
   buildEnd: async ({
     viteConfig: viteConfig,
     reactRouterConfig: reactRouterConfig,

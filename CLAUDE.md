@@ -63,7 +63,7 @@ npx prisma migrate dev --name <name>   # create a migration
 
 ### Framework and routing
 
-React Router v7. Routes are defined in [`app/routes.ts`](app/routes.ts) using the programmatic config API (`route()`, `index()`, `layout()`). Each route lives in its own directory under `app/routes/` and exports a `loader`, `action`, and default component. Route types are auto-generated into `+types/` files — run `npm run typecheck` to regenerate them. The path alias `~/` maps to `app/`.
+React Router v8. Routes are defined in [`app/routes.ts`](app/routes.ts) using the programmatic config API (`route()`, `index()`, `layout()`). Each route lives in its own directory under `app/routes/` and exports a `loader`, `action`, and default component. Route types are auto-generated into `+types/` files — run `npm run typecheck` to regenerate them. The path alias `~/` maps to `app/`.
 
 **Naming conventions — these apply everywhere: route paths, file names, folder names, and Playwright test file names:**
 
@@ -146,7 +146,7 @@ Resend + React Email. In non-production environments, `sendEmail` (from [`app/ut
 - Server-only modules use `.server.ts` suffix
 - Test files colocate with the file they test (`.test.ts` / `.test.tsx`)
 - Playwright e2e tests are in `tests/`
-- Prefer `const` arrow functions over `function` declarations everywhere except route module default exports. React Router 7 requires a default export from each route file; use `export default function RouteComponent()` there and `const` arrow functions for everything else (helpers, utilities, loaders, actions outside of route files).
+- Prefer `const` arrow functions over `function` declarations everywhere except route module default exports. React Router requires a default export from each route file; use `export default function RouteComponent()` there and `const` arrow functions for everything else (helpers, utilities, loaders, actions outside of route files).
 - Prefer array methods (`map`, `filter`, `reduce`, `flatMap`, `forEach`) over `for` and `while` loops.
 - Narrow `unknown` values with type guard functions rather than direct annotations or `as` assertions: `const isFoo = (value: unknown): value is Foo => ...`
 - Do not use `useFetcher`. Use `Form` for all form submissions. If you believe a situation requires `useFetcher`, stop and ask before using it.
