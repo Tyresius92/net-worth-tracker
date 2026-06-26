@@ -1,5 +1,6 @@
 import type { Preview } from "@storybook/react-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
+
 import "../app/components/_GlobalStyles/colors.css";
 import "../app/components/_GlobalStyles/space.css";
 import "../app/components/_GlobalStyles/font-size.css";

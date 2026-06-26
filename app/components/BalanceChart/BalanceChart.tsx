@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import {
   CartesianGrid,
   ComposedChart,
@@ -24,11 +24,11 @@ export interface BalanceChartProps {
 }
 
 export const BalanceChart = ({ balances, title }: BalanceChartProps) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
 
   if (!mounted) {
     return null;
