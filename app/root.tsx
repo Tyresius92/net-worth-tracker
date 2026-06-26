@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore, useEffect } from "react";
 import type {
   ActionFunctionArgs,
   LinksFunction,
@@ -29,6 +29,15 @@ import { Footer } from "./components/Footer/Footer";
 import { Masthead } from "./components/Masthead/Masthead";
 import { useNonce } from "./nonce";
 import styles from "./root.css?url";
+
+const subscribeToPrefersDark = (callback: () => void) => {
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+};
+
+const getPrefersDarkSnapshot = () =>
+  window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 export const prefs = createCookie("user-prefs");
 
@@ -113,44 +122,29 @@ export default function App({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher();
   let { colorMode } = useLoaderData<typeof loader>();
 
-  // Tracks the system preference for use when no cookie is set.
-  // Initialized to null to avoid a hydration mismatch (server can't read system pref).
-  const [systemColorMode, setSystemColorMode] = useState<
-    "dark" | "light" | null
-  >(null);
+  const prefersDark = useSyncExternalStore<boolean | null>(
+    subscribeToPrefersDark,
+    getPrefersDarkSnapshot,
+    () => null,
+  );
 
-  // Favicon always follows system preference regardless of the cookie.
-  // Initialized to the light favicon so server and client agree on the initial render.
-  const [faviconHref, setFaviconHref] = useState("/favicon-light.ico");
+  const systemColorMode =
+    prefersDark === null ? null : prefersDark ? "dark" : "light";
+  const faviconHref =
+    prefersDark === true ? "/favicon-dark.ico" : "/favicon-light.ico";
 
   useEffect(() => {
     logger.setUser(loaderData.user ? { id: loaderData.user.id } : null);
   }, [loaderData.user]);
 
   useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-
-    // Sync initial state on hydration
-    setFaviconHref(media.matches ? "/favicon-dark.ico" : "/favicon-light.ico");
-    if (!colorMode) {
-      setSystemColorMode(media.matches ? "dark" : "light");
+    if (colorMode || prefersDark === null) {
+      return;
     }
-
-    const listener = (e: MediaQueryListEvent) => {
-      // Favicon always follows system preference
-      setFaviconHref(e.matches ? "/favicon-dark.ico" : "/favicon-light.ico");
-      // Theme only follows system preference when no explicit cookie is set
-      if (!colorMode) {
-        const html = document.documentElement;
-        html.classList.toggle("dark", e.matches);
-        html.classList.toggle("light", !e.matches);
-        setSystemColorMode(e.matches ? "dark" : "light");
-      }
-    };
-
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
-  }, [colorMode]);
+    const html = document.documentElement;
+    html.classList.toggle("dark", prefersDark);
+    html.classList.toggle("light", !prefersDark);
+  }, [colorMode, prefersDark]);
 
   // use optimistic UI to immediately change the UI state
   if (fetcher.formData?.has("colorMode")) {
