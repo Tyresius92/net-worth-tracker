@@ -1,13 +1,8 @@
 import { CountryCode, Products } from "plaid";
 import { useEffect } from "react";
 import { usePlaidLink } from "react-plaid-link";
-import type {
-  ActionFunctionArgs,
-  LoaderFunctionArgs} from "react-router";
-import {
-  redirect,
-  useFetcher,
-} from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import { redirect, useFetcher } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
@@ -89,7 +84,7 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
 
   const plaidAccounts = response.data.accounts;
 
-  for await (const plaidAccountObj of plaidAccounts) {
+  for (const plaidAccountObj of plaidAccounts) {
     const account = await prisma.account.create({
       data: {
         userId,
@@ -144,7 +139,7 @@ export default function NewPlaidItemRoute({
         formData.append("institution_name", metadata.institution.name);
       }
 
-      fetcher.submit(formData, {
+      void fetcher.submit(formData, {
         method: "post",
       });
     },
@@ -163,6 +158,9 @@ export default function NewPlaidItemRoute({
 
   useEffect(() => {
     if (ready && !actionData) {
+      // Plaid wrote funky types here, so just silence it instead of
+      // trying to work around the external dependency
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       open();
     }
   }, [ready, open, actionData]);

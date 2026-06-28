@@ -26,7 +26,7 @@ import styles from "./twofa.module.css";
 
 export async function loader({ request }: { request: Request }) {
   const session = await getSession(request);
-  const userId = session.get("2fa:user-id");
+  const userId: unknown = session.get("2fa:user-id");
   if (!userId) {
     return redirect("/login");
   }
@@ -35,14 +35,18 @@ export async function loader({ request }: { request: Request }) {
 
 export async function action({ request }: { request: Request }) {
   const session = await getSession(request);
-  const userId = session.get("2fa:user-id");
-  const remember = session.get("2fa:remember");
+  const userId: unknown = session.get("2fa:user-id");
+  const remember: unknown = session.get("2fa:remember");
   const formData = await request.formData();
   const mode = formData.get("mode") ?? "totp";
   const code = formData.get("token");
 
+  if (typeof userId !== "string" || typeof remember !== "boolean") {
+    return redirect("/login", { status: 403 });
+  }
+
   const ip = getClientIp(request);
-  if (isRateLimited(`2fa:${ip}:${userId ?? "unknown"}`)) {
+  if (isRateLimited(`2fa:${ip}:${userId}`)) {
     return data(
       { error: "Too many attempts. Try again in 15 minutes." },
       { status: 429 },
@@ -57,6 +61,11 @@ export async function action({ request }: { request: Request }) {
   if (!user) {
     throw new HttpError("User not found", 404);
   }
+
+  if (!user.twoFactorSecret) {
+    throw new HttpError("No two factor secret", 500);
+  }
+
   if (!code || typeof code !== "string") {
     return data({ error: "Code is required" }, { status: 400 });
   }
@@ -92,7 +101,7 @@ export async function action({ request }: { request: Request }) {
   const totp = new TOTP({
     issuer: "The Ledger",
     label: user.email,
-    secret: Secret.fromBase32(user.twoFactorSecret!),
+    secret: Secret.fromBase32(user.twoFactorSecret),
   });
 
   const valid =
@@ -133,7 +142,7 @@ export default function TwoFactorAuth() {
         </p>
       </div>
 
-      <Box borderColor="sand-12" xsP={24}>
+      <Box border={{ color: "sand-12" }} xsP={24}>
         <Form method="post">
           <input type="hidden" name="mode" value={mode} />
           {mode === "totp" ? (
@@ -164,7 +173,9 @@ export default function TwoFactorAuth() {
               <button
                 type="button"
                 className={styles.toggleLink}
-                onClick={() => { setMode("recovery"); }}
+                onClick={() => {
+                  setMode("recovery");
+                }}
               >
                 Use a recovery code instead
               </button>
@@ -172,7 +183,9 @@ export default function TwoFactorAuth() {
               <button
                 type="button"
                 className={styles.toggleLink}
-                onClick={() => { setMode("totp"); }}
+                onClick={() => {
+                  setMode("totp");
+                }}
               >
                 Use authenticator app instead
               </button>

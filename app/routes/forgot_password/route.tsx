@@ -76,7 +76,7 @@ export default function ForgotPasswordPage() {
           <Divider variant="light" />
         </div>
 
-        <Box borderColor="sand-12" xsP={24}>
+        <Box border={{ color: "sand-12" }} xsP={24}>
           <p className={styles.confirmation}>
             If that email address is registered, you&apos;ll receive a password
             reset link shortly. The link expires in one hour.
@@ -101,7 +101,7 @@ export default function ForgotPasswordPage() {
         </p>
       </div>
 
-      <Box borderColor="sand-12" xsP={24}>
+      <Box border={{ color: "sand-12" }} xsP={24}>
         <Form method="post">
           <TextInput
             type="email"
@@ -110,7 +110,7 @@ export default function ForgotPasswordPage() {
             required
             autoFocus
             autoComplete="email"
-            errorMessage={actionData?.errors?.email ?? undefined}
+            errorMessage={actionData?.errors.email ?? undefined}
           />
           <div className={styles.actions}>
             <Button type="submit">Send reset link</Button>

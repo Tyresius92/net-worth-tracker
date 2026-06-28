@@ -5,6 +5,7 @@
     "**/*.tsx",
 
     ".react-router/types/**/*",
+    ".storybook/**/*",
     "mocks/index.ts"
   ],
   "compilerOptions": {

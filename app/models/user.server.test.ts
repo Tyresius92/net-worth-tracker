@@ -181,7 +181,7 @@ describe("getLatestBalancesAsOfDate", () => {
     )?.balanceSnapshots;
 
     expect(snapshots).toHaveLength(1);
-    expect(snapshots![0].amount).toBe(20_000);
+    expect(snapshots![0]?.amount).toBe(20_000);
   });
 
   it("excludes snapshots dated after the cutoff", async () => {
@@ -208,7 +208,7 @@ describe("getLatestBalancesAsOfDate", () => {
     )?.balanceSnapshots;
 
     expect(snapshots).toHaveLength(1);
-    expect(snapshots![0].amount).toBe(10_000);
+    expect(snapshots![0]?.amount).toBe(10_000);
   });
 
   it("returns an empty snapshot array when no snapshots exist before the cutoff", async () => {

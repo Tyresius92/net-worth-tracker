@@ -55,6 +55,6 @@ const prisma = singleton("prisma", () => {
   return client;
 });
 
-prisma.$connect();
+await prisma.$connect();
 
 export { prisma };

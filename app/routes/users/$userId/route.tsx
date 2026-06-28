@@ -164,7 +164,7 @@ export default function AdminUserDetailPage({
 
       <div className={styles.section}>
         <p className={styles.sectionHeading}>Account Info</p>
-        <Box borderColor="sand-7">
+        <Box border={{ color: "sand-7" }}>
           <div className={styles.row}>
             <span className={styles.label}>Email</span>
             <span className={styles.value}>{user.email}</span>
@@ -231,7 +231,7 @@ export default function AdminUserDetailPage({
         <p className={styles.sectionHeading}>
           Accounts ({user.accounts.length})
         </p>
-        <Box borderColor="sand-7">
+        <Box border={{ color: "sand-7" }}>
           {user.accounts.length === 0 ? (
             <div className={styles.empty}>No accounts.</div>
           ) : (
@@ -257,7 +257,7 @@ export default function AdminUserDetailPage({
         <p className={styles.sectionHeading}>
           Plaid Connections ({user.plaidItems.length})
         </p>
-        <Box borderColor="sand-7">
+        <Box border={{ color: "sand-7" }}>
           {user.plaidItems.length === 0 ? (
             <div className={styles.empty}>No Plaid connections.</div>
           ) : (
@@ -279,7 +279,7 @@ export default function AdminUserDetailPage({
 
       <div className={styles.section}>
         <p className={styles.sectionHeading}>Danger Zone</p>
-        <Box borderColor="red-7">
+        <Box border={{ color: "red-7" }}>
           <div className={styles.row}>
             <span className={styles.label}>
               Permanently delete this account and all associated data

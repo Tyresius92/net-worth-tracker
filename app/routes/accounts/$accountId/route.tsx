@@ -6,14 +6,13 @@ import {
   redirect,
   useNavigation,
 } from "react-router";
+import invariant from "tiny-invariant";
 
 import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
-import invariant from "tiny-invariant";
-
 import { prisma } from "~/db.server";
 import { refreshAccountBalances } from "~/jobs/refreshAccountBalances.server";
 import { getUserId, loginRedirect } from "~/session.server";

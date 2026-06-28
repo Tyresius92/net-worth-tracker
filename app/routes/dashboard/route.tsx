@@ -93,16 +93,16 @@ export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
     },
   });
 
+  const isBalanceDay = (
+    snap: (typeof accounts)[number]["balanceSnapshots"][number],
+  ): snap is { id: string; date: string; amount: number } => !!snap.date;
+
   const snapshots = accounts.flatMap((account) =>
-    fillDailyBalanceDayData(account.balanceSnapshots),
+    fillDailyBalanceDayData(account.balanceSnapshots.filter(isBalanceDay)),
   );
 
   const dailyAmounts = snapshots.reduce<Record<string, number>>((acc, curr) => {
-    if (typeof acc[curr.date] !== "number") {
-      acc[curr.date] = 0;
-    }
-
-    acc[curr.date] += curr.amount;
+    acc[curr.date] = (acc[curr.date] ?? 0) + curr.amount;
 
     return acc;
   }, {});
@@ -136,12 +136,12 @@ export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
     accounts: userData.accounts.map((account) => ({
       id: account.id,
       name: getAccountDisplayName(account),
-      balance: account.balanceSnapshots?.[0]?.amount,
-      lastSynced: account.balanceSnapshots?.[0]?.dateTime,
+      balance: account.balanceSnapshots[0]?.amount,
+      lastSynced: account.balanceSnapshots[0]?.dateTime,
       institution:
-        account.plaidAccount?.plaidItem?.institutionName ?? "Staff-reported",
+        account.plaidAccount?.plaidItem.institutionName ?? "Staff-reported",
       last4: account.plaidAccount?.mask,
-      isStale: account.balanceSnapshots?.[0]?.dateTime
+      isStale: account.balanceSnapshots[0]?.dateTime
         ? Date.now() -
             new Date(account.balanceSnapshots[0].dateTime).getTime() >
           60 * 24 * 60 * 60 * 1000
@@ -258,10 +258,12 @@ export default function AuthenticatedUserFrontPage({
                         </Text>
                       </Table.Cell>
                       <Table.Cell align="end">
-                        <Text>{formatCurrency(account.balance)}</Text>
-                        <Text variant="caption">
-                          {formatDate(new Date(account.lastSynced))}
-                        </Text>
+                        <Text>{formatCurrency(account.balance ?? 0)}</Text>
+                        {account.lastSynced && (
+                          <Text variant="caption">
+                            {formatDate(new Date(account.lastSynced))}
+                          </Text>
+                        )}
                       </Table.Cell>
                     </Table.Row>
                   ))}

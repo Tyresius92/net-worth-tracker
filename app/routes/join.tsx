@@ -143,9 +143,9 @@ export default function Join() {
   const passwordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (actionData?.errors?.email) {
+    if (actionData?.errors.email) {
       emailRef.current?.focus();
-    } else if (actionData?.errors?.password) {
+    } else if (actionData?.errors.password) {
       passwordRef.current?.focus();
     }
   }, [actionData]);
@@ -159,7 +159,7 @@ export default function Join() {
         <p className={styles.tagline}>Your finances. Your data. No charge.</p>
       </div>
 
-      <Box borderColor="sand-12" xsP={24}>
+      <Box border={{ color: "sand-12" }} xsP={24}>
         <Form method="post">
           <TextInput
             ref={emailRef}
@@ -169,7 +169,7 @@ export default function Join() {
             required
             autoFocus
             autoComplete="email"
-            errorMessage={actionData?.errors?.email ?? undefined}
+            errorMessage={actionData?.errors.email ?? undefined}
           />
           <TextInput
             type="text"
@@ -177,7 +177,7 @@ export default function Join() {
             name="firstName"
             required
             autoComplete="given-name"
-            errorMessage={actionData?.errors?.firstName ?? undefined}
+            errorMessage={actionData?.errors.firstName ?? undefined}
           />
           <TextInput
             type="text"
@@ -185,7 +185,7 @@ export default function Join() {
             name="lastName"
             required
             autoComplete="family-name"
-            errorMessage={actionData?.errors?.lastName ?? undefined}
+            errorMessage={actionData?.errors.lastName ?? undefined}
           />
           <TextInput
             ref={passwordRef}
@@ -193,7 +193,7 @@ export default function Join() {
             label="Password"
             name="password"
             autoComplete="new-password"
-            errorMessage={actionData?.errors?.password ?? undefined}
+            errorMessage={actionData?.errors.password ?? undefined}
           />
           <div className={styles.actions}>
             <Button type="submit">Apply</Button>

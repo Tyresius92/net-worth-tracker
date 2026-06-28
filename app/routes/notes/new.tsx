@@ -40,9 +40,9 @@ export default function NewNotePage() {
   const bodyRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (actionData?.errors?.title) {
+    if (actionData?.errors.title) {
       titleRef.current?.focus();
-    } else if (actionData?.errors?.body) {
+    } else if (actionData?.errors.body) {
       bodyRef.current?.focus();
     }
   }, [actionData]);
@@ -56,13 +56,13 @@ export default function NewNotePage() {
             <input
               ref={titleRef}
               name="title"
-              aria-invalid={actionData?.errors?.title ? true : undefined}
+              aria-invalid={actionData?.errors.title ? true : undefined}
               aria-errormessage={
-                actionData?.errors?.title ? "title-error" : undefined
+                actionData?.errors.title ? "title-error" : undefined
               }
             />
           </label>
-          {actionData?.errors?.title ? (
+          {actionData?.errors.title ? (
             <Box id="title-error">{actionData.errors.title}</Box>
           ) : null}
         </Box>
@@ -74,13 +74,13 @@ export default function NewNotePage() {
               ref={bodyRef}
               name="body"
               rows={8}
-              aria-invalid={actionData?.errors?.body ? true : undefined}
+              aria-invalid={actionData?.errors.body ? true : undefined}
               aria-errormessage={
-                actionData?.errors?.body ? "body-error" : undefined
+                actionData?.errors.body ? "body-error" : undefined
               }
             />
           </label>
-          {actionData?.errors?.body ? (
+          {actionData?.errors.body ? (
             <Box id="body-error">{actionData.errors.body}</Box>
           ) : null}
         </Box>

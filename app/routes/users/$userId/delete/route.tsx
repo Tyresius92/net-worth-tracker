@@ -101,6 +101,7 @@ export default function AdminDeleteUserPage() {
   const displayError = actionData?.error ?? error;
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     <Box xsP={24} maxWidth={480}>
       <h1 className={styles.heading}>Delete Account</h1>
 

@@ -15,7 +15,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       prisma.user.count(),
       fetch(url.toString(), { method: "HEAD" }).then((r) => {
         if (!r.ok) {
-          return Promise.reject(r);
+          return Promise.reject(new Error(`Healthcheck failed: ${r.status}`));
         }
       }),
     ]);

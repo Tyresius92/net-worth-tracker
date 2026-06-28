@@ -10,8 +10,11 @@ export const DAY_MS = 24 * 60 * 60 * 1000;
  * Forces local midnight, avoids timezone shifting
  */
 export const parseDate = (date: string): Date => {
-  const [y, m, d] = date.split("-").map(Number);
-  return new Date(y, m - 1, d);
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  if (!match) {
+    throw new Error(`Invalid date format: ${date}`);
+  }
+  return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
 };
 
 /**
@@ -43,7 +46,7 @@ export const startOfToday = (): Date => {
  * Fills sparse daily BalanceDay data by carrying the last known value forward.
  */
 export const fillDailyBalanceDayData = (data: BalanceDay[]): BalanceDay[] => {
-  if (data.length === 0) {
+  if (data.length === 0 || !data[0]) {
     return [];
   }
 

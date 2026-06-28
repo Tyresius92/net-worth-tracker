@@ -1,6 +1,10 @@
 import React from "react";
 
-import type { ColorOption, SpaceOption, StrokeValue } from "../_GlobalStyles/types";
+import type {
+  ColorOption,
+  SpaceOption,
+  StrokeValue,
+} from "../_GlobalStyles/types";
 
 import styles from "./Box.module.css";
 
@@ -305,6 +309,7 @@ export const Box = (props: BoxProps) => {
     xlColumnGap = xlGap,
 
     bg,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     borderColor,
     color,
 
@@ -316,6 +321,7 @@ export const Box = (props: BoxProps) => {
     borderBottom = borderY,
     borderLeft = borderX,
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     maxWidth,
 
     textAlign,

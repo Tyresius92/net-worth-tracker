@@ -20,9 +20,7 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   }
 
   const session = await getSession(request);
-  const pendingUserId: string | undefined = session.get(
-    "pending-verification:userId",
-  );
+  const pendingUserId: unknown = session.get("pending-verification:userId");
   if (!pendingUserId) {
     return redirect("/join");
   }
@@ -34,10 +32,8 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const session = await getSession(request);
-  const pendingUserId: string | undefined = session.get(
-    "pending-verification:userId",
-  );
-  if (!pendingUserId) {
+  const pendingUserId: unknown = session.get("pending-verification:userId");
+  if (!pendingUserId || typeof pendingUserId !== "string") {
     return redirect("/join");
   }
 
@@ -77,7 +73,7 @@ export default function VerifyEmailPendingPage() {
         <Divider variant="light" />
       </Box>
 
-      <Box borderColor="sand-12" xsP={24}>
+      <Box border={{ color: "sand-12" }} xsP={24}>
         <Box
           display="flex"
           flexDirection="column"

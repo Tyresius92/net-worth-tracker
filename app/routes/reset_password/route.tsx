@@ -135,11 +135,11 @@ export default function ResetPasswordPage() {
         <Divider variant="light" />
       </div>
 
-      <Box borderColor="sand-12" xsP={24}>
+      <Box border={{ color: "sand-12" }} xsP={24}>
         <Form method="post">
           <input type="hidden" name="token" value={token ?? ""} />
 
-          {actionData?.errors?.token ? (
+          {actionData?.errors.token ? (
             <p className={styles.descriptor}>{actionData.errors.token}</p>
           ) : null}
 
@@ -150,7 +150,7 @@ export default function ResetPasswordPage() {
             name="password"
             autoComplete="new-password"
             autoFocus
-            errorMessage={actionData?.errors?.password ?? undefined}
+            errorMessage={actionData?.errors.password ?? undefined}
           />
           <TextInput
             ref={confirmPasswordRef}
@@ -158,7 +158,7 @@ export default function ResetPasswordPage() {
             label="Confirm new password"
             name="confirmPassword"
             autoComplete="new-password"
-            errorMessage={actionData?.errors?.confirmPassword ?? undefined}
+            errorMessage={actionData?.errors.confirmPassword ?? undefined}
           />
 
           <div className={styles.actions}>

@@ -155,6 +155,7 @@ export default tseslint.config(
       ...vitestPlugin.configs.recommended.rules,
       ...jestDomPlugin.configs["flat/recommended"].rules,
       ...testingLibraryPlugin.configs["flat/react"].rules,
+      "@typescript-eslint/no-non-null-assertion": "off",
     },
   },
 

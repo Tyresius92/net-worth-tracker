@@ -134,15 +134,15 @@ export const meta: MetaFunction = () => [{ title: "Login" }];
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/";
+  const redirectTo = searchParams.get("redirectTo") ?? "/";
   const actionData = useActionData<typeof action>();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (actionData?.errors?.email) {
+    if (actionData?.errors.email) {
       emailRef.current?.focus();
-    } else if (actionData?.errors?.password) {
+    } else if (actionData?.errors.password) {
       passwordRef.current?.focus();
     }
   }, [actionData]);
@@ -156,7 +156,7 @@ export default function LoginPage() {
         <p className={styles.tagline}>Track your net worth, issue by issue.</p>
       </div>
 
-      <Box borderColor="sand-12" xsP={24}>
+      <Box border={{ color: "sand-12" }} xsP={24}>
         <Form method="post">
           <TextInput
             ref={emailRef}
@@ -166,7 +166,7 @@ export default function LoginPage() {
             required
             autoFocus
             autoComplete="email"
-            errorMessage={actionData?.errors?.email ?? undefined}
+            errorMessage={actionData?.errors.email ?? undefined}
           />
           <TextInput
             ref={passwordRef}
@@ -174,7 +174,7 @@ export default function LoginPage() {
             label="Password"
             name="password"
             autoComplete="current-password"
-            errorMessage={actionData?.errors?.password ?? undefined}
+            errorMessage={actionData?.errors.password ?? undefined}
           />
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <div className={styles.actions}>

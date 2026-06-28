@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs} from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
@@ -69,7 +69,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
           <Table.ColumnHeader>Actions</Table.ColumnHeader>
         </Table.Head>
         <Table.Body>
-          {(loaderData.users ?? []).map((user) => {
+          {loaderData.users.map((user) => {
             const totalActive = user.wireSources + user.staffReportedSources;
             const sourcesLabel =
               totalActive === 0

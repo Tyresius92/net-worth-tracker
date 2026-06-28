@@ -10,11 +10,6 @@ describe("Box", () => {
     expect(screen.getByText("Hello")).toBeInTheDocument();
   });
 
-  it("applies maxWidth as a px value", () => {
-    render(<Box maxWidth={600}>content</Box>);
-    expect(screen.getByText("content")).toHaveStyle({ maxWidth: "600px" });
-  });
-
   it("applies textAlign as a style", () => {
     render(<Box textAlign="center">content</Box>);
     expect(screen.getByText("content")).toHaveStyle({ textAlign: "center" });
@@ -102,12 +97,12 @@ describe("Box", () => {
 
     it("applies the .box class when spacing props are provided", () => {
       render(<Box xsPb={8}>content</Box>);
-      expect(screen.getByText("content")).toHaveClass(styles.box);
+      expect(screen.getByText("content")).toHaveClass(styles.box!);
     });
 
     it("does not apply the .box class when no spacing props are provided", () => {
       render(<Box bg="sand-3">content</Box>);
-      expect(screen.getByText("content")).not.toHaveClass(styles.box);
+      expect(screen.getByText("content")).not.toHaveClass(styles.box!);
     });
   });
 

@@ -94,6 +94,7 @@ export default function ChangePasswordPage() {
   const actionData = useActionData<typeof action>();
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     <Box xsP={24} maxWidth={480}>
       <Box xsMb={24}>
         <h1 style={{ fontSize: "1.25rem", fontWeight: 600 }}>
@@ -108,21 +109,21 @@ export default function ChangePasswordPage() {
           name="currentPassword"
           autoComplete="current-password"
           autoFocus
-          errorMessage={actionData?.errors?.currentPassword ?? undefined}
+          errorMessage={actionData?.errors.currentPassword ?? undefined}
         />
         <TextInput
           type="password"
           label="New password"
           name="newPassword"
           autoComplete="new-password"
-          errorMessage={actionData?.errors?.newPassword ?? undefined}
+          errorMessage={actionData?.errors.newPassword ?? undefined}
         />
         <TextInput
           type="password"
           label="Confirm new password"
           name="confirmPassword"
           autoComplete="new-password"
-          errorMessage={actionData?.errors?.confirmPassword ?? undefined}
+          errorMessage={actionData?.errors.confirmPassword ?? undefined}
         />
         <Box display="flex" flexDirection="column" xsGap={12} xsMt={24}>
           <Button type="submit">Change password</Button>

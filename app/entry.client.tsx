@@ -13,11 +13,14 @@ import { isbot } from "isbot";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
+import invariant from "tiny-invariant";
+
+invariant(typeof import.meta.env.APP_ENV === "string", "APP_ENV not set");
 
 init({
   dsn: "https://6e947b5e11dca72072823b8789a39032@o4511327942475776.ingest.us.sentry.io/4511327945490432",
   enabled: import.meta.env.MODE === "production",
-  environment: import.meta.env.APP_ENV ?? import.meta.env.MODE,
+  environment: import.meta.env.APP_ENV,
   integrations: [reactRouterTracingIntegration(), replayIntegration()],
   enableLogs: true,
   tracePropagationTargets: [/^\//],

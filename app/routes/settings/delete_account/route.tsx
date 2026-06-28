@@ -83,6 +83,7 @@ export default function DeleteAccountPage() {
   const actionData = useActionData<typeof action>();
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     <Box xsP={24} maxWidth={480}>
       <h1 className={styles.heading}>Close your record</h1>
 
@@ -97,7 +98,7 @@ export default function DeleteAccountPage() {
         <li>There is no recovery mechanism.</li>
       </ul>
 
-      {actionData?.errors?.form ? (
+      {actionData?.errors.form ? (
         <p className={styles.formError}>{actionData.errors.form}</p>
       ) : null}
 
@@ -107,14 +108,14 @@ export default function DeleteAccountPage() {
           label="Type DELETE to confirm"
           name="confirmation"
           autoFocus
-          errorMessage={actionData?.errors?.confirmation ?? undefined}
+          errorMessage={actionData?.errors.confirmation ?? undefined}
         />
         <TextInput
           type="password"
           label="Current password"
           name="password"
           autoComplete="current-password"
-          errorMessage={actionData?.errors?.password ?? undefined}
+          errorMessage={actionData?.errors.password ?? undefined}
         />
         <Box display="flex" flexDirection="column" xsGap={12} xsMt={24}>
           <Button type="submit" variant="danger">

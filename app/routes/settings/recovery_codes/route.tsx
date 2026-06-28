@@ -1,12 +1,6 @@
 import { Secret, TOTP } from "otpauth";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import {
-  data,
-  Form,
-  redirect,
-  useActionData,
-  useLoaderData,
-} from "react-router";
+import { data, Form, redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
@@ -17,8 +11,14 @@ import {
   generateRecoveryCodes,
   getRecoveryCodeCount,
 } from "~/models/recovery-code.server";
-import { getSession, getUser, loginRedirect, sessionStorage } from "~/session.server";
+import {
+  getSession,
+  getUser,
+  loginRedirect,
+  sessionStorage,
+} from "~/session.server";
 
+import type { Route } from "./+types/route";
 import styles from "./recovery_codes.module.css";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
@@ -30,12 +30,8 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   }
 
   const session = await getSession(request);
-  const newCodes: string[] | undefined = session.get(
-    "recovery-codes:new-codes",
-  );
-  const exhausted: boolean | undefined = session.get(
-    "recovery-codes:exhausted",
-  );
+  const newCodes: unknown = session.get("recovery-codes:new-codes");
+  const exhausted: unknown = session.get("recovery-codes:exhausted");
 
   session.unset("recovery-codes:new-codes");
   session.unset("recovery-codes:exhausted");
@@ -44,8 +40,12 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 
   return data(
     {
-      newCodes: newCodes ?? null,
-      exhausted: exhausted ?? false,
+      newCodes:
+        Array.isArray(newCodes) &&
+        newCodes.every((code) => typeof code === "string")
+          ? newCodes
+          : null,
+      exhausted: typeof exhausted === "boolean" ? exhausted : false,
       remainingCount,
     },
     { headers: { "Set-Cookie": await sessionStorage.commitSession(session) } },
@@ -105,10 +105,11 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
   });
 };
 
-export default function RecoveryCodesPage() {
-  const { newCodes, exhausted, remainingCount } =
-    useLoaderData<typeof loader>();
-  const actionData = useActionData<typeof action>();
+export default function RecoveryCodesPage({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
+  const { newCodes, exhausted, remainingCount } = loaderData;
 
   if (newCodes) {
     return (
@@ -164,7 +165,7 @@ export default function RecoveryCodesPage() {
           type="number"
           required
           autoFocus
-          errorMessage={actionData?.errors?.token ?? undefined}
+          errorMessage={actionData?.errors.token ?? undefined}
         />
         <div className={styles.actions}>
           <Button type="submit">Generate new codes</Button>

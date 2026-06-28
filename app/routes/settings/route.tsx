@@ -30,7 +30,7 @@ export default function SettingsRoute() {
 
       <div className={styles.section}>
         <p className={styles.sectionHeading}>Two-Factor Authentication</p>
-        <Box borderColor="sand-7">
+        <Box border={{ color: "sand-7" }}>
           <div className={styles.row}>
             <span className={styles.label}>Status</span>
             <span className={styles.value}>
@@ -83,7 +83,7 @@ export default function SettingsRoute() {
 
       <div className={styles.section}>
         <p className={styles.sectionHeading}>Password</p>
-        <Box borderColor="sand-7">
+        <Box border={{ color: "sand-7" }}>
           <div className={styles.row}>
             <span className={styles.label}>Change password</span>
             <span className={styles.value}>
@@ -95,7 +95,7 @@ export default function SettingsRoute() {
 
       <div className={styles.section}>
         <p className={styles.sectionHeading}>The record</p>
-        <Box borderColor="sand-7">
+        <Box border={{ color: "sand-7" }}>
           <div className={styles.row}>
             <span className={styles.label}>
               Download all figures as a spreadsheet
@@ -120,7 +120,7 @@ export default function SettingsRoute() {
 
       <div className={styles.section}>
         <p className={styles.sectionHeading}>Danger Zone</p>
-        <Box borderColor="red-7">
+        <Box border={{ color: "red-7" }}>
           <div className={styles.row}>
             <span className={styles.label}>
               Permanently close your record and delete all associated data

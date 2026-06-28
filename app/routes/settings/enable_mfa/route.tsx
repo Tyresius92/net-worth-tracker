@@ -1,20 +1,19 @@
 import { Secret, TOTP } from "otpauth";
 import QRCode from "qrcode";
-import type {
-  ActionFunctionArgs,
-  LoaderFunctionArgs} from "react-router";
-import {
-  data,
-  Form,
-  redirect,
-} from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import { data, Form, redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
 import { generateRecoveryCodes } from "~/models/recovery-code.server";
-import { getSession, getUser, loginRedirect, sessionStorage } from "~/session.server";
+import {
+  getSession,
+  getUser,
+  loginRedirect,
+  sessionStorage,
+} from "~/session.server";
 import { HttpError } from "~/utils/httpError.server";
 
 import type { Route } from "./+types/route";
@@ -67,9 +66,14 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
   const formData = await request.formData();
 
   const token = formData.get("token");
-  const secretBase32 = session.get("2fa:temp-secret");
+  const secretBase32: unknown = session.get("2fa:temp-secret");
 
-  if (!token || !secretBase32) {
+  if (
+    !token ||
+    typeof token !== "string" ||
+    !secretBase32 ||
+    typeof secretBase32 !== "string"
+  ) {
     throw new HttpError("Invalid request", 400);
   }
 
@@ -82,7 +86,7 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
     secret: Secret.fromBase32(secretBase32),
   });
 
-  const delta = totp.validate({ token: token.toString(), window: 1 });
+  const delta = totp.validate({ token, window: 1 });
 
   if (delta === null) {
     throw new HttpError("Invalid code", 400);

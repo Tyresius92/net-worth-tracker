@@ -14,7 +14,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Cell = ({ children }: { children: React.ReactNode }) => (
-  <Box bg="sand-3" xsP={16} borderColor="red-10">
+  <Box bg="sand-3" xsP={16} border={{ color: "red-10" }}>
     {children}
   </Box>
 );

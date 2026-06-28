@@ -19,7 +19,6 @@ import {
 
 import { logger } from "~/logger";
 import { getUser } from "~/session.server";
-import { HttpError } from "~/utils/httpError.server";
 
 import type { Route } from "./+types/root";
 import lightColors from "./components/_GlobalStyles/colors.css?url";
@@ -34,13 +33,26 @@ import styles from "./root.css?url";
 const subscribeToPrefersDark = (callback: () => void) => {
   const media = window.matchMedia("(prefers-color-scheme: dark)");
   media.addEventListener("change", callback);
-  return () => { media.removeEventListener("change", callback); };
+  return () => {
+    media.removeEventListener("change", callback);
+  };
 };
 
 const getPrefersDarkSnapshot = () =>
   window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 export const prefs = createCookie("user-prefs");
+
+interface UserPrefs {
+  colorMode?: "dark" | "light";
+}
+
+const isUserPrefs = (value: unknown): value is UserPrefs =>
+  typeof value === "object" &&
+  value !== null &&
+  (!("colorMode" in value) ||
+    value.colorMode === "dark" ||
+    value.colorMode === "light");
 
 export const meta: MetaFunction = () => [{ title: "Net Worth Tracker" }];
 
@@ -53,7 +65,8 @@ export const links: LinksFunction = () => [
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const cookieHeader = request.headers.get("Cookie");
-  const cookie = (await prefs.parse(cookieHeader)) || {};
+  const parsed: unknown = await prefs.parse(cookieHeader);
+  const cookie = isUserPrefs(parsed) ? parsed : {};
 
   return {
     user: await getUser(request),
@@ -63,7 +76,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const cookieHeader = request.headers.get("Cookie");
-  const cookie = (await prefs.parse(cookieHeader)) || {};
+  const parsed: unknown = await prefs.parse(cookieHeader);
+  const cookie: UserPrefs = isUserPrefs(parsed) ? parsed : {};
   const formData = await request.formData();
 
   const colorMode = formData.get("colorMode") === "dark" ? "dark" : "light";
@@ -87,9 +101,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       error.status === 404
         ? "The requested page could not be found."
         : error.statusText || details;
-  } else if (error instanceof HttpError) {
-    message = error.status === 404 ? "404" : "Error";
-    details = error.message;
   } else if (error && error instanceof Error) {
     // Only capture non-404 errors (all errors here are already non-RouteErrorResponse)
     logger.error(error);

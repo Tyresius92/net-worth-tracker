@@ -14,6 +14,7 @@ import { ServerRouter } from "react-router";
 import type { EntryContext, RouterContextProvider } from "react-router";
 
 import { NonceContext } from "./nonce";
+import { toError } from "./utils/errorUtils.server";
 
 export const handleError = Sentry.createSentryHandleError({
   logErrors: false,
@@ -111,7 +112,8 @@ function handleBotRequest(
           pipe(body);
         },
         onShellError(error: unknown) {
-          reject(error);
+          const err = toError(error);
+          reject(err);
         },
         onError(error: unknown) {
           responseStatusCode = 500;
@@ -161,7 +163,8 @@ function handleBrowserRequest(
           pipe(body);
         },
         onShellError(error: unknown) {
-          reject(error);
+          const err = toError(error);
+          reject(err);
         },
         onError(error: unknown) {
           console.error(error);

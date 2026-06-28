@@ -74,7 +74,11 @@ export default function DisableMFAPage() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <Box xsP={24} maxWidth={480}>
+    <Box
+      xsP={24}
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      maxWidth={480}
+    >
       <h1 className={styles.heading}>Disable Two-Factor Authentication</h1>
 
       <p className={styles.warning}>
