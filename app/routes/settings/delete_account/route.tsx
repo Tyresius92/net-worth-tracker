@@ -104,7 +104,6 @@ export default function DeleteAccountPage() {
           type="text"
           label="Type DELETE to confirm"
           name="confirmation"
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           errorMessage={actionData?.errors?.confirmation ?? undefined}
         />

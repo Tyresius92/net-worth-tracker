@@ -161,7 +161,6 @@ export default function RecoveryCodesPage() {
           name="token"
           type="number"
           required
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           errorMessage={actionData?.errors?.token ?? undefined}
         />

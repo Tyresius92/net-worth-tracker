@@ -142,7 +142,6 @@ export default function TwoFactorAuth() {
               label="Verification Code"
               name="token"
               required
-              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               errorMessage={actionData?.error ?? undefined}
             />
@@ -154,7 +153,6 @@ export default function TwoFactorAuth() {
               name="token"
               required
               placeholder="XXXX-XXXX-XXXX"
-              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               errorMessage={actionData?.error ?? undefined}
             />

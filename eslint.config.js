@@ -108,6 +108,14 @@ export default [
     },
   },
 
+  // Routes
+  {
+    files: ["app/routes/**/*.{ts,tsx}"],
+    rules: {
+      'jsx-a11y/no-autofocus': 'off',
+    }
+  },
+
   // Markdown
   ...markdownPlugin.configs.recommended,
 

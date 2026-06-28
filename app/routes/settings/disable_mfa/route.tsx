@@ -91,7 +91,6 @@ export default function DisableMFAPage() {
           label="Confirm with your authenticator code"
           name="token"
           required
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           errorMessage={actionData?.error ?? undefined}
         />

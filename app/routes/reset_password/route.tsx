@@ -149,7 +149,6 @@ export default function ResetPasswordPage() {
             label="New password"
             name="password"
             autoComplete="new-password"
-            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             errorMessage={actionData?.errors?.password ?? undefined}
           />

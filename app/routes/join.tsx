@@ -167,7 +167,6 @@ export default function Join() {
             label="Email address"
             name="email"
             required
-            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             autoComplete="email"
             errorMessage={actionData?.errors?.email ?? undefined}

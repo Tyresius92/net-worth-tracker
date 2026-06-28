@@ -105,7 +105,6 @@ export default function ChangePasswordPage() {
           label="Current password"
           name="currentPassword"
           autoComplete="current-password"
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           errorMessage={actionData?.errors?.currentPassword ?? undefined}
         />
