@@ -94,6 +94,9 @@ export default [
         { assertionStyle: "never" },
       ],
       curly: ["error"],
+      "import/no-named-as-default": "error",
+      "import/no-named-as-default-member": "error",
+      "import/no-duplicates": "error",
       "import/order": [
         "error",
         {
