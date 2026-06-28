@@ -9,11 +9,11 @@ import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import storybookPlugin from "eslint-plugin-storybook";
 import testingLibraryPlugin from "eslint-plugin-testing-library";
-import playwrightPlugin from 'eslint-plugin-playwright';
+import playwrightPlugin from "eslint-plugin-playwright";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import reactCompilerPlugin from 'eslint-plugin-react-compiler'
-import noSecretsPlugin from 'eslint-plugin-no-secrets'
+import reactCompilerPlugin from "eslint-plugin-react-compiler";
+import noSecretsPlugin from "eslint-plugin-no-secrets";
 
 export default tseslint.config(
   {
