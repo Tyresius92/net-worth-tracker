@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ColorOption, SpaceOption, StrokeValue } from "../_GlobalStyles/types";
+import type { ColorOption, SpaceOption, StrokeValue } from "../_GlobalStyles/types";
 
 import styles from "./Box.module.css";
 

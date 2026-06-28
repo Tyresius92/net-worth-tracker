@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FontSizeOption } from "../_GlobalStyles/types";
+import type { FontSizeOption } from "../_GlobalStyles/types";
 
 import styles from "./Heading.module.css";
 

@@ -1,4 +1,5 @@
-import { LoaderFunctionArgs, Outlet, redirect } from "react-router";
+import type { LoaderFunctionArgs} from "react-router";
+import { Outlet, redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";

@@ -1,4 +1,4 @@
-import { Account, BalanceSnapshot } from "@prisma/client";
+import type { Account, BalanceSnapshot } from "@prisma/client";
 
 export const getUserNetWorth = (
   accounts: {

@@ -1,6 +1,7 @@
+import type {
+  NavLinkProps as RRNavLinkProps} from "react-router";
 import {
-  NavLink as RRNavLink,
-  NavLinkProps as RRNavLinkProps,
+  NavLink as RRNavLink
 } from "react-router";
 
 import styles from "./NavLink.module.css";

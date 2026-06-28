@@ -1,10 +1,11 @@
 import { Secret, TOTP } from "otpauth";
 import QRCode from "qrcode";
-import {
+import type {
   ActionFunctionArgs,
+  LoaderFunctionArgs} from "react-router";
+import {
   data,
   Form,
-  LoaderFunctionArgs,
   redirect,
 } from "react-router";
 

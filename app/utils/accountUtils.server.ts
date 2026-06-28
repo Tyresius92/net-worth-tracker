@@ -1,5 +1,5 @@
-import { AccountType } from "@prisma/client";
-import { AccountBase } from "plaid";
+import type { AccountType } from "@prisma/client";
+import type { AccountBase } from "plaid";
 
 export const getAccountType = (obj: AccountBase): AccountType => {
   if (obj.type === "depository") {

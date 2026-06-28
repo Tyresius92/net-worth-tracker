@@ -1,7 +1,8 @@
-import {
+import type {
   ActionFunctionArgs,
+  LoaderFunctionArgs} from "react-router";
+import {
   Form,
-  LoaderFunctionArgs,
   redirect,
   useNavigation,
 } from "react-router";

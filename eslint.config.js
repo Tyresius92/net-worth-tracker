@@ -10,7 +10,7 @@ import storybookPlugin from "eslint-plugin-storybook";
 import testingLibraryPlugin from "eslint-plugin-testing-library";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import vitestPlugin from '@vitest/eslint-plugin';
+import vitestPlugin from "@vitest/eslint-plugin";
 
 export default [
   {
@@ -58,13 +58,13 @@ export default [
       ...reactPlugin.configs.flat["jsx-runtime"].rules,
       ...reactHooksPlugin.configs.flat.recommended.rules,
       ...jsxA11yPlugin.flatConfigs.recommended.rules,
-      eqeqeq: ['error', 'smart'],
+      eqeqeq: ["error", "smart"],
       "no-console": "error",
-      'no-eval': 'error',
-      'no-var': 'error',
-      'object-shorthand': 'error',
-      'prefer-const': 'error',
-      'prefer-template': 'error',
+      "no-eval": "error",
+      "no-var": "error",
+      "object-shorthand": "error",
+      "prefer-const": "error",
+      "prefer-template": "error",
     },
   },
 
@@ -87,6 +87,7 @@ export default [
     rules: {
       ...importPlugin.flatConfigs.recommended.rules,
       ...importPlugin.flatConfigs.typescript.rules,
+      "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-empty-object-type": [
         "error",
         { allowInterfaces: "with-single-extends" },
@@ -118,8 +119,8 @@ export default [
   {
     files: ["app/routes/**/*.{ts,tsx}"],
     rules: {
-      'jsx-a11y/no-autofocus': 'off',
-    }
+      "jsx-a11y/no-autofocus": "off",
+    },
   },
 
   // Markdown

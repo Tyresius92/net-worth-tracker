@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 
 import { BalanceChart } from "~/components/BalanceChart/BalanceChart";
 import { Box } from "~/components/Box/Box";

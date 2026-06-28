@@ -1,9 +1,10 @@
 import { CountryCode } from "plaid";
 import { useEffect } from "react";
 import { usePlaidLink } from "react-plaid-link";
-import {
+import type {
   ActionFunctionArgs,
-  LoaderFunctionArgs,
+  LoaderFunctionArgs} from "react-router";
+import {
   redirect,
   useFetcher,
 } from "react-router";

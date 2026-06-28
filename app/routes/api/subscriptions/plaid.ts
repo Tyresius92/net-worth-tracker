@@ -1,4 +1,4 @@
-import { ActionFunction } from "react-router";
+import type { ActionFunction } from "react-router";
 
 import { prisma } from "~/db.server";
 import { refreshAccountBalances } from "~/jobs/refreshAccountBalances.server";

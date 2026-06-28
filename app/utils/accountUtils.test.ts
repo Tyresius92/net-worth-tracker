@@ -1,7 +1,8 @@
 import { vi } from "vitest";
 
+import type {
+  GetNormalizedNetWorthInputAccount} from "./accountUtils";
 import {
-  GetNormalizedNetWorthInputAccount,
   getNormalizedUserNetWorth,
 } from "./accountUtils";
 

@@ -1,4 +1,5 @@
-import { ActionFunctionArgs, Form, redirect } from "react-router";
+import type { ActionFunctionArgs} from "react-router";
+import { Form, redirect } from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";

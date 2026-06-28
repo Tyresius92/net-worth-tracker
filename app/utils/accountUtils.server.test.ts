@@ -1,6 +1,7 @@
 import { AccountType } from "@prisma/client";
+import type {
+  AccountBase} from "plaid";
 import {
-  AccountBase,
   AccountType as PlaidAccountType,
   AccountSubtype,
 } from "plaid";

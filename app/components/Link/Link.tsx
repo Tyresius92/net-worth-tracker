@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { Link as RRLink, LinkProps as RRLinkProps } from "react-router";
+import type { LinkProps as RRLinkProps } from "react-router";
+import { Link as RRLink } from "react-router";
 
 import styles from "./Link.module.css";
 

@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { AccountType } from "@prisma/client";
+import type { AccountType } from "@prisma/client";
 
 import { defineAccountFactory } from "~/__generated__/fabbrica";
 

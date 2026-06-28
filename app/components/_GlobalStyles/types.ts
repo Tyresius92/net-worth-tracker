@@ -49,7 +49,7 @@ export type SpaceOption =
   | 320
   | 384;
 
-import { colors } from "./colors";
+import type { colors } from "./colors";
 
 export type ColorOption = keyof typeof colors;
 

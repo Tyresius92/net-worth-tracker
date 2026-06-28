@@ -1,6 +1,6 @@
 import React from "react";
 
-import { SpaceOption } from "../_GlobalStyles/types";
+import type { SpaceOption } from "../_GlobalStyles/types";
 
 import styles from "./Grid.module.css";
 
