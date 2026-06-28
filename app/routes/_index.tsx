@@ -159,7 +159,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
           </Box>
           <Box xsPt={16}>
             <Grid>
-              <Grid.Item xs={12} m={3}></Grid.Item>
+              <Grid.Item xs={12} m={3} />
               <Grid.Item xs={12} m={6}>
                 <Box
                   xsColumns={1}
@@ -222,7 +222,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                   </Box>
                 </Box>
               </Grid.Item>
-              <Grid.Item xs={12} m={3}></Grid.Item>
+              <Grid.Item xs={12} m={3} />
             </Grid>
           </Box>
         </Box>

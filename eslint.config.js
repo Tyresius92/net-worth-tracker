@@ -140,6 +140,12 @@ export default tseslint.config(
           "newlines-between": "always",
         },
       ],
+      "react/hook-use-state": "error",
+      "react/jsx-curly-brace-presence": "error",
+      "react/jsx-no-constructed-context-values": "error",
+      "react/no-array-index-key": "error",
+      "react/no-unstable-nested-components": "error",
+      "react/self-closing-comp": "error",
     },
   },
 

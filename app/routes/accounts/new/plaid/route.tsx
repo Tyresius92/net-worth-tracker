@@ -165,5 +165,5 @@ export default function NewPlaidItemRoute({
     }
   }, [ready, open, actionData]);
 
-  return <Box></Box>;
+  return <Box />;
 }

@@ -95,5 +95,5 @@ export default function PlaidItemRepairRoute({
     }
   }, [ready, open]);
 
-  return <Box></Box>;
+  return <Box />;
 }
