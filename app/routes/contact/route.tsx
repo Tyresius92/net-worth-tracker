@@ -28,8 +28,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const _submission = await prisma.contactFormSubmission.create({
     data: {
-      emailAddress: emailAddress,
-      message: message,
+      emailAddress,
+      message,
     },
   });
 

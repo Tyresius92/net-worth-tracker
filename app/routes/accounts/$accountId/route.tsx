@@ -79,7 +79,7 @@ export const action = async ({ params, request, url }: ActionFunctionArgs) => {
     await prisma.account.update({
       where: {
         id: accountId,
-        userId: userId,
+        userId,
       },
       data: {
         closedAt: now,

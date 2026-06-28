@@ -36,7 +36,7 @@ describe("getAccountType", () => {
       name: "Mock Account",
       official_name: "Official Mock Account",
       type,
-      subtype: subtype,
+      subtype,
     };
   };
 

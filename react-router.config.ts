@@ -10,9 +10,9 @@ export default {
     buildManifest: buildManifest,
   }) => {
     await sentryOnBuildEnd({
-      viteConfig: viteConfig,
-      reactRouterConfig: reactRouterConfig,
-      buildManifest: buildManifest,
+      viteConfig,
+      reactRouterConfig,
+      buildManifest,
     });
   },
 } satisfies Config;

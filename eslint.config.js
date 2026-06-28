@@ -58,7 +58,13 @@ export default [
       ...reactPlugin.configs.flat["jsx-runtime"].rules,
       ...reactHooksPlugin.configs.flat.recommended.rules,
       ...jsxA11yPlugin.flatConfigs.recommended.rules,
+      eqeqeq: ['error', 'smart'],
       "no-console": "error",
+      'no-eval': 'error',
+      'no-var': 'error',
+      'object-shorthand': 'error',
+      'prefer-const': 'error',
+      'prefer-template': 'error',
     },
   },
 
