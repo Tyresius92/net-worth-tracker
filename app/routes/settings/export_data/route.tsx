@@ -1,11 +1,12 @@
 import type { LoaderFunctionArgs } from "react-router";
 
 import { prisma } from "~/db.server";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 import { buildCSV } from "~/utils/exportUtils.server";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
 
   const accounts = await prisma.account.findMany({
     where: { userId: user.id },

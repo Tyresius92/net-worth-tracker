@@ -6,17 +6,19 @@ import { Button } from "~/components/Button/Button";
 import { FileUpload } from "~/components/FileUpload/FileUpload";
 import { Heading } from "~/components/Heading/Heading";
 import { Text } from "~/components/Text/Text";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 import { parseImportCSV, runBulkImport } from "~/utils/importUtils.server";
 import type { ImportResult } from "~/utils/importUtils.server";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
   return {};
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
   const formData = await request.formData();
   const csvFile = formData.get("import_file");
 

@@ -3,12 +3,13 @@ import type { LoaderFunctionArgs } from "react-router";
 import { Box } from "~/components/Box/Box";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
-import { requireUserId } from "~/session.server";
+import { getUserId, loginRedirect } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
   const plaidItems = await prisma.plaidItem.findMany({
     where: {

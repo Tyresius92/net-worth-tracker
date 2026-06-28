@@ -11,7 +11,7 @@ import { Button } from "~/components/Button/Button";
 import { Select } from "~/components/Select/Select";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
-import { requireUserId } from "~/session.server";
+import { getUserId, loginRedirect } from "~/session.server";
 import {
   toPrettyAccountType,
   accountTypesList,
@@ -21,7 +21,8 @@ import {
 import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
   const accountTypeOptions = accountTypesList.map((type) => ({
     value: type,
@@ -34,7 +35,8 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
   const formData = await request.formData();
 

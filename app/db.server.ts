@@ -44,7 +44,7 @@ const prisma = singleton("prisma", () => {
       },
     });
 
-  if (process.env["NODE_ENV"] === "production") {
+  if (process.env.NODE_ENV === "production") {
     client = client.$extends(
       fieldEncryptionExtension({
         encryptionKey: process.env.PRISMA_FIELD_ENCRYPTION_KEY,

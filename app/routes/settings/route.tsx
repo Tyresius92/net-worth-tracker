@@ -5,12 +5,13 @@ import { Box } from "~/components/Box/Box";
 import { Divider } from "~/components/Divider/Divider";
 import { Link } from "~/components/Link/Link";
 import { getRecoveryCodeCount } from "~/models/recovery-code.server";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 
 import styles from "./settings.module.css";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
 
   const recoveryCodeCount = user.twoFactorEnabled
     ? await getRecoveryCodeCount(user.id)

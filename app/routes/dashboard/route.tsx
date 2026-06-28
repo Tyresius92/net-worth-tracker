@@ -10,7 +10,7 @@ import { Table } from "~/components/Table/Table";
 import { Text } from "~/components/Text/Text";
 import { prisma } from "~/db.server";
 import { getLatestBalancesAsOfDate } from "~/models/user.server";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 import { getAccountDisplayName } from "~/utils/accountUtils";
 import {
   fillDailyBalanceDayData,
@@ -23,7 +23,8 @@ import { getUserNetWorth } from "~/utils/netWorthUtils.server";
 import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
 
   const userData = await prisma.user.findFirstOrThrow({
     where: {

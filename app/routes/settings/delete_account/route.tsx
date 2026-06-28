@@ -8,17 +8,19 @@ import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
 import { deleteUserById } from "~/models/user.server";
-import { logout, requireUser } from "~/session.server";
+import { getUser, loginRedirect, logout } from "~/session.server";
 
 import styles from "./delete_account.module.css";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
   return {};
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
   const formData = await request.formData();
   const confirmation = formData.get("confirmation");
   const password = formData.get("password");

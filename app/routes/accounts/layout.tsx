@@ -5,7 +5,7 @@ import { Box } from "~/components/Box/Box";
 import { Link } from "~/components/Link/Link";
 import { NavLink } from "~/components/NavLink/NavLink";
 import { prisma } from "~/db.server";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 import {
   getAccountDisplayName,
   toPrettyAccountType,
@@ -15,7 +15,8 @@ import type { Route } from "./+types/layout";
 import styles from "./layout.module.css";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
 
   const accounts = await prisma.account.findMany({
     where: {

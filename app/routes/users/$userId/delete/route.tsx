@@ -13,20 +13,14 @@ import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
 import { deleteUserById } from "~/models/user.server";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 
 import styles from "./admin-delete-user.module.css";
 
-async function requireAdmin(request: Request, url: URL) {
-  const user = await requireUser(request, url);
-  if (user.role !== "admin") {
-    throw redirect("/");
-  }
-  return user;
-}
-
 export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
-  const currentUser = await requireAdmin(request, url);
+  const currentUser = await getUser(request);
+  if (!currentUser) return loginRedirect(url);
+  if (currentUser.role !== "admin") return redirect("/");
   invariant(params.userId, "userId is required");
 
   const target = await prisma.user.findUniqueOrThrow({
@@ -66,7 +60,9 @@ export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, url, params }: ActionFunctionArgs) => {
-  const currentUser = await requireAdmin(request, url);
+  const currentUser = await getUser(request);
+  if (!currentUser) return loginRedirect(url);
+  if (currentUser.role !== "admin") return redirect("/");
   invariant(params.userId, "userId is required");
 
   const target = await prisma.user.findUniqueOrThrow({

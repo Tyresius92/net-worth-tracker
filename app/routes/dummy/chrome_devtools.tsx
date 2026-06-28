@@ -1,7 +1,7 @@
 import path from "path";
 
 export const loader = () => {
-  if (process.env["NODE_ENV"] === "development") {
+  if (process.env.NODE_ENV === "development") {
     const projectRoot = path.resolve();
     const jsonData = {
       workspace: {

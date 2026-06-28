@@ -5,7 +5,7 @@ import { Box } from "~/components/Box/Box";
 import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 import { formatDate } from "~/utils/dateUtils";
 
 import type { Route } from "./+types/route";
@@ -26,10 +26,11 @@ export const computeSourceCounts = (
 };
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
 
   if (user.role !== "admin") {
-    throw redirect("/", { status: 403 });
+    return redirect("/", { status: 403 });
   }
 
   const rawUsers = await prisma.user.findMany({

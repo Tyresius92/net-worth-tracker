@@ -19,6 +19,7 @@ import {
   getSession,
   sessionStorage,
 } from "~/session.server";
+import { HttpError } from "~/utils/httpError.server";
 import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
 
 import styles from "./twofa.module.css";
@@ -54,7 +55,7 @@ export async function action({ request }: { request: Request }) {
   });
 
   if (!user) {
-    throw new Response("User not found", { status: 404 });
+    throw new HttpError("User not found", 404);
   }
   if (!code || typeof code !== "string") {
     return data({ error: "Code is required" }, { status: 400 });
@@ -95,7 +96,7 @@ export async function action({ request }: { request: Request }) {
   });
 
   const valid =
-    process.env["NODE_ENV"] !== "production" && code === "000000"
+    process.env.NODE_ENV !== "production" && code === "000000"
       ? 0
       : totp.validate({ token: code, window: 1 });
 
@@ -163,7 +164,7 @@ export default function TwoFactorAuth() {
               <button
                 type="button"
                 className={styles.toggleLink}
-                onClick={() => setMode("recovery")}
+                onClick={() => { setMode("recovery"); }}
               >
                 Use a recovery code instead
               </button>
@@ -171,7 +172,7 @@ export default function TwoFactorAuth() {
               <button
                 type="button"
                 className={styles.toggleLink}
-                onClick={() => setMode("totp")}
+                onClick={() => { setMode("totp"); }}
               >
                 Use authenticator app instead
               </button>

@@ -89,7 +89,7 @@ export default [
   route("wp-admin/install.php", "./routes/dummy/wp_admin_install.tsx"),
   route("wp-login.php", "./routes/dummy/wp_login.tsx"),
 
-  ...(process.env["NODE_ENV"] === "development"
+  ...(process.env.NODE_ENV === "development"
     ? [
         route(
           "react_devtools_backend_compact.js.map",

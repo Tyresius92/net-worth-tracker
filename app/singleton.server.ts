@@ -8,6 +8,7 @@ export const singleton = <Value>(
 ): Value => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const g = global as unknown as { __singletons: Record<string, unknown> };
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   g.__singletons ??= {};
   g.__singletons[name] ??= valueFactory();
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

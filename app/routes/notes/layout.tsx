@@ -5,11 +5,12 @@ import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { getNoteListItems } from "~/models/note.server";
-import { requireUserId } from "~/session.server";
+import { getUserId, loginRedirect } from "~/session.server";
 import { useUser } from "~/utils";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
   const noteListItems = await getNoteListItems({ userId });
   return { noteListItems };
 };

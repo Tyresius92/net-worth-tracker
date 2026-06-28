@@ -4,12 +4,13 @@ import { redirect } from "react-router";
 import { Box } from "~/components/Box/Box";
 import { Table } from "~/components/Table/Table";
 import { prisma } from "~/db.server";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
 
   if (user.role !== "admin") {
     return redirect("/", { status: 403 });

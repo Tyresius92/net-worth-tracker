@@ -10,7 +10,7 @@ export default defineConfig((config) => ({
 
   define: {
     "import.meta.env.APP_ENV": JSON.stringify(
-      process.env.APP_ENV || "development",
+      process.env.APP_ENV ?? "development",
     ),
   },
 

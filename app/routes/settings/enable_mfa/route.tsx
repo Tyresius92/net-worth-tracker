@@ -14,12 +14,14 @@ import { Button } from "~/components/Button/Button";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
 import { generateRecoveryCodes } from "~/models/recovery-code.server";
-import { getSession, requireUser, sessionStorage } from "~/session.server";
+import { getSession, getUser, loginRedirect, sessionStorage } from "~/session.server";
+import { HttpError } from "~/utils/httpError.server";
 
 import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
   const session = await getSession(request);
 
   if (user.twoFactorEnabled) {
@@ -58,7 +60,8 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
   const session = await getSession(request);
 
   const formData = await request.formData();
@@ -67,7 +70,7 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
   const secretBase32 = session.get("2fa:temp-secret");
 
   if (!token || !secretBase32) {
-    throw new Response("Invalid request", { status: 400 });
+    throw new HttpError("Invalid request", 400);
   }
 
   const totp = new TOTP({
@@ -82,7 +85,7 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
   const delta = totp.validate({ token: token.toString(), window: 1 });
 
   if (delta === null) {
-    throw new Response("Invalid code", { status: 400 });
+    throw new HttpError("Invalid code", 400);
   }
 
   // Persist 2FA

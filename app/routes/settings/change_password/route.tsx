@@ -7,15 +7,17 @@ import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
   return {};
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
   const formData = await request.formData();
   const currentPassword = formData.get("currentPassword");
   const newPassword = formData.get("newPassword");

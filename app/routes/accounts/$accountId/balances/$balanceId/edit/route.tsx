@@ -9,19 +9,20 @@ import {
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { TextInput } from "~/components/TextInput/TextInput";
+import invariant from "tiny-invariant";
+
 import { prisma } from "~/db.server";
-import { requireUserId } from "~/session.server";
+import { getUserId, loginRedirect } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
+  invariant(params.accountId && params.balanceId, "Missing required URL Param");
   const accountId = params.accountId;
   const balanceId = params.balanceId;
-  if (!accountId || !balanceId) {
-    throw new Response("Missing required URL Param", { status: 404 });
-  }
 
   const balance = await prisma.balanceSnapshot.findFirst({
     where: {
@@ -43,13 +44,12 @@ export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, url, params }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
+  invariant(params.accountId && params.balanceId, "Missing required URL Param");
   const accountId = params.accountId;
   const balanceId = params.balanceId;
-  if (!accountId || !balanceId) {
-    throw new Response("Missing required URL Param", { status: 404 });
-  }
 
   const account = await prisma.account.findFirst({
     where: {

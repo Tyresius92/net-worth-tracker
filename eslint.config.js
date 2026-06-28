@@ -12,7 +12,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 import vitestPlugin from "@vitest/eslint-plugin";
 
-export default [
+export default tseslint.config(
   {
     ignores: [
       "node_modules/",
@@ -69,10 +69,17 @@ export default [
   },
 
   // TypeScript (ts, tsx)
-  ...tseslint.configs.recommended,
-  ...tseslint.configs.stylistic,
   {
     files: ["**/*.{ts,tsx}"],
+    extends: [
+      ...tseslint.configs.strictTypeChecked,
+      ...tseslint.configs.stylisticTypeChecked,
+    ],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
+    },
     plugins: {
       import: importPlugin,
     },
@@ -87,6 +94,11 @@ export default [
     rules: {
       ...importPlugin.flatConfigs.recommended.rules,
       ...importPlugin.flatConfigs.typescript.rules,
+      "@typescript-eslint/consistent-type-assertions": [
+        "error",
+        { assertionStyle: "never" },
+      ],
+      "@typescript-eslint/only-throw-error": "error",
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-empty-object-type": [
         "error",
@@ -96,11 +108,16 @@ export default [
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
-      "@typescript-eslint/consistent-type-assertions": [
-        "error",
-        { assertionStyle: "never" },
+      "@typescript-eslint/restrict-template-expressions": [
+        "error", {
+          allowAny: false,
+          allowBoolean: true,
+          allowNever: true,
+          allowNullish: true,
+          allowNumber: true,
+        }
       ],
-      curly: ["error"],
+      curly: ["error", "all"],
       "import/no-named-as-default": "error",
       "import/no-named-as-default-member": "error",
       "import/no-duplicates": "error",
@@ -164,4 +181,4 @@ export default [
   },
 
   prettier,
-];
+);

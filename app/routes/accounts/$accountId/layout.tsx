@@ -1,19 +1,19 @@
 import type { LoaderFunctionArgs} from "react-router";
 import { Outlet, redirect } from "react-router";
+import invariant from "tiny-invariant";
 
 import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
-import { requireUserId } from "~/session.server";
+import { getUserId, loginRedirect } from "~/session.server";
 
 import type { Route } from "./+types/layout";
 
 export const loader = async ({ params, request, url }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
+  invariant(params.accountId, "Account ID not in URL");
   const accountId = params.accountId;
-  if (!accountId) {
-    throw new Response("Account ID not in URL", { status: 404 });
-  }
 
   const account = await prisma.account.findFirst({
     where: {

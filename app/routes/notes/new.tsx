@@ -5,10 +5,11 @@ import { data, redirect, Form, useActionData } from "react-router";
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { createNote } from "~/models/note.server";
-import { requireUserId } from "~/session.server";
+import { getUserId, loginRedirect } from "~/session.server";
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
   const formData = await request.formData();
   const title = formData.get("title");

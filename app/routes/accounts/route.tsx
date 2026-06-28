@@ -1,12 +1,13 @@
 import type { LoaderFunctionArgs } from "react-router";
 
 import { Box } from "~/components/Box/Box";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
 
   return {};
 };

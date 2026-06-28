@@ -7,7 +7,7 @@ import { Button } from "~/components/Button/Button";
 import { Divider } from "~/components/Divider/Divider";
 import { Link } from "~/components/Link/Link";
 import { prisma } from "~/db.server";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 import { formatDate } from "~/utils/dateUtils";
 
 import type { Route } from "./+types/route";
@@ -54,9 +54,10 @@ export const validateRoleChange = ({
 };
 
 export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
-  const currentUser = await requireUser(request, url);
+  const currentUser = await getUser(request);
+  if (!currentUser) return loginRedirect(url);
   if (currentUser.role !== "admin") {
-    throw redirect("/");
+    return redirect("/");
   }
 
   invariant(params.userId, "userId is required");
@@ -96,9 +97,10 @@ export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, url, params }: ActionFunctionArgs) => {
-  const currentUser = await requireUser(request, url);
+  const currentUser = await getUser(request);
+  if (!currentUser) return loginRedirect(url);
   if (currentUser.role !== "admin") {
-    throw redirect("/");
+    return redirect("/");
   }
 
   invariant(params.userId, "userId is required");

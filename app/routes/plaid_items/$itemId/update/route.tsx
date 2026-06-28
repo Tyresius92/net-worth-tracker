@@ -13,12 +13,13 @@ import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
 import { logger } from "~/logger";
 import { plaidClient } from "~/plaid";
-import { requireUserId } from "~/session.server";
+import { getUserId, loginRedirect } from "~/session.server";
 
 import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
   const plaidItem = await prisma.plaidItem.findFirstOrThrow({
     where: {
@@ -47,7 +48,8 @@ export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ params, request, url }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
   await prisma.plaidItem.updateMany({
     where: { id: params.itemId, userId },

@@ -13,13 +13,14 @@ import { Box } from "~/components/Box/Box";
 import { prisma } from "~/db.server";
 import { logger } from "~/logger";
 import { plaidClient } from "~/plaid";
-import { requireUserId } from "~/session.server";
+import { getUserId, loginRedirect } from "~/session.server";
 import { getAccountType } from "~/utils/accountUtils.server";
 
 import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
   const linkTokenResponse = await plaidClient.linkTokenCreate({
     user: {
@@ -38,7 +39,8 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
   const formData = await request.formData();
   const token = formData.get("public_token");

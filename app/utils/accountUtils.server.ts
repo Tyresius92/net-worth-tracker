@@ -1,21 +1,25 @@
 import type { AccountType } from "@prisma/client";
-import type { AccountBase } from "plaid";
+import {
+  type AccountBase,
+  AccountType as PlaidAccountType,
+  AccountSubtype,
+} from "plaid";
 
 export const getAccountType = (obj: AccountBase): AccountType => {
-  if (obj.type === "depository") {
-    if (obj.subtype === "checking") {
+  if (obj.type === PlaidAccountType.Depository) {
+    if (obj.subtype === AccountSubtype.Checking) {
       return "checking";
     }
-    if (obj.subtype === "savings") {
+    if (obj.subtype === AccountSubtype.Savings) {
       return "savings";
     }
-    if (obj.subtype === "money market") {
+    if (obj.subtype === AccountSubtype.MoneyMarket) {
       return "money_market";
     }
     if (
-      obj.subtype === "cd" ||
-      obj.subtype === "hsa" ||
-      obj.subtype === "cash management"
+      obj.subtype === AccountSubtype.Cd ||
+      obj.subtype === AccountSubtype.Hsa ||
+      obj.subtype === AccountSubtype.CashManagement
     ) {
       return "other";
     }
@@ -24,8 +28,8 @@ export const getAccountType = (obj: AccountBase): AccountType => {
     );
     return "other";
   }
-  if (obj.type === "credit") {
-    if (obj.subtype === "credit card") {
+  if (obj.type === PlaidAccountType.Credit) {
+    if (obj.subtype === AccountSubtype.CreditCard) {
       return "credit_card";
     }
     console.error(
@@ -33,11 +37,11 @@ export const getAccountType = (obj: AccountBase): AccountType => {
     );
     return "other";
   }
-  if (obj.type === "investment") {
-    if (obj.subtype === "ira") {
+  if (obj.type === PlaidAccountType.Investment) {
+    if (obj.subtype === AccountSubtype.Ira) {
       return "traditional_ira";
     }
-    if (obj.subtype === "401k") {
+    if (obj.subtype === AccountSubtype._401k) {
       return "retirement_401k";
     }
     console.error(
@@ -45,11 +49,11 @@ export const getAccountType = (obj: AccountBase): AccountType => {
     );
     return "other";
   }
-  if (obj.type === "loan") {
-    if (obj.subtype === "mortgage") {
+  if (obj.type === PlaidAccountType.Loan) {
+    if (obj.subtype === AccountSubtype.Mortgage) {
       return "mortgage";
     }
-    if (obj.subtype === "student") {
+    if (obj.subtype === AccountSubtype.Student) {
       return "loan";
     }
     console.error(

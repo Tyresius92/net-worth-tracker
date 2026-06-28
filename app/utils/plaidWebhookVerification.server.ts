@@ -40,7 +40,7 @@ export const verifyPlaidWebhook = async (
       return false;
     }
 
-    const kid = header["kid"];
+    const kid = header.kid;
     if (!kid || typeof kid !== "string") {
       return false;
     }
@@ -54,7 +54,7 @@ export const verifyPlaidWebhook = async (
     }
 
     const bodyHash = createHash("sha256").update(rawBody).digest("hex");
-    if (payload["request_body_sha256"] !== bodyHash) {
+    if (payload.request_body_sha256 !== bodyHash) {
       return false;
     }
 

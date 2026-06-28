@@ -7,12 +7,13 @@ import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
-import { requireUser } from "~/session.server";
+import { getUser, loginRedirect } from "~/session.server";
 
 import styles from "./disable-mfa.module.css";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
   if (!user.twoFactorEnabled) {
     return redirect("/settings");
   }
@@ -20,7 +21,8 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
 
   if (!user.twoFactorEnabled) {
     return redirect("/settings");
@@ -49,7 +51,7 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
   });
 
   const valid =
-    process.env["NODE_ENV"] !== "production" && token === "000000"
+    process.env.NODE_ENV !== "production" && token === "000000"
       ? 0
       : totp.validate({ token, window: 1 });
 

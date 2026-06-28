@@ -48,7 +48,7 @@ async function seed() {
 }
 
 seed()
-  .catch((e) => {
+  .catch((e: unknown) => {
     // eslint-disable-next-line no-console
     console.error(e);
     process.exit(1);

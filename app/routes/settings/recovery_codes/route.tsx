@@ -17,12 +17,13 @@ import {
   generateRecoveryCodes,
   getRecoveryCodeCount,
 } from "~/models/recovery-code.server";
-import { getSession, requireUser, sessionStorage } from "~/session.server";
+import { getSession, getUser, loginRedirect, sessionStorage } from "~/session.server";
 
 import styles from "./recovery_codes.module.css";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
 
   if (!user.twoFactorEnabled) {
     return redirect("/settings");
@@ -52,7 +53,8 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
-  const user = await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
   const session = await getSession(request);
   const formData = await request.formData();
   const token = formData.get("token");
@@ -84,7 +86,7 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
   });
 
   const valid =
-    process.env["NODE_ENV"] !== "production" && token === "000000"
+    process.env.NODE_ENV !== "production" && token === "000000"
       ? 0
       : totp.validate({ token, window: 1 });
 

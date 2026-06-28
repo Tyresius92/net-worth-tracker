@@ -12,21 +12,22 @@ import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
+import invariant from "tiny-invariant";
+
 import { prisma } from "~/db.server";
 import { refreshAccountBalances } from "~/jobs/refreshAccountBalances.server";
-import { requireUserId } from "~/session.server";
+import { getUserId, loginRedirect } from "~/session.server";
 import { fillDailyBalanceDayData } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 
 import type { Route } from "./+types/route";
 
 export const loader = async ({ params, request, url }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
+  invariant(params.accountId, "Account ID not in URL");
   const accountId = params.accountId;
-  if (!accountId) {
-    throw new Response("Account ID not in URL", { status: 404 });
-  }
 
   const account = await prisma.account.findFirst({
     where: {
@@ -65,12 +66,11 @@ export const loader = async ({ params, request, url }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ params, request, url }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request, url);
+  const userId = await getUserId(request);
+  if (!userId) return loginRedirect(url);
 
+  invariant(params.accountId, "Account ID not in URL");
   const accountId = params.accountId;
-  if (!accountId) {
-    throw new Response("Account ID not in URL", { status: 404 });
-  }
 
   const formData = await request.formData();
 

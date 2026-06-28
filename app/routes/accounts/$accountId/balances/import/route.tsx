@@ -8,16 +8,16 @@ import { FileUpload } from "~/components/FileUpload/FileUpload";
 import { Heading } from "~/components/Heading/Heading";
 import { Text } from "~/components/Text/Text";
 import { prisma } from "~/db.server";
-import { requireUser } from "~/session.server";
+import invariant from "tiny-invariant";
+
+import { getUser, loginRedirect } from "~/session.server";
 
 export const action = async ({ request, url, params }: ActionFunctionArgs) => {
-  await requireUser(request, url);
+  const user = await getUser(request);
+  if (!user) return loginRedirect(url);
 
+  invariant(params.accountId, "Account ID is required");
   const accountId = params.accountId;
-
-  if (!accountId) {
-    throw new Response("Account ID is required", { status: 400 });
-  }
 
   const formData = await request.formData();
   const csvFile = formData.get("import_file");
