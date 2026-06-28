@@ -19,7 +19,7 @@ import {
   getSession,
   sessionStorage,
 } from "~/session.server";
-import { HttpError } from "~/utils/httpError.server";
+import { HttpError } from "~/utils/httpError";
 import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
 
 import styles from "./twofa.module.css";

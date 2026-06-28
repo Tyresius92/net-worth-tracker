@@ -145,8 +145,7 @@ export const runBulkImport = async (
     // Dedup key: "accountId:YYYY-MM-DD:amountCents"
     const dedupSet = new Set(
       existingSnapshots.map(
-        (s) =>
-          `${s.accountId}:${formatDateUTC(s.dateTime)}:${s.amount}`,
+        (s) => `${s.accountId}:${formatDateUTC(s.dateTime)}:${s.amount}`,
       ),
     );
 

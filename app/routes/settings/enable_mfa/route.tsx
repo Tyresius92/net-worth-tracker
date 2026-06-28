@@ -14,7 +14,7 @@ import {
   loginRedirect,
   sessionStorage,
 } from "~/session.server";
-import { HttpError } from "~/utils/httpError.server";
+import { HttpError } from "~/utils/httpError";
 
 import type { Route } from "./+types/route";
 

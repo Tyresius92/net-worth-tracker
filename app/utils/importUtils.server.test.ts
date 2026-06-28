@@ -179,7 +179,9 @@ describe("runBulkImport", () => {
     });
     expect(snapshots).toHaveLength(1);
     expect(snapshots[0]!.amount).toBe(123456);
-    expect(snapshots[0]!.dateTime).toEqual(new Date("2025-01-15T00:00:00.000Z"));
+    expect(snapshots[0]!.dateTime).toEqual(
+      new Date("2025-01-15T00:00:00.000Z"),
+    );
   });
 
   it("creates a new account for an unknown ID (Format 1)", async () => {

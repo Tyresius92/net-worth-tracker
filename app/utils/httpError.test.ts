@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { HttpError } from "./httpError.server";
+import { HttpError } from "./httpError";
 
 describe("HttpError", () => {
   it("is an instance of Error", () => {

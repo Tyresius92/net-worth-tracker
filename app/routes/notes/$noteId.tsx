@@ -6,7 +6,7 @@ import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { deleteNote, getNote } from "~/models/note.server";
 import { getUserId, loginRedirect } from "~/session.server";
-import { HttpError } from "~/utils/httpError.server";
+import { HttpError } from "~/utils/httpError";
 
 export const loader = async ({ params, request, url }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
