@@ -17,6 +17,13 @@ export const parseDate = (date: string): Date => {
   return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
 };
 
+export const formatDateUTC = (date: Date): string => {
+  const y = date.getUTCFullYear();
+  const m = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(date.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+};
+
 /**
  * Formats a Date object into a YYYY-MM-DD string
  */

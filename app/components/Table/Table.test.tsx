@@ -174,7 +174,7 @@ describe("Table.Foot", () => {
     );
     const rowgroups = screen.getAllByRole("rowgroup");
     const foot = rowgroups[rowgroups.length - 1];
-    expect(within(foot).getByRole("row")).toBeInTheDocument();
+    expect(within(foot!).getByRole("row")).toBeInTheDocument();
   });
 
   it("applies the foot class", () => {
@@ -192,7 +192,7 @@ describe("Table.Foot", () => {
     );
     const rowgroups = screen.getAllByRole("rowgroup");
     const foot = rowgroups[rowgroups.length - 1];
-    expect(foot.className).toMatch(/foot/);
+    expect(foot!.className).toMatch(/foot/);
   });
 
   it("renders with Table.Cell children only, no Table.RowHeader required", () => {
@@ -212,10 +212,10 @@ describe("Table.Foot", () => {
     const rowgroups = screen.getAllByRole("rowgroup");
     const foot = rowgroups[rowgroups.length - 1];
     expect(
-      within(foot).getByRole("cell", { name: "Total" }),
+      within(foot!).getByRole("cell", { name: "Total" }),
     ).toBeInTheDocument();
     expect(
-      within(foot).getByRole("cell", { name: "$148,450.30" }),
+      within(foot!).getByRole("cell", { name: "$148,450.30" }),
     ).toBeInTheDocument();
   });
 
@@ -235,7 +235,7 @@ describe("Table.Foot", () => {
     );
     const rowgroups = screen.getAllByRole("rowgroup");
     const foot = rowgroups[rowgroups.length - 1];
-    const rowheader = within(foot).getByRole("rowheader");
+    const rowheader = within(foot!).getByRole("rowheader");
     expect(rowheader).toHaveAttribute("scope", "row");
     expect(rowheader).toHaveTextContent("Total");
   });
@@ -255,6 +255,6 @@ describe("Table.Foot", () => {
     );
     const rowgroups = screen.getAllByRole("rowgroup");
     const foot = rowgroups[rowgroups.length - 1];
-    expect(within(foot).getByRole("cell").className).toMatch(/cell-end/);
+    expect(within(foot!).getByRole("cell").className).toMatch(/cell-end/);
   });
 });

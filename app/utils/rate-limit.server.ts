@@ -24,7 +24,7 @@ export function isRateLimited(key: string): boolean {
 export function getClientIp(request: Request): string {
   return (
     request.headers.get("fly-client-ip") ??
-    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     "unknown"
   );
 }

@@ -18,11 +18,8 @@ describe("balanceUtils", () => {
       expect(result.getDate()).toBe(15);
     });
 
-    it("should handle single-digit months and days", () => {
-      const result = parseDate("2026-1-5");
-      expect(result.getFullYear()).toBe(2026);
-      expect(result.getMonth()).toBe(0); // January is 0
-      expect(result.getDate()).toBe(5);
+    it("should reject single-digit months and days", () => {
+      expect(() => parseDate("2026-1-5")).toThrow("Invalid date format");
     });
 
     it("should set time to midnight in local timezone", () => {
@@ -223,12 +220,12 @@ describe("balanceUtils", () => {
 
       // Check that all days between 01-01 and 01-10 have amount 1000
       for (let i = 1; i < 9; i++) {
-        expect(result[i].amount).toBe(1000);
+        expect(result[i]!.amount).toBe(1000);
       }
 
       // Check that all days between 01-10 and 01-15 have amount 1500
       for (let i = 10; i < 15; i++) {
-        expect(result[i].amount).toBe(1500);
+        expect(result[i]!.amount).toBe(1500);
       }
     });
   });

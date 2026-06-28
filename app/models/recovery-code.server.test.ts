@@ -42,7 +42,7 @@ describe("consumeRecoveryCode", () => {
   it("returns true for a valid unused code", async () => {
     const user = await UserFactory.create();
     const [code] = await generateRecoveryCodes(user.id);
-    expect(await consumeRecoveryCode(user.id, code)).toBe(true);
+    expect(await consumeRecoveryCode(user.id, code!)).toBe(true);
   });
 
   it("returns false for an unknown code", async () => {
@@ -54,22 +54,22 @@ describe("consumeRecoveryCode", () => {
   it("returns false when a code is used a second time", async () => {
     const user = await UserFactory.create();
     const [code] = await generateRecoveryCodes(user.id);
-    await consumeRecoveryCode(user.id, code);
-    expect(await consumeRecoveryCode(user.id, code)).toBe(false);
+    await consumeRecoveryCode(user.id, code!);
+    expect(await consumeRecoveryCode(user.id, code!)).toBe(false);
   });
 
   it("accepts codes regardless of dash or case formatting", async () => {
     const user = await UserFactory.create();
     const [code] = await generateRecoveryCodes(user.id);
-    const withoutDashes = code.replace(/-/g, "");
+    const withoutDashes = code!.replace(/-/g, "");
     expect(await consumeRecoveryCode(user.id, withoutDashes)).toBe(true);
   });
 
   it("does not consume a second code when one already matched", async () => {
     const user = await UserFactory.create();
     const [first, second] = await generateRecoveryCodes(user.id);
-    await consumeRecoveryCode(user.id, first);
-    expect(await consumeRecoveryCode(user.id, second)).toBe(true);
+    await consumeRecoveryCode(user.id, first!);
+    expect(await consumeRecoveryCode(user.id, second!)).toBe(true);
   });
 });
 
@@ -83,7 +83,7 @@ describe("getRecoveryCodeCount", () => {
   it("decrements by 1 after consuming a code", async () => {
     const user = await UserFactory.create();
     const [code] = await generateRecoveryCodes(user.id);
-    await consumeRecoveryCode(user.id, code);
+    await consumeRecoveryCode(user.id, code!);
     expect(await getRecoveryCodeCount(user.id)).toBe(9);
   });
 

@@ -1,6 +1,7 @@
 import { parse } from "csv-parse/sync";
 
 import { prisma } from "~/db.server";
+import { formatDateUTC } from "~/utils/balanceUtils";
 
 export type HeaderFormat =
   | { kind: "name_and_id"; displayName: string; accountId: string }
@@ -33,8 +34,10 @@ const parseHeader = (header: string): HeaderFormat => {
   }
 
   const match = NAME_AND_ID_RE.exec(header);
-  if (match && isCuid(match[2])) {
-    return { kind: "name_and_id", displayName: match[1], accountId: match[2] };
+  const displayName = match?.[1];
+  const matchedId = match?.[2];
+  if (displayName && matchedId && isCuid(matchedId)) {
+    return { kind: "name_and_id", displayName, accountId: matchedId };
   }
 
   return { kind: "name_only", displayName: header };
@@ -51,12 +54,15 @@ export const parseImportCSV = (csvText: string): ParsedImport => {
   }
 
   const [headerRow, ...dataRows] = rawRows;
-  const [, ...columnHeaders] = headerRow; // skip the "date" column
+  if (!headerRow) {
+    return { columns: [], rows: [] };
+  }
+  const [, ...columnHeaders] = headerRow;
 
   const columns = columnHeaders.map(parseHeader);
 
   const rows = dataRows.map((row) => ({
-    date: row[0],
+    date: row[0] ?? "",
     amounts: columnHeaders.map((_, i) => {
       const cell = row[i + 1] ?? "";
       if (cell === "") {
@@ -140,7 +146,7 @@ export const runBulkImport = async (
     const dedupSet = new Set(
       existingSnapshots.map(
         (s) =>
-          `${s.accountId}:${s.dateTime.toISOString().split("T")[0]}:${s.amount}`,
+          `${s.accountId}:${formatDateUTC(s.dateTime)}:${s.amount}`,
       ),
     );
 
@@ -164,6 +170,7 @@ export const runBulkImport = async (
       )
       .forEach(({ date, rawAmount, colIdx }) => {
         const accountId = resolvedAccountIds[colIdx];
+        if (!accountId) return;
         const amountCents = Math.round(rawAmount * 100);
         const dedupKey = `${accountId}:${date}:${amountCents}`;
 

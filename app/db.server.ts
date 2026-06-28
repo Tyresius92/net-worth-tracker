@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { fieldEncryptionExtension } from "prisma-field-encryption";
 
 import { singleton } from "./singleton.server";
+import { formatDateUTC } from "./utils/balanceUtils";
 
 const omitConfig = {
   plaidItem: {
@@ -24,7 +25,7 @@ const prisma = singleton("prisma", () => {
           date: {
             needs: { dateTime: true },
             compute(balanceSnapshot) {
-              return balanceSnapshot.dateTime.toISOString().split("T")[0];
+              return formatDateUTC(balanceSnapshot.dateTime);
             },
           },
         },

@@ -51,12 +51,13 @@ export function getNormalizedUserNetWorth(
     )
     .sort((a, b) => (a.dateTime < b.dateTime ? -1 : 1));
 
-  if (allSnapshots.length === 0) {
+  const firstSnapshot = allSnapshots[0];
+  if (!firstSnapshot) {
     return { currentNetWorth: 0, netWorth: [], accounts: [] };
   }
 
   // Get the month range from first snapshot to now
-  const firstDate = new Date(allSnapshots[0].dateTime);
+  const firstDate = new Date(firstSnapshot.dateTime);
   const now = new Date();
   const totalMonths = monthDiff(firstDate, now);
 
@@ -78,15 +79,15 @@ export function getNormalizedUserNetWorth(
     let lastKnownAmount: number | null = null;
 
     for (const month of allMonths) {
-      const [year, monthStr] = month.split("-").map(Number);
-      const endOfMonth = new Date(Date.UTC(year, monthStr, 0, 23, 59, 59, 999));
+      const year = Number(month.slice(0, 4));
+      const monthNum = Number(month.slice(5, 7));
+      const endOfMonth = new Date(Date.UTC(year, monthNum, 0, 23, 59, 59, 999));
 
       // Move snapshot index to the latest snapshot in this month
-      while (
-        snapshotIdx < snapshots.length &&
-        new Date(snapshots[snapshotIdx].dateTime) <= endOfMonth
-      ) {
-        lastKnownAmount = snapshots[snapshotIdx].amount;
+      while (snapshotIdx < snapshots.length) {
+        const snap = snapshots[snapshotIdx];
+        if (!snap || new Date(snap.dateTime) > endOfMonth) break;
+        lastKnownAmount = snap.amount;
         snapshotIdx++;
       }
 
@@ -105,7 +106,7 @@ export function getNormalizedUserNetWorth(
   const netWorth: { date: DateString; amount: number }[] = allMonths.map(
     (month, idx) => {
       const sum = accountBalances.reduce(
-        (total, acct) => total + acct.balances[idx].amount,
+        (total, acct) => total + (acct.balances[idx]?.amount ?? 0),
         0,
       );
       return { date: month, amount: sum };
@@ -113,7 +114,7 @@ export function getNormalizedUserNetWorth(
   );
 
   return {
-    currentNetWorth: netWorth[netWorth.length - 1].amount,
+    currentNetWorth: netWorth[netWorth.length - 1]?.amount ?? 0,
     netWorth,
     accounts: accountBalances,
   };

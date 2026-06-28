@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs } from "react-router";
 
 import { prisma } from "~/db.server";
 import { getUser, loginRedirect } from "~/session.server";
+import { formatDateUTC } from "~/utils/balanceUtils";
 import { buildCSV } from "~/utils/exportUtils.server";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
@@ -23,7 +24,7 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   });
 
   const csv = buildCSV(accounts);
-  const today = new Date().toISOString().split("T")[0];
+  const today = formatDateUTC(new Date());
 
   return new Response(csv, {
     headers: {

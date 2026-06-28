@@ -14,6 +14,7 @@ import { Link } from "~/components/Link/Link";
 import { Table } from "~/components/Table/Table";
 import { Text } from "~/components/Text/Text";
 import { getUser } from "~/session.server";
+import { formatDateUTC } from "~/utils/balanceUtils";
 import { formatCurrency } from "~/utils/currencyUtils";
 import { formatDate } from "~/utils/dateUtils";
 
@@ -47,7 +48,7 @@ function generateDemoBalances() {
     const wave3 = Math.sin((weekIndex * 2 * Math.PI) / 13) * 150_000;
 
     balances.push({
-      date: current.toISOString().split("T")[0],
+      date: formatDateUTC(current),
       amount: Math.round(base + wave1 + wave2 + wave3),
     });
 
@@ -61,7 +62,8 @@ function findDemoAmountAtDate(
   balances: { date: string; amount: number }[],
   target: Date,
 ) {
-  const targetStr = target.toISOString().split("T")[0];
+  const targetStr = formatDateUTC(target);
+
   let closest = balances[0];
   for (const b of balances) {
     if (b.date <= targetStr) {

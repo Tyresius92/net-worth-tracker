@@ -113,7 +113,7 @@ describe("POST /api/subscriptions/plaid", () => {
           where: { accountId: account.id },
         });
         expect(snapshots).toHaveLength(1);
-        expect(snapshots[0].amount).toBe(100000);
+        expect(snapshots[0]!.amount).toBe(100000);
       },
     );
   });
@@ -186,7 +186,7 @@ describe("POST /api/subscriptions/plaid", () => {
         where: { accountId: account.id },
       });
       expect(snapshots).toHaveLength(1);
-      expect(snapshots[0].amount).toBe(50000);
+      expect(snapshots[0]!.amount).toBe(50000);
     });
   });
 

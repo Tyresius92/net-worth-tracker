@@ -32,6 +32,9 @@ export const verifyPlaidWebhook = async (
 ): Promise<boolean> => {
   try {
     const [headerB64] = token.split(".");
+    if (!headerB64) {
+      return false;
+    }
     const header: unknown = JSON.parse(
       Buffer.from(headerB64, "base64url").toString(),
     );

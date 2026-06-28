@@ -4,18 +4,20 @@
 import react from "@vitejs/plugin-react";
 import dotenv from "dotenv";
 import invariant from "tiny-invariant";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
-
-invariant(process.env.DATABASE_URL, "DATABASE_URL must be set");
-invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 
 dotenv.config({
   path: ".env.test",
   override: true,
 });
+
+invariant(process.env.DATABASE_URL, "DATABASE_URL must be set");
+invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react()],
+  resolve: {
+    tsconfigPaths: true,
+  },
   test: {
     include: ["app/**/*.{test,spec}.{ts,tsx}"],
     globals: true,

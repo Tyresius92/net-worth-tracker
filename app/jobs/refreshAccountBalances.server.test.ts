@@ -75,7 +75,7 @@ describe("refreshAccountBalances", () => {
         where: { accountId: account.id },
       });
       expect(afterSnapshots).toHaveLength(1);
-      expect(afterSnapshots[0].amount).toBe(123444);
+      expect(afterSnapshots[0]?.amount).toBe(123444);
     });
 
     it("creates a snapshot for each account when an item has multiple accounts", async () => {
@@ -113,9 +113,9 @@ describe("refreshAccountBalances", () => {
         where: { accountId: account2.id },
       });
       expect(snapshots1).toHaveLength(1);
-      expect(snapshots1[0].amount).toBe(10000);
+      expect(snapshots1[0]?.amount).toBe(10000);
       expect(snapshots2).toHaveLength(1);
-      expect(snapshots2[0].amount).toBe(20000);
+      expect(snapshots2[0]?.amount).toBe(20000);
     });
 
     it("creates snapshots for accounts across multiple items", async () => {
@@ -151,9 +151,9 @@ describe("refreshAccountBalances", () => {
         where: { accountId: account2.id },
       });
       expect(snapshots1).toHaveLength(1);
-      expect(snapshots1[0].amount).toBe(50000);
+      expect(snapshots1[0]?.amount).toBe(50000);
       expect(snapshots2).toHaveLength(1);
-      expect(snapshots2[0].amount).toBe(75000);
+      expect(snapshots2[0]?.amount).toBe(75000);
     });
   });
 
@@ -183,7 +183,7 @@ describe("refreshAccountBalances", () => {
         where: { accountId: account.id },
       });
       expect(snapshots).toHaveLength(1);
-      expect(snapshots[0].amount).toBe(-50000);
+      expect(snapshots[0]?.amount).toBe(-50000);
     });
 
     it("negates the balance for loan accounts", async () => {
@@ -211,7 +211,7 @@ describe("refreshAccountBalances", () => {
         where: { accountId: account.id },
       });
       expect(snapshots).toHaveLength(1);
-      expect(snapshots[0].amount).toBe(-20000);
+      expect(snapshots[0]?.amount).toBe(-20000);
     });
 
     it("creates a snapshot with amount 0 when the account is not in the Plaid response", async () => {
@@ -236,7 +236,7 @@ describe("refreshAccountBalances", () => {
         where: { accountId: account.id },
       });
       expect(snapshots).toHaveLength(1);
-      expect(snapshots[0].amount).toBe(0);
+      expect(snapshots[0]?.amount).toBe(0);
     });
   });
 
@@ -280,7 +280,7 @@ describe("refreshAccountBalances", () => {
         where: { accountId: account.id },
       });
       expect(snapshots).toHaveLength(1);
-      expect(snapshots[0].amount).toBe(99900);
+      expect(snapshots[0]?.amount).toBe(99900);
     });
   });
 
@@ -318,7 +318,7 @@ describe("refreshAccountBalances", () => {
         where: { accountId: account2.id },
       });
       expect(snapshots1).toHaveLength(1);
-      expect(snapshots1[0].amount).toBe(10000);
+      expect(snapshots1[0]?.amount).toBe(10000);
       expect(snapshots2).toHaveLength(0);
     });
 
@@ -375,7 +375,7 @@ describe("refreshAccountBalances", () => {
         where: { accountId: account.id },
       });
       expect(snapshots).toHaveLength(1);
-      expect(snapshots[0].amount).toBe(100000);
+      expect(snapshots[0]?.amount).toBe(100000);
     });
 
     it("creates a snapshot for an account that has no snapshot today even when another account already has one", async () => {
@@ -418,9 +418,9 @@ describe("refreshAccountBalances", () => {
         where: { accountId: account2.id },
       });
       expect(snapshots1).toHaveLength(1);
-      expect(snapshots1[0].amount).toBe(50000);
+      expect(snapshots1[0]?.amount).toBe(50000);
       expect(snapshots2).toHaveLength(1);
-      expect(snapshots2[0].amount).toBe(20000);
+      expect(snapshots2[0]?.amount).toBe(20000);
     });
   });
 
@@ -459,7 +459,7 @@ describe("refreshAccountBalances", () => {
       });
       expect(snapshots1).toHaveLength(0);
       expect(snapshots2).toHaveLength(1);
-      expect(snapshots2[0].amount).toBe(30000);
+      expect(snapshots2[0]?.amount).toBe(30000);
     });
   });
 });

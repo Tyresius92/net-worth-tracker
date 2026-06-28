@@ -7,6 +7,7 @@ import { Button } from "~/components/Button/Button";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { prisma } from "~/db.server";
 import { getUserId, loginRedirect } from "~/session.server";
+import { parseDate } from "~/utils/balanceUtils";
 
 import type { Route } from "./+types/route";
 
@@ -76,15 +77,11 @@ export const action = async ({ request, url, params }: ActionFunctionArgs) => {
     };
   }
 
-  const [year, month, day] = dateTime
-    .split("-")
-    .map((segment) => parseInt(segment, 10));
-
   await prisma.balanceSnapshot.create({
     data: {
       accountId,
       amount: parseFloat(amount) * 100,
-      dateTime: new Date(year, month - 1, day),
+      dateTime: parseDate(dateTime),
     },
   });
 

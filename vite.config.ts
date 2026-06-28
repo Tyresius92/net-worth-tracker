@@ -1,11 +1,14 @@
 import { reactRouter } from "@react-router/dev/vite";
 import { sentryReactRouter } from "@sentry/react-router";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig((config) => ({
   server: {
     port: 3000,
+  },
+
+  resolve: {
+    tsconfigPaths: true,
   },
 
   define: {
@@ -16,7 +19,6 @@ export default defineConfig((config) => ({
 
   plugins: [
     !process.env.STORYBOOK && reactRouter(),
-    tsconfigPaths(),
     !process.env.STORYBOOK &&
       sentryReactRouter(
         {
