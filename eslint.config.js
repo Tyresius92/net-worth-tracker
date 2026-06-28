@@ -109,13 +109,14 @@ export default tseslint.config(
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/restrict-template-expressions": [
-        "error", {
+        "error",
+        {
           allowAny: false,
           allowBoolean: true,
           allowNever: true,
           allowNullish: true,
           allowNumber: true,
-        }
+        },
       ],
       curly: ["error", "all"],
       "import/no-named-as-default": "error",

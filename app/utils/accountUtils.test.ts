@@ -1,10 +1,7 @@
 import { vi } from "vitest";
 
-import type {
-  GetNormalizedNetWorthInputAccount} from "./accountUtils";
-import {
-  getNormalizedUserNetWorth,
-} from "./accountUtils";
+import type { GetNormalizedNetWorthInputAccount } from "./accountUtils";
+import { getNormalizedUserNetWorth } from "./accountUtils";
 
 describe("getNormalizedUserNetWorth", () => {
   beforeEach(() => {

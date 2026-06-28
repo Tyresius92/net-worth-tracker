@@ -14,11 +14,15 @@ import { plaidMock } from "../mocks/plaid";
 dotenv.config({ path: resolve(__dirname, "../.env") });
 dotenv.config({ path: resolve(__dirname, "../.env.test") });
 
-beforeAll(() => { server.listen(); });
+beforeAll(() => {
+  server.listen();
+});
 afterEach(() => {
   server.resetHandlers();
   plaidMock.reset();
 });
-afterAll(() => { server.close(); });
+afterAll(() => {
+  server.close();
+});
 
 initialize({ prisma });

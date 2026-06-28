@@ -1,10 +1,6 @@
 import { AccountType } from "@prisma/client";
-import type {
-  AccountBase} from "plaid";
-import {
-  AccountType as PlaidAccountType,
-  AccountSubtype,
-} from "plaid";
+import type { AccountBase } from "plaid";
+import { AccountType as PlaidAccountType, AccountSubtype } from "plaid";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import { getAccountType } from "./accountUtils.server";

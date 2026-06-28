@@ -1,5 +1,5 @@
 import { parse } from "csv-parse/sync";
-import type { ActionFunctionArgs} from "react-router";
+import type { ActionFunctionArgs } from "react-router";
 import { Form, redirect } from "react-router";
 import invariant from "tiny-invariant";
 
