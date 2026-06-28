@@ -147,7 +147,7 @@ Resend + React Email. In non-production environments, `sendEmail` (from [`app/ut
 - Test files colocate with the file they test (`.test.ts` / `.test.tsx`)
 - Playwright e2e tests are in `tests/`
 - Prefer `const` arrow functions over `function` declarations everywhere except route module default exports. React Router requires a default export from each route file; use `export default function RouteComponent()` there and `const` arrow functions for everything else (helpers, utilities, loaders, actions outside of route files).
-- Prefer array methods (`map`, `filter`, `reduce`, `flatMap`, `forEach`) over `for` and `while` loops.
+- Prefer array methods (`map`, `filter`, `reduce`, `flatMap`, `find`, `some`, `every`) over `for`, `while`, and `forEach`. Prefer methods that transform data over those that require side effects.
 - Narrow `unknown` values with type guard functions rather than direct annotations or `as` assertions: `const isFoo = (value: unknown): value is Foo => ...`
 - Do not use `useFetcher`. Use `Form` for all form submissions. If you believe a situation requires `useFetcher`, stop and ask before using it.
 
