@@ -99,6 +99,7 @@ export default tseslint.config(
         "error",
         { assertionStyle: "never" },
       ],
+      "@typescript-eslint/consistent-type-exports": "error",
       "@typescript-eslint/only-throw-error": "error",
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-empty-object-type": [
