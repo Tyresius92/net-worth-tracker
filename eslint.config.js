@@ -18,6 +18,7 @@ export default tseslint.config(
       "node_modules/",
       "build/",
       "public/build/",
+      "public/mockServiceWorker.js",
       "playwright-report/",
       "test-results/",
       "**/__generated__/",
