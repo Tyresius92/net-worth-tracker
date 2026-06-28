@@ -16,6 +16,7 @@ test.afterAll(async () => {
 
 test.describe("login", () => {
   test.describe.configure({ mode: "serial" });
+
   test("shows error when password is missing", async ({ page }) => {
     await page.goto("/login");
     await page.getByLabel("Email address").fill("test@example.com");

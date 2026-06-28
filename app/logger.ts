@@ -1,4 +1,10 @@
-import * as Sentry from "@sentry/react-router";
+import {
+  addBreadcrumb,
+  captureException,
+  captureMessage,
+  setUser,
+  withScope,
+} from "@sentry/react-router";
 
 export type LogContext = Record<string, unknown>;
 
@@ -12,26 +18,26 @@ interface LoggerInterface {
 export const logger: LoggerInterface = {
   error(errorOrMessage, context) {
     if (errorOrMessage instanceof Error) {
-      Sentry.withScope((scope) => {
+      withScope((scope) => {
         if (context) {
           scope.setExtras(context);
         }
-        Sentry.captureException(errorOrMessage);
+        captureException(errorOrMessage);
       });
     } else {
-      Sentry.captureMessage(errorOrMessage, { level: "error", extra: context });
+      captureMessage(errorOrMessage, { level: "error", extra: context });
     }
   },
 
   warn(message, context) {
-    Sentry.captureMessage(message, { level: "warning", extra: context });
+    captureMessage(message, { level: "warning", extra: context });
   },
 
   info(message, context) {
-    Sentry.addBreadcrumb({ message, level: "info", data: context });
+    addBreadcrumb({ message, level: "info", data: context });
   },
 
   setUser(user) {
-    Sentry.setUser(user);
+    setUser(user);
   },
 };

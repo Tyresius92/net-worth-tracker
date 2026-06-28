@@ -26,7 +26,6 @@ interface Fixtures {
 
 export const test = base.extend<Fixtures>({
   testUser: async (
-    // eslint-disable-next-line no-empty-pattern
     {
       // intentionally empty
     },

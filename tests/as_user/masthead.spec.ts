@@ -4,5 +4,5 @@ test("does not show the admin bar", async ({ page }) => {
   await page.goto("/");
   await expect(
     page.getByRole("navigation", { name: "Admin" }),
-  ).not.toBeVisible();
+  ).toBeHidden();
 });

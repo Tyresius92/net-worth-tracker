@@ -1,3 +1,5 @@
+import type { colors } from "./colors";
+
 export type FontSizeOption =
   | 12
   | 14
@@ -48,8 +50,6 @@ export type SpaceOption =
   | 288
   | 320
   | 384;
-
-import type { colors } from "./colors";
 
 export type ColorOption = keyof typeof colors;
 

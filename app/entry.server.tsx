@@ -7,7 +7,10 @@
 import { PassThrough } from "node:stream";
 
 import { createReadableStreamFromReadable } from "@react-router/node";
-import * as Sentry from "@sentry/react-router";
+import {
+  createSentryHandleError,
+  wrapSentryHandleRequest,
+} from "@sentry/react-router";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import { ServerRouter } from "react-router";
@@ -16,7 +19,7 @@ import type { EntryContext, RouterContextProvider } from "react-router";
 import { NonceContext } from "./nonce";
 import { toError } from "./utils/errorUtils.server";
 
-export const handleError = Sentry.createSentryHandleError({
+export const handleError = createSentryHandleError({
   logErrors: false,
 });
 
@@ -178,4 +181,4 @@ function handleBrowserRequest(
     setTimeout(abort, streamTimeout + 1000);
   });
 }
-export default Sentry.wrapSentryHandleRequest(handleRequest);
+export default wrapSentryHandleRequest(handleRequest);

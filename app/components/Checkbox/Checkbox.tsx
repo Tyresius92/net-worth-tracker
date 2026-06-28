@@ -1,4 +1,4 @@
-import * as RadixCheckbox from "@radix-ui/react-checkbox";
+import { Indicator, Root } from "@radix-ui/react-checkbox";
 import { useId } from "react";
 
 import { Box } from "../Box/Box";
@@ -24,7 +24,7 @@ export const Checkbox = ({
 
   return (
     <Box display="flex" alignItems="center" xsGap={8} xsMb={20}>
-      <RadixCheckbox.Root
+      <Root
         id={inputId}
         name={name}
         defaultChecked={defaultChecked}
@@ -32,7 +32,7 @@ export const Checkbox = ({
         required={required}
         className={styles.root}
       >
-        <RadixCheckbox.Indicator className={styles.indicator}>
+        <Indicator className={styles.indicator}>
           <svg
             width="14"
             height="14"
@@ -48,8 +48,8 @@ export const Checkbox = ({
               strokeLinejoin="round"
             />
           </svg>
-        </RadixCheckbox.Indicator>
-      </RadixCheckbox.Root>
+        </Indicator>
+      </Root>
       <label htmlFor={inputId} className={styles.label}>
         {label}
       </label>

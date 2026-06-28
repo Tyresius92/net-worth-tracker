@@ -26,7 +26,7 @@ test.describe("check the wire button", () => {
 
     await expect(
       page.getByRole("button", { name: "Check the wire" }),
-    ).not.toBeVisible();
+    ).toBeHidden();
   });
 
   test("is disabled with hint text when today's figures exist", async ({

@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import vitestPlugin from "@vitest/eslint-plugin";
 import prettier from "eslint-config-prettier";
 import importPlugin from "eslint-plugin-import";
 import jestDomPlugin from "eslint-plugin-jest-dom";
@@ -8,9 +9,9 @@ import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import storybookPlugin from "eslint-plugin-storybook";
 import testingLibraryPlugin from "eslint-plugin-testing-library";
+import playwrightPlugin from 'eslint-plugin-playwright';
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import vitestPlugin from "@vitest/eslint-plugin";
 
 export default tseslint.config(
   {
@@ -121,9 +122,16 @@ export default tseslint.config(
         },
       ],
       curly: ["error", "all"],
+      "import/first": "error",
+      "import/newline-after-import": "error",
+      "import/no-cycle": "error",
+      "import/no-duplicates": "error",
+      "import/no-mutable-exports": "error",
       "import/no-named-as-default": "error",
       "import/no-named-as-default-member": "error",
-      "import/no-duplicates": "error",
+      "import/no-namespace": "error",
+      "import/no-self-import": "error",
+      "import/no-useless-path-segments": "error",
       "import/order": [
         "error",
         {
@@ -146,7 +154,7 @@ export default tseslint.config(
   // Markdown
   ...markdownPlugin.configs.recommended,
 
-  // Tests (Vitest with jest plugin)
+  // Tests (Vitest)
   {
     files: ["**/*.test.{js,jsx,ts,tsx}"],
     plugins: {
@@ -160,6 +168,12 @@ export default tseslint.config(
       ...testingLibraryPlugin.configs["flat/react"].rules,
       "@typescript-eslint/no-non-null-assertion": "off",
     },
+  },
+
+  // Tests (Playwright)
+  {
+    files: ["tests/**/*.spec.ts", "tests/**/*.ts"],
+    ...playwrightPlugin.configs["flat/recommended"],
   },
 
   // Node files (mocks)
