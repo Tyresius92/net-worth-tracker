@@ -12,6 +12,7 @@ import testingLibraryPlugin from "eslint-plugin-testing-library";
 import playwrightPlugin from 'eslint-plugin-playwright';
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import reactCompilerPlugin from 'eslint-plugin-react-compiler'
 
 export default tseslint.config(
   {
@@ -38,6 +39,7 @@ export default tseslint.config(
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,
       "jsx-a11y": jsxA11yPlugin,
+      "react-compiler": reactCompilerPlugin,
     },
     languageOptions: {
       ...reactPlugin.configs.flat.recommended.languageOptions,
@@ -67,6 +69,7 @@ export default tseslint.config(
       "object-shorthand": "error",
       "prefer-const": "error",
       "prefer-template": "error",
+      "react-compiler/react-compiler": "error",
     },
   },
 
