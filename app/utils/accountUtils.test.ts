@@ -1,10 +1,19 @@
+import { vi } from "vitest";
+
 import {
   GetNormalizedNetWorthInputAccount,
   getNormalizedUserNetWorth,
 } from "./accountUtils";
 
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip("getNormalizedUserNetWorth", () => {
+describe("getNormalizedUserNetWorth", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2025, 4, 31));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
   const mockBalanceSnapshot = (
     overrides: Partial<
       GetNormalizedNetWorthInputAccount["balanceSnapshots"][number]

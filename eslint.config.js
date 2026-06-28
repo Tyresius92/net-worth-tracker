@@ -1,7 +1,6 @@
 import js from "@eslint/js";
 import prettier from "eslint-config-prettier";
 import importPlugin from "eslint-plugin-import";
-import jestPlugin from "eslint-plugin-jest";
 import jestDomPlugin from "eslint-plugin-jest-dom";
 import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
 import markdownPlugin from "eslint-plugin-markdown";
@@ -11,6 +10,7 @@ import storybookPlugin from "eslint-plugin-storybook";
 import testingLibraryPlugin from "eslint-plugin-testing-library";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import vitestPlugin from '@vitest/eslint-plugin';
 
 export default [
   {
@@ -112,15 +112,12 @@ export default [
   {
     files: ["**/*.test.{js,jsx,ts,tsx}"],
     plugins: {
-      jest: jestPlugin,
+      vitest: vitestPlugin,
       "jest-dom": jestDomPlugin,
       "testing-library": testingLibraryPlugin,
     },
-    settings: {
-      jest: { version: 28 },
-    },
     rules: {
-      ...jestPlugin.configs["flat/recommended"].rules,
+      ...vitestPlugin.configs.recommended.rules,
       ...jestDomPlugin.configs["flat/recommended"].rules,
       ...testingLibraryPlugin.configs["flat/react"].rules,
     },
