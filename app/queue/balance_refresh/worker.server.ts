@@ -12,9 +12,7 @@ interface BalanceRefreshJobData {
   plaidItemId: string;
 }
 
-const isBalanceRefreshJob = (
-  data: unknown,
-): data is BalanceRefreshJobData =>
+const isBalanceRefreshJob = (data: unknown): data is BalanceRefreshJobData =>
   typeof data === "object" &&
   data !== null &&
   "plaidItemId" in data &&
@@ -58,15 +56,13 @@ export const processJob = async (job: ProcessableJob) => {
 export const balanceRefreshWorker = singleton(
   "balanceRefreshWorker",
   () =>
-    new Worker("default", processJob,
-      {
-        connection: redisConnection,
-        limiter: { max: 1, duration: 10_000 },
-        concurrency: 1,
-        drainDelay: 60,
-        stalledInterval: 300_000,
-      },
-    ),
+    new Worker("default", processJob, {
+      connection: redisConnection,
+      limiter: { max: 1, duration: 10_000 },
+      concurrency: 1,
+      drainDelay: 60,
+      stalledInterval: 300_000,
+    }),
 );
 
 balanceRefreshWorker.on("failed", (job, error) => {

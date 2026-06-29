@@ -71,8 +71,6 @@ describe("processJob", () => {
   });
 
   it("does not throw for unknown job names", async () => {
-    await expect(
-      processJob(makeJob("unknown-job")),
-    ).resolves.toBeUndefined();
+    await expect(processJob(makeJob("unknown-job"))).resolves.toBeUndefined();
   });
 });

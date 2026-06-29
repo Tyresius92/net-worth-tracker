@@ -21,9 +21,8 @@ vi.mock("../queue.server", () => ({
   },
 }));
 
-const { registerWeeklyBalanceRefresh, enqueueAllHealthyItems } = await import(
-  "./scheduler.server"
-);
+const { registerWeeklyBalanceRefresh, enqueueAllHealthyItems } =
+  await import("./scheduler.server");
 
 beforeEach(() => {
   mockUpsertJobScheduler.mockClear();
