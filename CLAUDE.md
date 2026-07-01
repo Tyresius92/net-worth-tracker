@@ -16,7 +16,7 @@ Architectural decisions are documented in [`docs/adr/`](docs/adr/). Read these b
 
 **One logical unit at a time.** Break all work into discrete steps. Complete one step, report what was done, and wait for explicit approval before beginning the next.
 
-**Verify before declaring done.** After completing any coding task, run the full verification suite (`/verify`) before reporting the task as complete. If a check fails, fix it and re-run. Only declare done when all checks are green.
+**Verify before declaring done.** After completing any coding task, run the full verification suite (`/ship-check`) before reporting the task as complete. If a check fails, fix it and re-run. Only declare done when all checks are green.
 
 **Tests are part of the task, not a follow-up.** Every implementation task that writes or modifies production code must include tests. Before writing any code, the plan must identify:
 
