@@ -21,9 +21,9 @@ import { toError } from "./utils/errorUtils.server";
 
 if (process.env.REDIS_URL) {
   await import("./queue/balance_refresh/worker.server");
-  const { registerWeeklyBalanceRefresh } =
+  const { startWeeklyBalanceRefreshCron } =
     await import("./queue/balance_refresh/scheduler.server");
-  await registerWeeklyBalanceRefresh();
+  await startWeeklyBalanceRefreshCron();
 }
 
 export const handleError = createSentryHandleError({

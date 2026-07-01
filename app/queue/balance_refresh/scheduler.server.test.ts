@@ -9,23 +9,37 @@ interface EnqueuedJob {
   opts: { attempts: number; backoff: { type: string; delay: number } };
 }
 
-const mockUpsertJobScheduler = vi.fn().mockResolvedValue(undefined);
+const mockSchedule = vi.fn();
+const mockRedisGet = vi.fn<() => Promise<string | null>>().mockResolvedValue(null);
+const mockRedisSet = vi.fn().mockResolvedValue("OK");
 const mockAddBulk = vi
   .fn<(jobs: EnqueuedJob[]) => Promise<never[]>>()
   .mockResolvedValue([]);
 
+vi.mock("node-cron", () => ({
+  schedule: mockSchedule,
+}));
+
+vi.mock("../connection.server", () => ({
+  redisConnection: {
+    get: mockRedisGet,
+    set: mockRedisSet,
+  },
+}));
+
 vi.mock("../queue.server", () => ({
   defaultQueue: {
-    upsertJobScheduler: mockUpsertJobScheduler,
     addBulk: mockAddBulk,
   },
 }));
 
-const { registerWeeklyBalanceRefresh, enqueueAllHealthyItems } =
+const { startWeeklyBalanceRefreshCron, enqueueAllHealthyItems } =
   await import("./scheduler.server");
 
 beforeEach(() => {
-  mockUpsertJobScheduler.mockClear();
+  mockSchedule.mockClear();
+  mockRedisGet.mockClear().mockResolvedValue(null);
+  mockRedisSet.mockClear();
   mockAddBulk.mockClear();
 });
 
@@ -34,16 +48,45 @@ const getEnqueuedPlaidItemIds = (): string[] =>
     call[0].map((job) => job.data.plaidItemId),
   );
 
-describe("registerWeeklyBalanceRefresh", () => {
-  it("registers a weekly cron job scheduler", async () => {
-    await registerWeeklyBalanceRefresh();
+describe("startWeeklyBalanceRefreshCron", () => {
+  it("runs enqueueAllHealthyItems on startup when Redis has no last-run key", async () => {
+    mockRedisGet.mockResolvedValue(null);
 
-    expect(mockUpsertJobScheduler).toHaveBeenCalledWith(
-      "weekly-balance-refresh",
-      { pattern: "0 3 * * 0" },
-      expect.objectContaining({
-        name: "weekly-balance-refresh",
-      }),
+    await startWeeklyBalanceRefreshCron();
+
+    expect(mockRedisSet).toHaveBeenCalledWith(
+      "balance_refresh:last_run_at",
+      expect.any(String),
+    );
+  });
+
+  it("runs enqueueAllHealthyItems on startup when last run was more than 7 days ago", async () => {
+    const eightDaysAgo = Date.now() - 8 * 24 * 60 * 60 * 1000;
+    mockRedisGet.mockResolvedValue(eightDaysAgo.toString());
+
+    await startWeeklyBalanceRefreshCron();
+
+    expect(mockRedisSet).toHaveBeenCalledWith(
+      "balance_refresh:last_run_at",
+      expect.any(String),
+    );
+  });
+
+  it("does not run enqueueAllHealthyItems on startup when last run was recent", async () => {
+    const oneHourAgo = Date.now() - 60 * 60 * 1000;
+    mockRedisGet.mockResolvedValue(oneHourAgo.toString());
+
+    await startWeeklyBalanceRefreshCron();
+
+    expect(mockRedisSet).not.toHaveBeenCalled();
+  });
+
+  it("registers a weekly cron with the correct schedule", async () => {
+    await startWeeklyBalanceRefreshCron();
+
+    expect(mockSchedule).toHaveBeenCalledWith(
+      "0 3 * * 0",
+      expect.any(Function),
     );
   });
 });
@@ -114,6 +157,15 @@ describe("enqueueAllHealthyItems", () => {
           },
         }),
       ]),
+    );
+  });
+
+  it("records the run timestamp in Redis", async () => {
+    await enqueueAllHealthyItems();
+
+    expect(mockRedisSet).toHaveBeenCalledWith(
+      "balance_refresh:last_run_at",
+      expect.any(String),
     );
   });
 });

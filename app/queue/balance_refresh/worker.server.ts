@@ -6,8 +6,6 @@ import { singleton } from "~/singleton.server";
 
 import { redisConnection } from "../connection.server";
 
-import { enqueueAllHealthyItems } from "./scheduler.server";
-
 interface BalanceRefreshJobData {
   plaidItemId: string;
 }
@@ -26,9 +24,6 @@ export interface ProcessableJob {
 
 export const processJob = async (job: ProcessableJob) => {
   switch (job.name) {
-    case "weekly-balance-refresh":
-      await enqueueAllHealthyItems();
-      break;
     case "balance-refresh": {
       if (!isBalanceRefreshJob(job.data)) {
         logger.warn("Invalid balance-refresh job data", {
