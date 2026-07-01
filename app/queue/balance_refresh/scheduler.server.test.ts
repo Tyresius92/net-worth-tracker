@@ -10,7 +10,9 @@ interface EnqueuedJob {
 }
 
 const mockSchedule = vi.fn();
-const mockRedisGet = vi.fn<() => Promise<string | null>>().mockResolvedValue(null);
+const mockRedisGet = vi
+  .fn<() => Promise<string | null>>()
+  .mockResolvedValue(null);
 const mockRedisSet = vi.fn().mockResolvedValue("OK");
 const mockAddBulk = vi
   .fn<(jobs: EnqueuedJob[]) => Promise<never[]>>()
