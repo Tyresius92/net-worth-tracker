@@ -78,6 +78,8 @@ React Router v8. Routes are defined in [`app/routes.ts`](app/routes.ts) using th
 Example route path: `/plaid_items/:itemId/update`
 Example file path: `app/routes/plaid_items/$itemId/update/route.tsx`
 
+**Exception:** `.claude/skills/<name>/` directory names use `kebab-case`, matching Anthropic's Agent Skills convention (the directory name becomes the `/<name>` command). This is the only place in the repo where kebab-case is correct.
+
 This convention also applies to all URL strings in code: `redirect("/forgot_password")`, `<Link to="/settings/recovery_codes">`, and URL constructions like `` `${origin}/verify_email?token=${token}` ``.
 
 ### Data layer
