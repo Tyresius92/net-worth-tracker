@@ -29,7 +29,7 @@ const config: StorybookConfig = {
       {
         name: "resolve-file-urls",
         resolveId(id: string) {
-          if (id.startsWith("file://")) return id.replace("file://", "");
+          if (id.startsWith("file://")) {return id.replace("file://", "");}
         },
       },
     ];

@@ -210,4 +210,14 @@ export default tseslint.config(
   },
 
   prettier,
+
+  // eslint-config-prettier turns `curly` off by default (some of its
+  // variants can conflict with Prettier's output), but the "all" variant
+  // used here doesn't — so re-assert it after prettier to keep it enabled.
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    rules: {
+      curly: ["error", "all"],
+    },
+  },
 );

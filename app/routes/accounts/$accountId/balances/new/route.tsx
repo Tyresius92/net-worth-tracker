@@ -13,7 +13,7 @@ import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) return loginRedirect(url);
+  if (!userId) {return loginRedirect(url);}
 
   invariant(params.accountId, "Account ID not in URL");
   const accountId = params.accountId;
@@ -37,7 +37,7 @@ export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
 
 export const action = async ({ request, url, params }: ActionFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) return loginRedirect(url);
+  if (!userId) {return loginRedirect(url);}
 
   invariant(params.accountId, "Account ID not in URL");
   const accountId = params.accountId;

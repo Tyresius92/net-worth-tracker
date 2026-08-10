@@ -15,7 +15,7 @@ import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) return loginRedirect(url);
+  if (!userId) {return loginRedirect(url);}
 
   const linkTokenResponse = await plaidClient.linkTokenCreate({
     user: {
@@ -35,7 +35,7 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) return loginRedirect(url);
+  if (!userId) {return loginRedirect(url);}
 
   const formData = await request.formData();
   const token = formData.get("public_token");

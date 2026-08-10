@@ -10,7 +10,7 @@ import { useUser } from "~/utils";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) return loginRedirect(url);
+  if (!userId) {return loginRedirect(url);}
   const noteListItems = await getNoteListItems({ userId });
   return { noteListItems };
 };

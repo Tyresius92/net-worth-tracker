@@ -27,7 +27,7 @@ export const computeSourceCounts = (
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) return loginRedirect(url);
+  if (!user) {return loginRedirect(url);}
 
   if (user.role !== "admin") {
     return redirect("/", { status: 403 });

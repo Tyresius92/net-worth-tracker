@@ -7,7 +7,7 @@ import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) return loginRedirect(url);
+  if (!user) {return loginRedirect(url);}
 
   return {};
 };

@@ -10,7 +10,7 @@ import type { Route } from "./+types/layout";
 
 export const loader = async ({ params, request, url }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) return loginRedirect(url);
+  if (!userId) {return loginRedirect(url);}
 
   invariant(params.accountId, "Account ID not in URL");
   const accountId = params.accountId;

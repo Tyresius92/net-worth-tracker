@@ -19,8 +19,8 @@ import styles from "./admin-delete-user.module.css";
 
 export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
   const currentUser = await getUser(request);
-  if (!currentUser) return loginRedirect(url);
-  if (currentUser.role !== "admin") return redirect("/");
+  if (!currentUser) {return loginRedirect(url);}
+  if (currentUser.role !== "admin") {return redirect("/");}
   invariant(params.userId, "userId is required");
 
   const target = await prisma.user.findUniqueOrThrow({
@@ -61,8 +61,8 @@ export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
 
 export const action = async ({ request, url, params }: ActionFunctionArgs) => {
   const currentUser = await getUser(request);
-  if (!currentUser) return loginRedirect(url);
-  if (currentUser.role !== "admin") return redirect("/");
+  if (!currentUser) {return loginRedirect(url);}
+  if (currentUser.role !== "admin") {return redirect("/");}
   invariant(params.userId, "userId is required");
 
   const target = await prisma.user.findUniqueOrThrow({

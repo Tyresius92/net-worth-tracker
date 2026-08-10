@@ -86,7 +86,7 @@ export function getNormalizedUserNetWorth(
       // Move snapshot index to the latest snapshot in this month
       while (snapshotIdx < snapshots.length) {
         const snap = snapshots[snapshotIdx];
-        if (!snap || new Date(snap.dateTime) > endOfMonth) break;
+        if (!snap || new Date(snap.dateTime) > endOfMonth) {break;}
         lastKnownAmount = snap.amount;
         snapshotIdx++;
       }

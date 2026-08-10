@@ -12,13 +12,13 @@ import type { ImportResult } from "~/utils/importUtils.server";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) return loginRedirect(url);
+  if (!user) {return loginRedirect(url);}
   return {};
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) return loginRedirect(url);
+  if (!user) {return loginRedirect(url);}
   const formData = await request.formData();
   const csvFile = formData.get("import_file");
 

@@ -14,13 +14,13 @@ import styles from "./delete_account.module.css";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) return loginRedirect(url);
+  if (!user) {return loginRedirect(url);}
   return {};
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) return loginRedirect(url);
+  if (!user) {return loginRedirect(url);}
   const formData = await request.formData();
   const confirmation = formData.get("confirmation");
   const password = formData.get("password");
