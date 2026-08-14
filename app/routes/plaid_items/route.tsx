@@ -9,7 +9,9 @@ import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) {return loginRedirect(url);}
+  if (!userId) {
+    return loginRedirect(url);
+  }
 
   const plaidItems = await prisma.plaidItem.findMany({
     where: {

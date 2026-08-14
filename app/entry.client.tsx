@@ -18,7 +18,7 @@ import invariant from "tiny-invariant";
 invariant(typeof import.meta.env.APP_ENV === "string", "APP_ENV not set");
 
 init({
-  dsn: "https://6e947b5e11dca72072823b8789a39032@o4511327942475776.ingest.us.sentry.io/4511327945490432",
+  dsn: "https://e0392dd2f70d02d9425eb626235f59db@o4511593609297920.ingest.us.sentry.io/4511593609560064",
   enabled: import.meta.env.MODE === "production",
   environment: import.meta.env.APP_ENV,
   integrations: [reactRouterTracingIntegration(), replayIntegration()],
@@ -27,12 +27,12 @@ init({
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
 
-  // Drop all bot/crawler transactions; sample 10% of real user transactions
+  // Drop all bot/crawler transactions; trace all real user transactions
   tracesSampler() {
     if (isbot(navigator.userAgent)) {
       return 0;
     }
-    return 0.1;
+    return 1;
   },
 
   // Suppress React Router 404s that fire when crawlers hit non-existent paths

@@ -10,7 +10,9 @@ import { HttpError } from "~/utils/httpError";
 
 export const loader = async ({ params, request, url }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) {return loginRedirect(url);}
+  if (!userId) {
+    return loginRedirect(url);
+  }
   invariant(params.noteId, "noteId not found");
 
   const note = await getNote({ id: params.noteId, userId });
@@ -22,7 +24,9 @@ export const loader = async ({ params, request, url }: LoaderFunctionArgs) => {
 
 export const action = async ({ params, request, url }: ActionFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) {return loginRedirect(url);}
+  if (!userId) {
+    return loginRedirect(url);
+  }
   invariant(params.noteId, "noteId not found");
 
   await deleteNote({ id: params.noteId, userId });

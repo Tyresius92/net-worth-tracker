@@ -11,13 +11,17 @@ import { getUser, loginRedirect } from "~/session.server";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) {return loginRedirect(url);}
+  if (!user) {
+    return loginRedirect(url);
+  }
   return {};
 };
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) {return loginRedirect(url);}
+  if (!user) {
+    return loginRedirect(url);
+  }
   const formData = await request.formData();
   const currentPassword = formData.get("currentPassword");
   const newPassword = formData.get("newPassword");

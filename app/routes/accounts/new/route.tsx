@@ -17,7 +17,9 @@ import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) {return loginRedirect(url);}
+  if (!userId) {
+    return loginRedirect(url);
+  }
 
   const accountTypeOptions = accountTypesList.map((type) => ({
     value: type,
@@ -31,7 +33,9 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) {return loginRedirect(url);}
+  if (!userId) {
+    return loginRedirect(url);
+  }
 
   const formData = await request.formData();
 

@@ -20,7 +20,9 @@ import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) {return loginRedirect(url);}
+  if (!user) {
+    return loginRedirect(url);
+  }
   const session = await getSession(request);
 
   if (user.twoFactorEnabled) {
@@ -60,7 +62,9 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) {return loginRedirect(url);}
+  if (!user) {
+    return loginRedirect(url);
+  }
   const session = await getSession(request);
 
   const formData = await request.formData();

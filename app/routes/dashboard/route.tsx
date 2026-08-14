@@ -24,7 +24,9 @@ import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) {return loginRedirect(url);}
+  if (!user) {
+    return loginRedirect(url);
+  }
 
   const userData = await prisma.user.findFirstOrThrow({
     where: {

@@ -13,7 +13,9 @@ import { getUser, loginRedirect } from "~/session.server";
 
 export const action = async ({ request, url, params }: ActionFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) {return loginRedirect(url);}
+  if (!user) {
+    return loginRedirect(url);
+  }
 
   invariant(params.accountId, "Account ID is required");
   const accountId = params.accountId;

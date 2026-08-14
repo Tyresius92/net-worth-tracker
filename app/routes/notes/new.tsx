@@ -9,7 +9,9 @@ import { getUserId, loginRedirect } from "~/session.server";
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) {return loginRedirect(url);}
+  if (!userId) {
+    return loginRedirect(url);
+  }
 
   const formData = await request.formData();
   const title = formData.get("title");

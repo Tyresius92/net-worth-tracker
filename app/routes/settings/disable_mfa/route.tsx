@@ -13,7 +13,9 @@ import styles from "./disable-mfa.module.css";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) {return loginRedirect(url);}
+  if (!user) {
+    return loginRedirect(url);
+  }
   if (!user.twoFactorEnabled) {
     return redirect("/settings");
   }
@@ -22,7 +24,9 @@ export const loader = async ({ request, url }: LoaderFunctionArgs) => {
 
 export const action = async ({ request, url }: ActionFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) {return loginRedirect(url);}
+  if (!user) {
+    return loginRedirect(url);
+  }
 
   if (!user.twoFactorEnabled) {
     return redirect("/settings");

@@ -14,7 +14,9 @@ import type { Route } from "./+types/route";
 
 export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) {return loginRedirect(url);}
+  if (!userId) {
+    return loginRedirect(url);
+  }
 
   const plaidItem = await prisma.plaidItem.findFirstOrThrow({
     where: {
@@ -44,7 +46,9 @@ export const loader = async ({ request, url, params }: LoaderFunctionArgs) => {
 
 export const action = async ({ params, request, url }: ActionFunctionArgs) => {
   const userId = await getUserId(request);
-  if (!userId) {return loginRedirect(url);}
+  if (!userId) {
+    return loginRedirect(url);
+  }
 
   await prisma.plaidItem.updateMany({
     where: { id: params.itemId, userId },

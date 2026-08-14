@@ -16,7 +16,9 @@ import styles from "./layout.module.css";
 
 export const loader = async ({ request, url }: LoaderFunctionArgs) => {
   const user = await getUser(request);
-  if (!user) {return loginRedirect(url);}
+  if (!user) {
+    return loginRedirect(url);
+  }
 
   const accounts = await prisma.account.findMany({
     where: {

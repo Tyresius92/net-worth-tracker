@@ -169,7 +169,9 @@ export const runBulkImport = async (
       )
       .forEach(({ date, rawAmount, colIdx }) => {
         const accountId = resolvedAccountIds[colIdx];
-        if (!accountId) {return;}
+        if (!accountId) {
+          return;
+        }
         const amountCents = Math.round(rawAmount * 100);
         const dedupKey = `${accountId}:${date}:${amountCents}`;
 
