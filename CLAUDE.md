@@ -38,7 +38,10 @@ This project uses Node v24. There is a `.nvmrc` file in the root of the director
 
 Always run commands using Node v24.
 
+Redis must be running for `npm run dev` and Playwright (BullMQ needs it). Start it with Docker Compose before either.
+
 ```bash
+docker compose up -d  # start Redis (localhost:6379)
 npm run dev           # start dev server (http://localhost:3000)
 npm run build         # production build
 npm run typecheck     # react-router typegen + tsc

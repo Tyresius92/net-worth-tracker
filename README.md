@@ -98,7 +98,10 @@ Given the small, well-bounded domain and single-user scope, this approach provid
 
 ## Running Locally
 
+Redis (used by the BullMQ balance refresh queue) runs in Docker:
+
 ```bash
+docker compose up -d   # start Redis on localhost:6379
 npm run setup
 npm run dev
 ```
