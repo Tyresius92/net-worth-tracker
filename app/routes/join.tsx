@@ -23,6 +23,7 @@ import { createUser, getUserByEmail } from "~/models/user.server";
 import { getSession, getUserId, sessionStorage } from "~/session.server";
 import { validateEmail } from "~/utils";
 import { sendEmail } from "~/utils/email.server";
+import { validateName } from "~/utils/nameValidation";
 import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
 
 import styles from "./join.module.css";
@@ -69,16 +70,18 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
     );
   }
 
-  if (typeof firstName !== "string" || !firstName) {
+  const firstNameResult = validateName(firstName, "First name");
+  if (!firstNameResult.success) {
     return data(
-      { errors: { ...baseErrors, firstName: "First name is required" } },
+      { errors: { ...baseErrors, firstName: firstNameResult.error } },
       { status: 400 },
     );
   }
 
-  if (typeof lastName !== "string" || !lastName) {
+  const lastNameResult = validateName(lastName, "Last name");
+  if (!lastNameResult.success) {
     return data(
-      { errors: { ...baseErrors, lastName: "Last name is required" } },
+      { errors: { ...baseErrors, lastName: lastNameResult.error } },
       { status: 400 },
     );
   }
@@ -110,7 +113,12 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
     );
   }
 
-  const user = await createUser({ email, password, firstName, lastName });
+  const user = await createUser({
+    email,
+    password,
+    firstName: firstNameResult.data,
+    lastName: lastNameResult.data,
+  });
 
   const token = await createEmailVerificationToken(user.id);
   const verifyUrl = `${url.origin}/verify_email?token=${token}`;
