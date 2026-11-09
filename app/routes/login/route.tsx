@@ -30,7 +30,11 @@ import {
 } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
 import { sendEmail } from "~/utils/email.server";
-import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
+import {
+  getClientIp,
+  isRateLimited,
+  verificationEmailCap,
+} from "~/utils/rate-limit.server";
 
 import styles from "./login.module.css";
 
@@ -96,13 +100,19 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
   }
 
   if (!user.emailVerifiedAt) {
-    const token = await createEmailVerificationToken(user.id);
-    const verifyUrl = `${url.origin}/verify_email?token=${token}`;
-    await sendEmail({
-      to: user.email,
-      subject: "Verify your email address",
-      react: <EmailVerificationEmail verifyUrl={verifyUrl} />,
-    });
+    if (verificationEmailCap.tryConsume()) {
+      const token = await createEmailVerificationToken(user.id);
+      const verifyUrl = `${url.origin}/verify_email?token=${token}`;
+      await sendEmail({
+        to: user.email,
+        subject: "Verify your email address",
+        react: <EmailVerificationEmail verifyUrl={verifyUrl} />,
+      });
+    } else {
+      logger.warn("Verification email cap reached; skipping send on login", {
+        userId: user.id,
+      });
+    }
     session.set("pending-verification:userId", user.id);
     return redirect("/verify_email/pending", {
       headers: { "Set-Cookie": await sessionStorage.commitSession(session) },

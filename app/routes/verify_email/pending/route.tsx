@@ -1,15 +1,24 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { data, Form, redirect, useLoaderData } from "react-router";
+import {
+  data,
+  Form,
+  redirect,
+  useActionData,
+  useLoaderData,
+} from "react-router";
 
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Divider } from "~/components/Divider/Divider";
 import { Link } from "~/components/Link/Link";
+import { Text } from "~/components/Text/Text";
 import { EmailVerificationEmail } from "~/emails/EmailVerificationEmail";
+import { logger } from "~/logger";
 import { createEmailVerificationToken } from "~/models/email-verification.server";
 import { getUserById } from "~/models/user.server";
 import { getSession, getUserId, sessionStorage } from "~/session.server";
 import { sendEmail } from "~/utils/email.server";
+import { verificationEmailCap } from "~/utils/rate-limit.server";
 
 import styles from "./pending.module.css";
 
@@ -42,6 +51,13 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
     return redirect("/join");
   }
 
+  if (!verificationEmailCap.tryConsume()) {
+    logger.warn("Verification email cap reached; skipping resend", {
+      userId: user.id,
+    });
+    return data({ resent: false, capped: true }, { status: 429 });
+  }
+
   const token = await createEmailVerificationToken(user.id);
   const verifyUrl = `${url.origin}/verify_email?token=${token}`;
 
@@ -52,13 +68,14 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
   });
 
   return data(
-    { resent: true },
+    { resent: true, capped: false },
     { headers: { "Set-Cookie": await sessionStorage.commitSession(session) } },
   );
 };
 
 export default function VerifyEmailPendingPage() {
   const { expired } = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
 
   return (
     <>
@@ -80,6 +97,15 @@ export default function VerifyEmailPendingPage() {
               ? "That verification link has expired. Request a new one below."
               : "We sent a verification link to your email address. Click it to activate your account. The link expires in 24 hours."}
           </p>
+
+          {actionData?.capped ? (
+            <Box color="red-9" role="alert">
+              <Text>
+                We couldn&apos;t send another email right now. Try again
+                tomorrow.
+              </Text>
+            </Box>
+          ) : null}
 
           <Form method="post">
             <Box

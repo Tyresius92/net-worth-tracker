@@ -27,7 +27,11 @@ import { validateEmail } from "~/utils";
 import { sendEmail } from "~/utils/email.server";
 import { isHoneypotTripped } from "~/utils/honeypot.server";
 import { validateName } from "~/utils/nameValidation";
-import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
+import {
+  getClientIp,
+  isRateLimited,
+  verificationEmailCap,
+} from "~/utils/rate-limit.server";
 
 import styles from "./join.module.css";
 
@@ -124,6 +128,19 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
         },
       },
       { status: 400 },
+    );
+  }
+
+  if (!verificationEmailCap.tryConsume()) {
+    logger.warn("Verification email cap reached; refusing sign-up", { ip });
+    return data(
+      {
+        errors: {
+          ...baseErrors,
+          email: "Applications are closed for today. Try again tomorrow.",
+        },
+      },
+      { status: 429 },
     );
   }
 
