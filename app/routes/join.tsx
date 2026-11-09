@@ -15,18 +15,23 @@ import {
 import { Box } from "~/components/Box/Box";
 import { Button } from "~/components/Button/Button";
 import { Divider } from "~/components/Divider/Divider";
+import { Honeypot } from "~/components/Honeypot/Honeypot";
 import { Link } from "~/components/Link/Link";
 import { TextInput } from "~/components/TextInput/TextInput";
 import { EmailVerificationEmail } from "~/emails/EmailVerificationEmail";
+import { logger } from "~/logger";
 import { createEmailVerificationToken } from "~/models/email-verification.server";
 import { createUser, getUserByEmail } from "~/models/user.server";
 import { getSession, getUserId, sessionStorage } from "~/session.server";
 import { validateEmail } from "~/utils";
 import { sendEmail } from "~/utils/email.server";
+import { isHoneypotTripped } from "~/utils/honeypot.server";
 import { validateName } from "~/utils/nameValidation";
 import { getClientIp, isRateLimited } from "~/utils/rate-limit.server";
 
 import styles from "./join.module.css";
+
+const HONEYPOT_FIELD = "website";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
@@ -53,6 +58,15 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
   }
 
   const formData = await request.formData();
+
+  if (isHoneypotTripped(formData, HONEYPOT_FIELD)) {
+    logger.warn("Join honeypot tripped", { ip });
+    // Look like a success to the bot. Without a pending-verification session
+    // the pending page bounces back to /join. No user is created and no email
+    // is sent.
+    return redirect("/verify_email/pending");
+  }
+
   const email = formData.get("email");
   const firstName = formData.get("firstName");
   const lastName = formData.get("lastName");
@@ -164,6 +178,7 @@ export default function Join() {
 
       <Box border={{ color: "sand-12" }} xsP={24}>
         <Form method="post">
+          <Honeypot name={HONEYPOT_FIELD} />
           <TextInput
             ref={emailRef}
             type="email"

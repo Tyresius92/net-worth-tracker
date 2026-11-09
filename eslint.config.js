@@ -24,6 +24,7 @@ export default tseslint.config(
       "public/mockServiceWorker.js",
       "playwright-report/",
       "test-results/",
+      "storybook-static/",
       "**/__generated__/",
       ".react-router/",
     ],

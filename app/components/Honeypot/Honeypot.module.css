@@ -1,0 +1,12 @@
+/*
+ * Positioned off-screen rather than display: none or type="hidden",
+ * because many bots skip fields hidden those ways.
+ */
+.honeypot {
+  height: 1px;
+  left: -10000px;
+  overflow: hidden;
+  position: absolute;
+  top: auto;
+  width: 1px;
+}

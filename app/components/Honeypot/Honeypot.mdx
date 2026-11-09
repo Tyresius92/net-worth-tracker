@@ -1,0 +1,60 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks";
+import * as HoneypotStories from "./Honeypot.stories";
+
+<Meta of={HoneypotStories} />
+
+# Honeypot
+
+Honeypot renders a form field that people never see or reach. Bots that fill in every input they find will fill it in, and the server treats a filled-in honeypot as a sign of automation. It pairs with `isHoneypotTripped` from `~/utils/honeypot.server`, which checks the submitted field.
+
+## When to use
+
+Use Honeypot on public, unauthenticated forms that cause something to happen outside the application, such as sending an email. The sign-up form is the main example: every submission sends a verification email, so automated submissions cost email quota and sender reputation.
+
+<Canvas of={HoneypotStories.InForm} />
+
+The form above contains a honeypot. It renders nothing visible.
+
+On the server, check the field before doing any other work. When it is tripped, return a response that looks like success and do nothing else. Don't show an error, because an error tells the bot what went wrong.
+
+```tsx
+const HONEYPOT_FIELD = "website";
+
+// In the action:
+if (isHoneypotTripped(formData, HONEYPOT_FIELD)) {
+  logger.warn("Join honeypot tripped", { ip });
+  return redirect("/verify_email/pending");
+}
+
+// In the form:
+<Form method="post">
+  <Honeypot name={HONEYPOT_FIELD} />
+  {/* …the form's real fields */}
+</Form>;
+```
+
+## When not to use
+
+**Authenticated forms:** a signed-in user has already gotten through sign-up. A honeypot adds nothing there.
+
+**As the only defense:** a honeypot only catches simple bots. Bots that read labels, or that run a real browser and skip off-screen fields, get past it. Keep validation and rate limiting in place.
+
+## Choosing a name
+
+Use a `name` that looks like a field a bot would want to fill, such as `website` or `company`. Avoid names that give the trick away, such as `honeypot` or `trap`. Don't reuse the name of a real field on the same form.
+
+## Accessibility
+
+The field is hidden from everyone:
+
+- The wrapper has `aria-hidden="true"`, so screen readers skip it.
+- The input has `tabIndex={-1}`, so keyboard users never land on it.
+- The input has `autoComplete="off"`, so browsers are less likely to autofill it.
+
+The field still has a visible-to-the-DOM label, "Leave this field empty". It is a safety net: if an assistive technology or autofill tool reaches the field anyway, the label tells a person what to do. It also means a bot that reads labels can avoid the trap. That trade-off is deliberate and matches common practice.
+
+The field is moved off-screen with CSS instead of `display: none` or `type="hidden"`, because many bots skip fields hidden those ways.
+
+## Props
+
+<Controls of={HoneypotStories.Default} />

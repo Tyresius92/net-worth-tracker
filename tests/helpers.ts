@@ -44,6 +44,9 @@ export async function enableMfa(userId: string) {
   });
 }
 
+export const findUserByEmail = (email: string) =>
+  prisma.user.findUnique({ where: { email } });
+
 export async function deleteUser(email: string) {
   try {
     await prisma.user.delete({ where: { email } });
