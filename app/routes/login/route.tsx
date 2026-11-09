@@ -101,12 +101,7 @@ export const action = async ({ request, url }: ActionFunctionArgs) => {
     await sendEmail({
       to: user.email,
       subject: "Verify your email address",
-      react: (
-        <EmailVerificationEmail
-          firstName={user.firstName}
-          verifyUrl={verifyUrl}
-        />
-      ),
+      react: <EmailVerificationEmail verifyUrl={verifyUrl} />,
     });
     session.set("pending-verification:userId", user.id);
     return redirect("/verify_email/pending", {

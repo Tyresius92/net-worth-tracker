@@ -9,12 +9,10 @@ const fonts = {
 };
 
 interface EmailVerificationEmailProps {
-  firstName: string;
   verifyUrl: string;
 }
 
 export function EmailVerificationEmail({
-  firstName,
   verifyUrl,
 }: EmailVerificationEmailProps) {
   return (
@@ -22,7 +20,7 @@ export function EmailVerificationEmail({
       <Heading style={styles.heading}>Verify your email address</Heading>
 
       <Text style={styles.body}>
-        Hi {firstName}, thanks for signing up. Click the button below to verify
+        Thanks for applying for credentials. Click the button below to verify
         your email address and access your record. This link expires in 24
         hours.
       </Text>
