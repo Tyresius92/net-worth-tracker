@@ -1,0 +1,12 @@
+{
+  "$schema": "https://github.com/IBM/audit-ci/raw/main/docs/schema.json",
+  "high": true,
+  "allowlist": [
+    // GHSA-mrhx-c7xc-m3w5 — zod <4.6.6 can exhaust memory validating oversized
+    // constrained collections. No patched zod 3.x exists, and
+    // prisma-field-encryption@1.6.0 (latest) requires zod ^3. It only uses zod
+    // to validate its own configuration at startup, never user input, so the
+    // DoS isn't reachable. Remove once prisma-field-encryption supports zod 4.
+    "GHSA-mrhx-c7xc-m3w5|prisma-field-encryption>zod",
+  ],
+}
