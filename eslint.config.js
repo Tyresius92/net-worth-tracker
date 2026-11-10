@@ -165,7 +165,7 @@ export default tseslint.config(
 
   // Tests (Vitest)
   {
-    files: ["**/*.test.{js,jsx,ts,tsx}"],
+    files: ["**/*.test.{js,jsx,ts,tsx}", "server/**/*.test.mjs"],
     plugins: {
       vitest: vitestPlugin,
       "jest-dom": jestDomPlugin,
@@ -188,6 +188,16 @@ export default tseslint.config(
   // Node files (mocks)
   {
     files: ["mocks/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+
+  // Production Express server (plain ESM, run directly by node)
+  {
+    files: ["server/**/*.mjs"],
     languageOptions: {
       globals: {
         ...globals.node,

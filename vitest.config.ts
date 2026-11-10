@@ -19,7 +19,7 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   test: {
-    include: ["app/**/*.{test,spec}.{ts,tsx}"],
+    include: ["app/**/*.{test,spec}.{ts,tsx}", "server/**/*.test.mjs"],
     globals: true,
     environment: "happy-dom",
     globalSetup: ["./test/global-setup.ts"],
