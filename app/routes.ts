@@ -41,7 +41,6 @@ export default [
 
     route("users", "./routes/users/layout.tsx", [
       index("./routes/users/route.tsx"),
-      route("purge", "./routes/users/purge/route.tsx"),
       route(":userId", "./routes/users/$userId/route.tsx"),
       route(":userId/delete", "./routes/users/$userId/delete/route.tsx"),
     ]),
